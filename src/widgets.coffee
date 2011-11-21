@@ -92,7 +92,10 @@ class Widget
 			@setFocusable not @get "disabled"
 
 			# The original class of the dummy is stored for later use.
-			@dummyClass = @dummy.attr "class" 
+			@dummyClass = @dummy.attr "class"
+			
+			# The style set on the target is copied on the dummy.
+			if @hasTarget then @dummy.attr "style", @jTarget.attr "style" 
 			
 			@registerToDummyEvents()
 			@updateStates()
@@ -157,9 +160,10 @@ class Widget
 		# Read-only widgets don't allow to modify their values.
 		if @get "readonly" 
 			@get property
-		else
-			@valueToAttribute property, value
-			@valueChanged.dispatch this, value
+		else 
+			if value isnt @get "value"
+				@valueToAttribute property, value
+				@valueChanged.dispatch this, value
 			value
 	
 	set_name:(property, value)->

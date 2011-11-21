@@ -582,6 +582,30 @@ test "Widget's custom properties should be overridable in children classes", ->
 	assertThat setterCalled
 	assertThat widget.get("foo"), equalTo "hello"
 
+test "Widget's value setter shouldn't dispatch a value changed when set is called with the current value", ->
+
+	widget = new Widget
+	signalCallCount = 0
+
+	widget.valueChanged.add ->
+		signalCallCount++
+
+	widget.set "value", "hello"
+	widget.set "value", "hello"
+	
+	assertThat signalCallCount, equalTo 1
+
+test "When both target and dummy exist and target as a style attribute, the value should be copied to the dummy", ->
+	
+	target = $("<input type='text' style='width: 100px;'></input>")[0]
+	class MockWidget extends Widget
+		createDummy:->
+			$ "<span class='foo'></span>"
+	
+	widget = new MockWidget target
+
+	assertThat widget.dummy.attr("style"), equalTo "width: 100px;" 
+
 
 	
 
