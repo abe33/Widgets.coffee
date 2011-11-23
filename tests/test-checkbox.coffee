@@ -252,11 +252,8 @@ checkbox1.set "checked", true
 checkbox2.set "readonly", true
 checkbox3.set "disabled", true
 
-$("body").prepend $ "<br/>"
-$("body").prepend checkbox3.dummy
-$("body").prepend checkbox2.dummy
-$("body").prepend checkbox1.dummy
-$("body").prepend target
-
-
-
+$("#qunit-header").before $ "<h4>CheckBox</h4>"
+$("#qunit-header").before target
+$("#qunit-header").before checkbox1.dummy
+$("#qunit-header").before checkbox2.dummy
+$("#qunit-header").before checkbox3.dummy

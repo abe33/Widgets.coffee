@@ -69,6 +69,7 @@ class Widget
 		# Dummy creation is done in the `createDummy` method.
 		@dummy = @createDummy()
 		@hasDummy = @dummy?
+		@hasFocus = false
 
 		# The `dummyStates` property stores the list of shared properties that
 		# should be reflected as a class on the dummy. The order of the states
@@ -101,7 +102,8 @@ class Widget
 			@updateStates()
 		
 		# Other setup
-		@keyboardCommands = {}
+		@keyDownCommands = {}
+		@keyUpCommands = {}
 
 	#### Shared Properties accessors
 	# 
@@ -220,7 +222,7 @@ class Widget
 	# Register this widget to the events of its dummy. 
 	registerToDummyEvents:->
 		@dummy.bind @supportedEvents, (e)=>
-			@[e.type](e)
+			@[e.type].apply this, arguments 
 	
 	# Unregister all the events from the dummy.
 	unregisterFromDummyEvents:->
@@ -257,13 +259,19 @@ class Widget
 		true
 	# Default behavior is to allow focus only if the widget is enabled.
 	focus:(e)->
+		@hasFocus = true
 		not @get "disabled"
 	blur:(e)->
+		@hasFocus = false
 		true
+	# Trigger the command registered with the `keydown` event if any.
 	keydown:(e)->
-		true
+		@triggerKeyDownCommand e
+		false
+	# Trigger the command registered with the `keyup` event if any.
 	keyup:(e)->
-		true
+		@triggerKeyUpCommand e
+		false
 	keypress:(e)->
 		true	
 	
@@ -286,20 +294,37 @@ class Widget
 	#### Keyboard shortcuts management
 
 	# Register the passed-in function to be triggered
-	# when the `keystroke` is matched.
-	registerKeyboardCommand:( keystroke, command )->
-		@keyboardCommands[ keystroke ] = [ keystroke, command ]
+	# when the `keystroke` is matched on `keydown`.
+	registerKeyDownCommand:( keystroke, command )->
+		@keyDownCommands[ keystroke ] = [ keystroke, command ]
 	
 	# Returns `yes` if the passed-in keystroke have been associated
-	# with a command for this widget.
-	hasKeyboardCommand:( keystroke )->
-		keystroke of @keyboardCommands
+	# with a command for this widget's `keydown` event.
+	hasKeyDownCommand:( keystroke )->
+		keystroke of @keyDownCommands
 
 	# Takes a keyboard event object and trigger 
-	# the corresponding command.
-	triggerKeyboardCommand:( e )->
-		for key, [ keystroke, command ] of @keyboardCommands
+	# the corresponding command on a `keydown`.
+	triggerKeyDownCommand:( e )->
+		for key, [ keystroke, command ] of @keyDownCommands
 			if keystroke.match e then command.call this
+
+	# Register the passed-in function to be triggered
+	# when the `keystroke` is matched on `keyup`.
+	registerKeyUpCommand:( keystroke, command )->
+		@keyUpCommands[ keystroke ] = [ keystroke, command ]
+	
+	# Returns `yes` if the passed-in keystroke have been associated
+	# with a command for this widget's `keyup` event.
+	hasKeyUpCommand:( keystroke )->
+		keystroke of @keyUpCommands
+
+	# Takes a keyboard event object and trigger 
+	# the corresponding command on a `keyup`.
+	triggerKeyUpCommand:( e )->
+		for key, [ keystroke, command ] of @keyUpCommands
+			if keystroke.match e then command.call this
+	
 		
 	#### Useful methods to deal with reflection between widget's properties and target's attributes
 

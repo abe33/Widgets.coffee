@@ -209,10 +209,12 @@ test "The selectionChanged signal shouldn't be dispatched when select is called 
 radio1 = new Radio
 radio2 = new Radio
 radio3 = new Radio
+radio3.set "checked", true
+radio3.set "disabled", true 
 
 group = new RadioGroup radio1, radio2, radio3
 
-$("body").prepend $ "<br/>"
-$("body").prepend radio3.dummy
-$("body").prepend radio2.dummy
-$("body").prepend radio1.dummy
+$("#qunit-header").before $ "<h4>RadioGroup</h4>"
+$("#qunit-header").before radio1.dummy
+$("#qunit-header").before radio2.dummy
+$("#qunit-header").before radio3.dummy

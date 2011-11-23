@@ -1,5 +1,5 @@
 (function() {
-  var CheckBox, KeyStroke, Radio, RadioGroup, Widget, keys, keystroke;
+  var CheckBox, KeyStroke, Radio, RadioGroup, Slider, Widget, keys, keystroke;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
     for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
     function ctor() { this.constructor = child; }
@@ -180,6 +180,7 @@
       };
       this.dummy = this.createDummy();
       this.hasDummy = this.dummy != null;
+      this.hasFocus = false;
       this.dummyStates = ["disabled", "readonly"];
       if (this.hasTarget) {
         this.targetInitialValue = this.valueFromAttribute("value");
@@ -190,10 +191,14 @@
       if (this.hasDummy) {
         this.setFocusable(!this.get("disabled"));
         this.dummyClass = this.dummy.attr("class");
+        if (this.hasTarget) {
+          this.dummy.attr("style", this.jTarget.attr("style"));
+        }
         this.registerToDummyEvents();
         this.updateStates();
       }
-      this.keyboardCommands = {};
+      this.keyDownCommands = {};
+      this.keyUpCommands = {};
     }
     Widget.prototype.get = function(property) {
       if (("get_" + property) in this) {
@@ -238,8 +243,10 @@
       if (this.get("readonly")) {
         return this.get(property);
       } else {
-        this.valueToAttribute(property, value);
-        this.valueChanged.dispatch(this, value);
+        if (value !== this.get("value")) {
+          this.valueToAttribute(property, value);
+          this.valueChanged.dispatch(this, value);
+        }
         return value;
       }
     };
@@ -280,7 +287,7 @@
     };
     Widget.prototype.registerToDummyEvents = function() {
       return this.dummy.bind(this.supportedEvents, __bind(function(e) {
-        return this[e.type](e);
+        return this[e.type].apply(this, arguments);
       }, this));
     };
     Widget.prototype.unregisterFromDummyEvents = function() {
@@ -312,16 +319,20 @@
       return true;
     };
     Widget.prototype.focus = function(e) {
+      this.hasFocus = true;
       return !this.get("disabled");
     };
     Widget.prototype.blur = function(e) {
+      this.hasFocus = false;
       return true;
     };
     Widget.prototype.keydown = function(e) {
-      return true;
+      this.triggerKeyDownCommand(e);
+      return false;
     };
     Widget.prototype.keyup = function(e) {
-      return true;
+      this.triggerKeyUpCommand(e);
+      return false;
     };
     Widget.prototype.keypress = function(e) {
       return true;
@@ -345,15 +356,31 @@
         return this.dummy.blur();
       }
     };
-    Widget.prototype.registerKeyboardCommand = function(keystroke, command) {
-      return this.keyboardCommands[keystroke] = [keystroke, command];
+    Widget.prototype.registerKeyDownCommand = function(keystroke, command) {
+      return this.keyDownCommands[keystroke] = [keystroke, command];
     };
-    Widget.prototype.hasKeyboardCommand = function(keystroke) {
-      return keystroke in this.keyboardCommands;
+    Widget.prototype.hasKeyDownCommand = function(keystroke) {
+      return keystroke in this.keyDownCommands;
     };
-    Widget.prototype.triggerKeyboardCommand = function(e) {
+    Widget.prototype.triggerKeyDownCommand = function(e) {
       var command, key, _ref, _ref2, _results;
-      _ref = this.keyboardCommands;
+      _ref = this.keyDownCommands;
+      _results = [];
+      for (key in _ref) {
+        _ref2 = _ref[key], keystroke = _ref2[0], command = _ref2[1];
+        _results.push(keystroke.match(e) ? command.call(this) : void 0);
+      }
+      return _results;
+    };
+    Widget.prototype.registerKeyUpCommand = function(keystroke, command) {
+      return this.keyUpCommands[keystroke] = [keystroke, command];
+    };
+    Widget.prototype.hasKeyUpCommand = function(keystroke) {
+      return keystroke in this.keyUpCommands;
+    };
+    Widget.prototype.triggerKeyUpCommand = function(e) {
+      var command, key, _ref, _ref2, _results;
+      _ref = this.keyUpCommands;
       _results = [];
       for (key in _ref) {
         _ref2 = _ref[key], keystroke = _ref2[0], command = _ref2[1];
@@ -415,8 +442,8 @@
       this.createProperty("checked", this.booleanFromAttribute("checked", false));
       this.targetInitialChecked = this.get("checked");
       this.dummyStates = ["checked", "disabled", "readonly"];
-      this.registerKeyboardCommand(keystroke(keys.enter), this.actionToggle);
-      this.registerKeyboardCommand(keystroke(keys.space), this.actionToggle);
+      this.registerKeyUpCommand(keystroke(keys.enter), this.actionToggle);
+      this.registerKeyUpCommand(keystroke(keys.space), this.actionToggle);
       this.updateStates();
       this.hideTarget();
     }
@@ -461,9 +488,6 @@
       if (!this.get("disabled")) {
         return this.grabFocus();
       }
-    };
-    CheckBox.prototype.keyup = function(e) {
-      return this.triggerKeyboardCommand(e);
     };
     return CheckBox;
   })();
@@ -553,5 +577,186 @@
   })();
   if (typeof window !== "undefined" && window !== null) {
     window.RadioGroup = RadioGroup;
+  }
+  Slider = (function() {
+    __extends(Slider, Widget);
+    function Slider(target) {
+      if ((target != null) && $(target).attr("type") !== "range") {
+        throw "Slider target must be an input with a range type";
+      }
+      Slider.__super__.constructor.call(this, target);
+      this.createProperty("min", parseFloat(this.valueFromAttribute("min", 0)));
+      this.createProperty("max", parseFloat(this.valueFromAttribute("max", 100)));
+      this.createProperty("step", parseFloat(this.valueFromAttribute("step", 1)));
+      this.properties.value = parseFloat(this.valueFromAttribute("value", 0));
+      this.draggingKnob = false;
+      this.lastMouseX = 0;
+      this.lastMouseY = 0;
+      this.valueCenteredOnKnob = false;
+      this.registerKeyDownCommand(keystroke(keys.up), this.startIncrement);
+      this.registerKeyUpCommand(keystroke(keys.up), this.endIncrement);
+      this.registerKeyDownCommand(keystroke(keys.down), this.startDecrement);
+      this.registerKeyUpCommand(keystroke(keys.down), this.endDecrement);
+      this.incrementInterval = -1;
+      if (this.hasDummy) {
+        this.updateDummy(this.get("value"), this.get("min"), this.get("max"));
+      }
+      this.hideTarget();
+    }
+    Slider.prototype.cleanValue = function(value, min, max, step) {
+      if (value < min) {
+        value = min;
+      } else if (value > max) {
+        value = max;
+      }
+      return value - (value % step);
+    };
+    Slider.prototype.increment = function() {
+      return this.set("value", this.get("value") + this.get("step"));
+    };
+    Slider.prototype.decrement = function() {
+      return this.set("value", this.get("value") - this.get("step"));
+    };
+    Slider.prototype.startDrag = function(e) {
+      if (!(this.get("readonly") || this.get("disabled"))) {
+        this.draggingKnob = true;
+        this.lastMouseX = e.pageX;
+        this.lastMouseY = e.pageY;
+        $(document).bind("mouseup", __bind(function() {
+          return this.endDrag();
+        }, this));
+        return $(document).bind("mousemove", __bind(function(e) {
+          return this.drag(e);
+        }, this));
+      }
+    };
+    Slider.prototype.drag = function(e) {
+      var data, knob, knobWidth, max, min, normalizedValue, value, width;
+      data = this.getDragDataFromEvent(e);
+      width = this.dummy.width();
+      knob = this.dummy.children(".knob");
+      knobWidth = knob.width();
+      normalizedValue = data.x / (width - knobWidth);
+      min = this.get("min");
+      max = this.get("max");
+      value = Math.round(normalizedValue * (max - min));
+      this.set("value", this.get("value") + value);
+      this.lastMouseX = e.pageX;
+      return this.lastMouseY = e.pageY;
+    };
+    Slider.prototype.endDrag = function() {
+      this.draggingKnob = false;
+      return $(document).unbind("mousemove mouseup");
+    };
+    Slider.prototype.getDragDataFromEvent = function(e) {
+      return {
+        x: e.pageX - this.lastMouseX,
+        y: e.pageY - this.lastMouseY
+      };
+    };
+    Slider.prototype.mousewheel = function(event, delta, deltaX, deltaY) {
+      if (!(this.get("readonly") || this.get("disabled"))) {
+        this.set("value", this.get("value") + delta * this.get("step"));
+      }
+      return false;
+    };
+    Slider.prototype.startIncrement = function() {
+      if (!(this.get("readonly") || this.get("disabled"))) {
+        if (this.incrementInterval === -1) {
+          return this.incrementInterval = setInterval(__bind(function() {
+            return this.increment();
+          }, this), 50);
+        }
+      }
+    };
+    Slider.prototype.startDecrement = function() {
+      if (!(this.get("readonly") || this.get("disabled"))) {
+        if (this.incrementInterval === -1) {
+          return this.incrementInterval = setInterval(__bind(function() {
+            return this.decrement();
+          }, this), 50);
+        }
+      }
+    };
+    Slider.prototype.endIncrement = function() {
+      clearInterval(this.incrementInterval);
+      return this.incrementInterval = -1;
+    };
+    Slider.prototype.endDecrement = function() {
+      clearInterval(this.incrementInterval);
+      return this.incrementInterval = -1;
+    };
+    Slider.prototype.createDummy = function() {
+      var dummy;
+      dummy = $("<span class='slider'>						<span class='track'></span>						<span class='knob'></span>						<span class='value'></span>				   	</span>");
+      dummy.children(".knob").bind("mousedown", __bind(function(e) {
+        this.startDrag(e);
+        this.grabFocus();
+        return e.preventDefault();
+      }, this));
+      return dummy;
+    };
+    Slider.prototype.updateDummy = function(value, min, max) {
+      var knob, knobPos, knobWidth, val, valPos, valWidth, width;
+      width = this.dummy.width();
+      knob = this.dummy.children(".knob");
+      val = this.dummy.children(".value");
+      knobWidth = knob.width();
+      valWidth = val.width();
+      knobPos = (width - knobWidth) * ((value - min) / (max - min));
+      knob.css("left", knobPos);
+      val.text(value);
+      if (this.valueCenteredOnKnob) {
+        valPos = (knobPos + knobWidth / 2) - valWidth / 2;
+        return val.css("left", valPos);
+      } else {
+        return val.css("left", "auto");
+      }
+    };
+    Slider.prototype.set_value = function(property, value) {
+      var max, min, step;
+      min = this.get("min");
+      max = this.get("max");
+      step = this.get("step");
+      value = this.cleanValue(value, min, max, step);
+      this.updateDummy(value, min, max);
+      return Slider.__super__.set_value.call(this, property, value);
+    };
+    Slider.prototype.set_min = function(property, value) {
+      var max, step;
+      max = this.get("max");
+      if (value >= max) {
+        return this.get("min");
+      } else {
+        step = this.get("step");
+        this.valueToAttribute(property, value);
+        this.set("value", this.cleanValue(this.get("value"), value, max, step));
+        return value;
+      }
+    };
+    Slider.prototype.set_max = function(property, value) {
+      var min, step;
+      min = this.get("min");
+      if (value <= min) {
+        return this.get("max");
+      } else {
+        step = this.get("step");
+        this.valueToAttribute(property, value);
+        this.set("value", this.cleanValue(this.get("value"), min, value, step));
+        return value;
+      }
+    };
+    Slider.prototype.set_step = function(property, value) {
+      var max, min;
+      min = this.get("min");
+      max = this.get("max");
+      this.valueToAttribute(property, value);
+      this.set("value", this.cleanValue(this.get("value"), min, max, value));
+      return value;
+    };
+    return Slider;
+  })();
+  if (typeof window !== "undefined" && window !== null) {
+    window.Slider = Slider;
   }
 }).call(this);

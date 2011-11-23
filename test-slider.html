@@ -24,17 +24,53 @@
         .value {
             font-weight:bold;
         }
+        h4 {
+            margin-top:4px;
+            margin-bottom:4px;
+        }
         .slider {
-            
+            display:inline-block;
+            position:relative;
+            width:100px;
+            margin-left:4px;
+            margin-bottom:4px;
+
+        }
+        .slider.readonly {
+            opacity:0.5;
+        }
+        .slider.disabled .track {
+            background:#666;
+        }
+        .slider.disabled .knob {
+            background:#999;
+        }
+        .slider.disabled .value {
+            background:#333;
         }
         .slider .track {
-            
+            background:red;
+            position:absolute;
+            z-index:-1;
+            height:12px;
+            display:block;
+            width:100%;
         }
         .slider .knob {
-            
+            position:relative;
+            z-index:1;
+            background:green;
+            width:40px;
+            height:12px;
+            display:block;
         }
         .slider .value {
-            
+            display:block;
+            width:30px;
+            position:relative;
+            text-align:center;
+            color:white;
+            background-color:blue;
         }
         
     </style>

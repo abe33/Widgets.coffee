@@ -51,8 +51,8 @@ class CheckBox extends Widget
 		#### Keyboard controls
 
 		# Use the `enter` or `space` key to toggle the checkbox with the keyboard.
-		@registerKeyboardCommand keystroke( keys.enter ), @actionToggle
-		@registerKeyboardCommand keystroke( keys.space ), @actionToggle
+		@registerKeyUpCommand keystroke( keys.enter ), @actionToggle
+		@registerKeyUpCommand keystroke( keys.space ), @actionToggle
 		
 		@updateStates()
 		@hideTarget()
@@ -121,11 +121,6 @@ class CheckBox extends Widget
 		# when the widget is not disabled.
 		unless @get "disabled"	
 			@grabFocus()
-	
-	# Triggers the command associated with the passed-in keyboard event.
-	keyup:(e)->
-		@triggerKeyboardCommand e
-	
 
 # Address the access restriction due to the sandboxing when used
 # directly in a browser with the `text/coffeescript` mode. 

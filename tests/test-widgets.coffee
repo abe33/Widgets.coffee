@@ -409,6 +409,29 @@ test "Widgets should receive keyboard related events from its dummy", ->
 	assertThat keypressReceived
 	assertThat keyupReceived
 
+test "Widgets should be able to know when it has focus", ->
+	class MockWidget extends Widget
+		createDummy:->
+			$ "<span class='foo'></span>"
+	
+	widget = new MockWidget()
+
+	widget.dummy.focus()
+
+	assertThat widget.hasFocus
+
+test "Widgets should be able to know when it lose focus", ->
+	class MockWidget extends Widget
+		createDummy:->
+			$ "<span class='foo'></span>"
+	
+	widget = new MockWidget()
+
+	widget.dummy.focus()
+	widget.dummy.blur()
+
+	assertThat not widget.hasFocus
+
 test "Widgets should preserve the initial class value of the dummy", ->
 
 	class MockWidget extends Widget
@@ -452,23 +475,47 @@ test "Widgets shouldn't fail on hide when the target isn't provided", ->
 	
 	assertThat not errorRaised
 
-test "Widgets should allow to register function for specific keystrokes", ->
+test "Widgets should allow to register function for specific keystrokes on keydown", ->
 	
 	widget = new Widget
 	
-	widget.registerKeyboardCommand keystroke( keys.a, keys.mod.ctrl ), ->
+	widget.registerKeyDownCommand keystroke( keys.a, keys.mod.ctrl ), ->
 
-	assertThat widget.hasKeyboardCommand keystroke keys.a, keys.mod.ctrl
+	assertThat widget.hasKeyDownCommand keystroke keys.a, keys.mod.ctrl
 
-test "Widgets should trigger the corresponding function with the associated keystroke", ->
+test "Widgets should trigger the corresponding function with the associated keystroke on keydown", ->
 
 	widget 		  = new Widget
 	commandCalled = false
 
-	widget.registerKeyboardCommand keystroke( keys.a, keys.mod.ctrl ), ->
+	widget.registerKeyDownCommand keystroke( keys.a, keys.mod.ctrl ), ->
+		commandCalled = true
+		
+	widget.keydown 
+		keyCode:keys.a
+		ctrlKey:true
+		shiftKey:false
+		altKey:false
+	
+	assertThat commandCalled
+
+test "Widgets should allow to register function for specific keystrokes on keyup", ->
+	
+	widget = new Widget
+	
+	widget.registerKeyUpCommand keystroke( keys.a, keys.mod.ctrl ), ->
+
+	assertThat widget.hasKeyUpCommand keystroke keys.a, keys.mod.ctrl
+
+test "Widgets should trigger the corresponding function with the associated keystroke on keyup", ->
+
+	widget 		  = new Widget
+	commandCalled = false
+
+	widget.registerKeyUpCommand keystroke( keys.a, keys.mod.ctrl ), ->
 		commandCalled = true
 	
-	widget.triggerKeyboardCommand 
+	widget.keyup 
 		keyCode:keys.a
 		ctrlKey:true
 		shiftKey:false
@@ -605,6 +652,7 @@ test "When both target and dummy exist and target as a style attribute, the valu
 	widget = new MockWidget target
 
 	assertThat widget.dummy.attr("style"), equalTo "width: 100px;" 
+
 
 
 	

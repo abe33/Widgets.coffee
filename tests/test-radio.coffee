@@ -264,9 +264,9 @@ radio3 = new Radio
 radio2.set "readonly", true
 radio3.set "disabled", true
 
-$("body").prepend $ "<br/>"
-$("body").prepend radio3.dummy
-$("body").prepend radio2.dummy
-$("body").prepend radio1.dummy
-$("body").prepend target
+$("#qunit-header").before $ "<h4>Radio</h4>"
+$("#qunit-header").before target
+$("#qunit-header").before radio1.dummy
+$("#qunit-header").before radio2.dummy
+$("#qunit-header").before radio3.dummy
 
