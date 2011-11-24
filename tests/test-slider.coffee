@@ -434,7 +434,25 @@ asyncTest "Stopping the increment on keyup should allow to start a new one", ->
 		start()
 	, 100
 
+test "Pressing the down key should return false to prevent scrolling", ->
+	slider = new Slider
 
+	slider.grabFocus()
+	assertThat not slider.keydown
+		keyCode:keys.down
+		ctrlKey:false
+		shiftKey:false
+		altKey:false
+
+test "Pressing the up key should return false to prevent scrolling", ->
+	slider = new Slider
+
+	slider.grabFocus()
+	assertThat not slider.keydown
+		keyCode:keys.up
+		ctrlKey:false
+		shiftKey:false
+		altKey:false	
 
 
 asyncTest "When the down key is pressed the slider should decrement the value", ->
@@ -614,6 +632,53 @@ asyncTest "Trying to decrement a disabled slider shouldn't work", ->
 
 		start()
 	, 100
+
+test "Pressing the mouse over the track should change the value and start a knob drag", ->
+
+	class MockSlider extends Slider
+		handleTrackMouseDown:(e)->
+			e.pageX = 10
+			super e
+
+	slider = new MockSlider
+	slider.dummy.width 100
+
+	slider.dummy.children(".track").mousedown()
+	
+	assertThat slider.get("value"), equalTo 10
+	assertThat slider.draggingKnob
+
+test "Pressing the mouse over a disabled track shouldn't change the value ", ->
+
+	class MockSlider extends Slider
+		handleTrackMouseDown:(e)->
+			e.pageX = 10
+			super e
+
+	slider = new MockSlider
+	slider.set "disabled", true
+	slider.dummy.width 100
+
+	slider.dummy.children(".track").mousedown()
+	
+	assertThat slider.get("value"), equalTo 0
+	assertThat not slider.draggingKnob
+
+test "Pressing the mouse over a readonly track shouldn't change the value ", ->
+
+	class MockSlider extends Slider
+		handleTrackMouseDown:(e)->
+			e.pageX = 10
+			super e
+
+	slider = new MockSlider
+	slider.set "readonly", true
+	slider.dummy.width 100
+
+	slider.dummy.children(".track").mousedown()
+	
+	assertThat slider.get("value"), equalTo 0
+	assertThat not slider.draggingKnob
 
 # Clear all the drag that haven't been terminated in tests.
 $(document).mouseup()

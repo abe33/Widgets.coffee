@@ -55,8 +55,13 @@ class Slider extends Widget
 		@hideTarget()
 	
 	#### Value manipulation
+
+	# Returns `true` when the widget is not in a state that allow
+	# a change to the value with a user interaction.
+	cantInteract:->
+		@get("readonly") or @get("disabled")
 	
-	# Ensure that the passed-in value match all the constraints
+	# Ensure that the passed-in `value` match all the constraints
 	# of this slider.
 	#
 	# The returned value can be safely affected to the `value` 
@@ -82,26 +87,24 @@ class Slider extends Widget
 	# The knob child of the slider can be dragged to modify
 	# the slider's value. 
 
+	# Initiate a drag gesture.
 	startDrag:(e)->
-		# The knob's drag is not allowed for a readonly
-		# or a disabled slider.
-		unless @get("readonly") or @get("disabled")
-			@draggingKnob = true
+		@draggingKnob = true
 
-			# The mouse position is stored when the drag gesture
-			# starts. 
-			@lastMouseX = e.pageX
-			@lastMouseY = e.pageY
+		# The mouse position is stored when the drag gesture
+		# starts. 
+		@lastMouseX = e.pageX
+		@lastMouseY = e.pageY
 
-			# The slider then register itself to the document's 
-			# `mousemove` and `mouseup` events. 
-			# It ensure that the slider keeps to receive events
-			# even when the mouse is outside of the slider.
-			$(document).bind "mouseup", =>
-				@endDrag()
-			
-			$(document).bind "mousemove", (e)=>
-				@drag e
+		# The slider then register itself to the document's 
+		# `mousemove` and `mouseup` events. 
+		# It ensure that the slider keeps to receive events
+		# even when the mouse is outside of the slider.
+		$(document).bind "mouseup", =>
+			@endDrag()
+		
+		$(document).bind "mousemove", (e)=>
+			@drag e
 	
 	# During the drag, the slider converts the data
 	# in the mouse event object to drag related data.
@@ -118,10 +121,10 @@ class Slider extends Widget
 		# And adjusted to the current range.
 		min = @get "min"
 		max = @get "max"
-		value = Math.round( normalizedValue * ( max - min ) )
+		change = Math.round( normalizedValue * ( max - min ) )
 
 		# To finally being added to the `value` property.
-		@set "value", @get("value") + value 
+		@set "value", @get("value") + change 
 
 		# The current mouse position is then stored for the
 		# next drag call.
@@ -149,22 +152,59 @@ class Slider extends Widget
 		unless @get("readonly") or @get("disabled")
 			@set "value", @get("value") + delta * @get "step"
 		false
+	
+	# Pressing the mouse button over the knob start
+	# the drag gesture.
+	handleKnobMouseDown:(e)->
+		# The knob's drag is not allowed for a readonly
+		# or a disabled slider.
+		unless @cantInteract()
+			@startDrag e
+			@grabFocus()
+			# The default behavior is prevented. Otherwise, 
+			# dragging the knob will end up to initiate a copy/paste
+			# drag gesture at the browser level.
+			e.preventDefault()
+	
+	# Pressing the mouse button over the track change 
+	# the value and start the drag gesture.
+	handleTrackMouseDown:(e)->
+		unless @cantInteract()
+			track = @dummy.children ".track"
+			min = @get "min"
+			max = @get "max"
+
+			# The new value of the slider is the value in the
+			# range corresponding to the position of the mouse
+			# relatively to the track.
+			x = e.pageX - @dummy.offset().left
+			v = x / track.width()
+
+			@set "value", min + max * v
+
+			# Other than the value change, the track behave
+			# as the knob do.
+			@handleKnobMouseDown e
 		
 	#### Keyboard commands
 
 	# Initiate the increment interval when the `up` key is pressed.
 	startIncrement:->
-		unless @get("readonly") or @get("disabled")
+		unless @cantInteract()
 			if @incrementInterval is -1 then @incrementInterval = setInterval =>
 				@increment()
 			, 50
+		# `startIncrement` returns false to prevent scrolling to happen.
+		false
 			
 	# Initiate the decrement interval when the `down` key is pressed.
 	startDecrement:->
-		unless @get("readonly") or @get("disabled")
+		unless @cantInteract()
 			if @incrementInterval is -1 then @incrementInterval = setInterval =>
 				@decrement()
 			, 50
+		# `startIncrement` returns false to prevent scrolling to happen.
+		false
 	
 	# Ends the increment interval when the `up` key is released.
 	endIncrement:->
@@ -175,7 +215,6 @@ class Slider extends Widget
 	endDecrement:->
 		clearInterval @incrementInterval
 		@incrementInterval = -1
-
 	
 	#### Dummy management
 
@@ -188,17 +227,15 @@ class Slider extends Widget
 						<span class='knob'></span>
 						<span class='value'></span>
 				   	</span>"
-		
-		# Pressing the mouse button over the knob starts
-		# the drag gesture.
+			
+		# The slider register to the `mousedown` events
+		# of its track and its knob.	
 		dummy.children(".knob").bind "mousedown", (e)=>
-			@startDrag e
-			@grabFocus()
-			# The default behavior is prevented. Otherwise, 
-			# dragging the knob will end up to initiate a copy/paste
-			# drag gesture at the browser level.
-			e.preventDefault()
+			@handleKnobMouseDown e
 		
+		dummy.children(".track").bind "mousedown", (e)=>
+			@handleTrackMouseDown e
+
 		dummy
 	
 	# Updates the dummy according to the slider's data.

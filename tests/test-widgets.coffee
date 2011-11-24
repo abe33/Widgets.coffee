@@ -523,6 +523,84 @@ test "Widgets should trigger the corresponding function with the associated keys
 	
 	assertThat commandCalled
 
+test "Widgets keyup events that doesn't trigger a command shouldn't return false", ->
+
+	widget = new Widget
+
+	assertThat widget.keyup 
+		keyCode:keys.a
+		ctrlKey:true
+		shiftKey:false
+		altKey:false
+
+test "Widgets keydown events that doesn't trigger a command shouldn't return false", ->
+
+	widget = new Widget
+
+	assertThat widget.keydown 
+		keyCode:keys.a
+		ctrlKey:true
+		shiftKey:false
+		altKey:false
+	
+test "Widgets keydown events that trigger a command should return the command return",->
+	
+	widget = new Widget
+
+	widget.registerKeyDownCommand keystroke( keys.a ), ->
+		true
+	
+	assertThat widget.keydown 
+		keyCode:keys.a
+		ctrlKey:false
+		shiftKey:false
+		altKey:false
+
+test "Widgets keyup events that trigger a command should return the command return",->
+	
+	widget = new Widget
+
+	widget.registerKeyUpCommand keystroke( keys.a ), ->
+		true
+	
+	assertThat widget.keyup 
+		keyCode:keys.a
+		ctrlKey:false
+		shiftKey:false
+		altKey:false
+	
+test "Widgets should pass the event to the keydown commands", ->
+
+	event = null
+	widget = new Widget
+
+	widget.registerKeyDownCommand keystroke( keys.a ), (e)->
+		event = e
+	
+	widget.keydown 
+		keyCode:keys.a
+		ctrlKey:false
+		shiftKey:false
+		altKey:false
+	
+	assertThat event, notNullValue()
+
+test "Widgets should pass the event to the keyup commands", ->
+
+	event = null
+	widget = new Widget
+
+	widget.registerKeyUpCommand keystroke( keys.a ), (e)->
+		event = e
+	
+	widget.keyup 
+		keyCode:keys.a
+		ctrlKey:false
+		shiftKey:false
+		altKey:false
+	
+	assertThat event, notNullValue()
+
 test "Widgets should provide a way to reset the target input to its original state", ->
 	
 	target = $("<input type='text' value='foo'></input>")

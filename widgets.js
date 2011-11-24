@@ -327,12 +327,10 @@
       return true;
     };
     Widget.prototype.keydown = function(e) {
-      this.triggerKeyDownCommand(e);
-      return false;
+      return this.triggerKeyDownCommand(e);
     };
     Widget.prototype.keyup = function(e) {
-      this.triggerKeyUpCommand(e);
-      return false;
+      return this.triggerKeyUpCommand(e);
     };
     Widget.prototype.keypress = function(e) {
       return true;
@@ -359,34 +357,36 @@
     Widget.prototype.registerKeyDownCommand = function(keystroke, command) {
       return this.keyDownCommands[keystroke] = [keystroke, command];
     };
-    Widget.prototype.hasKeyDownCommand = function(keystroke) {
-      return keystroke in this.keyDownCommands;
-    };
-    Widget.prototype.triggerKeyDownCommand = function(e) {
-      var command, key, _ref, _ref2, _results;
-      _ref = this.keyDownCommands;
-      _results = [];
-      for (key in _ref) {
-        _ref2 = _ref[key], keystroke = _ref2[0], command = _ref2[1];
-        _results.push(keystroke.match(e) ? command.call(this) : void 0);
-      }
-      return _results;
-    };
     Widget.prototype.registerKeyUpCommand = function(keystroke, command) {
       return this.keyUpCommands[keystroke] = [keystroke, command];
+    };
+    Widget.prototype.hasKeyDownCommand = function(keystroke) {
+      return keystroke in this.keyDownCommands;
     };
     Widget.prototype.hasKeyUpCommand = function(keystroke) {
       return keystroke in this.keyUpCommands;
     };
-    Widget.prototype.triggerKeyUpCommand = function(e) {
-      var command, key, _ref, _ref2, _results;
-      _ref = this.keyUpCommands;
-      _results = [];
+    Widget.prototype.triggerKeyDownCommand = function(e) {
+      var command, key, _ref, _ref2;
+      _ref = this.keyDownCommands;
       for (key in _ref) {
         _ref2 = _ref[key], keystroke = _ref2[0], command = _ref2[1];
-        _results.push(keystroke.match(e) ? command.call(this) : void 0);
+        if (keystroke.match(e)) {
+          return command.call(this, e);
+        }
       }
-      return _results;
+      return true;
+    };
+    Widget.prototype.triggerKeyUpCommand = function(e) {
+      var command, key, _ref, _ref2;
+      _ref = this.keyUpCommands;
+      for (key in _ref) {
+        _ref2 = _ref[key], keystroke = _ref2[0], command = _ref2[1];
+        if (keystroke.match(e)) {
+          return command.call(this, e);
+        }
+      }
+      return true;
     };
     Widget.prototype.valueFromAttribute = function(property, defaultValue) {
       if (defaultValue == null) {
@@ -603,6 +603,9 @@
       }
       this.hideTarget();
     }
+    Slider.prototype.cantInteract = function() {
+      return this.get("readonly") || this.get("disabled");
+    };
     Slider.prototype.cleanValue = function(value, min, max, step) {
       if (value < min) {
         value = min;
@@ -618,20 +621,18 @@
       return this.set("value", this.get("value") - this.get("step"));
     };
     Slider.prototype.startDrag = function(e) {
-      if (!(this.get("readonly") || this.get("disabled"))) {
-        this.draggingKnob = true;
-        this.lastMouseX = e.pageX;
-        this.lastMouseY = e.pageY;
-        $(document).bind("mouseup", __bind(function() {
-          return this.endDrag();
-        }, this));
-        return $(document).bind("mousemove", __bind(function(e) {
-          return this.drag(e);
-        }, this));
-      }
+      this.draggingKnob = true;
+      this.lastMouseX = e.pageX;
+      this.lastMouseY = e.pageY;
+      $(document).bind("mouseup", __bind(function() {
+        return this.endDrag();
+      }, this));
+      return $(document).bind("mousemove", __bind(function(e) {
+        return this.drag(e);
+      }, this));
     };
     Slider.prototype.drag = function(e) {
-      var data, knob, knobWidth, max, min, normalizedValue, value, width;
+      var change, data, knob, knobWidth, max, min, normalizedValue, width;
       data = this.getDragDataFromEvent(e);
       width = this.dummy.width();
       knob = this.dummy.children(".knob");
@@ -639,8 +640,8 @@
       normalizedValue = data.x / (width - knobWidth);
       min = this.get("min");
       max = this.get("max");
-      value = Math.round(normalizedValue * (max - min));
-      this.set("value", this.get("value") + value);
+      change = Math.round(normalizedValue * (max - min));
+      this.set("value", this.get("value") + change);
       this.lastMouseX = e.pageX;
       return this.lastMouseY = e.pageY;
     };
@@ -660,23 +661,44 @@
       }
       return false;
     };
+    Slider.prototype.handleKnobMouseDown = function(e) {
+      if (!this.cantInteract()) {
+        this.startDrag(e);
+        this.grabFocus();
+        return e.preventDefault();
+      }
+    };
+    Slider.prototype.handleTrackMouseDown = function(e) {
+      var max, min, track, v, x;
+      if (!this.cantInteract()) {
+        track = this.dummy.children(".track");
+        min = this.get("min");
+        max = this.get("max");
+        x = e.pageX - this.dummy.offset().left;
+        v = x / track.width();
+        this.set("value", min + max * v);
+        return this.handleKnobMouseDown(e);
+      }
+    };
     Slider.prototype.startIncrement = function() {
-      if (!(this.get("readonly") || this.get("disabled"))) {
+      if (!this.cantInteract()) {
         if (this.incrementInterval === -1) {
-          return this.incrementInterval = setInterval(__bind(function() {
+          this.incrementInterval = setInterval(__bind(function() {
             return this.increment();
           }, this), 50);
         }
       }
+      return false;
     };
     Slider.prototype.startDecrement = function() {
-      if (!(this.get("readonly") || this.get("disabled"))) {
+      if (!this.cantInteract()) {
         if (this.incrementInterval === -1) {
-          return this.incrementInterval = setInterval(__bind(function() {
+          this.incrementInterval = setInterval(__bind(function() {
             return this.decrement();
           }, this), 50);
         }
       }
+      return false;
     };
     Slider.prototype.endIncrement = function() {
       clearInterval(this.incrementInterval);
@@ -690,9 +712,10 @@
       var dummy;
       dummy = $("<span class='slider'>						<span class='track'></span>						<span class='knob'></span>						<span class='value'></span>				   	</span>");
       dummy.children(".knob").bind("mousedown", __bind(function(e) {
-        this.startDrag(e);
-        this.grabFocus();
-        return e.preventDefault();
+        return this.handleKnobMouseDown(e);
+      }, this));
+      dummy.children(".track").bind("mousedown", __bind(function(e) {
+        return this.handleTrackMouseDown(e);
       }, this));
       return dummy;
     };
