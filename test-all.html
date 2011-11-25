@@ -19,14 +19,18 @@
     <script type="text/coffeescript" src="./src/checkbox.coffee"></script>
     <script type="text/coffeescript" src="./src/radio.coffee"></script>
     <script type="text/coffeescript" src="./src/radiogroup.coffee"></script>
+    <script type="text/coffeescript" src="./src/numeric-widget.coffee"></script>
     <script type="text/coffeescript" src="./src/slider.coffee"></script>
+    <script type="text/coffeescript" src="./src/stepper.coffee"></script>
 
     <script type="text/coffeescript" src="./tests/test-keys.coffee"></script>
     <script type="text/coffeescript" src="./tests/test-widgets.coffee"></script>
     <script type="text/coffeescript" src="./tests/test-checkbox.coffee"></script>
     <script type="text/coffeescript" src="./tests/test-radio.coffee"></script>
     <script type="text/coffeescript" src="./tests/test-radiogroup.coffee"></script>
+    <script type="text/coffeescript" src="./tests/test-numeric-widget.coffee"></script>
     <script type="text/coffeescript" src="./tests/test-slider.coffee"></script>
+    <script type="text/coffeescript" src="./tests/test-stepper.coffee"></script>
     
     <style>
         .value {
@@ -88,6 +92,7 @@
         .radio.disabled {
             background:gray;
         }
+        
         .slider {
             display:inline-block;
             position:relative;
@@ -132,6 +137,50 @@
             color:white;
             background-color:blue;
         }
+
+        .stepper {
+            display:inline-block;
+            position:relative;
+            width:100px;
+            background:blue;
+            height:20px;
+            margin-left:4px;
+            margin-bottom:4px;
+            color:white;
+        }
+        .stepper.readonly {
+            opacity:0.5;
+        }
+        .stepper.disabled {
+            background:#333;
+        }
+        .stepper.disabled .up, .stepper.disabled .down {
+            background:#666;
+        }
+        .stepper .value {
+            background:transparent;
+            border:none;
+            width:100%;
+            height:100%;
+            color:white;
+        }
+        .stepper .up,.stepper .down  {
+            position:absolute;
+            width:16px;
+            height:16px;
+            top:2px;
+            cursor:pointer;
+        }
+
+        .stepper .up {
+            background:green;
+            right:2px;
+        }
+        .stepper .down {
+            background:red;
+            right:20px;
+        }
+        
     </style>
 </head>
 <body>

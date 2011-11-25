@@ -187,6 +187,11 @@ class Widget
 	
 	#### Dummy management
 
+	# Returns `true` when the widget is not in a state that allow
+	# a change to the value with a user interaction.
+	cantInteract:->
+		@get("readonly") or @get("disabled")
+
 	# A placeholder for dummy creation. 
 	# The method must return the dummy jQuery object.
 	createDummy:->

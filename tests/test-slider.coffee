@@ -633,7 +633,293 @@ asyncTest "Trying to decrement a disabled slider shouldn't work", ->
 		start()
 	, 100
 
-test "Pressing the mouse over the track should change the value and start a knob drag", ->
+
+asyncTest "When the right key is pressed the slider should increment the value", ->
+
+	slider = new Slider
+
+	slider.grabFocus()
+	slider.keydown
+		keyCode:keys.right
+		ctrlKey:false
+		shiftKey:false
+		altKey:false
+
+	setTimeout ->
+		assertThat slider.get("value"), closeTo 2, 1
+
+		start()
+	, 100
+
+asyncTest "Receiving several keydown of the right key shouldn't trigger several increment", ->
+
+	slider = new Slider
+	e = {
+		keyCode:keys.right,
+		ctrlKey:false,
+		shiftKey:false,
+		altKey:false
+	}
+
+	slider.grabFocus()
+	slider.keydown e
+	slider.keydown e
+	slider.keydown e
+	slider.keydown e
+	slider.keydown e
+	
+	setTimeout ->
+		assertThat slider.get("value"), closeTo 2, 1
+
+		start()
+	, 100
+
+asyncTest "When the right key is released the slider should stop increment the value", ->
+
+	slider = new Slider
+
+	e = {
+		keyCode:keys.right,
+		ctrlKey:false,
+		shiftKey:false,
+		altKey:false
+	}
+
+	slider.grabFocus()
+	slider.keydown e
+
+	setTimeout ->
+		slider.keyup e
+	, 100
+
+	setTimeout ->
+		assertThat slider.get("value"), closeTo 2, 1
+
+		start()
+	, 200
+
+asyncTest "Stopping the increment on keyup should allow to start a new one", ->
+
+	slider = new Slider
+
+	e = {
+		keyCode:keys.right,
+		ctrlKey:false,
+		shiftKey:false,
+		altKey:false
+	}
+	slider.grabFocus()
+	slider.keydown e
+	slider.keyup e
+
+	slider.keydown e
+
+	setTimeout ->
+		assertThat slider.get("value"), closeTo 2, 1
+
+		start()
+	, 100
+
+test "Pressing the left key should return false to prevent scrolling", ->
+	slider = new Slider
+
+	slider.grabFocus()
+	assertThat not slider.keydown
+		keyCode:keys.left
+		ctrlKey:false
+		shiftKey:false
+		altKey:false
+
+test "Pressing the right key should return false to prevent scrolling", ->
+	slider = new Slider
+
+	slider.grabFocus()
+	assertThat not slider.keydown
+		keyCode:keys.right
+		ctrlKey:false
+		shiftKey:false
+		altKey:false	
+
+
+asyncTest "When the left key is pressed the slider should decrement the value", ->
+
+	slider = new Slider
+	slider.set "value", 10
+
+	slider.grabFocus()
+	slider.keydown
+		keyCode:keys.left
+		ctrlKey:false
+		shiftKey:false
+		altKey:false
+
+	setTimeout ->
+		assertThat slider.get("value"), closeTo 8, 1
+
+		start()
+	, 100
+
+asyncTest "Receiving several keydown of the left key shouldn't trigger several decrement", ->
+
+	slider = new Slider
+	slider.set "value", 10
+
+	e = {
+		keyCode:keys.left,
+		ctrlKey:false,
+		shiftKey:false,
+		altKey:false
+	}
+
+	slider.grabFocus()
+	slider.keydown e
+	slider.keydown e
+	slider.keydown e
+	slider.keydown e
+	slider.keydown e
+	
+	setTimeout ->
+		assertThat slider.get("value"), closeTo 8, 1
+
+		start()
+	, 100
+
+asyncTest "When the left key is released the slider should stop decrement the value", ->
+
+	slider = new Slider
+	slider.set "value", 10
+
+	e = {
+		keyCode:keys.left,
+		ctrlKey:false,
+		shiftKey:false,
+		altKey:false
+	}
+
+	slider.grabFocus()
+	slider.keydown e
+
+	setTimeout ->
+		slider.keyup e
+	, 100
+
+	setTimeout ->
+		assertThat slider.get("value"), closeTo 8, 1
+
+		start()
+	, 200
+
+asyncTest "Stopping the decrement on keyup should allow to start a new one", ->
+
+	slider = new Slider
+	slider.set "value", 10
+
+	e = {
+		keyCode:keys.left,
+		ctrlKey:false,
+		shiftKey:false,
+		altKey:false
+	}
+
+	slider.grabFocus()
+	slider.keydown e
+	slider.keyup e
+
+	slider.keydown e
+
+	setTimeout ->
+		assertThat slider.get("value"), closeTo 8, 1
+
+		start()
+	, 100
+
+asyncTest "Trying to increment a readonly slider shouldn't work", ->
+
+	slider = new Slider
+
+	e = {
+		keyCode:keys.right,
+		ctrlKey:false,
+		shiftKey:false,
+		altKey:false
+	}
+	slider.set "readonly", true
+
+	slider.grabFocus()
+	slider.keydown e
+
+	setTimeout ->
+		assertThat slider.get("value"), closeTo 0, 1
+
+		start()
+	, 100
+
+asyncTest "Trying to decrement a readonly slider shouldn't work", ->
+
+	slider = new Slider
+	slider.set "value", 10
+
+	e = {
+		keyCode:keys.left,
+		ctrlKey:false,
+		shiftKey:false,
+		altKey:false
+	}
+	slider.set "readonly", true
+
+	slider.grabFocus()
+	slider.keydown e
+
+	setTimeout ->
+		assertThat slider.get("value"), closeTo 10, 1
+
+		start()
+	, 100
+
+asyncTest "Trying to increment a disabled slider shouldn't work", ->
+
+	slider = new Slider
+
+	e = {
+		keyCode:keys.right,
+		ctrlKey:false,
+		shiftKey:false,
+		altKey:false
+	}
+	slider.set "disabled", true
+
+	slider.grabFocus()
+	slider.keydown e
+
+	setTimeout ->
+		assertThat slider.get("value"), closeTo 0, 1
+
+		start()
+	, 100
+
+asyncTest "Trying to decrement a disabled slider shouldn't work", ->
+
+	slider = new Slider
+	slider.set "value", 10
+
+	e = {
+		keyCode:keys.left,
+		ctrlKey:false,
+		shiftKey:false,
+		altKey:false
+	}
+	slider.set "disabled", true
+
+	slider.grabFocus()
+	slider.keydown e
+
+	setTimeout ->
+		assertThat slider.get("value"), closeTo 10, 1
+
+		start()
+	, 100
+
+test "Pressing the mouse over the track should change the value, grab the focus and start a knob drag", ->
 
 	class MockSlider extends Slider
 		handleTrackMouseDown:(e)->
@@ -647,6 +933,7 @@ test "Pressing the mouse over the track should change the value and start a knob
 	
 	assertThat slider.get("value"), equalTo 10
 	assertThat slider.draggingKnob
+	assertThat slider.hasFocus
 
 test "Pressing the mouse over a disabled track shouldn't change the value ", ->
 
@@ -679,6 +966,25 @@ test "Pressing the mouse over a readonly track shouldn't change the value ", ->
 	
 	assertThat slider.get("value"), equalTo 0
 	assertThat not slider.draggingKnob
+
+test "Stepper should allow to increment the value through a function", ->
+
+	slider = new Slider
+	slider.set "step", 5
+
+	slider.increment()
+
+	assertThat slider.get("value"), equalTo 5
+
+test "Stepper should allow to increment the value through a function", ->
+
+	slider = new Slider
+	slider.set "value", 10
+	slider.set "step", 5
+
+	slider.decrement()
+
+	assertThat slider.get("value"), equalTo 5
 
 # Clear all the drag that haven't been terminated in tests.
 $(document).mouseup()

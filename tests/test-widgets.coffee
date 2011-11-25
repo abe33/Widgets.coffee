@@ -731,6 +731,27 @@ test "When both target and dummy exist and target as a style attribute, the valu
 
 	assertThat widget.dummy.attr("style"), equalTo "width: 100px;" 
 
+test "Widgets should provide a way to know when the widget don't allow interaction", ->
+
+	widget = new Widget
+
+	assertThat not widget.cantInteract()
+
+test "Widgets should provide a way to know when the widget don't allow interaction", ->
+
+	widget = new Widget
+	widget.set "disabled", true
+
+	assertThat widget.cantInteract()
+
+test "Widgets should provide a way to know when the widget don't allow interaction", ->
+
+	widget = new Widget
+	widget.set "readonly", true
+
+	assertThat widget.cantInteract()
+
+
 
 
 	

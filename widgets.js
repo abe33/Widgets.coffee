@@ -262,6 +262,9 @@
       return this.set("value", this.targetInitialValue);
     };
     Widget.prototype.targetChange = function(e) {};
+    Widget.prototype.cantInteract = function() {
+      return this.get("readonly") || this.get("disabled");
+    };
     Widget.prototype.createDummy = function() {};
     Widget.prototype.updateStates = function() {
       var newState, oldState, outputState, state, _i, _len, _ref;
@@ -579,47 +582,20 @@
     window.RadioGroup = RadioGroup;
   }
   Slider = (function() {
-    __extends(Slider, Widget);
+    __extends(Slider, NumericWidget);
     function Slider(target) {
       if ((target != null) && $(target).attr("type") !== "range") {
         throw "Slider target must be an input with a range type";
       }
       Slider.__super__.constructor.call(this, target);
-      this.createProperty("min", parseFloat(this.valueFromAttribute("min", 0)));
-      this.createProperty("max", parseFloat(this.valueFromAttribute("max", 100)));
-      this.createProperty("step", parseFloat(this.valueFromAttribute("step", 1)));
-      this.properties.value = parseFloat(this.valueFromAttribute("value", 0));
       this.draggingKnob = false;
       this.lastMouseX = 0;
       this.lastMouseY = 0;
       this.valueCenteredOnKnob = false;
-      this.registerKeyDownCommand(keystroke(keys.up), this.startIncrement);
-      this.registerKeyUpCommand(keystroke(keys.up), this.endIncrement);
-      this.registerKeyDownCommand(keystroke(keys.down), this.startDecrement);
-      this.registerKeyUpCommand(keystroke(keys.down), this.endDecrement);
-      this.incrementInterval = -1;
       if (this.hasDummy) {
         this.updateDummy(this.get("value"), this.get("min"), this.get("max"));
       }
-      this.hideTarget();
     }
-    Slider.prototype.cantInteract = function() {
-      return this.get("readonly") || this.get("disabled");
-    };
-    Slider.prototype.cleanValue = function(value, min, max, step) {
-      if (value < min) {
-        value = min;
-      } else if (value > max) {
-        value = max;
-      }
-      return value - (value % step);
-    };
-    Slider.prototype.increment = function() {
-      return this.set("value", this.get("value") + this.get("step"));
-    };
-    Slider.prototype.decrement = function() {
-      return this.set("value", this.get("value") - this.get("step"));
-    };
     Slider.prototype.startDrag = function(e) {
       this.draggingKnob = true;
       this.lastMouseX = e.pageX;
@@ -655,12 +631,6 @@
         y: e.pageY - this.lastMouseY
       };
     };
-    Slider.prototype.mousewheel = function(event, delta, deltaX, deltaY) {
-      if (!(this.get("readonly") || this.get("disabled"))) {
-        this.set("value", this.get("value") + delta * this.get("step"));
-      }
-      return false;
-    };
     Slider.prototype.handleKnobMouseDown = function(e) {
       if (!this.cantInteract()) {
         this.startDrag(e);
@@ -680,34 +650,6 @@
         return this.handleKnobMouseDown(e);
       }
     };
-    Slider.prototype.startIncrement = function() {
-      if (!this.cantInteract()) {
-        if (this.incrementInterval === -1) {
-          this.incrementInterval = setInterval(__bind(function() {
-            return this.increment();
-          }, this), 50);
-        }
-      }
-      return false;
-    };
-    Slider.prototype.startDecrement = function() {
-      if (!this.cantInteract()) {
-        if (this.incrementInterval === -1) {
-          this.incrementInterval = setInterval(__bind(function() {
-            return this.decrement();
-          }, this), 50);
-        }
-      }
-      return false;
-    };
-    Slider.prototype.endIncrement = function() {
-      clearInterval(this.incrementInterval);
-      return this.incrementInterval = -1;
-    };
-    Slider.prototype.endDecrement = function() {
-      clearInterval(this.incrementInterval);
-      return this.incrementInterval = -1;
-    };
     Slider.prototype.createDummy = function() {
       var dummy;
       dummy = $("<span class='slider'>						<span class='track'></span>						<span class='knob'></span>						<span class='value'></span>				   	</span>");
@@ -719,7 +661,7 @@
       }, this));
       return dummy;
     };
-    Slider.prototype.updateDummy = function(value, min, max) {
+    Slider.prototype.updateDummy = function(value, min, max, step) {
       var knob, knobPos, knobWidth, val, valPos, valWidth, width;
       width = this.dummy.width();
       knob = this.dummy.children(".knob");
@@ -735,47 +677,6 @@
       } else {
         return val.css("left", "auto");
       }
-    };
-    Slider.prototype.set_value = function(property, value) {
-      var max, min, step;
-      min = this.get("min");
-      max = this.get("max");
-      step = this.get("step");
-      value = this.cleanValue(value, min, max, step);
-      this.updateDummy(value, min, max);
-      return Slider.__super__.set_value.call(this, property, value);
-    };
-    Slider.prototype.set_min = function(property, value) {
-      var max, step;
-      max = this.get("max");
-      if (value >= max) {
-        return this.get("min");
-      } else {
-        step = this.get("step");
-        this.valueToAttribute(property, value);
-        this.set("value", this.cleanValue(this.get("value"), value, max, step));
-        return value;
-      }
-    };
-    Slider.prototype.set_max = function(property, value) {
-      var min, step;
-      min = this.get("min");
-      if (value <= min) {
-        return this.get("max");
-      } else {
-        step = this.get("step");
-        this.valueToAttribute(property, value);
-        this.set("value", this.cleanValue(this.get("value"), min, value, step));
-        return value;
-      }
-    };
-    Slider.prototype.set_step = function(property, value) {
-      var max, min;
-      min = this.get("min");
-      max = this.get("max");
-      this.valueToAttribute(property, value);
-      this.set("value", this.cleanValue(this.get("value"), min, max, value));
-      return value;
     };
     return Slider;
   })();
