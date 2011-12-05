@@ -1,0 +1,397 @@
+@mixin borderradius($options)
+{
+    -webkit-border-radius:#{$options};
+       -moz-border-radius:#{$options};
+         -o-border-radius:#{$options};
+            border-radius:#{$options};
+}
+@mixin opacity($op,$opie){
+    opacity: $op; /* Standard: FF gt 1.5, Opera, Safari */
+    filter: alpha(opacity=$opie); /* IE lt 8 */
+    -ms-filter:"alpha(opacity=" + $opie + ")"; /* IE 8 */
+    -khtml-opacity: $op; /* Safari 1.x */
+    -moz-opacity: $op; /* FF lt 1.5, Netscape */
+}
+@mixin transform($trans){
+    -webkit-transform:$trans;    
+       -moz-transform:$trans;   
+        -ms-transform:$trans;   
+         -o-transform:$trans;
+            transform:$trans;
+}
+@mixin transition($trans){
+  -webkit-transition:#{$trans};
+     -moz-transition:#{$trans};
+       -o-transition:#{$trans};
+          transition:#{$trans};
+}
+@mixin boxshadow($options){
+    -webkit-box-shadow:#{$options};   
+       -moz-box-shadow:#{$options};
+            box-shadow:#{$options};
+}
+@mixin textshadow($options){
+    -webkit-text-shadow:#{$options};   
+       -moz-text-shadow:#{$options};
+            text-shadow:#{$options};
+}
+@mixin overflow($options){
+    -o-text-overflow: $options;
+    -ms-text-overflow: $options;
+    text-overflow: $options;
+}
+
+@mixin textborder($color){
+    -webkit-text-shadow: 1px 0px 0 $color, 
+                 -1px 0px 0 $color, 
+                 0px 1px 0 $color, 
+                 0px -1px 0 $color;
+                 
+    -moz-text-shadow: 1px 0px 0 $color, 
+                 -1px 0px 0 $color, 
+                 0px 1px 0 $color, 
+                 0px -1px 0 $color;
+
+    text-shadow: 1px 0px 0 $color, 
+                 -1px 0px 0 $color, 
+                 0px 1px 0 $color, 
+                 0px -1px 0 $color;
+}
+
+
+// Core components styling
+
+body {
+    font-family:"Arial";
+    background:#666;
+}
+
+$selected-blue:#006cff;
+$focus-blue:#2dadff;
+
+$widget-background:#333;
+$widget-button-background:#555;
+$widget-button-focus-background:#777;
+$widget-border:#222;
+
+.widget-common {
+    display:inline-block;
+    margin-bottom:4px;
+    margin-left:4px;
+    position:relative;
+
+    &.disabled, &.readonly {
+        @include opacity(0.5,50);
+    }
+}
+
+.checkbox {
+    @extend .widget-common;
+
+    background:$widget-background;
+    color:#fff;
+
+    width:40px;
+    height:20px;
+    
+    border:1px solid $widget-border;
+
+    @include borderradius(5px);
+    @include transition("background 0.3s ease-out");
+
+    &:focus {
+        &:before {
+            background:$widget-button-focus-background;
+        }
+    }
+    
+    &:before{
+        content:"";
+        width:18px;
+        height:18px;
+        position:absolute;
+        background:$widget-button-background;
+        z-index:1;
+        left:0;
+        top:0;
+        border:1px solid $widget-border;
+
+        @include borderradius(4px);
+        @include transition("left 0.3s ease-out");
+    }
+    &:after {
+        content:"0";
+        position:absolute;
+        font-size:.9em;
+        padding-top:2px;
+        width:20px;
+        display:block;
+        text-align:center;
+        right:0;
+        top:0;
+    }
+
+    &.checked {
+        background:$selected-blue;
+        &:before {
+            left:20px;
+        }
+        &:after{
+            content:"1";
+            right:19px;
+        }
+        &.disabled {
+            background:$widget-button-background;
+            color:#999;
+        }
+    }
+    &.disabled {
+        color:#666;
+    }
+}
+
+.radio {
+    @extend .widget-common;
+
+    background:$widget-background;
+    width:20px;
+    height:20px;
+    border:1px solid $widget-border;
+    @include borderradius(20px);
+
+    &:after {
+        content:"";
+    }
+
+    &.checked {
+        &:after {
+            width:14px;
+            height:14px;
+            position:absolute;
+            display:block;
+            left:2px;
+            top:2px;
+            background:$selected-blue;
+            border:1px solid $widget-border;
+            @include borderradius(20px);
+        }
+        &.disabled {
+            &:after {
+                background:#666;
+            }
+        }
+    }
+} 
+
+.slider {
+    @extend .widget-common;
+
+    width:100px;
+
+    &:focus {
+        .knob {
+            background:$widget-button-focus-background;
+        }
+    }
+    &.disabled {
+        .value {
+            color:#999;
+        }
+    }
+    .track {
+        position:absolute;
+        z-index:0;
+        height:12px;
+        display:block;
+        width:100%;
+
+        background:$widget-background;
+        border:1px solid $widget-border;
+
+        @include borderradius(6px);
+    }
+    .knob {
+        position:relative;
+        z-index:1;
+        background:$widget-button-background;
+        width:40px;
+        height:10px;
+        display:block;
+        margin-top:1px;
+
+        border:1px solid $widget-border;
+
+        @include borderradius(5px);
+    }
+    .value {
+        display:inline-block;
+        position:relative;
+        color:#fff;
+        padding:2px;
+        background:#333;
+
+        text-align:center;
+
+        @include borderradius(3px);
+        margin-top:6px;
+
+        &:before {
+            content:""; 
+            position:absolute;
+            display:block;
+            width:0px;
+            height:1px;
+            border:1px solid #333;
+            border-color:transparent transparent #333 transparent;
+            border-width:4px;
+            margin-left:-4px;
+            left:50%;
+            top:-9px;
+        }
+    }
+}
+
+.stepper {
+    @extend .widget-common;
+
+    background:$widget-background;
+    border:1px solid $widget-border;
+
+    color:white;
+    width:100px;
+    height:20px;
+
+    @include borderradius(6px);
+    &.disabled, &.readonly {
+        .up, .down  {
+            &:hover {
+                &:after{
+                    color:#333;
+                }
+            }
+        }
+    }
+    &.disabled {
+        background:#333;
+        .value {
+            color:#999;
+        }
+        .up, .down {
+            background:#666;
+        }
+    }
+    .value {
+        background:transparent;
+        border:none;
+        width:100%;
+        height:100%;
+        margin-top:-2px;
+        margin-left:2px;
+        color:white;
+    }
+    .up, .down  {
+        position:absolute;
+        width:14px;
+        height:14px;
+        top:2px;
+        cursor:pointer;
+        background:$widget-button-background;
+        border:1px solid $widget-border;
+
+        &:after {
+            color:#333;
+            text-align:center;
+            display:block;
+            margin-top:-2px;
+
+        }
+        &:hover {
+            &:after{
+                color:#fff;
+            }
+        }
+    }
+
+    .up {
+        right:2px;
+        @include borderradius(0 4px 4px 0);
+        &:after {
+            margin-left:-1px;
+            content:"+";
+        }
+    }
+    .down {
+        right:18px;
+        @include borderradius(4px 0 0 4px);
+        &:after {
+            content:"-";
+        }
+    }
+}
+.filepicker {
+    @extend .widget-common;
+
+    background:$widget-background;
+    border:1px solid $widget-border;
+
+    color:white;
+    width:100px;
+    overflow:hidden;
+
+    @include borderradius(6px);
+
+    &.disabled {
+        .value {
+            color:#999;
+        }
+    }
+    &:focus {
+        .icon {
+            background:$widget-button-focus-background;
+        }
+    }
+    input {
+        opacity:0;
+        cursor:pointer;
+        position:absolute;
+        right:0;
+        top:0;
+    }
+    .value {
+        margin-left:2px;
+        font-size:0.9em;
+        display:block;
+        overflow:hidden;
+        white-space:nowrap;
+        text-overflow:ellipsis;       
+    }
+    .icon {
+        display:block;
+        position:relative;
+        float:right;
+        width:14px;
+        height: 14px;
+        margin-top:2px;
+        margin-bottom:2px;
+        margin-right:2px;
+        background:$widget-button-background;
+        border:1px solid $widget-border;
+        @include borderradius(4px);
+
+        &:before {
+            content:""; 
+            position:absolute;
+            display:block;
+            width:0px;
+            height:0px;
+            border:1px solid #333;
+            border-color:transparent transparent transparent #333;
+            border-width:4px;
+
+            margin-top:-4px;
+            margin-left:-2px;
+            left:50%;
+            top:50%;
+        }
+    }
+}

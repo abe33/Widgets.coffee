@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <title>All Test Suite</title>
+    <link rel="stylesheet" href="./css/styles.css" media="screen">
+
     <link rel="stylesheet" href="./depends/qunit.css" media="screen">
     <script type="text/javascript" src="./depends/qunit.js"></script>
     
@@ -22,6 +24,7 @@
     <script type="text/coffeescript" src="./src/numeric-widget.coffee"></script>
     <script type="text/coffeescript" src="./src/slider.coffee"></script>
     <script type="text/coffeescript" src="./src/stepper.coffee"></script>
+    <script type="text/coffeescript" src="./src/filepicker.coffee"></script>
 
     <script type="text/coffeescript" src="./tests/test-keys.coffee"></script>
     <script type="text/coffeescript" src="./tests/test-widgets.coffee"></script>
@@ -31,156 +34,16 @@
     <script type="text/coffeescript" src="./tests/test-numeric-widget.coffee"></script>
     <script type="text/coffeescript" src="./tests/test-slider.coffee"></script>
     <script type="text/coffeescript" src="./tests/test-stepper.coffee"></script>
+    <script type="text/coffeescript" src="./tests/test-filepicker.coffee"></script>
     
     <style>
-        .value {
+        #qunit-tests .value {
             font-weight:bold;
         }
         h4 {
             margin-top:4px;
             margin-bottom:4px;
-        }
-        .checkbox {
-            display:inline-block;
-            background:red;
-            width:30px;
-            height:30px;
-            margin-bottom:4px;
-            margin-left:4px;
-            border:1px solid #333;
-        } 
-        .checkbox:after {
-            content:"off";
-        }
-
-        .checkbox.checked {
-            background:green;
-        }
-        .checkbox.checked:after{
-            content:"on";
-        }
-        .checkbox.readonly {
-            opacity:.5;
-        }
-        .checkbox.disabled {
-            background:gray;
-        }
-
-        .radio {
-            display:inline-block;
-            background:red;
-            width:30px;
-            height:30px;
-            margin-bottom:4px;
-            margin-left:4px;
-            border:1px solid #333;
-            border-radius:20px;
-        } 
-        .radio:after {
-            content:"off";
-        }
-
-        .radio.checked {
-            background:green;
-        }
-        .radio.checked:after{
-            content:"on";
-        }
-        .radio.readonly {
-            opacity:.5;
-        }
-        .radio.disabled {
-            background:gray;
-        }
-        
-        .slider {
-            display:inline-block;
-            position:relative;
-            width:100px;
-            margin-left:4px;
-            margin-bottom:4px;
-
-        }
-        .slider.readonly {
-            opacity:0.5;
-        }
-        .slider.disabled .track {
-            background:#666;
-        }
-        .slider.disabled .knob {
-            background:#999;
-        }
-        .slider.disabled .value {
-            background:#333;
-        }
-        .slider .track {
-            background:red;
-            position:absolute;
-            z-index:0;
-            height:12px;
-            display:block;
-            width:100%;
-        }
-        .slider .knob {
-            position:relative;
-            z-index:1;
-            background:green;
-            width:40px;
-            height:12px;
-            display:block;
-        }
-        .slider .value {
-            display:block;
-            width:30px;
-            position:relative;
-            text-align:center;
-            color:white;
-            background-color:blue;
-        }
-
-        .stepper {
-            display:inline-block;
-            position:relative;
-            width:100px;
-            background:blue;
-            height:20px;
-            margin-left:4px;
-            margin-bottom:4px;
-            color:white;
-        }
-        .stepper.readonly {
-            opacity:0.5;
-        }
-        .stepper.disabled {
-            background:#333;
-        }
-        .stepper.disabled .up, .stepper.disabled .down {
-            background:#666;
-        }
-        .stepper .value {
-            background:transparent;
-            border:none;
-            width:100%;
-            height:100%;
-            color:white;
-        }
-        .stepper .up,.stepper .down  {
-            position:absolute;
-            width:16px;
-            height:16px;
-            top:2px;
-            cursor:pointer;
-        }
-
-        .stepper .up {
-            background:green;
-            right:2px;
-        }
-        .stepper .down {
-            background:red;
-            right:20px;
-        }
-        
+        }        
     </style>
 </head>
 <body>

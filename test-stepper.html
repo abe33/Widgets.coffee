@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <title>Stepper Test Suite</title>
+    <link rel="stylesheet" href="./css/styles.css" media="screen">
+
     <link rel="stylesheet" href="./depends/qunit.css" media="screen">
     <script type="text/javascript" src="./depends/qunit.js"></script>
     
@@ -29,49 +31,6 @@
             margin-top:4px;
             margin-bottom:4px;
         }
-        .stepper {
-            display:inline-block;
-            position:relative;
-            width:100px;
-            background:blue;
-            height:20px;
-            margin-left:4px;
-            margin-bottom:4px;
-            color:white;
-        }
-        .stepper.readonly {
-            opacity:0.5;
-        }
-        .stepper.disabled {
-            background:#333;
-        }
-        .stepper.disabled .up, .stepper.disabled .down {
-            background:#666;
-        }
-        .stepper .value {
-            background:transparent;
-            border:none;
-            width:100%;
-            height:100%;
-            color:white;
-        }
-        .stepper .up,.stepper .down  {
-            position:absolute;
-            width:16px;
-            height:16px;
-            top:2px;
-            cursor:pointer;
-        }
-
-        .stepper .up {
-            background:green;
-            right:2px;
-        }
-        .stepper .down {
-            background:red;
-            right:20px;
-        }
-        
     </style>
 </head>
 <body>

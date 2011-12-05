@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <title>Radio Test Suite</title>
+    <link rel="stylesheet" href="./css/styles.css" media="screen">
     <link rel="stylesheet" href="./depends/qunit.css" media="screen">
     <script type="text/javascript" src="./depends/qunit.js"></script>
     
@@ -28,32 +29,6 @@
         h4 {
             margin-top:4px;
             margin-bottom:4px;
-        }
-        .radio {
-            display:inline-block;
-            background:red;
-            width:30px;
-            height:30px;
-            margin-bottom:4px;
-            margin-left:4px;
-            border:1px solid #333;
-            border-radius:20px;
-        } 
-        .radio:after {
-            content:"off";
-        }
-
-        .radio.checked {
-            background:green;
-        }
-        .radio.checked:after{
-            content:"on";
-        }
-        .radio.readonly {
-            opacity:.5;
-        }
-        .radio.disabled {
-            background:gray;
         }
     </style>
 </head>

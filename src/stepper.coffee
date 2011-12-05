@@ -13,15 +13,16 @@ class Stepper extends NumericWidget
 	
 	#### Dummy management
 
-	# The dummy for a spinner widget is a span containing : 
+	# The dummy for a stepper widget is a span containing :
+	# 
 	# * A `text` input that allow to type a value directly.
 	# * A span that act as the decrement button.
 	# * A span that act as the increment button.
 	createDummy:->
 		dummy = $ "<span class='stepper'>
 				<input type='text' class='value'></input>
-				<span class='down'>-</span>
-				<span class='up'>+</span>
+				<span class='down'></span>
+				<span class='up'></span>
 		   </span>"
 		
 		input = dummy.children("input")

@@ -262,6 +262,7 @@ radio2 = new Radio
 radio3 = new Radio
 
 radio2.set "readonly", true
+radio2.set "checked", true
 radio3.set "disabled", true
 
 $("#qunit-header").before $ "<h4>Radio</h4>"

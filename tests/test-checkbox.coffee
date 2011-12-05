@@ -250,6 +250,7 @@ checkbox3 = new CheckBox
 
 checkbox1.set "checked", true
 checkbox2.set "readonly", true
+checkbox2.set "checked", true
 checkbox3.set "disabled", true
 
 $("#qunit-header").before $ "<h4>CheckBox</h4>"

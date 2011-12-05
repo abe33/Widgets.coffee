@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8" />
     <title>CheckBox Test Suite</title>
+    <link rel="stylesheet" href="./css/styles.css" media="screen">
+
     <link rel="stylesheet" href="./depends/qunit.css" media="screen">
     <script type="text/javascript" src="./depends/qunit.js"></script>
     
@@ -26,31 +28,6 @@
         h4 {
             margin-top:4px;
             margin-bottom:4px;
-        }
-        .checkbox {
-            display:inline-block;
-            background:red;
-            width:30px;
-            height:30px;
-            margin-bottom:4px;
-            margin-left:4px;
-            border:1px solid #333;
-        } 
-        .checkbox:after {
-            content:"off";
-        }
-
-        .checkbox.checked {
-            background:green;
-        }
-        .checkbox.checked:after{
-            content:"on";
-        }
-        .checkbox.readonly {
-            opacity:.5;
-        }
-        .checkbox.disabled {
-            background:gray;
         }
     </style>
 </head>
