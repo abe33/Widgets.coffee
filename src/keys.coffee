@@ -1,3 +1,5 @@
+# <link rel="stylesheet" href="../css/styles.css" media="screen">
+#
 # This file contains the various classes and methods related
 # to key strokes.
 #
@@ -17,18 +19,18 @@
 # by adding different modifiers together.
 keystroke = (keyCode, modifiers)->
 
-	# The `keystroke` function ensure that only one `KeyStroke` instance 
-	# exist for a given combination, it allow to use the equal operator
-	# to compare key strokes.
-	#
-	# Consequently, the following expression is true :
-	#
-	#     (keystroke keys.a) is (keystroke.keys.a)
-	#
-	if "#{keyCode}-#{modifiers}" of KeyStroke.instances
-		KeyStroke.instances[ "#{keyCode}-#{modifiers}" ]
-	else
-		KeyStroke.instances[ "#{keyCode}-#{modifiers}" ] = new KeyStroke keyCode, modifiers
+    # The `keystroke` function ensure that only one `KeyStroke` instance 
+    # exist for a given combination, it allow to use the equal operator
+    # to compare key strokes.
+    #
+    # Consequently, the following expression is true :
+    #
+    #     (keystroke keys.a) is (keystroke.keys.a)
+    #
+    if "#{keyCode}-#{modifiers}" of KeyStroke.instances
+        KeyStroke.instances[ "#{keyCode}-#{modifiers}" ]
+    else
+        KeyStroke.instances[ "#{keyCode}-#{modifiers}" ] = new KeyStroke keyCode, modifiers
 
 ##### KeyStroke class
 
@@ -36,47 +38,47 @@ keystroke = (keyCode, modifiers)->
 # use the `keystroke` function instead.
 class KeyStroke
 
-	# All key stroke instances are stored at the class level.
-	@instances = {}
+    # All key stroke instances are stored at the class level.
+    @instances = {}
 
-	# Takes the `keyCode` and the `modifiers` and initialize 
-	# the specific modifiers properties.
-	constructor:(keyCode, modifiers)->
+    # Takes the `keyCode` and the `modifiers` and initialize 
+    # the specific modifiers properties.
+    constructor:(keyCode, modifiers)->
 
-		@keyCode	= keyCode
-		@modifiers	= modifiers
-		# `ctrl` mofifier is stored in the first bit, `shift`
-		# in the second and `alt` in the third
-		@ctrl		= ( modifiers & 0x01 ) is 1
-		@shift		= ( ( modifiers >> 1 ) & 0x01 ) is 1
-		@alt		= ( ( modifiers >> 2 ) & 0x01 ) is 1
-	
-	# Compare the passed-in key event with the current instance.
-	match:(e)->
-		e.keyCode  is @keyCode and 
-		e.ctrlKey  is @ctrl    and
-		e.shiftKey is @shift   and
-		e.altKey   is @alt
-	
-	# Provide a human readable representation of the key stroke.
-	# For exemple, the following keystroke : 
-	#
-	#     keystroke keys.z, keys.mod.ctrl
-	#
-	# Will output as `Ctrl+Z`.
-	toString:->
-		a = []
+        @keyCode    = keyCode
+        @modifiers  = modifiers
+        # `ctrl` mofifier is stored in the first bit, `shift`
+        # in the second and `alt` in the third
+        @ctrl       = ( modifiers & 0x01 ) is 1
+        @shift      = ( ( modifiers >> 1 ) & 0x01 ) is 1
+        @alt        = ( ( modifiers >> 2 ) & 0x01 ) is 1
+    
+    # Compare the passed-in key event with the current instance.
+    match:(e)->
+        e.keyCode  is @keyCode and 
+        e.ctrlKey  is @ctrl    and
+        e.shiftKey is @shift   and
+        e.altKey   is @alt
+    
+    # Provide a human readable representation of the key stroke.
+    # For exemple, the following keystroke : 
+    #
+    #     keystroke keys.z, keys.mod.ctrl
+    #
+    # Will output as `Ctrl+Z`.
+    toString:->
+        a = []
 
-		if @ctrl  then a.push "Ctrl"
-		if @shift then a.push "Shift"
-		if @alt   then a.push "Alt"
-	
-		for k, v of keys 
-			if @keyCode is v
-				a.push k.toUpperCase() 
-				break
-		
-		a.join "+"
+        if @ctrl  then a.push "Ctrl"
+        if @shift then a.push "Shift"
+        if @alt   then a.push "Alt"
+    
+        for k, v of keys 
+            if @keyCode is v
+                a.push k.toUpperCase() 
+                break
+        
+        a.join "+"
 
 # A list of keys codes and modifiers values.
 keys = 
@@ -192,5 +194,5 @@ keys =
 # Address the access restriction due to the sandboxing when used
 # directly in a browser with the `text/coffeescript` mode. 
 if window? 
-	window.keystroke = keystroke
-	window.keys	 = keys
+    window.keystroke = keystroke
+    window.keys  = keys

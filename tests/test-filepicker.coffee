@@ -18,34 +18,27 @@ test "A FilePicker shouldn't allow a target of with a type different than file",
 
 	assertThat errorRaised
 
-test "A FilePicker shouldn't allow to be created without a target", ->
+test "A FilePicker should create a target when not provided in the constructor", ->
 
-	errorRaised = false
-	try
-		picker = new FilePicker 
-	catch e
-		errorRaised = true
+	picker = new FilePicker 
 
-	assertThat errorRaised
+	assertThat picker.target, notNullValue()
 
 test "The FilePicker's dummy should contains the target as child.", ->
 
-	target = $("<input type='file'></input>")[0]
-	picker = new FilePicker target
+	picker = new FilePicker
 
 	assertThat picker.dummy.children("input").length, equalTo 1
 
-test "The FilePicker's value span should containsa default value when no file was picked", ->
+test "The FilePicker's value span should contains a default value when no file was picked", ->
 	
-	target = $("<input type='file'></input>")[0]
-	picker = new FilePicker target
+	picker = new FilePicker
 
 	assertThat picker.dummy.children(".value").text(), equalTo "Browse"
 
 test "A readonly FilePicker should hide its target", ->
 	
-	target = $("<input type='file'></input>")[0]
-	picker = new FilePicker target
+	picker = new FilePicker
 
 	picker.set "readonly", true
 
@@ -53,8 +46,7 @@ test "A readonly FilePicker should hide its target", ->
 
 test "A disabled FilePicker should hide its target", ->
 	
-	target = $("<input type='file'></input>")[0]
-	picker = new FilePicker target
+	picker = new FilePicker
 
 	picker.set "disabled", true
 
@@ -62,8 +54,7 @@ test "A disabled FilePicker should hide its target", ->
 
 test "Enabling a FilePicker should show its target", ->
 	
-	target = $("<input type='file'></input>")[0]
-	picker = new FilePicker target
+	picker = new FilePicker
 
 	picker.set "disabled", true
 	picker.set "disabled", false
@@ -72,8 +63,7 @@ test "Enabling a FilePicker should show its target", ->
 
 test "Allowing writing in a FilePicker should show its target", ->
 	
-	target = $("<input type='file'></input>")[0]
-	picker = new FilePicker target
+	picker = new FilePicker
 
 	picker.set "readonly", true
 	picker.set "readonly", false
@@ -82,8 +72,7 @@ test "Allowing writing in a FilePicker should show its target", ->
 
 test "Enabling a readonly widget shouldn't show the target", ->
 	
-	target = $("<input type='file'></input>")[0]
-	picker = new FilePicker target
+	picker = new FilePicker
 
 	picker.set "readonly", true
 	picker.set "disabled", true
@@ -93,8 +82,7 @@ test "Enabling a readonly widget shouldn't show the target", ->
 
 test "Enabling writing on a disabled widget shouldn't show the target", ->
 	
-	target = $("<input type='file'></input>")[0]
-	picker = new FilePicker target
+	picker = new FilePicker
 
 	picker.set "disabled", true
 	picker.set "readonly", true
@@ -111,17 +99,15 @@ test "A FilePicker should register to the change event of the target", ->
 		targetChange:(e)->
 			targetChangeWasCalled = true
 
-	target = $("<input type='file'></input>")
-	picker = new MockFilePicker target[0]
+	picker = new MockFilePicker
 
-	target.change()
+	picker.jTarget.change()
 
 	assertThat targetChangeWasCalled
 
 test "A FilePicker should be able to set a new text in the value span", ->
 
-	target = $("<input type='file'></input>")[0]
-	picker = new FilePicker target
+	picker = new FilePicker
 
 	picker.setValueLabel "hello"
 
@@ -129,20 +115,33 @@ test "A FilePicker should be able to set a new text in the value span", ->
 
 test "A change made to the target that end with an undefined value should empty the dummy's title attribute", ->
 
-	target = $("<input type='file'></input>")
-	picker = new FilePicker target[0]
+	picker = new FilePicker
 
 	picker.setValueLabel "hello"
-	target.change()
+	picker.jTarget.change()
 
 	assertThat picker.dummy.attr("title"), equalTo ""
 
+test "FilePicker shouldn't take focus, instead it should give it to its target input", ->
+	
+	focusPlacedOnTheInput = false
+	
+	picker = new FilePicker
+
+	picker.dummy.children("input").focus ->
+		focusPlacedOnTheInput = true
+	
+	picker.grabFocus()
+
+	assertThat focusPlacedOnTheInput
+	assertThat picker.dummy.attr("tabindex"), nullValue()
+	assertThat picker.hasFocus
 
 # Some real widget's instance to play with in the test runner.
 
-picker1 = new FilePicker $("<input type='file'></input>")[0]
-picker2 = new FilePicker $("<input type='file'></input>")[0]
-picker3 = new FilePicker $("<input type='file'></input>")[0]
+picker1 = new FilePicker 
+picker2 = new FilePicker
+picker3 = new FilePicker
 
 picker2.set "readonly", true
 picker3.set "disabled", true

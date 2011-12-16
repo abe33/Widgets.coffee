@@ -140,6 +140,18 @@ test "Widgets should allow creation of custom properties", ->
 
 	assertThat widget.get( "foo" ), equalTo "hello"
 
+test "Widgets should allow to modify several properties with just one call to the set method", ->
+
+	widget = new Widget
+	widget.set 
+		name:"someName"
+		disabled:true
+		value:"foo"
+	
+	assertThat widget.get("name"), equalTo "someName"
+	assertThat widget.get("disabled"), equalTo true
+	assertThat widget.get("value"), equalTo "foo"
+
 test "Widgets should allow creation of custom properties with custom accessors", ->
 
 	widget = new Widget
@@ -431,6 +443,32 @@ test "Widgets should be able to know when it lose focus", ->
 	widget.dummy.blur()
 
 	assertThat not widget.hasFocus
+
+test "Widgets dummy should reflect the focus state in its class attribute", ->
+
+	class MockWidget extends Widget
+		createDummy:->
+			$ "<span class='foo'></span>"
+	
+	widget = new MockWidget()
+
+	widget.dummy.focus()
+
+	assertThat widget.dummy.hasClass "focus"
+
+test "Widgets dummy should reflect the lost focus state in its class attribute", ->
+
+	class MockWidget extends Widget
+		createDummy:->
+			$ "<span class='foo'></span>"
+	
+	widget = new MockWidget()
+
+	widget.dummy.focus()
+	widget.dummy.blur()
+
+	assertThat not widget.dummy.hasClass "focus"
+
 
 test "Widgets should preserve the initial class value of the dummy", ->
 
@@ -750,6 +788,55 @@ test "Widgets should provide a way to know when the widget don't allow interacti
 	widget.set "readonly", true
 
 	assertThat widget.cantInteract()
+
+test "Widgets should provides a way to add a class to its dummy", ->
+	class MockWidget extends Widget
+		createDummy:->
+			$ "<span class='foo'></span>"
+	
+	widget = new MockWidget
+
+	widget.addClasses "bar", "owl"
+
+	assertThat widget.dummy.attr("class"), contains "bar"
+	assertThat widget.dummy.attr("class"), contains "owl"
+
+test "Widgets should provides a way to remove a class from its dummy", ->
+	class MockWidget extends Widget
+		createDummy:->
+			$ "<span class='foo bar owl'></span>"
+	
+	widget = new MockWidget
+
+	widget.removeClasses "bar", "owl"
+
+	assertThat widget.dummy.attr("class"), hamcrest.not contains "bar"
+	assertThat widget.dummy.attr("class"), hamcrest.not contains "owl"
+
+test "Widgets should provide an id property that is mapped to the dummy", ->
+
+	class MockWidget extends Widget
+		createDummy:->
+			$ "<span class='foo'></span>"
+	
+	widget = new MockWidget
+
+	widget.set "id", "foo"
+
+	assertThat widget.dummy.attr("id"), equalTo "foo"
+
+test "Setting a null id should remove the attribute from the dummy", ->
+
+	class MockWidget extends Widget
+		createDummy:->
+			$ "<span class='foo'></span>"
+	
+	widget = new MockWidget
+
+	widget.set "id", "foo"
+	widget.set "id", null
+
+	assertThat widget.dummy.attr("id"), equalTo undefined
 
 
 

@@ -1,6 +1,30 @@
 # A `Stepper` is a widget that allow the manipulation of
 # a number through a text input and two buttons to increment
 # or decrement the value.
+#
+# Here some live instances : 
+# <div id="livedemos"></div>
+# <link rel="stylesheet" href="../css/styles.css" media="screen">
+# <link rel="stylesheet" href="../css/widgets.css" media="screen">
+#
+# <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
+# <script type='text/javascript' src='../depends/jquery.mousewheel.js'></script>
+# <script type='text/javascript' src='../depends/signals.js'></script>
+# <script type='text/javascript' src='../widgets.js'></script>
+#
+# <script type='text/javascript'>
+# var stepper1 = new Stepper();
+# var stepper2 = new Stepper();
+# var stepper3 = new Stepper();
+# 
+# stepper2.set( "readonly", true );
+# stepper2.set( "checked", true );
+# stepper3.set( "disabled", true );
+# 
+# $("#livedemos").append( stepper1.dummy );
+# $("#livedemos").append( stepper2.dummy );
+# $("#livedemos").append( stepper3.dummy );
+# </script>
 class Stepper extends NumericWidget
 	constructor:(target)->
 		# A stepper only allow a target of type `number`.
@@ -71,8 +95,7 @@ class Stepper extends NumericWidget
 	# and not from the dummy.
 	inputSupportedEvents:"focus blur keyup keydown keypress"
 
-	supportedEvents:"mousedown mouseup mousemove mouseover 
-					 mouseout mousewheel click dblclick"
+	supportedEvents:"mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick"
 
 	# In this regards, the events registrations methods are overridden.
 	registerToDummyEvents:->
