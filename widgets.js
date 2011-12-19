@@ -1,5 +1,5 @@
 (function() {
-  var AbstractMode, BGRMode, CheckBox, ColorPicker, ColorPickerDialog, Container, FilePicker, GRBMode, HSVMode, KeyStroke, NumericWidget, RGBMode, Radio, RadioGroup, SHVMode, Slider, SquarePicker, Stepper, TextInput, VHSMode, Widget, colorObjectFromValue, colorObjectToValue, hex2rgb, hsv2rgb, isSafeChannel, isSafeColor, isSafeHSV, isSafeHue, isSafeNumber, isSafePercentage, isSafeRGB, isSafeValue, keys, keystroke, rgb2hex, rgb2hsv;
+  var AbstractMode, BGRMode, Button, CheckBox, ColorPicker, ColorPickerDialog, Container, FilePicker, GRBMode, HSVMode, KeyStroke, NumericWidget, RGBMode, Radio, RadioGroup, SHVMode, Slider, SquarePicker, Stepper, TextInput, VHSMode, Widget, colorObjectFromValue, colorObjectToValue, hex2rgb, hsv2rgb, isSafeChannel, isSafeColor, isSafeHSV, isSafeHue, isSafeNumber, isSafePercentage, isSafeRGB, isSafeValue, keys, keystroke, rgb2hex, rgb2hsv;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __slice = Array.prototype.slice, __indexOf = Array.prototype.indexOf || function(item) {
     for (var i = 0, l = this.length; i < l; i++) {
       if (this[i] === item) return i;
@@ -188,10 +188,11 @@
       this.hasDummy = this.dummy != null;
       this.hasFocus = false;
       if (this.hasTarget) {
-        this.targetInitialValue = this.valueFromAttribute("value");
+        this.targetInitialValue = this.get("value");
         this.jTarget.bind("change", __bind(function(e) {
           return this.targetChange(e);
         }, this));
+        this.jTarget.addClass("widget-done");
       }
       if (this.hasDummy) {
         this.dummyStates = ["disabled", "readonly"];
@@ -534,6 +535,75 @@
   })();
   if (typeof window !== "undefined" && window !== null) {
     window.Container = Container;
+  }
+  Button = (function() {
+    __extends(Button, Widget);
+    Button.prototype.supportedTypes = ["button", "reset", "submit"];
+    function Button() {
+      var action, arg, args, target, _ref;
+      args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      switch (args.length) {
+        case 0:
+          Button.__super__.constructor.call(this);
+          break;
+        case 1:
+          arg = args[0];
+          if (typeof arg.action === "function") {
+            action = arg;
+          } else {
+            target = arg;
+          }
+          break;
+        case 2:
+          target = args[0], action = args[1];
+      }
+      if ((target != null) && (_ref = $(target).attr("type"), __indexOf.call(this.supportedTypes, _ref) < 0)) {
+        throw "A Button only accept input with a type in " + (this.supportedTypes.join(', '));
+      }
+      Button.__super__.constructor.call(this, target);
+      this.createProperty("action", action);
+      this.updateContent();
+      this.hideTarget();
+      this.registerKeyDownCommand(keystroke(keys.space), this.click);
+      this.registerKeyDownCommand(keystroke(keys.enter), this.click);
+    }
+    Button.prototype.createDummy = function() {
+      return $("<span class='button'></span>");
+    };
+    Button.prototype.updateContent = function() {
+      var action, value;
+      this.dummy.find(".content").remove();
+      action = this.get("action");
+      value = this.get("value");
+      if ((action != null) && (action.display != null)) {
+        return this.dummy.append($("<span class='content'>" + action.display + "</span>"));
+      } else {
+        return this.dummy.append($("<span class='content'>" + value + "</span>"));
+      }
+    };
+    Button.prototype.handlePropertyChange = function(property, value) {
+      Button.__super__.handlePropertyChange.call(this, property, value);
+      if (property === "value" || property === "action") {
+        return this.updateContent();
+      }
+    };
+    Button.prototype.click = function(e) {
+      var action;
+      if (this.cantInteract()) {
+        return;
+      }
+      action = this.get("action");
+      if (action != null) {
+        action.action();
+      }
+      if (this.hasTarget) {
+        return this.jTarget.click();
+      }
+    };
+    return Button;
+  })();
+  if (typeof window !== "undefined" && window !== null) {
+    window.Button = Button;
   }
   TextInput = (function() {
     __extends(TextInput, Widget);
@@ -1274,6 +1344,9 @@
       this.createProperty("color", colorObjectFromValue(value));
       this.dialogRequested.add(ColorPicker.defaultListener.dialogRequested, ColorPicker.defaultListener);
       this.updateDummy(value);
+      this.hideTarget();
+      this.registerKeyDownCommand(keystroke(keys.space), this.click);
+      this.registerKeyDownCommand(keystroke(keys.enter), this.click);
     }
     ColorPicker.prototype.createDummy = function() {
       return $("<span class='colorpicker'>               <span class='color'></span>           </span>");
@@ -1588,7 +1661,8 @@
     };
     ColorPickerDialog.prototype.close = function() {
       this.dummy.hide();
-      return ($(document)).unbind("mouseup", this.documentDelegate);
+      ($(document)).unbind("mouseup", this.documentDelegate);
+      return this.currentTarget.grabFocus();
     };
     ColorPickerDialog.prototype.set_mode = function(property, value) {
       var oldMode;
@@ -1995,7 +2069,9 @@
     return BGRMode;
   })();
   ColorPicker.defaultListener = new ColorPickerDialog;
-  $("body").append(ColorPicker.defaultListener.dummy);
+  $(document).ready(function() {
+    return $("body").append(ColorPicker.defaultListener.dummy);
+  });
   if (typeof window !== "undefined" && window !== null) {
     window.rgb2hsv = rgb2hsv;
     window.hsv2rgb = hsv2rgb;
@@ -2009,4 +2085,67 @@
     window.GRBMode = GRBMode;
     window.BGRMode = BGRMode;
   }
+  $.fn.extend({
+    widgets: function(options) {
+      var groups;
+      if (options == null) {
+        options = {};
+      }
+      groups = {};
+      return ($(this)).each(function(i, o) {
+        var group, input, name, next, parent, type, widget;
+        input = $(o);
+        next = input.next();
+        parent = input.parent();
+        type = input.attr("type");
+        if (!input.hasClass("widget-done")) {
+          switch (type) {
+            case "text":
+              widget = new TextInput(o);
+              break;
+            case "checkbox":
+              widget = new CheckBox(o);
+              break;
+            case "number":
+              widget = new Stepper(o);
+              break;
+            case "color":
+              widget = new ColorPicker(o);
+              break;
+            case "file":
+              widget = new FilePicker(o);
+              break;
+            case "button":
+            case "reset":
+            case "submit":
+              widget = new Button(o);
+              break;
+            case "range":
+              widget = new Slider(o);
+              widget.valueCenteredOnKnob = true;
+              break;
+            case "radio":
+              widget = new Radio(o);
+              name = widget.get("name");
+              if (name != null) {
+                if (name in groups) {
+                  group = groups[name];
+                } else {
+                  group = new RadioGroup;
+                  groups[name] = group;
+                }
+                group.add(widget);
+              }
+          }
+          if (widget != null) {
+            if (next.length > 0) {
+              return next.before(widget.dummy);
+            } else {
+              return parent.append(widget.dummy);
+            }
+          }
+        }
+      });
+    }
+  });
 }).call(this);

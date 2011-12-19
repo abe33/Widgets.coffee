@@ -837,6 +837,14 @@ test "Setting a null id should remove the attribute from the dummy", ->
 	widget.set "id", null
 
 	assertThat widget.dummy.attr("id"), equalTo undefined
+test "Widgets should mark their target with a specific class", ->
+
+	target = $("<input type='text'></input>")
+	widget = new Widget target[0]
+
+	assertThat target.hasClass "widget-done"
+
+
 
 
 

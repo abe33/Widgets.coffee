@@ -1,3 +1,10 @@
+@mixin borderradius($options)
+{
+    -webkit-border-radius:#{$options};
+       -moz-border-radius:#{$options};
+         -o-border-radius:#{$options};
+            border-radius:#{$options};
+}
 @mixin hgradient($start-color1,$end-color1,$start-color2, $end-color2){
     background: -moz-linear-gradient(left, $start-color1 0%, $end-color1 100%); /* FF3.6+ */
     background: -webkit-gradient(linear, left top, right top, color-stop(0%,$start-color1), color-stop(100%,$end-color1)); /* Chrome,Safari4+ */
@@ -160,5 +167,38 @@ a {
 	&.c:before {
 		content:"C:";
 	}
+}
 
+.button {
+	&:hover {
+		.icon {
+			background:#2dadff;
+		}
+	}
+	.icon {
+		display:inline-block;
+		width:14px;
+		height:14px;
+		border:1px solid #444;
+		background:#006cff;
+		vertical-align:sub;
+		position:relative;
+		@include borderradius(8px);
+
+		&:before {
+            content:""; 
+            position:absolute;
+            display:block;
+            width:0px;
+            height:0px;
+            border:1px solid #333;
+            border-color:transparent transparent transparent #333;
+            border-width:4px;
+
+            margin-top:-4px;
+            margin-left:-2px;
+            left:50%;
+            top:50%;
+        }
+	}
 }

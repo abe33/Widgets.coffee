@@ -77,3 +77,31 @@ a {
   content: "B:"; }
 .text.c:before {
   content: "C:"; }
+
+.button:hover .icon {
+  background: #2dadff; }
+.button .icon {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 1px solid #444;
+  background: #006cff;
+  vertical-align: sub;
+  position: relative;
+  -webkit-border-radius: 8px;
+  -moz-border-radius: 8px;
+  -o-border-radius: 8px;
+  border-radius: 8px; }
+  .button .icon:before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0px;
+    height: 0px;
+    border: 1px solid #333;
+    border-color: transparent transparent transparent #333;
+    border-width: 4px;
+    margin-top: -4px;
+    margin-left: -2px;
+    left: 50%;
+    top: 50%; }

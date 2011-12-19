@@ -7,6 +7,13 @@ test "A color picker should accept a target input with type color", ->
 
     assertThat picker.target is target
 
+test "A color picker should hide its target", ->
+
+    target = $("<input type='color'></input>")[0]
+    picker = new ColorPicker target
+
+    assertThat picker.jTarget.attr("style"), contains "display: none;"
+
 test "A color picker shouldn't accept a target input with a type different than color", ->
 
     target = $("<input type='text'></input>")[0]
@@ -221,6 +228,38 @@ test "Readonly ColorPicker should trigger the dialogRequested on click", ->
     picker.dummy.click()
 
     assertThat not signalCalled
+
+test "Pressing Enter should dispatch the dialogRequested signal", ->
+
+    signalCalled = false
+    picker = new ColorPicker
+
+    picker.dialogRequested.add ->
+        signalCalled = true
+
+    picker.keydown
+        keyCode:keys.enter
+        ctrlKey:false
+        shiftKey:false
+        altKey:false
+    
+    assertThat signalCalled
+
+test "Pressing Space should dispatch the dialogRequested signal", ->
+
+    signalCalled = false
+    picker = new ColorPicker
+
+    picker.dialogRequested.add ->
+        signalCalled = true
+
+    picker.keydown
+        keyCode:keys.space
+        ctrlKey:false
+        shiftKey:false
+        altKey:false
+    
+    assertThat signalCalled
 
 # Some live instances
 
@@ -1207,6 +1246,19 @@ test "Checking a mode radio should select the mode for this dialog", ->
     dialog.valueMode.set "checked", true
 
     assertThat dialog.get("mode") is dialog.editModes[5]
+
+test "Ending the edit should return the focus on the color picker", ->
+
+    picker = new ColorPicker
+    dialog = new ColorPickerDialog
+    dialog.dialogRequested picker
+    dialog.keydown 
+        keyCode:keys.enter
+        ctrlKey:false
+        shiftKey:false
+        altKey:false
+
+    assertThat picker.hasFocus
 
 
 dialog = new ColorPickerDialog

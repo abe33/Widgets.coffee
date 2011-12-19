@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Demo</title>
+    <link rel="stylesheet" href="./css/styles.css" media="screen">
+    <link rel="stylesheet" href="./css/widgets.css" media="screen">
+    
+    <script type="text/javascript" src="./depends/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript" src="./depends/jquery.mousewheel.js"></script>
+
+    <script type="text/javascript" src="./depends/signals.js"></script>
+    <script type="text/javascript" src="./widgets.js"></script>
+    
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $("input").widgets();
+        });
+
+    </script>
+        
+</head>
+<body>
+    
+    <form target="./index.html">
+        <p><input type="text" value="A text field" name="name"></input></p>
+        
+        <p><input type="radio" name="group"></input> <label>Choice 1</label></p>
+        <p><input type="radio" name="group"></input> <label>Choice 2</label></p>
+        <p><input type="radio" name="group" checked></input> <label>Choice 3</label></p>
+        <p><input type="radio" name="group"></input> <label>Choice 4</label></p>
+
+        <p><input type="checkbox" name="done"></input> <label>A CheckBox</label></p>
+
+        <p><input type="number" value="45" min="0" max="255" step="1" name="foo"></input></p>
+        <p><input type="range" value="12" min="10" max="50" step="1" name="oof"></input></p>
+        <p><input type="color" value="#cbdc1b" name="color"></input></p>
+
+        <p><input type="file" name="file"></input></p>
+
+        <p><input type="button" value="button" onclick="console.log('input clicked');"></input>
+        <input type="submit" value="submit"></input></p>
+    </form>
+
+</body>

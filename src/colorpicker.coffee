@@ -243,6 +243,15 @@ class ColorPicker extends Widget
         @dialogRequested.add ColorPicker.defaultListener.dialogRequested, ColorPicker.defaultListener
 
         @updateDummy value
+
+        @hideTarget()
+
+        #### Keyboard controls
+        
+        # Both the `Enter` and `Space` keys can be used instead
+        # of the click to display the dialog.
+        @registerKeyDownCommand keystroke(keys.space), @click
+        @registerKeyDownCommand keystroke(keys.enter), @click
     
     #### Dummy management
     
@@ -808,6 +817,8 @@ class ColorPickerDialog extends Container
     close:->
         @dummy.hide()
         ( $ document ).unbind "mouseup", @documentDelegate
+
+        @currentTarget.grabFocus()
         
     #### Properties Accessors
     
@@ -1318,8 +1329,8 @@ class BGRMode extends AbstractMode
 # for `ColorPicker` instances.      
 ColorPicker.defaultListener = new ColorPickerDialog
 
-# This instance is then appended to the DOM.
-$("body").append ColorPicker.defaultListener.dummy
+$( document ).ready ->
+    $("body").append( ColorPicker.defaultListener.dummy )
     
 # Address the access restriction due to the sandboxing when used
 # directly in a browser with the `text/coffeescript` mode. 

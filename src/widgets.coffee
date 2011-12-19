@@ -79,11 +79,15 @@ class Widget
         if @hasTarget
 
             # Storing the initial value for reset.
-            @targetInitialValue = @valueFromAttribute "value"
+            @targetInitialValue = @get "value"
 
             # Bind target's change event to handle it internally.
             @jTarget.bind "change", (e)=>
                 @targetChange(e)
+            
+            # Flag the target to prevent the jquery plugins to iterate over
+            # the input target of the widget.
+            @jTarget.addClass "widget-done"
 
         # Additional setup if a dummy have been created.
         if @hasDummy
@@ -274,7 +278,7 @@ class Widget
                 @dummy.attr "class", outputState
                 @stateChanged.dispatch this, newState
     
-
+    # Adds a list of classes in the dummy `class` attribute.
     addClasses:( classes... )->
         dummyClasses = @dummyClass.split " "
 
@@ -285,6 +289,7 @@ class Widget
         @dummyClass = dummyClasses.join " "
         @updateStates()
     
+    # Removes a list of classes from the dummy `class` attribute.
     removeClasses:( classes... )->
         dummyClasses = @dummyClass.split " "
         output = []

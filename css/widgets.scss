@@ -65,15 +65,16 @@ $widget-background:#333;
 $widget-button-background:#555;
 $widget-button-focus-background:#777;
 $widget-border:#222;
+$widget-button-border:#444;
 
 .widget-common {
     display:inline-block;
     margin:0px;
-    margin-bottom:4px;
-    margin-left:4px;
+    margin:4px 4px 0 0;
     position:relative;
     line-height:20px;
     font-size:16px;
+    vertical-align:bottom;
     color:fff;
 
     &.disabled, &.readonly {
@@ -89,6 +90,48 @@ $widget-border:#222;
         outline:none !important;
         color:fff !important;
         margin:0;
+    }
+}
+
+.button {
+    @extend .widget-common;
+
+    background:$widget-button-background;
+    border:1px solid $widget-button-border;
+
+    padding:2px 4px;
+    @include borderradius(3px);
+
+    &.disabled, &.readonly {
+        &.focus, &:hover {
+            background:$widget-button-background;
+        }
+    }
+
+    &.focus, &:hover {
+        background:$widget-button-focus-background;
+    }
+}
+
+.text {
+    @extend .widget-common;
+    background:$widget-background;
+    border:1px solid $widget-border;
+    
+    @include borderradius(4px); 
+    width:100px;
+    line-height:18px;
+
+    &.disabled {
+        input {
+            color:#666;
+        }
+    }
+
+    input {
+        background:none;
+        border:none;
+        width:100%;
     }
 }
 
@@ -278,6 +321,11 @@ $widget-border:#222;
                     color:#333;
                 }
             }
+        }
+    }
+    &.focus {
+        .up, .down {
+            background:$widget-button-focus-background;
         }
     }
     &.disabled {
@@ -645,17 +693,19 @@ $widget-border:#222;
     line-height:16px;
 
     margin:0;
+    margin-top:4px;
 
     @include boxshadow( 1px 2px 3px rgba(0,0,0,0.7));
     @include borderradius(3px);
 
-    padding:4px 4px 0 18px;
+    padding:0 0 4px 22px;
 
     .gridpicker {
         width:160px;
         height:160px;
         margin:0;
-        margin-left:4px;
+        margin-right:4px;
+        margin-top:4px;
         &.vertical {
             width:12px;
         }
@@ -676,6 +726,7 @@ $widget-border:#222;
     }
     .newColor {
         border-bottom:none;
+        top:4px;
     }
 
     .radio {
@@ -684,7 +735,7 @@ $widget-border:#222;
         height:18px;
         @include borderradius(4px 0 0 4px);
 
-        margin-right:-5px;
+        margin-right:-1px;
 
         &.checked {
             &:after {
@@ -778,27 +829,5 @@ $widget-border:#222;
                 text-indent:2px;
             }
         }
-    }
-}
-
-.text {
-    @extend .widget-common;
-    background:$widget-background;
-    border:1px solid $widget-border;
-    
-    @include borderradius(4px); 
-    width:100px;
-    line-height:18px;
-
-    &.disabled {
-        input {
-            color:#666;
-        }
-    }
-
-    input {
-        background:none;
-        border:none;
-        width:100%;
     }
 }
