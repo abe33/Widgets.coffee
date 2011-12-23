@@ -23,10 +23,6 @@
 # </script>
 class Button extends Widget
 
-    # The Button class support only input with type `button`, `reset`
-    # or `submit`.
-    supportedTypes:[ "button", "reset", "submit" ]
-
     # The `Button` constructor can be called both with an target input:
     #
     #     button = new Button target
@@ -64,10 +60,6 @@ class Button extends Widget
             when 2
                 [ target, action ] = args
         
-        # Prevents invalid inputs to be passed to a button.
-        if target? and $( target ).attr("type") not in @supportedTypes
-            throw "A Button only accept input with a type in #{ @supportedTypes.join ', ' }"
-
         super target
 
         # The action object of this button is stored in a property.
@@ -83,6 +75,14 @@ class Button extends Widget
         # of the click to trigger the button.
         @registerKeyDownCommand keystroke(keys.space), @click
         @registerKeyDownCommand keystroke(keys.enter), @click
+    
+    #### Target management
+
+    # The target for a button must an input with one of the following types:
+    # `button`, `reset` or `submit`.
+    checkTarget:(target)->
+        unless @isInputWithType target, "button", "reset", "submit"
+            throw "Buttons only support input with a type in button, reset or submit as target"
 
     #### Dummy Management
     

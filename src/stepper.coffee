@@ -27,14 +27,17 @@
 # </script>
 class Stepper extends NumericWidget
 	constructor:(target)->
-		# A stepper only allow a target of type `number`.
-		if target? and $(target).attr("type") isnt "number"
-			throw "Stepper target must be an input with a number type" 
-
 		super target
 
 		@updateDummy @get("value"), @get("min"), @get("max"), @get("step")
 	
+	#### Target management
+
+    # The target for a `Stepper` must be an input with the type `number`.
+	checkTarget:( target )->
+		unless @isInputWithType target, "number"
+			throw "Stepper target must be an input with a number type"
+	 
 	#### Dummy management
 
 	# The dummy for a stepper widget is a span containing :

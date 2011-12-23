@@ -207,12 +207,6 @@ isSafeHSV = ( h, s, v )->
 class ColorPicker extends Widget
 
     constructor:( target )->
-        
-        # Color pickers only allow input with a `color` type
-        # as target.
-        if target? and ( $ target ).attr("type") isnt "color"
-            throw "ColorPicker's target should be a color input"
-        
         super target
 
         #### ColorPicker signals
@@ -252,6 +246,14 @@ class ColorPicker extends Widget
         # of the click to display the dialog.
         @registerKeyDownCommand keystroke(keys.space), @click
         @registerKeyDownCommand keystroke(keys.enter), @click
+    
+    #### Target management
+
+    # Color pickers only allow input with a `color` type
+    # as target.
+    checkTarget:( target )->
+        unless @isInputWithType target, "color"
+            throw "ColorPicker's target should be a color input"
     
     #### Dummy management
     
@@ -790,16 +792,16 @@ class ColorPickerDialog extends Container
     # Handles the changes comfirmation with the `Enter` key. 
     comfirmChangesOnEnter:()->
         # If the command is triggered when on of the children inputs
-        # has changes that haven't trigger a `change event`, the
+        # has changes that haven't trigger a `change` event, the
         # widgets prevent the comfirmation to allow the submission
         # of the changes made to this input.
-        unless @redInput.hasChangedContent          or 
-               @greenInput.hasChangedContent        or
-               @blueInput.hasChangedContent         or
-               @hueInput.hasChangedContent          or
-               @saturationInput.hasChangedContent   or
-               @valueInput.hasChangedContent        or
-               @hexInput.hasChangedContent
+        unless @redInput.valueIsObsolete          or 
+               @greenInput.valueIsObsolete        or
+               @blueInput.valueIsObsolete         or
+               @hueInput.valueIsObsolete          or
+               @saturationInput.valueIsObsolete   or
+               @valueInput.valueIsObsolete        or
+               @hexInput.valueIsObsolete
             @comfirmChanges()
     
     # Comfirm the changes to the `ColorPicker`. The dialog is hidden

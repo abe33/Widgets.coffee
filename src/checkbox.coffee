@@ -32,10 +32,7 @@ class CheckBox extends Widget
     # type of allowed inputs for the class. 
     targetType:"checkbox"
 
-    constructor:(target)->
-        if target? and $(target).attr("type") isnt @targetType
-            throw "CheckBox target must be an input with a checkbox type" 
-        
+    constructor:(target)->        
         super target
 
         #### Checkbox signals
@@ -80,6 +77,13 @@ class CheckBox extends Widget
         
         @updateStates()
         @hideTarget()
+    
+    #### Target management
+
+    # The target for a `CheckBox` must be an `input` with a type `checkbox`.
+    checkTarget:( target )->
+        unless @isInputWithType target, "checkbox"
+            throw "CheckBox target must be an input with a checkbox type" 
     
     #### Properties accessors
 

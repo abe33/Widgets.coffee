@@ -36,10 +36,7 @@ class FilePicker extends Widget
         # target is created when nothing is passed to the constructor. 
         unless target? 
             target = $("<input type='file'></input>")[0]
-        # But passing an invalid input will raise an error.
-        else unless ( $ target ).attr("type") is "file"
-            throw "FilePicker must have an input file as target"
-        
+
         super target
 
         # The target is hidden when the widget is either readonly or disabled.
@@ -48,6 +45,17 @@ class FilePicker extends Widget
         # Target's changes are binded to an internal callback.
         @jTarget.bind "change", (e)=>
             @targetChange e
+
+    #### Target management
+
+    # The target for a `FilePicker` must be an input with the type `file`.
+    checkTarget:( target )->
+        unless @isInputWithType target, "file"
+            throw "FilePicker must have an input file as target"
+
+    # Display the target if defined.
+    showTarget:->
+        if @hasTarget then @jTarget.show()
     
     # When the target changed the `value`'s text is then replaced with
     # the new value. 
@@ -55,10 +63,8 @@ class FilePicker extends Widget
         @setValueLabel if @jTarget.val()? then @jTarget.val() else "Browse"
         @dummy.attr "title", @jTarget.val()
     
-    # This method allow to test the change of the `value`'s text.
-    setValueLabel:( label )->
-        @dummy.children(".value").text label
-
+    #### Dummy management
+    
     # The dummy for a `FilePicker` is a `span` with a `filepicker` class on it.
     createDummy:->
         # It contains two `span` children for an icon and the value display.
@@ -74,6 +80,12 @@ class FilePicker extends Widget
         dummy.append @jTarget
 
         dummy
+    
+    # This method allow to test the change of the `value`'s text.
+    setValueLabel:( label )->
+        @dummy.children(".value").text label
+    
+    #### Properties Accessors
 
     # Disabling a `FilePicker` hides the target, in the contrary
     # enabling the widget will display the target again.
@@ -86,11 +98,7 @@ class FilePicker extends Widget
     set_readonly:( property, value )->
         if value then @hideTarget() else unless @get("disabled") then @showTarget()
         super property, value
-
-    # Display the target if defined.
-    showTarget:->
-        if @hasTarget then @jTarget.show()
-    
+   
     #### Events handling
     #
     # The file picker widget is a special case, as it don't receive 

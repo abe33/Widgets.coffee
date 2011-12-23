@@ -134,6 +134,29 @@ $widget-button-border:#444;
         width:100%;
     }
 }
+.textarea {
+    @extend .widget-common;
+    background:$widget-background;
+    border:1px solid $widget-border;
+    
+    @include borderradius(4px); 
+    width:100px;
+    line-height:18px;
+
+    &.disabled {
+        input {
+            color:#666;
+        }
+    }
+
+    textarea {
+        background:none;
+        border:none;
+        width:100%;
+        resize:none;
+    }
+}
+
 
 .checkbox {
     @extend .widget-common;
@@ -469,9 +492,7 @@ $widget-button-border:#444;
 
     background:$widget-button-background;
     border:1px solid $widget-border;
-    width:70px;
-    height:20px;
-    padding:2px;
+    width:100px;
     @include borderradius(4px); 
 
     &.focus {
@@ -480,7 +501,7 @@ $widget-button-border:#444;
 
     .color {
         display:block;
-        width:100%;  
+        margin:2px;
         height:100%;
         font-size:13px;
         @include borderradius(1px); 

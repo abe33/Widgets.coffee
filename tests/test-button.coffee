@@ -1,27 +1,27 @@
 module "button tests"
 
-test "Buttons should allow to pass a button input as argument", ->
+test "Buttons should allow to pass a button button as argument", ->
 	target = ( $ "<input type='button'></input>" )[0]
 
 	button = new Button target
 
 	assertThat button.target is target
 
-test "Buttons should allow to pass a submit input as argument", ->
+test "Buttons should allow to pass a submit button as argument", ->
 	target = ( $ "<input type='submit'></input>" )[0]
 
 	button = new Button target
 
 	assertThat button.target is target
 
-test "Buttons should allow to pass a reset input as argument", ->
+test "Buttons should allow to pass a reset button as argument", ->
 	target = ( $ "<input type='reset'></input>" )[0]
 
 	button = new Button target
 
 	assertThat button.target is target
 
-test "Buttons shouldn't allow any other type of input as argument", ->
+test "Buttons shouldn't allow any other type of button as argument", ->
 	target = ( $ "<input type='text'></input>" )[0]
 
 	errorRaised = false
@@ -193,3 +193,21 @@ test "Changing the action of a button should update its content", ->
 	button.set "action", display: "label", action:->
 
 	assertThat button.dummy.find(".content").text(), equalTo "label"
+
+
+button1 = new Button
+button2 = new Button
+button3 = new Button
+
+button1.set "value", "Button <span class='icon'></span>"
+button2.set "value", "Readonly"
+button3.set "value", "Disabled"
+
+button2.set "readonly", true
+button3.set "disabled", true
+
+$("#qunit-header").before $ "<h4>Button</h4>"
+$("#qunit-header").before button1.dummy
+$("#qunit-header").before button2.dummy
+$("#qunit-header").before button3.dummy
+

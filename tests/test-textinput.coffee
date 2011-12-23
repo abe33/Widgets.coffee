@@ -7,7 +7,15 @@ test "TextInput should allow a target of type text", ->
 
 	assertThat input.target is target
 
-test "A TextInput shouldn't allow a target of with a type different than text", ->
+
+test "TextInput should allow a target of type password", ->
+	target = $("<input type='password'></input>")[0]
+
+	input = new TextInput target
+
+	assertThat input.target is target
+
+test "A TextInput shouldn't allow a target of with a type different than text or password", ->
 
 	target = $("<input type='file'></input>")[0]
 	errorRaised = false
@@ -100,7 +108,7 @@ test "TextInput should know when its content had changed and the change events i
 
 	input.dummy.children("input").trigger "input"
 
-	assertThat input.hasChangedContent
+	assertThat input.valueIsObsolete
 
 
 input1 = new TextInput

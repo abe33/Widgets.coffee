@@ -1,25 +1,13 @@
 module "widgets base tests"
 
-test "Widgets should have a target input node", ->
+test "Widgets should have a target node", ->
 	
-	target = $("<input type='text'></input>")[0]
+	target = $("<div></div>")[0]
 	widget = new Widget target 
 
 	assertThat widget, hasProperty "target", equalTo target
 
-test "Widgets constructor should failed with an invalid node", ->
-	
-	target = $("<div></div>")[0]
-	widgetFailed = false
-
-	try
-		widget = new Widget target
-	catch e
-		widgetFailed = true
-	
-	assertThat widgetFailed
-
-test "Widgets constructor should failed with an invalid argument", ->
+test "Widgets constructor should fail with an invalid argument", ->
 	
 	target = $("<div></div>")
 	widgetFailed = false
@@ -817,9 +805,11 @@ test "Widgets should provide an id property that is mapped to the dummy", ->
 
 	class MockWidget extends Widget
 		createDummy:->
-			$ "<span class='foo'></span>"
+			$ "<span class='foo' id='hola'></span>"
 	
 	widget = new MockWidget
+
+	assertThat widget.dummy.attr("id"), equalTo "hola"
 
 	widget.set "id", "foo"
 

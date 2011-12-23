@@ -37,11 +37,6 @@
 # </script>
 class Slider extends NumericWidget
     constructor:( target )->
-
-        # A `Slider` handles only inputs with the type `range`. 
-        if target? and $(target).attr("type") isnt "range"
-            throw "Slider target must be an input with a range type" 
-
         super target
 
         #### Dragging properties
@@ -60,6 +55,13 @@ class Slider extends NumericWidget
 
         if @hasDummy then @updateDummy @get("value"), @get("min"), @get("max")
     
+    #### Target management
+
+    # The target for a `Slider` must be an input with the type `range`.
+    checkTarget:( target )->
+        unless @isInputWithType target, "range"
+            throw "Slider target must be an input with a range type" 
+
     #### Mouse controls
     #
     # The knob child of the slider can be dragged to modify

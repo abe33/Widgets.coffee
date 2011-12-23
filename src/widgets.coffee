@@ -8,10 +8,10 @@ class Widget
     # An error is raised if the passed-in node's name is not `input` or if
     # the arguments is not a node.
     constructor:( target )->
-
-        if target? and target.nodeName?.toLowerCase?() isnt "input" 
-            throw "Widget's target must be an input node"
-        
+        # If a target is provided to a widget, that target will
+        # be verified in the `checkTarget` method.
+        if target? then @checkTarget target
+                
         #### Widget signals
         
         # The `propertyChanged` signal is dispatched when a call 
@@ -224,6 +224,28 @@ class Widget
     
     #### Target management
 
+    # Verify that the passed-in target is valid and throw an error 
+    # if itsn't the case.
+    #
+    # By default a `target` can be any `HTMLElement`.
+    checkTarget:( target )->
+        unless @isElement target
+            throw "Widget's target should be a node"
+   
+    isElement:(o)->
+        if typeof HTMLElement is "object" 
+            o instanceof HTMLElement 
+        else
+            typeof o is "object" and
+            o.nodeType is 1 and 
+            typeof o.nodeName is "string"
+    
+    isTag:( o, tag )->
+        @isElement( o ) and o?.nodeName?.toLowerCase() is tag
+    
+    isInputWithType:( o, types... )->
+        @isTag( o, "input" ) and $( o ).attr("type") in types
+    
     # Hide the target if provided.
     hideTarget:->
         if @hasTarget

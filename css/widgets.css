@@ -1,4 +1,4 @@
-.widget-common, .button, .text, .checkbox, .radio, .slider, .stepper, .filepicker, .colorpicker, .gridpicker, .colorpickerdialog {
+.widget-common, .button, .text, .textarea, .checkbox, .radio, .slider, .stepper, .filepicker, .colorpicker, .gridpicker, .colorpickerdialog {
   display: inline-block;
   margin: 0px;
   margin: 4px 4px 0 0;
@@ -7,7 +7,7 @@
   font-size: 16px;
   vertical-align: bottom;
   color: fff; }
-  .widget-common.disabled, .disabled.button, .disabled.text, .disabled.checkbox, .disabled.radio, .disabled.slider, .disabled.stepper, .disabled.filepicker, .disabled.colorpicker, .disabled.gridpicker, .disabled.colorpickerdialog, .widget-common.readonly, .readonly.button, .readonly.text, .readonly.checkbox, .readonly.radio, .readonly.slider, .readonly.stepper, .readonly.filepicker, .readonly.colorpicker, .readonly.gridpicker, .readonly.colorpickerdialog {
+  .widget-common.disabled, .disabled.button, .disabled.text, .disabled.textarea, .disabled.checkbox, .disabled.radio, .disabled.slider, .disabled.stepper, .disabled.filepicker, .disabled.colorpicker, .disabled.gridpicker, .disabled.colorpickerdialog, .widget-common.readonly, .readonly.button, .readonly.text, .readonly.textarea, .readonly.checkbox, .readonly.radio, .readonly.slider, .readonly.stepper, .readonly.filepicker, .readonly.colorpicker, .readonly.gridpicker, .readonly.colorpickerdialog {
     opacity: 0.5;
     /* Standard: FF gt 1.5, Opera, Safari */
     filter: alpha(opacity=50);
@@ -18,11 +18,11 @@
     /* Safari 1.x */
     -moz-opacity: 0.5;
     /* FF lt 1.5, Netscape */ }
-  .widget-common:focus, .button:focus, .text:focus, .checkbox:focus, .radio:focus, .slider:focus, .stepper:focus, .filepicker:focus, .colorpicker:focus, .gridpicker:focus, .colorpickerdialog:focus {
+  .widget-common:focus, .button:focus, .text:focus, .textarea:focus, .checkbox:focus, .radio:focus, .slider:focus, .stepper:focus, .filepicker:focus, .colorpicker:focus, .gridpicker:focus, .colorpickerdialog:focus {
     outline: none; }
-  .widget-common.focus, .focus.button, .focus.text, .focus.checkbox, .focus.radio, .focus.slider, .focus.stepper, .focus.filepicker, .focus.colorpicker, .focus.gridpicker, .focus.colorpickerdialog {
+  .widget-common.focus, .focus.button, .focus.text, .focus.textarea, .focus.checkbox, .focus.radio, .focus.slider, .focus.stepper, .focus.filepicker, .focus.colorpicker, .focus.gridpicker, .focus.colorpickerdialog {
     outline: #ff0000 dotted 1px !important; }
-  .widget-common input, .button input, .text input, .checkbox input, .radio input, .slider input, .stepper input, .filepicker input, .colorpicker input, .gridpicker input, .colorpickerdialog input {
+  .widget-common input, .button input, .text input, .textarea input, .checkbox input, .radio input, .slider input, .stepper input, .filepicker input, .colorpicker input, .gridpicker input, .colorpickerdialog input {
     outline: none !important;
     color: fff !important;
     margin: 0; }
@@ -55,6 +55,23 @@
     background: none;
     border: none;
     width: 100%; }
+
+.textarea {
+  background: #333333;
+  border: 1px solid #222222;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px;
+  width: 100px;
+  line-height: 18px; }
+  .textarea.disabled input {
+    color: #666; }
+  .textarea textarea {
+    background: none;
+    border: none;
+    width: 100%;
+    resize: none; }
 
 .checkbox {
   background: #333333;
@@ -322,9 +339,7 @@
 .colorpicker {
   background: #555555;
   border: 1px solid #222222;
-  width: 70px;
-  height: 20px;
-  padding: 2px;
+  width: 100px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -o-border-radius: 4px;
@@ -333,7 +348,7 @@
     background: #777777; }
   .colorpicker .color {
     display: block;
-    width: 100%;
+    margin: 2px;
     height: 100%;
     font-size: 13px;
     -webkit-border-radius: 1px;

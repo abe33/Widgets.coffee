@@ -28,9 +28,11 @@
 # </script>
 class Radio extends CheckBox
 
-    # Radio only allow inputs of type `radio`.
-    targetType:"radio"
-        
+    # The target for a `Radio` must be an input with the type `radio`.
+    checkTarget:( target )->
+        unless @isInputWithType target, "radio"
+            throw "Radio target must be an input with a radio type"  
+       
     # The dummy for the radio is just a `<span>` element
     # with a `radio` class.
     createDummy:->
