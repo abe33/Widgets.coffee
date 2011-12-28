@@ -852,3 +852,15 @@ $widget-button-border:#444;
         }
     }
 }
+
+.dropdownlist {
+    @extend .widget-common;
+
+    .value {
+        display:block;
+    }
+    .list{
+        display:block;
+    }
+
+}
