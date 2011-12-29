@@ -49,9 +49,9 @@ class Slider extends NumericWidget
         @lastMouseX = 0 
         @lastMouseY = 0 
 
-        # An optional property that allow the `value` span to be 
+        # A property that allow the `value` span to be 
         # centered with the knob.
-        @valueCenteredOnKnob = false
+        @valueCenteredOnKnob = true
 
         if @hasDummy then @updateDummy @get("value"), @get("min"), @get("max")
     

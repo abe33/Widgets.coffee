@@ -146,15 +146,13 @@ test "Sliders's .knob child position should be proportionate to the value", ->
 
 	assertThat slider.dummy.children(".knob").css("left"), strictlyEqualTo "20px"
 
-test "Optionally the slider should allow to adjust the value text to the knob", ->
+test "The slider should allow to adjust the value text to the knob", ->
 
 	slider = new Slider
 
 	slider.dummy.attr "style", "width:100px;"
 	slider.dummy.children(".knob").attr "style", "width:20px;"
 	slider.dummy.children(".value").attr "style", "width:10px;"
-
-	slider.valueCenteredOnKnob = true
 
 	slider.set "value", 25
 	assertThat slider.dummy.children(".value").css("left"), strictlyEqualTo "25px"

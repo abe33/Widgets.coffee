@@ -1,5 +1,5 @@
 (function() {
-  var AbstractMode, BGRMode, Button, CheckBox, ColorPicker, ColorPickerDialog, Container, FilePicker, GRBMode, HSVMode, KeyStroke, NumericWidget, RGBMode, Radio, RadioGroup, SHVMode, Slider, SquarePicker, Stepper, TextArea, TextInput, VHSMode, Widget, colorObjectFromValue, colorObjectToValue, hex2rgb, hsv2rgb, isSafeChannel, isSafeColor, isSafeHSV, isSafeHue, isSafeNumber, isSafePercentage, isSafeRGB, isSafeValue, keys, keystroke, rgb2hex, rgb2hsv;
+  var AbstractMode, BGRMode, Button, CheckBox, ColorPicker, ColorPickerDialog, Container, DropDownList, FilePicker, GRBMode, HSVMode, KeyStroke, NumericWidget, RGBMode, Radio, RadioGroup, SHVMode, Slider, SquarePicker, Stepper, TextArea, TextInput, VHSMode, Widget, WidgetPlugin, colorObjectFromValue, colorObjectToValue, hex2rgb, hsv2rgb, isSafeChannel, isSafeColor, isSafeHSV, isSafeHue, isSafeNumber, isSafePercentage, isSafeRGB, isSafeValue, keys, keystroke, rgb2hex, rgb2hsv;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __slice = Array.prototype.slice, __indexOf = Array.prototype.indexOf || function(item) {
     for (var i = 0, l = this.length; i < l; i++) {
       if (this[i] === item) return i;
@@ -1021,7 +1021,7 @@
       this.draggingKnob = false;
       this.lastMouseX = 0;
       this.lastMouseY = 0;
-      this.valueCenteredOnKnob = false;
+      this.valueCenteredOnKnob = true;
       if (this.hasDummy) {
         this.updateDummy(this.get("value"), this.get("min"), this.get("max"));
       }
@@ -1280,6 +1280,63 @@
   })();
   if (typeof window !== "undefined" && window !== null) {
     window.FilePicker = FilePicker;
+  }
+  DropDownList = (function() {
+    __extends(DropDownList, Widget);
+    function DropDownList(target) {
+      DropDownList.__super__.constructor.call(this, target);
+      this.buildOptions();
+      this.hideOptions();
+      this.updateDummy();
+    }
+    DropDownList.prototype.checkTarget = function(target) {
+      if (!this.isTag(target, "select")) {
+        throw "A DropDownList only allow select nodes as target";
+      }
+    };
+    DropDownList.prototype.createDummy = function() {
+      var dummy;
+      dummy = $("<span class='dropdownlist'>                       <span class='value'></span>                       <span class='list'></span>                   </span>");
+      this.optionsList = dummy.children(".list");
+      return dummy;
+    };
+    DropDownList.prototype.updateDummy = function() {
+      return this.dummy.find(".value").text(this.getOptionLabel(this.jTarget.children("option[selected]")));
+    };
+    DropDownList.prototype.buildOptions = function() {
+      var options;
+      options = this.jTarget.children("option");
+      return options.each(__bind(function(i, o) {
+        var label, option;
+        option = $(o);
+        label = this.getOptionLabel(option);
+        return this.optionsList.append($("<span class='option'>" + label + "</span>"));
+      }, this));
+    };
+    DropDownList.prototype.hideOptions = function() {
+      return this.optionsList.hide();
+    };
+    DropDownList.prototype.showOptions = function() {
+      return this.optionsList.show();
+    };
+    DropDownList.prototype.getOptionLabel = function(option) {
+      if (option.attr("label")) {
+        return option.attr("label");
+      } else {
+        return option.text();
+      }
+    };
+    DropDownList.prototype.click = function(e) {
+      if (this.optionsList.attr("style").indexOf("display: none;") === -1) {
+        return this.hideOptions();
+      } else {
+        return this.showOptions();
+      }
+    };
+    return DropDownList;
+  })();
+  if (typeof window !== "undefined" && window !== null) {
+    window.DropDownList = DropDownList;
   }
   rgb2hex = function(r, g, b) {
     var rnd, value;
@@ -2180,75 +2237,110 @@
     window.BGRMode = BGRMode;
   }
   $.fn.extend({
-    widgets: function(options) {
-      var groups;
-      if (options == null) {
-        options = {};
+    widgets: function() {
+      return $.widgetPlugin.process($(this));
+    }
+  });
+  WidgetPlugin = (function() {
+    function WidgetPlugin() {
+      this.processors = {};
+    }
+    WidgetPlugin.prototype.register = function(id, match, processor) {
+      if (processor == null) {
+        throw "The processor function can't be null in register";
       }
-      groups = {};
-      return ($(this)).each(function(i, o) {
-        var group, name, next, nodeName, parent, target, type, widget;
-        nodeName = o.nodeName.toLowerCase();
+      return this.processors[id] = [match, processor];
+    };
+    WidgetPlugin.prototype.registerWidgetFor = function(id, match, widget) {
+      if (widget == null) {
+        throw "The widget class can't be null in registerWidgetFor";
+      }
+      return this.register(id, match, function(target) {
+        return new widget(target);
+      });
+    };
+    WidgetPlugin.prototype.isRegistered = function(id) {
+      return id in this.processors;
+    };
+    WidgetPlugin.prototype.process = function(queryset) {
+      return queryset.each(__bind(function(i, o) {
+        var elementMatched, id, match, next, parent, processor, target, widget, _ref, _ref2, _results;
         target = $(o);
         next = target.next();
         parent = target.parent();
-        if (!target.hasClass("widget-done")) {
-          switch (nodeName) {
-            case "textarea":
-              widget = new TextArea(o);
-              break;
-            case "input":
-              type = target.attr("type");
-              switch (type) {
-                case "checkbox":
-                  widget = new CheckBox(o);
-                  break;
-                case "number":
-                  widget = new Stepper(o);
-                  break;
-                case "color":
-                  widget = new ColorPicker(o);
-                  break;
-                case "file":
-                  widget = new FilePicker(o);
-                  break;
-                case "text":
-                case "password":
-                  widget = new TextInput(o);
-                  break;
-                case "button":
-                case "reset":
-                case "submit":
-                  widget = new Button(o);
-                  break;
-                case "range":
-                  widget = new Slider(o);
-                  widget.valueCenteredOnKnob = true;
-                  widget.updateDummy(widget.get("value"), widget.get("min"), widget.get("max"));
-                  break;
-                case "radio":
-                  widget = new Radio(o);
-                  name = widget.get("name");
-                  if (name != null) {
-                    if (name in groups) {
-                      group = groups[name];
-                    } else {
-                      group = new RadioGroup;
-                      groups[name] = group;
-                    }
-                    group.add(widget);
-                  }
+        if (target.hasClass("widget-done")) {
+          return;
+        }
+        _ref = this.processors;
+        _results = [];
+        for (id in _ref) {
+          _ref2 = _ref[id], match = _ref2[0], processor = _ref2[1];
+          elementMatched = $.isFunction(match) ? match.call(this, o) : o.nodeName.toLowerCase() === match;
+          if (elementMatched) {
+            widget = processor.call(this, o);
+            if (widget != null) {
+              if (next.length > 0) {
+                next.before(widget.dummy);
+              } else {
+                parent.append(widget.dummy);
               }
+            }
+            break;
           }
         }
-        if (widget != null) {
-          if (next.length > 0) {
-            return next.before(widget.dummy);
-          } else {
-            return parent.append(widget.dummy);
-          }
-        }
-      });
+        return _results;
+      }, this));
+    };
+    WidgetPlugin.prototype.isElement = function(o) {
+      if (typeof HTMLElement === "object") {
+        return o instanceof HTMLElement;
+      } else {
+        return typeof o === "object" && o.nodeType === 1 && typeof o.nodeName === "string";
+      }
+    };
+    WidgetPlugin.prototype.isTag = function(o, tag) {
+      var _ref;
+      return this.isElement(o) && (o != null ? (_ref = o.nodeName) != null ? _ref.toLowerCase() : void 0 : void 0) === tag;
+    };
+    WidgetPlugin.prototype.isInputWithType = function() {
+      var o, types, _ref;
+      o = arguments[0], types = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+      return this.isTag(o, "input") && (_ref = $(o).attr("type"), __indexOf.call(types, _ref) >= 0);
+    };
+    WidgetPlugin.prototype.inputWithType = function() {
+      var types;
+      types = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      return function(o) {
+        return this.isInputWithType.apply(this, [o].concat(types));
+      };
+    };
+    return WidgetPlugin;
+  })();
+  $.widgetPlugin = new WidgetPlugin;
+  $.widgetPlugin.registerWidgetFor("textinput", $.widgetPlugin.inputWithType("text", "password"), TextInput);
+  $.widgetPlugin.registerWidgetFor("button", $.widgetPlugin.inputWithType("button", "reset", "submit"), Button);
+  $.widgetPlugin.registerWidgetFor("range", $.widgetPlugin.inputWithType("range"), Slider);
+  $.widgetPlugin.registerWidgetFor("number", $.widgetPlugin.inputWithType("number"), Stepper);
+  $.widgetPlugin.registerWidgetFor("checkbox", $.widgetPlugin.inputWithType("checkbox"), CheckBox);
+  $.widgetPlugin.registerWidgetFor("color", $.widgetPlugin.inputWithType("color"), ColorPicker);
+  $.widgetPlugin.registerWidgetFor("file", $.widgetPlugin.inputWithType("file"), FilePicker);
+  $.widgetPlugin.registerWidgetFor("textarea", "textarea", TextArea);
+  $.widgetPlugin.registerWidgetFor("select", "select", DropDownList);
+  $.widgetPlugin.register("radio", $.widgetPlugin.inputWithType("radio"), function(o) {
+    var group, groups, name, widget;
+    widget = new Radio(o);
+    name = widget.get("name");
+    if (name != null) {
+      if ($.widgetPlugin.radiogroups == null) {
+        $.widgetPlugin.radiogroups = {};
+      }
+      groups = $.widgetPlugin.radiogroups;
+      if (groups[name] == null) {
+        groups[name] = new RadioGroup;
+      }
+      group = groups[name];
+      group.add(widget);
     }
+    return widget;
   });
 }).call(this);
