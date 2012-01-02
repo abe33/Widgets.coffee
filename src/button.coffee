@@ -50,7 +50,6 @@ class Button extends Widget
     constructor:( args... )->
 
         switch args.length
-            when 0 then super()
             when 1
                 [ arg ] = args
                 if typeof arg.action is "function" 

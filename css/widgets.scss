@@ -99,7 +99,6 @@ $widget-button-border:#444;
     background:$widget-button-background;
     border:1px solid $widget-button-border;
 
-    padding:2px 4px;
     @include borderradius(3px);
 
     &.disabled, &.readonly {
@@ -110,6 +109,10 @@ $widget-button-border:#444;
 
     &.focus, &:hover {
         background:$widget-button-focus-background;
+    }
+    .content {
+        display:block;
+        padding:2px 4px;
     }
 }
 
@@ -853,14 +856,84 @@ $widget-button-border:#444;
     }
 }
 
-.dropdownlist {
+.single-select {
     @extend .widget-common;
+
+    background:$widget-button-background;
+    border:1px solid $widget-button-border;
+    width:100px;
+
+    @include borderradius(3px);
+
+    &.disabled, &.readonly {
+        &.focus, &:hover {
+            background:$widget-button-background;
+        }
+    }
+
+    &.focus, &:hover {
+        background:$widget-button-focus-background;
+    }
 
     .value {
         display:block;
+        padding:2px 20px 2px 4px;
+        white-space:nowrap;
+        overflow:hidden;
+        @include overflow(ellipsis);
     }
-    .list{
+    &:before {
+        content:""; 
+        position:absolute;
         display:block;
-    }
+        width:0px;
+        height:0px;
+        border:1px solid #333;
+        border-color:#333 transparent transparent transparent;
+        border-width:5px;
 
+        margin-top:-2px;
+        right:6px;
+        top:50%;
+    }
+}
+.menulist {
+    @extend .widget-common;
+
+    z-index:2;
+    padding:0;
+    margin:0;
+    position:absolute;
+    background:$widget-button-background;
+    border:1px solid $widget-button-border;
+
+    @include borderradius(3px);
+
+    .menuitem, .menu {
+        position:relative;
+        list-style:none;
+        padding:2px 4px;
+
+        &.selected {
+            background:$widget-button-focus-background;
+        }
+    }
+    .menu {
+        padding-right:20px;
+
+        &:before {
+            content:""; 
+            position:absolute;
+            display:block;
+            width:0px;
+            height:0px;
+            border:1px solid #333;
+            border-color:transparent transparent transparent #333;
+            border-width:5px;
+
+            margin-top:-4px;
+            right:2px;
+            top:50%;
+        }
+    }
 }

@@ -1,4 +1,4 @@
-.widget-common, .button, .text, .textarea, .checkbox, .radio, .slider, .stepper, .filepicker, .colorpicker, .gridpicker, .colorpickerdialog, .dropdownlist {
+.widget-common, .button, .text, .textarea, .checkbox, .radio, .slider, .stepper, .filepicker, .colorpicker, .gridpicker, .colorpickerdialog, .single-select, .menulist {
   display: inline-block;
   margin: 0px;
   margin: 4px 4px 0 0;
@@ -7,7 +7,7 @@
   font-size: 16px;
   vertical-align: bottom;
   color: fff; }
-  .widget-common.disabled, .disabled.button, .disabled.text, .disabled.textarea, .disabled.checkbox, .disabled.radio, .disabled.slider, .disabled.stepper, .disabled.filepicker, .disabled.colorpicker, .disabled.gridpicker, .disabled.colorpickerdialog, .disabled.dropdownlist, .widget-common.readonly, .readonly.button, .readonly.text, .readonly.textarea, .readonly.checkbox, .readonly.radio, .readonly.slider, .readonly.stepper, .readonly.filepicker, .readonly.colorpicker, .readonly.gridpicker, .readonly.colorpickerdialog, .readonly.dropdownlist {
+  .widget-common.disabled, .disabled.button, .disabled.text, .disabled.textarea, .disabled.checkbox, .disabled.radio, .disabled.slider, .disabled.stepper, .disabled.filepicker, .disabled.colorpicker, .disabled.gridpicker, .disabled.colorpickerdialog, .disabled.single-select, .disabled.menulist, .widget-common.readonly, .readonly.button, .readonly.text, .readonly.textarea, .readonly.checkbox, .readonly.radio, .readonly.slider, .readonly.stepper, .readonly.filepicker, .readonly.colorpicker, .readonly.gridpicker, .readonly.colorpickerdialog, .readonly.single-select, .readonly.menulist {
     opacity: 0.5;
     /* Standard: FF gt 1.5, Opera, Safari */
     filter: alpha(opacity=50);
@@ -18,11 +18,11 @@
     /* Safari 1.x */
     -moz-opacity: 0.5;
     /* FF lt 1.5, Netscape */ }
-  .widget-common:focus, .button:focus, .text:focus, .textarea:focus, .checkbox:focus, .radio:focus, .slider:focus, .stepper:focus, .filepicker:focus, .colorpicker:focus, .gridpicker:focus, .colorpickerdialog:focus, .dropdownlist:focus {
+  .widget-common:focus, .button:focus, .text:focus, .textarea:focus, .checkbox:focus, .radio:focus, .slider:focus, .stepper:focus, .filepicker:focus, .colorpicker:focus, .gridpicker:focus, .colorpickerdialog:focus, .single-select:focus, .menulist:focus {
     outline: none; }
-  .widget-common.focus, .focus.button, .focus.text, .focus.textarea, .focus.checkbox, .focus.radio, .focus.slider, .focus.stepper, .focus.filepicker, .focus.colorpicker, .focus.gridpicker, .focus.colorpickerdialog, .focus.dropdownlist {
+  .widget-common.focus, .focus.button, .focus.text, .focus.textarea, .focus.checkbox, .focus.radio, .focus.slider, .focus.stepper, .focus.filepicker, .focus.colorpicker, .focus.gridpicker, .focus.colorpickerdialog, .focus.single-select, .focus.menulist {
     outline: #ff0000 dotted 1px !important; }
-  .widget-common input, .button input, .text input, .textarea input, .checkbox input, .radio input, .slider input, .stepper input, .filepicker input, .colorpicker input, .gridpicker input, .colorpickerdialog input, .dropdownlist input {
+  .widget-common input, .button input, .text input, .textarea input, .checkbox input, .radio input, .slider input, .stepper input, .filepicker input, .colorpicker input, .gridpicker input, .colorpickerdialog input, .single-select input, .menulist input {
     outline: none !important;
     color: fff !important;
     margin: 0; }
@@ -30,7 +30,6 @@
 .button {
   background: #555555;
   border: 1px solid #444444;
-  padding: 2px 4px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -o-border-radius: 3px;
@@ -39,6 +38,9 @@
     background: #555555; }
   .button.focus, .button:hover {
     background: #777777; }
+  .button .content {
+    display: block;
+    padding: 2px 4px; }
 
 .text {
   background: #333333;
@@ -708,7 +710,67 @@
         content: "#";
         text-indent: 2px; }
 
-.dropdownlist .value {
-  display: block; }
-.dropdownlist .list {
-  display: block; }
+.single-select {
+  background: #555555;
+  border: 1px solid #444444;
+  width: 100px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px; }
+  .single-select.disabled.focus, .single-select.disabled:hover, .single-select.readonly.focus, .single-select.readonly:hover {
+    background: #555555; }
+  .single-select.focus, .single-select:hover {
+    background: #777777; }
+  .single-select .value {
+    display: block;
+    padding: 2px 20px 2px 4px;
+    white-space: nowrap;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    -ms-text-overflow: ellipsis;
+    text-overflow: ellipsis; }
+  .single-select:before {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0px;
+    height: 0px;
+    border: 1px solid #333;
+    border-color: #333 transparent transparent transparent;
+    border-width: 5px;
+    margin-top: -2px;
+    right: 6px;
+    top: 50%; }
+
+.menulist {
+  z-index: 2;
+  padding: 0;
+  margin: 0;
+  position: absolute;
+  background: #555555;
+  border: 1px solid #444444;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px; }
+  .menulist .menuitem, .menulist .menu {
+    position: relative;
+    list-style: none;
+    padding: 2px 4px; }
+    .menulist .menuitem.selected, .menulist .menu.selected {
+      background: #777777; }
+  .menulist .menu {
+    padding-right: 20px; }
+    .menulist .menu:before {
+      content: "";
+      position: absolute;
+      display: block;
+      width: 0px;
+      height: 0px;
+      border: 1px solid #333;
+      border-color: transparent transparent transparent #333;
+      border-width: 5px;
+      margin-top: -4px;
+      right: 2px;
+      top: 50%; }

@@ -1,5 +1,5 @@
 (function() {
-  var AbstractMode, BGRMode, Button, CheckBox, ColorPicker, ColorPickerDialog, Container, DropDownList, FilePicker, GRBMode, HSVMode, KeyStroke, NumericWidget, RGBMode, Radio, RadioGroup, SHVMode, Slider, SquarePicker, Stepper, TextArea, TextInput, VHSMode, Widget, WidgetPlugin, colorObjectFromValue, colorObjectToValue, hex2rgb, hsv2rgb, isSafeChannel, isSafeColor, isSafeHSV, isSafeHue, isSafeNumber, isSafePercentage, isSafeRGB, isSafeValue, keys, keystroke, rgb2hex, rgb2hsv;
+  var AbstractMode, BGRMode, Button, CheckBox, ColorPicker, ColorPickerDialog, Container, FilePicker, GRBMode, HSVMode, KeyStroke, MenuList, MenuModel, NumericWidget, RGBMode, Radio, RadioGroup, SHVMode, SingleSelect, Slider, SquarePicker, Stepper, TextArea, TextInput, VHSMode, Widget, WidgetPlugin, colorObjectFromValue, colorObjectToValue, hex2rgb, hsv2rgb, isSafeChannel, isSafeColor, isSafeHSV, isSafeHue, isSafeNumber, isSafePercentage, isSafeRGB, isSafeValue, keys, keystroke, rgb2hex, rgb2hsv;
   var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __slice = Array.prototype.slice, __indexOf = Array.prototype.indexOf || function(item) {
     for (var i = 0, l = this.length; i < l; i++) {
       if (this[i] === item) return i;
@@ -562,9 +562,6 @@
       var action, arg, args, target;
       args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       switch (args.length) {
-        case 0:
-          Button.__super__.constructor.call(this);
-          break;
         case 1:
           arg = args[0];
           if (typeof arg.action === "function") {
@@ -1281,62 +1278,579 @@
   if (typeof window !== "undefined" && window !== null) {
     window.FilePicker = FilePicker;
   }
-  DropDownList = (function() {
-    __extends(DropDownList, Widget);
-    function DropDownList(target) {
-      DropDownList.__super__.constructor.call(this, target);
-      this.buildOptions();
-      this.hideOptions();
-      this.updateDummy();
+  MenuModel = (function() {
+    function MenuModel() {
+      var items;
+      items = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      this.contentChanged = new Signal;
+      this.items = this.filterValidActions(items);
     }
-    DropDownList.prototype.checkTarget = function(target) {
-      if (!this.isTag(target, "select")) {
-        throw "A DropDownList only allow select nodes as target";
+    MenuModel.prototype.add = function() {
+      var items;
+      items = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      this.items = this.items.concat(this.filterValidActions(items));
+      return this.contentChanged.dispatch(this);
+    };
+    MenuModel.prototype.remove = function() {
+      var action, items;
+      items = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
+      this.items = (function() {
+        var _i, _len, _ref, _results;
+        _ref = this.items;
+        _results = [];
+        for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+          action = _ref[_i];
+          if (__indexOf.call(items, action) < 0) {
+            _results.push(action);
+          }
+        }
+        return _results;
+      }).call(this);
+      return this.contentChanged.dispatch(this);
+    };
+    MenuModel.prototype.size = function() {
+      return this.items.length;
+    };
+    MenuModel.prototype.filterValidActions = function(items) {
+      var action, _i, _len, _results;
+      _results = [];
+      for (_i = 0, _len = items.length; _i < _len; _i++) {
+        action = items[_i];
+        if (this.isValidAction(action)) {
+          _results.push(action);
+        }
+      }
+      return _results;
+    };
+    MenuModel.prototype.isValidAction = function(action) {
+      return (action != null) && (action.display != null) && (!(action.action != null) || $.isFunction(action.action));
+    };
+    return MenuModel;
+  })();
+  MenuList = (function() {
+    __extends(MenuList, Widget);
+    function MenuList(model) {
+      MenuList.__super__.constructor.call(this);
+      this.selectedIndex = -1;
+      this.createProperty("model");
+      this.set("model", model);
+      this.parentList = null;
+      this.childList = null;
+      this.registerKeyDownCommand(keystroke(keys.enter), this.triggerAction);
+      this.registerKeyDownCommand(keystroke(keys.space), this.triggerAction);
+      this.registerKeyDownCommand(keystroke(keys.up), this.moveSelectionUp);
+      this.registerKeyDownCommand(keystroke(keys.down), this.moveSelectionDown);
+      this.registerKeyDownCommand(keystroke(keys.right), this.moveSelectionRight);
+      this.registerKeyDownCommand(keystroke(keys.left), this.moveSelectionLeft);
+    }
+    MenuList.prototype.set_model = function(property, value) {
+      var _ref;
+      this.clearList();
+      if ((_ref = this.properties[property]) != null) {
+        _ref.contentChanged.remove(this.modelChanged, this);
+      }
+      if (value != null) {
+        value.contentChanged.add(this.modelChanged, this);
+      }
+      this.buildList(value);
+      return value;
+    };
+    MenuList.prototype.close = function() {
+      var _ref;
+      this.dummy.blur();
+      this.dummy.detach();
+      return (_ref = this.childList) != null ? _ref.close() : void 0;
+    };
+    MenuList.prototype.select = function(index) {
+      var act, item;
+      if (this.selectedIndex !== -1) {
+        this.getItemAt(this.selectedIndex).removeClass("selected");
+      }
+      this.selectedIndex = index;
+      if (this.selectedIndex !== -1) {
+        item = this.getItemAt(this.selectedIndex);
+        item.addClass("selected");
+        act = this.get("model").items[index];
+        if (act.menu != null) {
+          this.openChildList(act.menu, item);
+        } else if (this.isChildListVisible()) {
+          this.closeChildList();
+        }
+      }
+      if (!this.hasFocus) {
+        return this.grabFocus();
       }
     };
-    DropDownList.prototype.createDummy = function() {
-      var dummy;
-      dummy = $("<span class='dropdownlist'>                       <span class='value'></span>                       <span class='list'></span>                   </span>");
-      this.optionsList = dummy.children(".list");
-      return dummy;
+    MenuList.prototype.createDummy = function() {
+      return $("<ul class='menulist'></ul>");
     };
-    DropDownList.prototype.updateDummy = function() {
-      return this.dummy.find(".value").text(this.getOptionLabel(this.jTarget.children("option[selected]")));
+    MenuList.prototype.clearList = function() {
+      return this.dummy.children().remove();
     };
-    DropDownList.prototype.buildOptions = function() {
-      var options;
-      options = this.jTarget.children("option");
-      return options.each(__bind(function(i, o) {
-        var label, option;
-        option = $(o);
-        label = this.getOptionLabel(option);
-        return this.optionsList.append($("<span class='option'>" + label + "</span>"));
+    MenuList.prototype.buildList = function(model) {
+      var act, item, _i, _len, _ref;
+      _ref = model.items;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        act = _ref[_i];
+        if (act.menu != null) {
+          item = $("<li class='menu'>" + act.display + "</li>");
+        } else {
+          item = $("<li class='menuitem'>" + act.display + "</li>");
+        }
+        this.dummy.append(item);
+      }
+      return this.dummy.children().each(__bind(function(i, o) {
+        var a;
+        item = $(o);
+        a = model.items[i];
+        item.mouseup(__bind(function(e) {
+          if (!this.cantInteract()) {
+            if (a.action != null) {
+              return a.action();
+            }
+          }
+        }, this));
+        return item.mouseover(__bind(function(e) {
+          if (!this.cantInteract()) {
+            return this.select(i);
+          }
+        }, this));
       }, this));
     };
-    DropDownList.prototype.hideOptions = function() {
-      return this.optionsList.hide();
+    MenuList.prototype.isChildListVisible = function() {
+      var _ref;
+      return ((_ref = this.childList) != null ? _ref.dummy.parent().length : void 0) === 1;
     };
-    DropDownList.prototype.showOptions = function() {
-      return this.optionsList.show();
+    MenuList.prototype.closeChildList = function() {
+      var _ref;
+      if ((_ref = this.childList) != null) {
+        _ref.close();
+      }
+      return this.grabFocus();
     };
-    DropDownList.prototype.getOptionLabel = function(option) {
+    MenuList.prototype.mousedown = function(e) {
+      return e.stopImmediatePropagation();
+    };
+    MenuList.prototype.openChildList = function(model, item) {
+      var left, top;
+      if (this.childList == null) {
+        this.childList = new MenuList(new MenuModel);
+        this.childList.parentList = this;
+      }
+      if (this.childList.hasFocus) {
+        this.childList.dummy.blur();
+      }
+      if (!this.isChildListVisible()) {
+        this.dummy.after(this.childList.dummy);
+      }
+      if (this.childList.get("model") !== model) {
+        this.childList.set("model", model);
+      }
+      left = this.dummy.offset().left + this.dummy.width();
+      top = item.offset().top;
+      return this.childList.dummy.attr("style", "left: " + left + "px; top: " + top + "px;");
+    };
+    MenuList.prototype.triggerAction = function() {
+      var item;
+      if (this.selectedIndex !== -1) {
+        item = this.get("model").items[this.selectedIndex];
+        if (item.action != null) {
+          return item.action();
+        }
+      }
+    };
+    MenuList.prototype.getItemAt = function(index) {
+      return $(this.dummy.children("li")[index]);
+    };
+    MenuList.prototype.modelChanged = function(model) {
+      this.clearList();
+      return this.buildList(model);
+    };
+    MenuList.prototype.moveSelectionUp = function(e) {
+      var newIndex;
+      e.preventDefault();
+      if (!this.cantInteract()) {
+        newIndex = this.selectedIndex - 1;
+        if (newIndex < 0) {
+          newIndex = this.get("model").size() - 1;
+        }
+        return this.select(newIndex);
+      }
+    };
+    MenuList.prototype.moveSelectionDown = function(e) {
+      var newIndex;
+      e.preventDefault();
+      if (!this.cantInteract()) {
+        newIndex = this.selectedIndex + 1;
+        if (newIndex >= this.get("model").size()) {
+          newIndex = 0;
+        }
+        return this.select(newIndex);
+      }
+    };
+    MenuList.prototype.moveSelectionRight = function(e) {
+      e.preventDefault();
+      if (!this.cantInteract()) {
+        if (this.isChildListVisible) {
+          return this.childList.grabFocus();
+        }
+      }
+    };
+    MenuList.prototype.moveSelectionLeft = function(e) {
+      var _ref;
+      e.preventDefault();
+      if (!this.cantInteract()) {
+        this.dummy.blur();
+        return (_ref = this.parentList) != null ? _ref.grabFocus() : void 0;
+      }
+    };
+    return MenuList;
+  })();
+  if (typeof window !== "undefined" && window !== null) {
+    window.MenuModel = MenuModel;
+    window.MenuList = MenuList;
+  }
+  SingleSelect = (function() {
+    __extends(SingleSelect, Widget);
+    function SingleSelect(target) {
+      SingleSelect.__super__.constructor.call(this, target);
+      if (this.hasTarget) {
+        this.model = this.buildModel(new MenuModel, this.jTarget.children());
+        this.selectedPath = this.findValue(this.get("value"));
+      } else {
+        this.model = new MenuModel;
+        this.selectedPath = null;
+      }
+      this.model.contentChanged.add(this.modelChanged, this);
+      this.buildMenu();
+      this.hideTarget();
+      this.updateDummy();
+      this.registerKeyDownCommand(keystroke(keys.enter), this.openMenu);
+      this.registerKeyDownCommand(keystroke(keys.space), this.openMenu);
+      this.registerKeyDownCommand(keystroke(keys.up), this.moveSelectionUp);
+      this.registerKeyDownCommand(keystroke(keys.down), this.moveSelectionDown);
+    }
+    SingleSelect.prototype.checkTarget = function(target) {
+      if (!this.isTag(target, "select") || ($(target).attr("multiple") != null)) {
+        throw "A SingleSelect only allow select nodes as target";
+      }
+    };
+    SingleSelect.prototype.clearOptions = function() {
+      return this.jTarget.children().remove();
+    };
+    SingleSelect.prototype.buildOptions = function(model, target) {
+      var act, group, _i, _len, _ref, _results;
+      if (model == null) {
+        model = this.model;
+      }
+      if (target == null) {
+        target = this.jTarget;
+      }
+      _ref = model.items;
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        act = _ref[_i];
+        _results.push(act.menu != null ? (group = $("<optgroup label='" + act.display + "'></optgroup>"), target.append(group), this.buildOptions(act.menu, group)) : (act.action == null ? act.action = __bind(function() {
+          return this.set("value", act.value);
+        }, this) : void 0, target.append($("<option value='" + act.value + "'>" + act.display + "</option>"))));
+      }
+      return _results;
+    };
+    SingleSelect.prototype.updateOptionSelection = function() {
+      var _ref;
+      return (_ref = this.getOptionAt(this.selectedPath)) != null ? _ref.attr("selected", "selected") : void 0;
+    };
+    SingleSelect.prototype.getOptionLabel = function(option) {
+      if (option == null) {
+        return null;
+      }
       if (option.attr("label")) {
         return option.attr("label");
       } else {
         return option.text();
       }
     };
-    DropDownList.prototype.click = function(e) {
-      if (this.optionsList.attr("style").indexOf("display: none;") === -1) {
-        return this.hideOptions();
+    SingleSelect.prototype.getOptionValue = function(option) {
+      if (option == null) {
+        return null;
+      }
+      if (option.attr("value")) {
+        return option.attr("value");
       } else {
-        return this.showOptions();
+        return option.text();
       }
     };
-    return DropDownList;
+    SingleSelect.prototype.getOptionAt = function(path) {
+      var children, option, step, _i, _len;
+      if (path === null) {
+        return null;
+      }
+      option = null;
+      if (this.hasTarget) {
+        children = this.jTarget.children();
+        for (_i = 0, _len = path.length; _i < _len; _i++) {
+          step = path[_i];
+          option = children[step];
+          if (option != null ? option.nodeName : void 0) {
+            children = $(option).children();
+          }
+        }
+      }
+      if (option != null) {
+        return $(option);
+      } else {
+        return null;
+      }
+    };
+    SingleSelect.prototype.createDummy = function() {
+      return $("<span class='single-select'>               <span class='value'></span>           </span>");
+    };
+    SingleSelect.prototype.updateDummy = function() {
+      var display, _ref;
+      if (this.selectedPath !== null) {
+        display = (_ref = this.getItemAt(this.selectedPath)) != null ? _ref.display : void 0;
+      } else {
+        display = this.hasTarget && this.jTarget.attr("title") ? this.jTarget.attr("title") : "Empty";
+      }
+      this.dummy.find(".value").remove();
+      return this.dummy.append($("<span class='value'>" + display + "</span>"));
+    };
+    SingleSelect.prototype.buildModel = function(model, node) {
+      node.each(__bind(function(i, o) {
+        var option, value;
+        option = $(o);
+        if (o.nodeName.toLowerCase() === "optgroup") {
+          return model.add({
+            display: this.getOptionLabel(option),
+            menu: this.buildModel(new MenuModel, option.children())
+          });
+        } else {
+          value = this.getOptionValue(option);
+          return model.add({
+            display: this.getOptionLabel(option),
+            value: value,
+            action: __bind(function() {
+              return this.set("value", value);
+            }, this)
+          });
+        }
+      }, this));
+      return model;
+    };
+    SingleSelect.prototype.getItemAt = function(path) {
+      var item, model, step, _i, _len;
+      if (path === null) {
+        return null;
+      }
+      model = this.model;
+      item = null;
+      for (_i = 0, _len = path.length; _i < _len; _i++) {
+        step = path[_i];
+        item = model.items[step];
+        if (item == null) {
+          return null;
+        }
+        if ((item != null ? item.menu : void 0) != null) {
+          model = item.menu;
+        }
+      }
+      return item;
+    };
+    SingleSelect.prototype.findValue = function(value, model) {
+      var item, passResults, subPassResults, _i, _len, _ref;
+      if (model == null) {
+        model = this.model;
+      }
+      if (!(value != null) || value === "") {
+        return null;
+      }
+      passResults = null;
+      _ref = model.items;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        item = _ref[_i];
+        if (item.value === value) {
+          passResults = [_i];
+          break;
+        } else if (item.menu != null) {
+          subPassResults = this.findValue(value, item.menu);
+          if (subPassResults != null) {
+            passResults = [_i].concat(subPassResults);
+            break;
+          }
+        }
+      }
+      return passResults;
+    };
+    SingleSelect.prototype.getModelAt = function(path) {
+      var item, model, step, _i, _len;
+      if (path === null) {
+        return null;
+      }
+      model = this.model;
+      item = null;
+      for (_i = 0, _len = path.length; _i < _len; _i++) {
+        step = path[_i];
+        item = model.items[step];
+        if (item == null) {
+          return null;
+        }
+        if ((item != null ? item.menu : void 0) != null) {
+          model = item.menu;
+        }
+      }
+      return model;
+    };
+    SingleSelect.prototype.buildMenu = function() {
+      return this.menuList = new MenuList(this.model);
+    };
+    SingleSelect.prototype.openMenu = function() {
+      var left, list, step, top, _i, _len, _ref, _results;
+      if (!this.cantInteract()) {
+        ($(document)).bind("mousedown", this.documentDelegate = __bind(function(e) {
+          return this.documentMouseDown(e);
+        }, this));
+        this.dummy.after(this.menuList.dummy);
+        left = this.dummy.offset().left;
+        top = this.dummy.offset().top + this.dummy.height();
+        this.menuList.dummy.attr("style", "left: " + left + "px; top: " + top + "px;");
+        this.menuList.grabFocus();
+        if (this.selectedPath !== null) {
+          list = this.menuList;
+          _ref = this.selectedPath;
+          _results = [];
+          for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+            step = _ref[_i];
+            list.select(step);
+            _results.push(list.childList ? list = list.childList : void 0);
+          }
+          return _results;
+        }
+      }
+    };
+    SingleSelect.prototype.closeMenu = function() {
+      this.menuList.close();
+      this.grabFocus();
+      return $(document).unbind("mousedown", this.documentDelegate);
+    };
+    SingleSelect.prototype.isMenuVisible = function() {
+      return this.menuList.dummy.parent().length === 1;
+    };
+    SingleSelect.prototype.moveSelectionUp = function(e) {
+      e.preventDefault();
+      if (!this.cantInteract()) {
+        this.selectedPath = this.findPrevious(this.selectedPath);
+        return this.set("value", this.getOptionValue(this.getOptionAt(this.selectedPath)));
+      }
+    };
+    SingleSelect.prototype.moveSelectionDown = function(e) {
+      e.preventDefault();
+      if (!this.cantInteract()) {
+        this.selectedPath = this.findNext(this.selectedPath);
+        return this.set("value", this.getOptionValue(this.getOptionAt(this.selectedPath)));
+      }
+    };
+    SingleSelect.prototype.findNext = function(path) {
+      var model, newPath, nextItem, step;
+      model = this.getModelAt(path);
+      step = path.length - 1;
+      newPath = path.concat();
+      newPath[step]++;
+      nextItem = this.getItemAt(newPath);
+      while (!(nextItem != null) || (nextItem.menu != null)) {
+        if (nextItem != null) {
+          if (nextItem.menu != null) {
+            newPath.push(0);
+            step++;
+          }
+        } else if (step > 0) {
+          step--;
+          newPath.pop();
+          newPath[step]++;
+          nextItem = this.getItemAt(newPath);
+        } else {
+          newPath = [0];
+        }
+        nextItem = this.getItemAt(newPath);
+      }
+      return newPath;
+    };
+    SingleSelect.prototype.findPrevious = function(path) {
+      var model, newPath, nextItem, step;
+      model = this.getModelAt(path);
+      step = path.length - 1;
+      newPath = path.concat();
+      newPath[step]--;
+      nextItem = this.getItemAt(newPath);
+      while (!(nextItem != null) || (nextItem.menu != null)) {
+        if (nextItem != null) {
+          if (nextItem.menu != null) {
+            newPath.push(0);
+            step++;
+            newPath[step] = this.getModelAt(newPath).size() - 1;
+          }
+        } else if (step > 0) {
+          step--;
+          newPath.pop();
+          newPath[step]--;
+          nextItem = this.getItemAt(newPath);
+        } else {
+          newPath = [this.model.items.length - 1];
+        }
+        nextItem = this.getItemAt(newPath);
+      }
+      return newPath;
+    };
+    SingleSelect.prototype.set_value = function(property, value) {
+      var newPath, newValue, oldValue;
+      oldValue = this.get("value");
+      newValue = null;
+      newPath = this.findValue(value);
+      if (newPath !== null) {
+        this.selectedPath = newPath;
+        newValue = value;
+      }
+      if (this.hasTarget) {
+        this.updateOptionSelection();
+      }
+      this.updateDummy();
+      if (this.isMenuVisible()) {
+        this.closeMenu();
+      }
+      if ((newValue != null) !== null) {
+        return newValue;
+      } else {
+        return oldValue;
+      }
+    };
+    SingleSelect.prototype.modelChanged = function(model) {
+      if (this.getItemAt(this.selectedPath) == null) {
+        this.selectedPath = this.findNext([0]);
+        this.properties["value"] = this.getItemAt(this.selectedPath).value;
+      }
+      if (this.hasTarget) {
+        this.clearOptions();
+        this.buildOptions();
+        return this.updateOptionSelection();
+      }
+    };
+    SingleSelect.prototype.mousedown = function(e) {
+      if (!this.cantInteract()) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (this.isMenuVisible()) {
+          return this.closeMenu();
+        } else {
+          return this.openMenu();
+        }
+      }
+    };
+    SingleSelect.prototype.documentMouseDown = function(e) {
+      return this.closeMenu();
+    };
+    return SingleSelect;
   })();
   if (typeof window !== "undefined" && window !== null) {
-    window.DropDownList = DropDownList;
+    window.SingleSelect = SingleSelect;
   }
   rgb2hex = function(r, g, b) {
     var rnd, value;
@@ -2266,11 +2780,11 @@
       return queryset.each(__bind(function(i, o) {
         var elementMatched, id, match, next, parent, processor, target, widget, _ref, _ref2, _results;
         target = $(o);
-        next = target.next();
-        parent = target.parent();
         if (target.hasClass("widget-done")) {
           return;
         }
+        next = target.next();
+        parent = target.parent();
         _ref = this.processors;
         _results = [];
         for (id in _ref) {
@@ -2317,6 +2831,8 @@
     return WidgetPlugin;
   })();
   $.widgetPlugin = new WidgetPlugin;
+  $.widgetPlugin.registerWidgetFor("textarea", "textarea", TextArea);
+  $.widgetPlugin.registerWidgetFor("select", "select", SingleSelect);
   $.widgetPlugin.registerWidgetFor("textinput", $.widgetPlugin.inputWithType("text", "password"), TextInput);
   $.widgetPlugin.registerWidgetFor("button", $.widgetPlugin.inputWithType("button", "reset", "submit"), Button);
   $.widgetPlugin.registerWidgetFor("range", $.widgetPlugin.inputWithType("range"), Slider);
@@ -2324,8 +2840,6 @@
   $.widgetPlugin.registerWidgetFor("checkbox", $.widgetPlugin.inputWithType("checkbox"), CheckBox);
   $.widgetPlugin.registerWidgetFor("color", $.widgetPlugin.inputWithType("color"), ColorPicker);
   $.widgetPlugin.registerWidgetFor("file", $.widgetPlugin.inputWithType("file"), FilePicker);
-  $.widgetPlugin.registerWidgetFor("textarea", "textarea", TextArea);
-  $.widgetPlugin.registerWidgetFor("select", "select", DropDownList);
   $.widgetPlugin.register("radio", $.widgetPlugin.inputWithType("radio"), function(o) {
     var group, groups, name, widget;
     widget = new Radio(o);

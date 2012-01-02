@@ -1,0 +1,206 @@
+<!DOCTYPE html>  <html> <head>   <title>menus.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="button.html">                 button.coffee               </a>                                           <a class="source" href="checkbox.html">                 checkbox.coffee               </a>                                           <a class="source" href="colorpicker.html">                 colorpicker.coffee               </a>                                           <a class="source" href="container.html">                 container.coffee               </a>                                           <a class="source" href="core.html">                 core.coffee               </a>                                           <a class="source" href="filepicker.html">                 filepicker.coffee               </a>                                           <a class="source" href="keys.html">                 keys.coffee               </a>                                           <a class="source" href="menus.html">                 menus.coffee               </a>                                           <a class="source" href="numeric-widget.html">                 numeric-widget.coffee               </a>                                           <a class="source" href="radio.html">                 radio.coffee               </a>                                           <a class="source" href="radiogroup.html">                 radiogroup.coffee               </a>                                           <a class="source" href="selects.html">                 selects.coffee               </a>                                           <a class="source" href="slider.html">                 slider.coffee               </a>                                           <a class="source" href="stepper.html">                 stepper.coffee               </a>                                           <a class="source" href="textarea.html">                 textarea.coffee               </a>                                           <a class="source" href="textinput.html">                 textinput.coffee               </a>                                           <a class="source" href="widgets.html">                 widgets.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               menus.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p>Here some live instances:
+<link rel="stylesheet" href="../css/styles.css" media="screen"></p>
+
+<div id="livedemos-menus"></div>
+
+<p><link rel="stylesheet" href="../css/styles.css" media="screen">
+<link rel="stylesheet" href="../css/widgets.css" media="screen"></p>
+
+<script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
+<script type='text/javascript' src='../depends/jquery.mousewheel.js'></script>
+<script type='text/javascript' src='../depends/signals.js'></script>
+<script type='text/javascript' src='../widgets.js'></script>
+
+<script type='text/javascript'>
+var item1 = { display:"display1", action:function(){ console.log ("item 1 clicked"); } };
+var item2 = { display:"display2", action:function(){ console.log ("item 2 clicked"); } };
+var item3 = { display:"display3", menu:new MenuModel() };
+var item4 = { display:"display4", action:function(){ console.log ("item 4 clicked"); } };
+var item5 = { display:"display5", action:function(){ console.log ("item 5 clicked"); } };
+var item6 = { display:"display6", menu:new MenuModel() };
+var item7 = { display:"display7", action:function(){ console.log ("item 7 clicked"); } };
+var item8 = { display:"display8", action:function(){ console.log ("item 8 clicked"); } };
+
+item3.menu.add ( item4, item5, item6 );
+item6.menu.add ( item7, item8 );
+
+var model = new MenuModel ( item1, item2, item3 );
+var list1 = new MenuList ( model );
+var list2 = new MenuList ( model );
+var list3 = new MenuList ( model );
+
+list2.set( "readonly", true );
+list3.set( "disabled", true );
+
+list1.addClasses ( "dummy" );
+list2.addClasses ( "dummy" );
+list3.addClasses ( "dummy" );
+
+$("#livedemos-menus").before ( list1.dummy );
+$("#livedemos-menus").before ( list2.dummy );
+$("#livedemos-menus").before ( list3.dummy );
+</script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">MenuModel</span> 
+    <span class="nx">constructor</span><span class="o">:</span><span class="nf">( items... )-&gt;</span>
+        <span class="vi">@contentChanged = </span><span class="k">new</span> <span class="nx">Signal</span>
+
+        <span class="vi">@items = </span><span class="nx">@filterValidActions</span> <span class="nx">items</span>
+    
+    <span class="nx">add</span><span class="o">:</span><span class="nf">( items... )-&gt;</span>
+        <span class="vi">@items = </span><span class="nx">@items</span><span class="p">.</span><span class="nx">concat</span> <span class="nx">@filterValidActions</span> <span class="nx">items</span>
+        <span class="nx">@contentChanged</span><span class="p">.</span><span class="nx">dispatch</span> <span class="k">this</span>
+    
+    <span class="nx">remove</span><span class="o">:</span><span class="nf">( items... )-&gt;</span>
+        <span class="vi">@items = </span><span class="p">(</span> <span class="nx">action</span> <span class="k">for</span> <span class="nx">action</span> <span class="k">in</span> <span class="nx">@items</span> <span class="k">when</span> <span class="nx">action</span> <span class="o">not</span> <span class="k">in</span> <span class="nx">items</span> <span class="p">)</span>
+        <span class="nx">@contentChanged</span><span class="p">.</span><span class="nx">dispatch</span> <span class="k">this</span>
+
+    <span class="nx">size</span><span class="o">:-&gt;</span> 
+        <span class="nx">@items</span><span class="p">.</span><span class="nx">length</span>
+
+    <span class="nx">filterValidActions</span><span class="o">:</span><span class="nf">( items )-&gt;</span> 
+        <span class="nx">action</span> <span class="k">for</span> <span class="nx">action</span> <span class="k">in</span> <span class="nx">items</span> <span class="k">when</span> <span class="nx">@isValidAction</span> <span class="nx">action</span>
+
+    <span class="nx">isValidAction</span><span class="o">:</span><span class="nf">( action )-&gt;</span>
+        <span class="nx">action</span><span class="o">?</span> <span class="o">and</span>
+        <span class="nx">action</span><span class="p">.</span><span class="nx">display</span><span class="o">?</span> <span class="o">and</span> 
+        <span class="p">(</span> <span class="o">not</span> <span class="nx">action</span><span class="p">.</span><span class="nx">action</span><span class="o">?</span> <span class="o">or</span> <span class="nx">$</span><span class="p">.</span><span class="nx">isFunction</span> <span class="nx">action</span><span class="p">.</span><span class="nx">action</span> <span class="p">)</span>
+
+<span class="k">class</span> <span class="nx">MenuList</span> <span class="k">extends</span> <span class="nx">Widget</span>
+    <span class="nx">constructor</span><span class="o">:</span><span class="nf">( model )-&gt;</span>
+        <span class="k">super</span><span class="p">()</span>
+
+        <span class="vi">@selectedIndex = </span><span class="o">-</span><span class="mi">1</span>
+
+        <span class="nx">@createProperty</span> <span class="s2">&quot;model&quot;</span>
+        <span class="nx">@set</span> <span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="nx">model</span>      
+
+        <span class="vi">@parentList = </span><span class="kc">null</span>
+        <span class="vi">@childList = </span><span class="kc">null</span>
+
+        <span class="nx">@registerKeyDownCommand</span> <span class="nx">keystroke</span><span class="p">(</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">enter</span> <span class="p">),</span> <span class="nx">@triggerAction</span> 
+        <span class="nx">@registerKeyDownCommand</span> <span class="nx">keystroke</span><span class="p">(</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">space</span> <span class="p">),</span> <span class="nx">@triggerAction</span>
+        <span class="nx">@registerKeyDownCommand</span> <span class="nx">keystroke</span><span class="p">(</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">up</span> <span class="p">),</span>    <span class="nx">@moveSelectionUp</span> 
+        <span class="nx">@registerKeyDownCommand</span> <span class="nx">keystroke</span><span class="p">(</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">down</span> <span class="p">),</span>  <span class="nx">@moveSelectionDown</span> 
+        <span class="nx">@registerKeyDownCommand</span> <span class="nx">keystroke</span><span class="p">(</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">right</span> <span class="p">),</span> <span class="nx">@moveSelectionRight</span> 
+        <span class="nx">@registerKeyDownCommand</span> <span class="nx">keystroke</span><span class="p">(</span> <span class="nx">keys</span><span class="p">.</span><span class="nx">left</span> <span class="p">),</span>  <span class="nx">@moveSelectionLeft</span> 
+
+    <span class="nx">set_model</span><span class="o">:</span><span class="nf">( property, value )-&gt;</span>
+        <span class="nx">@clearList</span><span class="p">()</span>
+
+        <span class="nx">@properties</span><span class="p">[</span> <span class="nx">property</span> <span class="p">]</span><span class="o">?</span><span class="p">.</span><span class="nx">contentChanged</span><span class="p">.</span><span class="nx">remove</span> <span class="nx">@modelChanged</span><span class="p">,</span> <span class="k">this</span>
+        <span class="nx">value</span><span class="o">?</span><span class="p">.</span><span class="nx">contentChanged</span><span class="p">.</span><span class="nx">add</span> <span class="nx">@modelChanged</span><span class="p">,</span> <span class="k">this</span>
+
+        <span class="nx">@buildList</span> <span class="nx">value</span>
+        <span class="nx">value</span>
+    
+    <span class="nx">close</span><span class="o">:-&gt;</span>
+        <span class="nx">@dummy</span><span class="p">.</span><span class="nx">blur</span><span class="p">()</span>
+        <span class="nx">@dummy</span><span class="p">.</span><span class="nx">detach</span><span class="p">()</span>
+        <span class="nx">@childList</span><span class="o">?</span><span class="p">.</span><span class="nx">close</span><span class="p">()</span>
+    
+    <span class="nx">select</span><span class="o">:</span><span class="nf">( index )-&gt;</span>
+        <span class="k">if</span> <span class="nx">@selectedIndex</span> <span class="o">isnt</span> <span class="o">-</span><span class="mi">1</span> <span class="k">then</span> <span class="nx">@getItemAt</span><span class="p">(</span> <span class="nx">@selectedIndex</span> <span class="p">).</span><span class="nx">removeClass</span> <span class="s2">&quot;selected&quot;</span>
+
+        <span class="vi">@selectedIndex = </span><span class="nx">index</span>
+
+        <span class="k">if</span> <span class="nx">@selectedIndex</span> <span class="o">isnt</span> <span class="o">-</span><span class="mi">1</span> 
+            <span class="nv">item = </span><span class="nx">@getItemAt</span><span class="p">(</span> <span class="nx">@selectedIndex</span> <span class="p">)</span>
+            <span class="nx">item</span><span class="p">.</span><span class="nx">addClass</span> <span class="s2">&quot;selected&quot;</span>
+            <span class="nv">act = </span><span class="nx">@get</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">[</span> <span class="nx">index</span> <span class="p">]</span>
+
+            <span class="k">if</span> <span class="nx">act</span><span class="p">.</span><span class="nx">menu</span><span class="o">?</span>
+                <span class="nx">@openChildList</span> <span class="nx">act</span><span class="p">.</span><span class="nx">menu</span><span class="p">,</span> <span class="nx">item</span> 
+            <span class="k">else</span> <span class="k">if</span> <span class="nx">@isChildListVisible</span><span class="p">()</span>
+                <span class="nx">@closeChildList</span><span class="p">()</span>
+        
+        <span class="nx">unless</span> <span class="nx">@hasFocus</span> <span class="k">then</span> <span class="nx">@grabFocus</span><span class="p">()</span>
+    
+    <span class="nx">createDummy</span><span class="o">:-&gt;</span>
+        <span class="nx">$</span> <span class="s2">&quot;&lt;ul class=&#39;menulist&#39;&gt;&lt;/ul&gt;&quot;</span>
+    
+    <span class="nx">clearList</span><span class="o">:-&gt;</span>
+        <span class="nx">@dummy</span><span class="p">.</span><span class="nx">children</span><span class="p">().</span><span class="nx">remove</span><span class="p">()</span>
+    
+    <span class="nx">buildList</span><span class="o">:</span><span class="nf">( model )-&gt;</span>
+        <span class="k">for</span> <span class="nx">act</span> <span class="k">in</span> <span class="nx">model</span><span class="p">.</span><span class="nx">items</span>
+            <span class="k">if</span> <span class="nx">act</span><span class="p">.</span><span class="nx">menu</span><span class="o">?</span>
+                <span class="nv">item = </span><span class="nx">$</span> <span class="s2">&quot;&lt;li class=&#39;menu&#39;&gt;#{act.display}&lt;/li&gt;&quot;</span>
+            <span class="k">else</span>
+                <span class="nv">item = </span><span class="nx">$</span> <span class="s2">&quot;&lt;li class=&#39;menuitem&#39;&gt;#{act.display}&lt;/li&gt;&quot;</span>
+            <span class="nx">@dummy</span><span class="p">.</span><span class="nx">append</span> <span class="nx">item</span>
+        
+        <span class="nx">@dummy</span><span class="p">.</span><span class="nx">children</span><span class="p">().</span><span class="nx">each</span> <span class="p">(</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">o</span> <span class="p">)</span><span class="o">=&gt;</span>
+            <span class="nv">item = </span><span class="nx">$</span> <span class="nx">o</span>
+            <span class="nv">a = </span><span class="nx">model</span><span class="p">.</span><span class="nx">items</span><span class="p">[</span> <span class="nx">i</span> <span class="p">]</span>
+            <span class="nx">item</span><span class="p">.</span><span class="nx">mouseup</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="o">=&gt;</span> <span class="nx">unless</span> <span class="nx">@cantInteract</span><span class="p">()</span> <span class="k">then</span> <span class="k">if</span> <span class="nx">a</span><span class="p">.</span><span class="nx">action</span><span class="o">?</span> <span class="k">then</span> <span class="nx">a</span><span class="p">.</span><span class="nx">action</span><span class="p">()</span>
+            <span class="nx">item</span><span class="p">.</span><span class="nx">mouseover</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="o">=&gt;</span> <span class="nx">unless</span> <span class="nx">@cantInteract</span><span class="p">()</span> <span class="k">then</span> <span class="nx">@select</span> <span class="nx">i</span>
+    
+    <span class="nx">isChildListVisible</span><span class="o">:-&gt;</span>
+        <span class="nx">@childList</span><span class="o">?</span><span class="p">.</span><span class="nx">dummy</span><span class="p">.</span><span class="nx">parent</span><span class="p">().</span><span class="nx">length</span> <span class="o">is</span> <span class="mi">1</span>
+    
+    <span class="nx">closeChildList</span><span class="o">:-&gt;</span>
+        <span class="nx">@childList</span><span class="o">?</span><span class="p">.</span><span class="nx">close</span><span class="p">()</span>
+        <span class="nx">@grabFocus</span><span class="p">()</span>
+    
+    <span class="nx">mousedown</span><span class="o">:</span><span class="nf">(e)-&gt;</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">stopImmediatePropagation</span><span class="p">()</span>
+
+    <span class="nx">openChildList</span><span class="o">:</span><span class="nf">( model, item )-&gt;</span>
+        <span class="nx">unless</span> <span class="nx">@childList</span><span class="o">?</span> 
+            <span class="vi">@childList = </span><span class="k">new</span> <span class="nx">MenuList</span> <span class="k">new</span> <span class="nx">MenuModel</span>
+            <span class="vi">@childList.parentList = </span><span class="k">this</span>
+        
+        <span class="k">if</span> <span class="nx">@childList</span><span class="p">.</span><span class="nx">hasFocus</span> <span class="k">then</span> <span class="nx">@childList</span><span class="p">.</span><span class="nx">dummy</span><span class="p">.</span><span class="nx">blur</span><span class="p">()</span>
+
+        <span class="nx">unless</span> <span class="nx">@isChildListVisible</span><span class="p">()</span> <span class="k">then</span> <span class="nx">@dummy</span><span class="p">.</span><span class="nx">after</span> <span class="nx">@childList</span><span class="p">.</span><span class="nx">dummy</span>
+        <span class="nx">unless</span> <span class="nx">@childList</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">)</span> <span class="o">is</span> <span class="nx">model</span> <span class="k">then</span> <span class="nx">@childList</span><span class="p">.</span><span class="nx">set</span> <span class="s2">&quot;model&quot;</span><span class="p">,</span> <span class="nx">model</span>
+
+        <span class="nv">left = </span><span class="nx">@dummy</span><span class="p">.</span><span class="nx">offset</span><span class="p">().</span><span class="nx">left</span> <span class="o">+</span> <span class="nx">@dummy</span><span class="p">.</span><span class="nx">width</span><span class="p">()</span>
+        <span class="nv">top = </span><span class="nx">item</span><span class="p">.</span><span class="nx">offset</span><span class="p">().</span><span class="nx">top</span>
+
+        <span class="nx">@childList</span><span class="p">.</span><span class="nx">dummy</span><span class="p">.</span><span class="nx">attr</span> <span class="s2">&quot;style&quot;</span><span class="p">,</span> <span class="s2">&quot;left: #{left}px; top: #{top}px;&quot;</span>
+    
+    <span class="nx">triggerAction</span><span class="o">:-&gt;</span>
+        <span class="k">if</span> <span class="nx">@selectedIndex</span> <span class="o">isnt</span> <span class="o">-</span><span class="mi">1</span> 
+            <span class="nv">item = </span><span class="nx">@get</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">).</span><span class="nx">items</span><span class="p">[</span> <span class="nx">@selectedIndex</span> <span class="p">]</span>
+            <span class="k">if</span> <span class="nx">item</span><span class="p">.</span><span class="nx">action</span><span class="o">?</span> <span class="k">then</span> <span class="nx">item</span><span class="p">.</span><span class="nx">action</span><span class="p">()</span>
+
+    <span class="nx">getItemAt</span><span class="o">:</span><span class="nf">( index )-&gt;</span>
+        <span class="nx">$</span> <span class="nx">@dummy</span><span class="p">.</span><span class="nx">children</span><span class="p">(</span> <span class="s2">&quot;li&quot;</span> <span class="p">)[</span> <span class="nx">index</span> <span class="p">]</span>
+
+    <span class="nx">modelChanged</span><span class="o">:</span><span class="nf">( model )-&gt;</span>
+        <span class="nx">@clearList</span><span class="p">()</span>
+        <span class="nx">@buildList</span> <span class="nx">model</span>
+    
+    <span class="nx">moveSelectionUp</span><span class="o">:</span><span class="nf">(e)-&gt;</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+        
+        <span class="nx">unless</span> <span class="nx">@cantInteract</span><span class="p">()</span>
+            <span class="nv">newIndex = </span><span class="nx">@selectedIndex</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="nx">newIndex</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">then</span> <span class="nv">newIndex = </span><span class="nx">@get</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">).</span><span class="nx">size</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span> 
+            <span class="nx">@select</span> <span class="nx">newIndex</span>
+    
+    <span class="nx">moveSelectionDown</span><span class="o">:</span><span class="nf">(e)-&gt;</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+
+        <span class="nx">unless</span> <span class="nx">@cantInteract</span><span class="p">()</span>
+            <span class="nv">newIndex = </span><span class="nx">@selectedIndex</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="nx">newIndex</span> <span class="o">&gt;=</span> <span class="nx">@get</span><span class="p">(</span><span class="s2">&quot;model&quot;</span><span class="p">).</span><span class="nx">size</span><span class="p">()</span> <span class="k">then</span> <span class="nv">newIndex = </span><span class="mi">0</span>
+            <span class="nx">@select</span> <span class="nx">newIndex</span>
+
+    <span class="nx">moveSelectionRight</span><span class="o">:</span><span class="nf">(e)-&gt;</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+
+        <span class="nx">unless</span> <span class="nx">@cantInteract</span><span class="p">()</span>
+            <span class="k">if</span> <span class="nx">@isChildListVisible</span> <span class="k">then</span> <span class="nx">@childList</span><span class="p">.</span><span class="nx">grabFocus</span><span class="p">()</span>
+        
+    <span class="nx">moveSelectionLeft</span><span class="o">:</span><span class="nf">(e)-&gt;</span>
+        <span class="nx">e</span><span class="p">.</span><span class="nx">preventDefault</span><span class="p">()</span>
+
+        <span class="nx">unless</span> <span class="nx">@cantInteract</span><span class="p">()</span>
+            <span class="nx">@dummy</span><span class="p">.</span><span class="nx">blur</span><span class="p">()</span>
+            <span class="nx">@parentList</span><span class="o">?</span><span class="p">.</span><span class="nx">grabFocus</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Address the access restriction due to the sandboxing when used
+directly in a browser with the <code>text/coffeescript</code> mode. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">if</span> <span class="nb">window</span><span class="o">?</span> 
+    <span class="nb">window</span><span class="p">.</span><span class="nv">MenuModel = </span><span class="nx">MenuModel</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">MenuList = </span><span class="nx">MenuList</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

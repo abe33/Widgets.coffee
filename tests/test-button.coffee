@@ -1,27 +1,27 @@
 module "button tests"
 
-test "Buttons should allow to pass a button button as argument", ->
+test "Buttons should allow to pass a button input as argument", ->
 	target = ( $ "<input type='button'></input>" )[0]
 
 	button = new Button target
 
 	assertThat button.target is target
 
-test "Buttons should allow to pass a submit button as argument", ->
+test "Buttons should allow to pass a submit input as argument", ->
 	target = ( $ "<input type='submit'></input>" )[0]
 
 	button = new Button target
 
 	assertThat button.target is target
 
-test "Buttons should allow to pass a reset button as argument", ->
+test "Buttons should allow to pass a reset input as argument", ->
 	target = ( $ "<input type='reset'></input>" )[0]
 
 	button = new Button target
 
 	assertThat button.target is target
 
-test "Buttons shouldn't allow any other type of button as argument", ->
+test "Buttons shouldn't allow any other type of input as argument", ->
 	target = ( $ "<input type='text'></input>" )[0]
 
 	errorRaised = false

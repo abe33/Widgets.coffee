@@ -281,10 +281,10 @@ test "textarea nodes should be replaced by a TextArea", ->
 
     assertThat target.children(".textarea").length, equalTo 1
 
-test "select nodes should be replaced by a DropDownList", ->
+test "select nodes should be replaced by a SingleSelect", ->
 
     target = $("<p><select></select></p>")
 
     target.children().widgets()
 
-    assertThat target.children(".dropdownlist").length, equalTo 1
+    assertThat target.children(".single-select").length, equalTo 1
