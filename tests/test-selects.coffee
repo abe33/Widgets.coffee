@@ -89,7 +89,7 @@ test "SingleSelect's target should be hidden at start", ->
                  </select>" )
     select = new SingleSelect target[0]
 
-    assertThat target.attr("style"), contains "display: none;"
+    assertThat target.attr("style"), contains "display: none"
 
 test "SingleSelect should build a MenuModel with the option of the select", ->
     
@@ -290,8 +290,8 @@ test "When displayed, the menulist should be placed below the select", ->
     select.dummy.mousedown()
 
 
-    assertThat select.menuList.dummy.attr("style"), contains "left: #{left}px;"
-    assertThat select.menuList.dummy.attr("style"), contains "top: #{top}px;"
+    assertThat select.menuList.dummy.attr("style"), contains "left: #{left}px"
+    assertThat select.menuList.dummy.attr("style"), contains "top: #{top}px"
 
     select.dummy.detach()
     select.menuList.dummy.detach()

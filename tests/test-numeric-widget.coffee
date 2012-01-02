@@ -116,7 +116,7 @@ test "NumericWidget should hide their target", ->
 	target = $("<input type='range' value='10' min='0' max='50' step='1'></input>")
 	widget = new NumericWidget target[0]
 
-	assertThat target.attr("style"), equalTo "display: none;"
+	assertThat target.attr("style"), contains "display: none"
 
 test "Concret numeric widgets class should receive an updateDummy call when value change", ->
 

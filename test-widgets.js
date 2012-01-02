@@ -859,10 +859,18 @@
       }
     };
     RadioGroup.prototype.contains = function(radio) {
-      return this.indexOf(radio) !== -1;
+      return __indexOf.call(this.radios, radio) >= 0;
     };
     RadioGroup.prototype.indexOf = function(radio) {
-      return this.radios.indexOf(radio);
+      var r, _i, _len, _ref;
+      _ref = this.radios;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        r = _ref[_i];
+        if (r === radio) {
+          return _i;
+        }
+      }
+      return -1;
     };
     RadioGroup.prototype.checkedSetProgrammatically = false;
     RadioGroup.prototype.select = function(radio) {
@@ -3464,7 +3472,7 @@
     target = $("<input type='text'></input>");
     widget = new Widget(target[0]);
     widget.hideTarget();
-    return assertThat(target.attr("style"), equalTo("display: none;"));
+    return assertThat(target.attr("style"), contains("display: none"));
   });
   test("Widgets shouldn't fail on hide when the target isn't provided", function() {
     var errorRaised, widget;
@@ -4080,7 +4088,7 @@
     var button, target;
     target = $("<input type='reset'></input>");
     button = new Button(target[0]);
-    return assertThat(target.attr("style"), contains("display: none;"));
+    return assertThat(target.attr("style"), contains("display: none"));
   });
   test("Readonly buttons should not trigger the action on a click", function() {
     var action, actionTriggered, button;
@@ -4433,7 +4441,7 @@
     var checkbox, target;
     target = $("<input type='checkbox' checked></input>");
     checkbox = new CheckBox(target[0]);
-    return assertThat(target.attr("style"), equalTo("display: none;"));
+    return assertThat(target.attr("style"), contains("display: none"));
   });
   test("Clicking on a CheckBox should toggle its checked state", function() {
     var checkbox;
@@ -4646,7 +4654,7 @@
     var radio;
     target = $("<input type='radio' checked></input>");
     radio = new Radio(target[0]);
-    return assertThat(target.attr("style"), equalTo("display: none;"));
+    return assertThat(target.attr("style"), contains("display: none"));
   });
   test("Clicking on a Radio should toggle its checked state", function() {
     var radio;
@@ -5091,7 +5099,7 @@
     var widget;
     target = $("<input type='range' value='10' min='0' max='50' step='1'></input>");
     widget = new NumericWidget(target[0]);
-    return assertThat(target.attr("style"), equalTo("display: none;"));
+    return assertThat(target.attr("style"), contains("display: none"));
   });
   test("Concret numeric widgets class should receive an updateDummy call when value change", function() {
     var MockNumericWidget, updateDummyCalled, widget;
@@ -5851,17 +5859,17 @@
   test("Sliders's .knob child position should be proportionate to the value", function() {
     var slider;
     slider = new Slider;
-    slider.dummy.attr("style", "width:100px;");
-    slider.dummy.children(".knob").attr("style", "width:20px;");
+    slider.dummy.attr("style", "width:100px");
+    slider.dummy.children(".knob").attr("style", "width:20px");
     slider.set("value", 25);
     return assertThat(slider.dummy.children(".knob").css("left"), strictlyEqualTo("20px"));
   });
   test("The slider should allow to adjust the value text to the knob", function() {
     var slider;
     slider = new Slider;
-    slider.dummy.attr("style", "width:100px;");
-    slider.dummy.children(".knob").attr("style", "width:20px;");
-    slider.dummy.children(".value").attr("style", "width:10px;");
+    slider.dummy.attr("style", "width:100px");
+    slider.dummy.children(".knob").attr("style", "width:20px");
+    slider.dummy.children(".value").attr("style", "width:10px");
     slider.set("value", 25);
     return assertThat(slider.dummy.children(".value").css("left"), strictlyEqualTo("25px"));
   });
@@ -5869,7 +5877,7 @@
     var slider;
     target = $("<input type='range' value='10' min='0' max='50' step='1'></input>");
     slider = new Slider(target[0]);
-    return assertThat(target.attr("style"), equalTo("display: none;"));
+    return assertThat(target.attr("style"), contains("display: none"));
   });
   test("Pressing the mouse on the knob should init drag", function() {
     var slider;
@@ -5994,8 +6002,8 @@
     slider = new MockSlider;
     slider.set("min", 10);
     slider.set("max", 110);
-    slider.dummy.attr("style", "width:100px;");
-    slider.dummy.children(".knob").attr("style", "width:50px;");
+    slider.dummy.attr("style", "width:100px");
+    slider.dummy.children(".knob").attr("style", "width:50px");
     slider.dummy.children(".knob").mousedown();
     $(document).mousemove();
     return assertThat(slider.get("value"), strictlyEqualTo(30));
@@ -6569,6 +6577,7 @@
     })();
     slider = new MockSlider;
     slider.dummy.width(100);
+    slider.dummy.find(".track").width(100);
     slider.dummy.children(".track").mousedown();
     assertThat(slider.get("value"), equalTo(10));
     assertThat(slider.draggingKnob);
@@ -7440,27 +7449,27 @@
     var picker;
     picker = new FilePicker;
     picker.set("readonly", true);
-    return assertThat(picker.dummy.children("input").attr("style"), equalTo("display: none;"));
+    return assertThat(picker.dummy.children("input").attr("style"), contains("display: none"));
   });
   test("A disabled FilePicker should hide its target", function() {
     var picker;
     picker = new FilePicker;
     picker.set("disabled", true);
-    return assertThat(picker.dummy.children("input").attr("style"), equalTo("display: none;"));
+    return assertThat(picker.dummy.children("input").attr("style"), contains("display: none"));
   });
   test("Enabling a FilePicker should show its target", function() {
     var picker;
     picker = new FilePicker;
     picker.set("disabled", true);
     picker.set("disabled", false);
-    return assertThat(picker.dummy.children("input").attr("style"), equalTo("display: block;"));
+    return assertThat(picker.dummy.children("input").attr("style"), hamcrest.not(contains("display: none")));
   });
   test("Allowing writing in a FilePicker should show its target", function() {
     var picker;
     picker = new FilePicker;
     picker.set("readonly", true);
     picker.set("readonly", false);
-    return assertThat(picker.dummy.children("input").attr("style"), equalTo("display: block;"));
+    return assertThat(picker.dummy.children("input").attr("style"), hamcrest.not(contains("display: none")));
   });
   test("Enabling a readonly widget shouldn't show the target", function() {
     var picker;
@@ -7468,7 +7477,7 @@
     picker.set("readonly", true);
     picker.set("disabled", true);
     picker.set("disabled", false);
-    return assertThat(picker.dummy.children("input").attr("style"), equalTo("display: none;"));
+    return assertThat(picker.dummy.children("input").attr("style"), contains("display: none"));
   });
   test("Enabling writing on a disabled widget shouldn't show the target", function() {
     var picker;
@@ -7476,7 +7485,7 @@
     picker.set("disabled", true);
     picker.set("readonly", true);
     picker.set("readonly", false);
-    return assertThat(picker.dummy.children("input").attr("style"), equalTo("display: none;"));
+    return assertThat(picker.dummy.children("input").attr("style"), contains("display: none"));
   });
   test("A FilePicker should register to the change event of the target", function() {
     var MockFilePicker, picker, targetChangeWasCalled;
@@ -8486,7 +8495,7 @@
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
     select = new SingleSelect(target[0]);
-    return assertThat(target.attr("style"), contains("display: none;"));
+    return assertThat(target.attr("style"), contains("display: none"));
   });
   test("SingleSelect should build a MenuModel with the option of the select", function() {
     var select;
@@ -8616,8 +8625,8 @@
     top = select.dummy.height() + select.dummy.offset().top;
     left = select.dummy.offset().left;
     select.dummy.mousedown();
-    assertThat(select.menuList.dummy.attr("style"), contains("left: " + left + "px;"));
-    assertThat(select.menuList.dummy.attr("style"), contains("top: " + top + "px;"));
+    assertThat(select.menuList.dummy.attr("style"), contains("left: " + left + "px"));
+    assertThat(select.menuList.dummy.attr("style"), contains("top: " + top + "px"));
     select.dummy.detach();
     return select.menuList.dummy.detach();
   });
@@ -9065,7 +9074,7 @@
     var picker;
     target = $("<input type='color'></input>")[0];
     picker = new ColorPicker(target);
-    return assertThat(picker.jTarget.attr("style"), contains("display: none;"));
+    return assertThat(picker.jTarget.attr("style"), contains("display: none"));
   });
   test("A color picker shouldn't accept a target input with a type different than color", function() {
     var errorRaised, picker;
@@ -9197,13 +9206,13 @@
     var picker;
     target = $("<input type='color' value='#abcdef'></input>")[0];
     picker = new ColorPicker(target);
-    return assertThat(picker.dummy.children(".color").attr("style"), contains("background: #abcdef;"));
+    return assertThat(picker.dummy.children(".color").attr("style"), contains("background: #abcdef"));
   });
   test("The color span of a color picker should have its background filled with the widget's value even after a change", function() {
     var picker;
     picker = new ColorPicker;
     picker.set("value", "#abcdef");
-    return assertThat(picker.dummy.children(".color").attr("style"), contains("background: #abcdef;"));
+    return assertThat(picker.dummy.children(".color").attr("style"), contains("background: #abcdef"));
   });
   test("Clicking on a color picker should trigger a dialogRequested signal", function() {
     var picker, signalCalled, signalSource;
@@ -9226,9 +9235,9 @@
   test("The color child text color should be defined according the luminosity of the color", function() {
     var picker;
     picker = new ColorPicker;
-    assertThat(picker.dummy.children(".color").attr("style"), contains("color: #ffffff;"));
+    assertThat(picker.dummy.children(".color").attr("style"), contains("color: #ffffff"));
     picker.set("value", "#ffffff");
-    return assertThat(picker.dummy.children(".color").attr("style"), contains("color: #000000;"));
+    return assertThat(picker.dummy.children(".color").attr("style"), contains("color: #000000"));
   });
   test("The ColorWidget's class should have a default listener defined for the dialogRequested signal of its instance", function() {
     return assertThat(ColorPicker.defaultListener instanceof ColorPickerDialog);
@@ -9423,7 +9432,7 @@
       return MockSquarePicker;
     })();
     grid = new MockSquarePicker;
-    grid.dummy.attr("style", "width:100px; height:100px;");
+    grid.dummy.attr("style", "width:100px; height:100px");
     grid.set({
       rangeX: [0, 10],
       rangeY: [0, 10]
@@ -9456,7 +9465,7 @@
       return MockSquarePicker;
     })();
     grid = new MockSquarePicker;
-    grid.dummy.attr("style", "width:100px; height:100px;");
+    grid.dummy.attr("style", "width:100px; height:100px");
     grid.set({
       rangeX: [0, 10],
       rangeY: [0, 10]
@@ -9483,7 +9492,7 @@
       return MockSquarePicker;
     })();
     grid = new MockSquarePicker;
-    grid.dummy.attr("style", "width:100px; height:100px;");
+    grid.dummy.attr("style", "width:100px; height:100px");
     grid.set({
       rangeX: [0, 10],
       rangeY: [0, 10]
@@ -9507,7 +9516,7 @@
       return MockSquarePicker;
     })();
     grid = new MockSquarePicker;
-    grid.dummy.attr("style", "width:100px; height:100px;");
+    grid.dummy.attr("style", "width:100px; height:100px");
     grid.set({
       rangeX: [0, 10],
       rangeY: [0, 10]
@@ -9550,11 +9559,11 @@
   test("A SquarePicker should have a cursor that display the selected position", function() {
     var grid;
     grid = new SquarePicker;
-    grid.dummy.attr("style", "width:100px; height:100px;");
-    grid.dummy.children(".cursor").attr("style", "width:10px; height:10px;");
+    grid.dummy.attr("style", "width:100px; height:100px");
+    grid.dummy.children(".cursor").attr("style", "width:10px; height:10px");
     grid.set("value", [0.45, 0.55]);
-    assertThat(grid.dummy.children(".cursor").attr("style"), contains("left: 40px;"));
-    return assertThat(grid.dummy.children(".cursor").attr("style"), contains("top: 50px;"));
+    assertThat(grid.dummy.children(".cursor").attr("style"), contains("left: 40px"));
+    return assertThat(grid.dummy.children(".cursor").attr("style"), contains("top: 50px"));
   });
   test("When dragging, releasing the mouse outside of the widget should stop the drag", function() {
     var grid;
@@ -9630,7 +9639,7 @@
   test("A ColorPickerDialog should be hidden at startup", function() {
     var dialog;
     dialog = new ColorPickerDialog;
-    return assertThat(dialog.dummy.attr("style"), contains("display: none;"));
+    return assertThat(dialog.dummy.attr("style"), contains("display: none"));
   });
   test("A ColorPickerDialog should have a listener for the dialogRequested signal that setup the dialog", function() {
     var dialog, picker;
@@ -9646,7 +9655,7 @@
     picker.set("value", "#abcdef");
     dialog = new ColorPickerDialog;
     dialog.dialogRequested(picker);
-    return assertThat(dialog.dummy.attr("style"), contains("display: block;"));
+    return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
   test("A ColorPickerDialog should provides a method to convert a rgb color to hsv values", function() {
     var dialog, hsv;
@@ -9894,7 +9903,7 @@
     dialog.fromHex("ff0000");
     $(document).mouseup();
     assertThat(picker.get("value"), "#ff0000");
-    return assertThat(dialog.dummy.attr("style"), contains("display: none;"));
+    return assertThat(dialog.dummy.attr("style"), contains("display: none"));
   });
   test("Pressing enter on the ColorPickerDialog should terminate the modification and set the value on the ColorPicker", function() {
     var dialog, picker;
@@ -9910,7 +9919,7 @@
       altKey: false
     });
     assertThat(picker.get("value"), "#ff0000");
-    return assertThat(dialog.dummy.attr("style"), contains("display: none;"));
+    return assertThat(dialog.dummy.attr("style"), contains("display: none"));
   });
   test("Pressing enter on the ColorPickerDialog while there was changes made to the red input shouldn't comfirm the color changes", function() {
     var dialog, picker;
@@ -9927,7 +9936,7 @@
       altKey: false
     });
     assertThat(picker.get("value"), "#abcdef");
-    return assertThat(dialog.dummy.attr("style"), contains("display: block;"));
+    return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
   test("Pressing enter on the ColorPickerDialog while there was changes made to the green input shouldn't comfirm the color changes", function() {
     var dialog, picker;
@@ -9944,7 +9953,7 @@
       altKey: false
     });
     assertThat(picker.get("value"), "#abcdef");
-    return assertThat(dialog.dummy.attr("style"), contains("display: block;"));
+    return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
   test("Pressing enter on the ColorPickerDialog while there was changes made to the blue input shouldn't comfirm the color changes", function() {
     var dialog, picker;
@@ -9961,7 +9970,7 @@
       altKey: false
     });
     assertThat(picker.get("value"), "#abcdef");
-    return assertThat(dialog.dummy.attr("style"), contains("display: block;"));
+    return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
   test("Pressing enter on the ColorPickerDialog while there was changes made to the hue input shouldn't comfirm the color changes", function() {
     var dialog, picker;
@@ -9978,7 +9987,7 @@
       altKey: false
     });
     assertThat(picker.get("value"), "#abcdef");
-    return assertThat(dialog.dummy.attr("style"), contains("display: block;"));
+    return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
   test("Pressing enter on the ColorPickerDialog while there was changes made to the saturation input shouldn't comfirm the color changes", function() {
     var dialog, picker;
@@ -9995,7 +10004,7 @@
       altKey: false
     });
     assertThat(picker.get("value"), "#abcdef");
-    return assertThat(dialog.dummy.attr("style"), contains("display: block;"));
+    return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
   test("Pressing enter on the ColorPickerDialog while there was changes made to the value input shouldn't comfirm the color changes", function() {
     var dialog, picker;
@@ -10012,7 +10021,7 @@
       altKey: false
     });
     assertThat(picker.get("value"), "#abcdef");
-    return assertThat(dialog.dummy.attr("style"), contains("display: block;"));
+    return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
   test("Pressing enter on the ColorPickerDialog while there was changes made to the hex input shouldn't comfirm the color changes", function() {
     var dialog, picker;
@@ -10029,7 +10038,7 @@
       altKey: false
     });
     assertThat(picker.get("value"), "#abcdef");
-    return assertThat(dialog.dummy.attr("style"), contains("display: block;"));
+    return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
   test("A ColorPickerDialog should be placed next to the colorpicker a dialog request", function() {
     var dialog, picker;
@@ -10037,9 +10046,9 @@
     picker.set("value", "#abcdef");
     dialog = new ColorPickerDialog;
     dialog.dialogRequested(picker);
-    assertThat(dialog.dummy.attr("style"), contains("left: 0px;"));
-    assertThat(dialog.dummy.attr("style"), contains("top: " + picker.dummy.height() + "px;"));
-    return assertThat(dialog.dummy.attr("style"), contains("position: absolute;"));
+    assertThat(dialog.dummy.attr("style"), contains("left: 0px"));
+    assertThat(dialog.dummy.attr("style"), contains("top: " + picker.dummy.height() + "px"));
+    return assertThat(dialog.dummy.attr("style"), contains("position: absolute"));
   });
   test("A ColorPickerDialog should provides two more chidren that will be used to present the previous and current color", function() {
     var dialog, picker;
@@ -10048,8 +10057,8 @@
     dialog = new ColorPickerDialog;
     dialog.dialogRequested(picker);
     dialog.fromHex("ff0000");
-    assertThat(dialog.dummy.children(".oldColor").attr("style"), contains("background: #abcdef;"));
-    return assertThat(dialog.dummy.children(".newColor").attr("style"), contains("background: #ff0000;"));
+    assertThat(dialog.dummy.children(".oldColor").attr("style"), contains("background: #abcdef"));
+    return assertThat(dialog.dummy.children(".newColor").attr("style"), contains("background: #ff0000"));
   });
   test("Clicking on the old color should reset the value to the original one", function() {
     var dialog, picker;
@@ -10075,7 +10084,7 @@
       altKey: false
     });
     assertThat(picker.get("value"), "#abcdef");
-    return assertThat(dialog.dummy.attr("style"), contains("display: none;"));
+    return assertThat(dialog.dummy.attr("style"), contains("display: none"));
   });
   test("ColorPickerDialog should take focus on dialogRequested", function() {
     var dialog, picker;
@@ -10167,7 +10176,7 @@
   test("The HSV mode should set the background of the color layer of the squarepicker according to the color", function() {
     dialog = new ColorPickerDialog;
     dialog.set("value", "#abcdef");
-    return assertThat(dialog.squarePicker.dummy.find(".hue-color").attr("style"), contains("background: #0080ff;"));
+    return assertThat(dialog.squarePicker.dummy.find(".hue-color").attr("style"), contains("background: #0080ff"));
   });
   test("When in HSV mode, changing the value of the rangePicker should affect the dialog's value", function() {
     dialog = new ColorPickerDialog;
@@ -10265,9 +10274,9 @@
     dialog = new ColorPickerDialog;
     dialog.set("value", "#ff0000");
     dialog.set("mode", new SHVMode);
-    assertThat(dialog.squarePicker.dummy.find(".white-plain").attr("style"), contains("opacity: 0;"));
+    assertThat(dialog.squarePicker.dummy.find(".white-plain").attr("style"), contains("opacity: 0"));
     dialog.set("value", "#ffffff");
-    return assertThat(dialog.squarePicker.dummy.find(".white-plain").attr("style"), contains("opacity: 1;"));
+    return assertThat(dialog.squarePicker.dummy.find(".white-plain").attr("style"), contains("opacity: 1"));
   });
   test("When in SHV mode, changing the value of the rangePicker should affect the dialog's value", function() {
     dialog = new ColorPickerDialog;
@@ -10316,9 +10325,9 @@
     dialog = new ColorPickerDialog;
     dialog.set("value", "#000000");
     dialog.set("mode", new VHSMode);
-    assertThat(dialog.squarePicker.dummy.find(".black-plain").attr("style"), contains("opacity: 1;"));
+    assertThat(dialog.squarePicker.dummy.find(".black-plain").attr("style"), contains("opacity: 1"));
     dialog.set("value", "#ffffff");
-    return assertThat(dialog.squarePicker.dummy.find(".black-plain").attr("style"), contains("opacity: 0;"));
+    return assertThat(dialog.squarePicker.dummy.find(".black-plain").attr("style"), contains("opacity: 0"));
   });
   test("When in VHS mode, changing the value of the rangePicker should affect the dialog's value", function() {
     dialog = new ColorPickerDialog;
@@ -10360,9 +10369,9 @@
     dialog = new ColorPickerDialog;
     dialog.set("value", "#000000");
     dialog.set("mode", new RGBMode);
-    assertThat(dialog.squarePicker.dummy.find(".rgb-up").attr("style"), contains("opacity: 0;"));
+    assertThat(dialog.squarePicker.dummy.find(".rgb-up").attr("style"), contains("opacity: 0"));
     dialog.set("value", "#ffffff");
-    return assertThat(dialog.squarePicker.dummy.find(".rgb-up").attr("style"), contains("opacity: 1;"));
+    return assertThat(dialog.squarePicker.dummy.find(".rgb-up").attr("style"), contains("opacity: 1"));
   });
   test("When in RGB mode, changing the value of the rangePicker should affect the dialog's value", function() {
     dialog = new ColorPickerDialog;
@@ -10404,9 +10413,9 @@
     dialog = new ColorPickerDialog;
     dialog.set("value", "#000000");
     dialog.set("mode", new GRBMode);
-    assertThat(dialog.squarePicker.dummy.find(".grb-up").attr("style"), contains("opacity: 0;"));
+    assertThat(dialog.squarePicker.dummy.find(".grb-up").attr("style"), contains("opacity: 0"));
     dialog.set("value", "#ffffff");
-    return assertThat(dialog.squarePicker.dummy.find(".grb-up").attr("style"), contains("opacity: 1;"));
+    return assertThat(dialog.squarePicker.dummy.find(".grb-up").attr("style"), contains("opacity: 1"));
   });
   test("When in GRB mode, changing the value of the rangePicker should affect the dialog's value", function() {
     dialog = new ColorPickerDialog;
@@ -10448,9 +10457,9 @@
     dialog = new ColorPickerDialog;
     dialog.set("value", "#000000");
     dialog.set("mode", new BGRMode);
-    assertThat(dialog.squarePicker.dummy.find(".bgr-up").attr("style"), contains("opacity: 0;"));
+    assertThat(dialog.squarePicker.dummy.find(".bgr-up").attr("style"), contains("opacity: 0"));
     dialog.set("value", "#ffffff");
-    return assertThat(dialog.squarePicker.dummy.find(".bgr-up").attr("style"), contains("opacity: 1;"));
+    return assertThat(dialog.squarePicker.dummy.find(".bgr-up").attr("style"), contains("opacity: 1"));
   });
   test("When in BGR mode, changing the value of the rangePicker should affect the dialog's value", function() {
     dialog = new ColorPickerDialog;

@@ -859,10 +859,18 @@
       }
     };
     RadioGroup.prototype.contains = function(radio) {
-      return this.indexOf(radio) !== -1;
+      return __indexOf.call(this.radios, radio) >= 0;
     };
     RadioGroup.prototype.indexOf = function(radio) {
-      return this.radios.indexOf(radio);
+      var r, _i, _len, _ref;
+      _ref = this.radios;
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        r = _ref[_i];
+        if (r === radio) {
+          return _i;
+        }
+      }
+      return -1;
     };
     RadioGroup.prototype.checkedSetProgrammatically = false;
     RadioGroup.prototype.select = function(radio) {

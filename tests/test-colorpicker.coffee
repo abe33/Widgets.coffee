@@ -12,7 +12,7 @@ test "A color picker should hide its target", ->
     target = $("<input type='color'></input>")[0]
     picker = new ColorPicker target
 
-    assertThat picker.jTarget.attr("style"), contains "display: none;"
+    assertThat picker.jTarget.attr("style"), contains "display: none"
 
 test "A color picker shouldn't accept a target input with a type different than color", ->
 
@@ -156,14 +156,14 @@ test "The color span of a color picker should have its background filled with th
     
     picker = new ColorPicker target
 
-    assertThat picker.dummy.children(".color").attr("style"), contains "background: #abcdef;"
+    assertThat picker.dummy.children(".color").attr("style"), contains "background: #abcdef"
 
 test "The color span of a color picker should have its background filled with the widget's value even after a change", ->
     picker = new ColorPicker
 
     picker.set "value", "#abcdef"
 
-    assertThat picker.dummy.children(".color").attr("style"), contains "background: #abcdef;"
+    assertThat picker.dummy.children(".color").attr("style"), contains "background: #abcdef"
 
 test "Clicking on a color picker should trigger a dialogRequested signal", ->
     
@@ -191,11 +191,11 @@ test "The color child text color should be defined according the luminosity of t
 
     picker = new ColorPicker
 
-    assertThat picker.dummy.children(".color").attr("style"), contains "color: #ffffff;" 
+    assertThat picker.dummy.children(".color").attr("style"), contains "color: #ffffff" 
 
     picker.set "value", "#ffffff"
 
-    assertThat picker.dummy.children(".color").attr("style"), contains "color: #000000;"
+    assertThat picker.dummy.children(".color").attr("style"), contains "color: #000000"
 
 test "The ColorWidget's class should have a default listener defined for the dialogRequested signal of its instance", ->
 
@@ -390,7 +390,7 @@ test "Given a specific size, pressing the mouse inside a grid should change the 
 
     grid = new MockSquarePicker
 
-    grid.dummy.attr "style", "width:100px; height:100px;"
+    grid.dummy.attr "style", "width:100px; height:100px"
 
     grid.set 
         rangeX:[ 0, 10 ]
@@ -420,7 +420,7 @@ test "A SquarePicker should allow to drag the mouse to change the value", ->
 
     grid = new MockSquarePicker
 
-    grid.dummy.attr "style", "width:100px; height:100px;"
+    grid.dummy.attr "style", "width:100px; height:100px"
 
     grid.set 
         rangeX:[ 0, 10 ]
@@ -446,7 +446,7 @@ test "Dragging the mouse outside of the SquarePicker on the bottom right should 
 
     grid = new MockSquarePicker
 
-    grid.dummy.attr "style", "width:100px; height:100px;"
+    grid.dummy.attr "style", "width:100px; height:100px"
 
     grid.set 
         rangeX:[ 0, 10 ]
@@ -467,7 +467,7 @@ test "Dragging the mouse outside of the SquarePicker on the top left should set 
 
     grid = new MockSquarePicker
 
-    grid.dummy.attr "style", "width:100px; height:100px;"
+    grid.dummy.attr "style", "width:100px; height:100px"
 
     grid.set 
         rangeX:[ 0, 10 ]
@@ -513,13 +513,13 @@ test "Starting a drag should return false", ->
 test "A SquarePicker should have a cursor that display the selected position", ->
 
     grid = new SquarePicker
-    grid.dummy.attr "style", "width:100px; height:100px;"
-    grid.dummy.children(".cursor").attr "style", "width:10px; height:10px;"
+    grid.dummy.attr "style", "width:100px; height:100px"
+    grid.dummy.children(".cursor").attr "style", "width:10px; height:10px"
 
     grid.set "value", [ 0.45, 0.55 ]
 
-    assertThat grid.dummy.children(".cursor").attr("style"), contains "left: 40px;"
-    assertThat grid.dummy.children(".cursor").attr("style"), contains "top: 50px;"
+    assertThat grid.dummy.children(".cursor").attr("style"), contains "left: 40px"
+    assertThat grid.dummy.children(".cursor").attr("style"), contains "top: 50px"
 
 test "When dragging, releasing the mouse outside of the widget should stop the drag", ->
 
@@ -621,7 +621,7 @@ module "colorpickerdialog tests"
 test "A ColorPickerDialog should be hidden at startup", ->
 
     dialog = new ColorPickerDialog
-    assertThat dialog.dummy.attr("style"), contains "display: none;"
+    assertThat dialog.dummy.attr("style"), contains "display: none"
 
 test "A ColorPickerDialog should have a listener for the dialogRequested signal that setup the dialog", ->
 
@@ -641,7 +641,7 @@ test "A ColorPickerDialog should show itself on a dialog request", ->
     dialog = new ColorPickerDialog
     dialog.dialogRequested picker
 
-    assertThat dialog.dummy.attr("style"), contains "display: block;"
+    assertThat dialog.dummy.attr("style"), hamcrest.not contains "display: none"
      
 
 test "A ColorPickerDialog should provides a method to convert a rgb color to hsv values", ->
@@ -951,7 +951,7 @@ test "Clicking outside of the ColorPickerDialog should terminate the modificatio
     $( document ).mouseup()
 
     assertThat picker.get("value"), "#ff0000"
-    assertThat dialog.dummy.attr("style"), contains "display: none;"
+    assertThat dialog.dummy.attr("style"), contains "display: none"
 
 test "Pressing enter on the ColorPickerDialog should terminate the modification and set the value on the ColorPicker", ->
 
@@ -970,7 +970,7 @@ test "Pressing enter on the ColorPickerDialog should terminate the modification 
         altKey:false
 
     assertThat picker.get("value"), "#ff0000"
-    assertThat dialog.dummy.attr("style"), contains "display: none;"
+    assertThat dialog.dummy.attr("style"), contains "display: none"
 
 test "Pressing enter on the ColorPickerDialog while there was changes made to the red input shouldn't comfirm the color changes", ->
 
@@ -991,7 +991,7 @@ test "Pressing enter on the ColorPickerDialog while there was changes made to th
         altKey:false
 
     assertThat picker.get("value"), "#abcdef"
-    assertThat dialog.dummy.attr("style"), contains "display: block;"
+    assertThat dialog.dummy.attr("style"), hamcrest.not contains "display: none"
 
 test "Pressing enter on the ColorPickerDialog while there was changes made to the green input shouldn't comfirm the color changes", ->
 
@@ -1012,7 +1012,7 @@ test "Pressing enter on the ColorPickerDialog while there was changes made to th
         altKey:false
 
     assertThat picker.get("value"), "#abcdef"
-    assertThat dialog.dummy.attr("style"), contains "display: block;"
+    assertThat dialog.dummy.attr("style"), hamcrest.not contains "display: none"
 
 test "Pressing enter on the ColorPickerDialog while there was changes made to the blue input shouldn't comfirm the color changes", ->
 
@@ -1033,7 +1033,7 @@ test "Pressing enter on the ColorPickerDialog while there was changes made to th
         altKey:false
 
     assertThat picker.get("value"), "#abcdef"
-    assertThat dialog.dummy.attr("style"), contains "display: block;"
+    assertThat dialog.dummy.attr("style"), hamcrest.not contains "display: none"
 
 test "Pressing enter on the ColorPickerDialog while there was changes made to the hue input shouldn't comfirm the color changes", ->
 
@@ -1054,7 +1054,7 @@ test "Pressing enter on the ColorPickerDialog while there was changes made to th
         altKey:false
 
     assertThat picker.get("value"), "#abcdef"
-    assertThat dialog.dummy.attr("style"), contains "display: block;"
+    assertThat dialog.dummy.attr("style"), hamcrest.not contains "display: none"
 
 test "Pressing enter on the ColorPickerDialog while there was changes made to the saturation input shouldn't comfirm the color changes", ->
 
@@ -1075,7 +1075,7 @@ test "Pressing enter on the ColorPickerDialog while there was changes made to th
         altKey:false
 
     assertThat picker.get("value"), "#abcdef"
-    assertThat dialog.dummy.attr("style"), contains "display: block;"
+    assertThat dialog.dummy.attr("style"), hamcrest.not contains "display: none"
 
 test "Pressing enter on the ColorPickerDialog while there was changes made to the value input shouldn't comfirm the color changes", ->
 
@@ -1096,7 +1096,7 @@ test "Pressing enter on the ColorPickerDialog while there was changes made to th
         altKey:false
 
     assertThat picker.get("value"), "#abcdef"
-    assertThat dialog.dummy.attr("style"), contains "display: block;"
+    assertThat dialog.dummy.attr("style"), hamcrest.not contains "display: none"
 
 test "Pressing enter on the ColorPickerDialog while there was changes made to the hex input shouldn't comfirm the color changes", ->
 
@@ -1117,7 +1117,7 @@ test "Pressing enter on the ColorPickerDialog while there was changes made to th
         altKey:false
 
     assertThat picker.get("value"), "#abcdef"
-    assertThat dialog.dummy.attr("style"), contains "display: block;"
+    assertThat dialog.dummy.attr("style"), hamcrest.not contains "display: none"
 
 test "A ColorPickerDialog should be placed next to the colorpicker a dialog request", ->
 
@@ -1127,9 +1127,9 @@ test "A ColorPickerDialog should be placed next to the colorpicker a dialog requ
     dialog = new ColorPickerDialog
     dialog.dialogRequested picker
 
-    assertThat dialog.dummy.attr("style"), contains "left: 0px;"
-    assertThat dialog.dummy.attr("style"), contains "top: " + picker.dummy.height() + "px;"
-    assertThat dialog.dummy.attr("style"), contains "position: absolute;"
+    assertThat dialog.dummy.attr("style"), contains "left: 0px"
+    assertThat dialog.dummy.attr("style"), contains "top: " + picker.dummy.height() + "px"
+    assertThat dialog.dummy.attr("style"), contains "position: absolute"
 
 test "A ColorPickerDialog should provides two more chidren that will be used to present the previous and current color", ->
 
@@ -1141,8 +1141,8 @@ test "A ColorPickerDialog should provides two more chidren that will be used to 
 
     dialog.fromHex "ff0000"
 
-    assertThat dialog.dummy.children(".oldColor").attr("style"), contains "background: #abcdef;"
-    assertThat dialog.dummy.children(".newColor").attr("style"), contains "background: #ff0000;"
+    assertThat dialog.dummy.children(".oldColor").attr("style"), contains "background: #abcdef"
+    assertThat dialog.dummy.children(".newColor").attr("style"), contains "background: #ff0000"
 
 test "Clicking on the old color should reset the value to the original one", ->
 
@@ -1175,7 +1175,7 @@ test "Pressing escape on the ColorPickerDialog should close the dialog", ->
         altKey:false
 
     assertThat picker.get("value"), "#abcdef"
-    assertThat dialog.dummy.attr("style"), contains "display: none;"
+    assertThat dialog.dummy.attr("style"), contains "display: none"
 
 test "ColorPickerDialog should take focus on dialogRequested", ->
     
@@ -1282,7 +1282,7 @@ test "The HSV mode should set the background of the color layer of the squarepic
     dialog = new ColorPickerDialog
     dialog.set "value", "#abcdef"
     
-    assertThat dialog.squarePicker.dummy.find(".hue-color").attr("style"), contains "background: #0080ff;"
+    assertThat dialog.squarePicker.dummy.find(".hue-color").attr("style"), contains "background: #0080ff"
 
 test "When in HSV mode, changing the value of the rangePicker should affect the dialog's value", ->
 
@@ -1391,11 +1391,11 @@ test "The SHV mode should alter the opacity of the white plain span according to
 
     dialog.set "mode", new SHVMode
 
-    assertThat dialog.squarePicker.dummy.find(".white-plain").attr("style"), contains "opacity: 0;"
+    assertThat dialog.squarePicker.dummy.find(".white-plain").attr("style"), contains "opacity: 0"
 
     dialog.set "value", "#ffffff"
 
-    assertThat dialog.squarePicker.dummy.find(".white-plain").attr("style"), contains "opacity: 1;"
+    assertThat dialog.squarePicker.dummy.find(".white-plain").attr("style"), contains "opacity: 1"
 
 
 test "When in SHV mode, changing the value of the rangePicker should affect the dialog's value", ->
@@ -1464,11 +1464,11 @@ test "The VHS mode should alter the opacity of the black plain span according to
 
     dialog.set "mode", new VHSMode
 
-    assertThat dialog.squarePicker.dummy.find(".black-plain").attr("style"), contains "opacity: 1;"
+    assertThat dialog.squarePicker.dummy.find(".black-plain").attr("style"), contains "opacity: 1"
 
     dialog.set "value", "#ffffff"
 
-    assertThat dialog.squarePicker.dummy.find(".black-plain").attr("style"), contains "opacity: 0;"
+    assertThat dialog.squarePicker.dummy.find(".black-plain").attr("style"), contains "opacity: 0"
 
 test "When in VHS mode, changing the value of the rangePicker should affect the dialog's value", ->
 
@@ -1525,11 +1525,11 @@ test "The RGB mode should alter the opacity of the upper layer according to the 
 
     dialog.set "mode", new RGBMode
 
-    assertThat dialog.squarePicker.dummy.find(".rgb-up").attr("style"), contains "opacity: 0;"
+    assertThat dialog.squarePicker.dummy.find(".rgb-up").attr("style"), contains "opacity: 0"
 
     dialog.set "value", "#ffffff"
 
-    assertThat dialog.squarePicker.dummy.find(".rgb-up").attr("style"), contains "opacity: 1;"
+    assertThat dialog.squarePicker.dummy.find(".rgb-up").attr("style"), contains "opacity: 1"
 
 test "When in RGB mode, changing the value of the rangePicker should affect the dialog's value", ->
 
@@ -1586,11 +1586,11 @@ test "The GRB mode should alter the opacity of the upper layer according to the 
 
     dialog.set "mode", new GRBMode
 
-    assertThat dialog.squarePicker.dummy.find(".grb-up").attr("style"), contains "opacity: 0;"
+    assertThat dialog.squarePicker.dummy.find(".grb-up").attr("style"), contains "opacity: 0"
 
     dialog.set "value", "#ffffff"
 
-    assertThat dialog.squarePicker.dummy.find(".grb-up").attr("style"), contains "opacity: 1;"
+    assertThat dialog.squarePicker.dummy.find(".grb-up").attr("style"), contains "opacity: 1"
 
 test "When in GRB mode, changing the value of the rangePicker should affect the dialog's value", ->
 
@@ -1647,11 +1647,11 @@ test "The BGR mode should alter the opacity of the upper layer according to the 
 
     dialog.set "mode", new BGRMode
 
-    assertThat dialog.squarePicker.dummy.find(".bgr-up").attr("style"), contains "opacity: 0;"
+    assertThat dialog.squarePicker.dummy.find(".bgr-up").attr("style"), contains "opacity: 0"
 
     dialog.set "value", "#ffffff"
 
-    assertThat dialog.squarePicker.dummy.find(".bgr-up").attr("style"), contains "opacity: 1;"
+    assertThat dialog.squarePicker.dummy.find(".bgr-up").attr("style"), contains "opacity: 1"
 
 test "When in BGR mode, changing the value of the rangePicker should affect the dialog's value", ->
 

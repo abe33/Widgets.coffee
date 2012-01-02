@@ -69,11 +69,13 @@ class RadioGroup
 
     # Returns `true` if the passed-in `radio` is registered in this group.
     contains:( radio )->
-        @indexOf( radio ) isnt -1
+        radio in @radios
     
     # Returns the index of the `radio` in this group.
     indexOf:( radio )->
-        @radios.indexOf radio 
+        for r in @radios
+            if r is radio then return _i
+        return -1 
     
     #### Selection
 

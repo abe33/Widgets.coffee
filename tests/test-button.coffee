@@ -92,7 +92,7 @@ test "Buttons should hide their target at creation", ->
 
 	button = new Button target[0]
 
-	assertThat target.attr("style"), contains "display: none;"
+	assertThat target.attr("style"), contains "display: none"
 
 test "Readonly buttons should not trigger the action on a click", ->
 

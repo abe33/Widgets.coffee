@@ -64,7 +64,7 @@ test "CheckBox should hide its target on creation", ->
 	
 	checkbox = new CheckBox target[0]
 
-	assertThat target.attr("style"), equalTo "display: none;"
+	assertThat target.attr("style"), contains "display: none"
 
 test "Clicking on a CheckBox should toggle its checked state", ->
 

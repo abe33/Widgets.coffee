@@ -42,7 +42,7 @@ test "A readonly FilePicker should hide its target", ->
 
 	picker.set "readonly", true
 
-	assertThat picker.dummy.children("input").attr("style"), equalTo "display: none;"
+	assertThat picker.dummy.children("input").attr("style"), contains "display: none"
 
 test "A disabled FilePicker should hide its target", ->
 	
@@ -50,7 +50,7 @@ test "A disabled FilePicker should hide its target", ->
 
 	picker.set "disabled", true
 
-	assertThat picker.dummy.children("input").attr("style"), equalTo "display: none;"
+	assertThat picker.dummy.children("input").attr("style"), contains "display: none"
 
 test "Enabling a FilePicker should show its target", ->
 	
@@ -59,7 +59,7 @@ test "Enabling a FilePicker should show its target", ->
 	picker.set "disabled", true
 	picker.set "disabled", false
 
-	assertThat picker.dummy.children("input").attr("style"), equalTo "display: block;"
+	assertThat picker.dummy.children("input").attr("style"), hamcrest.not contains "display: none"
 
 test "Allowing writing in a FilePicker should show its target", ->
 	
@@ -68,7 +68,7 @@ test "Allowing writing in a FilePicker should show its target", ->
 	picker.set "readonly", true
 	picker.set "readonly", false
 
-	assertThat picker.dummy.children("input").attr("style"), equalTo "display: block;"
+	assertThat picker.dummy.children("input").attr("style"), hamcrest.not contains "display: none"
 
 test "Enabling a readonly widget shouldn't show the target", ->
 	
@@ -78,7 +78,7 @@ test "Enabling a readonly widget shouldn't show the target", ->
 	picker.set "disabled", true
 	picker.set "disabled", false
 
-	assertThat picker.dummy.children("input").attr("style"), equalTo "display: none;"
+	assertThat picker.dummy.children("input").attr("style"), contains "display: none"
 
 test "Enabling writing on a disabled widget shouldn't show the target", ->
 	
@@ -88,7 +88,7 @@ test "Enabling writing on a disabled widget shouldn't show the target", ->
 	picker.set "readonly", true
 	picker.set "readonly", false
 
-	assertThat picker.dummy.children("input").attr("style"), equalTo "display: none;"
+	assertThat picker.dummy.children("input").attr("style"), contains "display: none"
 
 
 test "A FilePicker should register to the change event of the target", ->

@@ -139,8 +139,8 @@ test "Sliders's .knob child position should be proportionate to the value", ->
 
 	slider = new Slider
 
-	slider.dummy.attr "style", "width:100px;"
-	slider.dummy.children(".knob").attr "style", "width:20px;"
+	slider.dummy.attr "style", "width:100px"
+	slider.dummy.children(".knob").attr "style", "width:20px"
 
 	slider.set "value", 25
 
@@ -150,9 +150,9 @@ test "The slider should allow to adjust the value text to the knob", ->
 
 	slider = new Slider
 
-	slider.dummy.attr "style", "width:100px;"
-	slider.dummy.children(".knob").attr "style", "width:20px;"
-	slider.dummy.children(".value").attr "style", "width:10px;"
+	slider.dummy.attr "style", "width:100px"
+	slider.dummy.children(".knob").attr "style", "width:20px"
+	slider.dummy.children(".value").attr "style", "width:10px"
 
 	slider.set "value", 25
 	assertThat slider.dummy.children(".value").css("left"), strictlyEqualTo "25px"
@@ -161,7 +161,7 @@ test "Sliders should hide their target", ->
 	target = $("<input type='range' value='10' min='0' max='50' step='1'></input>")
 	slider = new Slider target[0]
 
-	assertThat target.attr("style"), equalTo "display: none;"
+	assertThat target.attr("style"), contains "display: none"
 
 test "Pressing the mouse on the knob should init drag", ->
 
@@ -271,8 +271,8 @@ test "While dragging the knob, a slider should update its value according to the
 	slider.set "min", 10
 	slider.set "max", 110
 
-	slider.dummy.attr "style", "width:100px;"
-	slider.dummy.children(".knob").attr "style", "width:50px;"
+	slider.dummy.attr "style", "width:100px"
+	slider.dummy.children(".knob").attr "style", "width:50px"
 	
 	slider.dummy.children(".knob").mousedown()
 	$(document).mousemove()
@@ -925,7 +925,15 @@ test "Pressing the mouse over the track should change the value, grab the focus 
 			super e
 
 	slider = new MockSlider
+
 	slider.dummy.width 100
+	
+	# Both Chrome and Opera failed on this test because the 
+	# track child's width return 0. 
+	#
+	# We ensure that the track have a valid width to let the
+	# test proceed well. 
+	slider.dummy.find(".track").width 100
 
 	slider.dummy.children(".track").mousedown()
 	
@@ -938,6 +946,7 @@ test "Pressing the mouse over a disabled track shouldn't change the value ", ->
 	class MockSlider extends Slider
 		handleTrackMouseDown:(e)->
 			e.pageX = 10
+
 			super e
 
 	slider = new MockSlider

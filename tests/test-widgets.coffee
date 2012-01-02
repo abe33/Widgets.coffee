@@ -487,7 +487,7 @@ test "Widgets should hide the target when provided", ->
 
 	widget.hideTarget()
 	
-	assertThat target.attr( "style" ), equalTo "display: none;"
+	assertThat target.attr( "style" ), contains "display: none"
 
 test "Widgets shouldn't fail on hide when the target isn't provided", ->
 

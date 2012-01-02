@@ -66,7 +66,7 @@ test "Radio should hide its target on creation", ->
 	
 	radio = new Radio target[0]
 
-	assertThat target.attr("style"), equalTo "display: none;"
+	assertThat target.attr("style"), contains "display: none"
 
 test "Clicking on a Radio should toggle its checked state", ->
 
