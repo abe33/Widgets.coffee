@@ -398,30 +398,30 @@ class Widget
     #### Keyboard shortcuts management
 
     # Register the passed-in function to be triggered
-    # when the `keystroke` is matched on `keydown`.
-    registerKeyDownCommand:( keystroke, command )->
-        @keyDownCommands[ keystroke ] = [ keystroke, command ]
+    # when the keystroke `ks` is matched on `keydown`.
+    registerKeyDownCommand:( ks, command )->
+        @keyDownCommands[ ks ] = [ ks, command ]
     
     # Register the passed-in function to be triggered
-    # when the `keystroke` is matched on `keyup`.
-    registerKeyUpCommand:( keystroke, command )->
-        @keyUpCommands[ keystroke ] = [ keystroke, command ]
+    # when the keystroke `ks` is matched on `keyup`.
+    registerKeyUpCommand:( ks, command )->
+        @keyUpCommands[ ks ] = [ ks, command ]
     
     # Returns `yes` if the passed-in keystroke have been associated
     # with a command for this widget's `keydown` event.
-    hasKeyDownCommand:( keystroke )->
-        keystroke of @keyDownCommands
+    hasKeyDownCommand:( ks )->
+        ks of @keyDownCommands
 
     # Returns `yes` if the passed-in keystroke have been associated
     # with a command for this widget's `keyup` event.
-    hasKeyUpCommand:( keystroke )->
-        keystroke of @keyUpCommands
+    hasKeyUpCommand:( ks )->
+        ks of @keyUpCommands
     
     # Takes a keyboard event object and trigger 
     # the corresponding command on a `keydown`.
     triggerKeyDownCommand:( e )->
-        for key, [ keystroke, command ] of @keyDownCommands
-            if keystroke.match e 
+        for key, [ ks, command ] of @keyDownCommands
+            if ks.match e 
                 return command.call this, e
         
         # Keyboards events are bubbled to the parent.
@@ -431,8 +431,8 @@ class Widget
     # Takes a keyboard event object and trigger 
     # the corresponding command on a `keyup`.
     triggerKeyUpCommand:( e )->
-        for key, [ keystroke, command ] of @keyUpCommands
-            if keystroke.match e 
+        for key, [ ks, command ] of @keyUpCommands
+            if ks.match e 
                 return command.call this, e
         
         # Keyboards events are bubbled to the parent.

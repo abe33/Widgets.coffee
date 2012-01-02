@@ -442,24 +442,24 @@
         return this.dummy.blur();
       }
     };
-    Widget.prototype.registerKeyDownCommand = function(keystroke, command) {
-      return this.keyDownCommands[keystroke] = [keystroke, command];
+    Widget.prototype.registerKeyDownCommand = function(ks, command) {
+      return this.keyDownCommands[ks] = [ks, command];
     };
-    Widget.prototype.registerKeyUpCommand = function(keystroke, command) {
-      return this.keyUpCommands[keystroke] = [keystroke, command];
+    Widget.prototype.registerKeyUpCommand = function(ks, command) {
+      return this.keyUpCommands[ks] = [ks, command];
     };
-    Widget.prototype.hasKeyDownCommand = function(keystroke) {
-      return keystroke in this.keyDownCommands;
+    Widget.prototype.hasKeyDownCommand = function(ks) {
+      return ks in this.keyDownCommands;
     };
-    Widget.prototype.hasKeyUpCommand = function(keystroke) {
-      return keystroke in this.keyUpCommands;
+    Widget.prototype.hasKeyUpCommand = function(ks) {
+      return ks in this.keyUpCommands;
     };
     Widget.prototype.triggerKeyDownCommand = function(e) {
-      var command, key, _ref, _ref2;
+      var command, key, ks, _ref, _ref2;
       _ref = this.keyDownCommands;
       for (key in _ref) {
-        _ref2 = _ref[key], keystroke = _ref2[0], command = _ref2[1];
-        if (keystroke.match(e)) {
+        _ref2 = _ref[key], ks = _ref2[0], command = _ref2[1];
+        if (ks.match(e)) {
           return command.call(this, e);
         }
       }
@@ -469,11 +469,11 @@
       return true;
     };
     Widget.prototype.triggerKeyUpCommand = function(e) {
-      var command, key, _ref, _ref2;
+      var command, key, ks, _ref, _ref2;
       _ref = this.keyUpCommands;
       for (key in _ref) {
-        _ref2 = _ref[key], keystroke = _ref2[0], command = _ref2[1];
-        if (keystroke.match(e)) {
+        _ref2 = _ref[key], ks = _ref2[0], command = _ref2[1];
+        if (ks.match(e)) {
           return command.call(this, e);
         }
       }

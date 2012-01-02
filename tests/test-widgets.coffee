@@ -503,6 +503,7 @@ test "Widgets shouldn't fail on hide when the target isn't provided", ->
 
 test "Widgets should allow to register function for specific keystrokes on keydown", ->
 	
+	
 	widget = new Widget
 	
 	widget.registerKeyDownCommand keystroke( keys.a, keys.mod.ctrl ), ->
