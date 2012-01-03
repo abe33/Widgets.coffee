@@ -1291,25 +1291,25 @@
       var items;
       items = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       this.contentChanged = new Signal;
-      this.items = this.filterValidActions(items);
+      this.items = this.filterValidItems(items);
     }
     MenuModel.prototype.add = function() {
       var items;
       items = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-      this.items = this.items.concat(this.filterValidActions(items));
+      this.items = this.items.concat(this.filterValidItems(items));
       return this.contentChanged.dispatch(this);
     };
     MenuModel.prototype.remove = function() {
-      var action, items;
+      var item, items;
       items = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       this.items = (function() {
         var _i, _len, _ref, _results;
         _ref = this.items;
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-          action = _ref[_i];
-          if (__indexOf.call(items, action) < 0) {
-            _results.push(action);
+          item = _ref[_i];
+          if (__indexOf.call(items, item) < 0) {
+            _results.push(item);
           }
         }
         return _results;
@@ -1319,25 +1319,28 @@
     MenuModel.prototype.size = function() {
       return this.items.length;
     };
-    MenuModel.prototype.filterValidActions = function(items) {
-      var action, _i, _len, _results;
+    MenuModel.prototype.filterValidItems = function(items) {
+      var item, _i, _len, _results;
       _results = [];
       for (_i = 0, _len = items.length; _i < _len; _i++) {
-        action = items[_i];
-        if (this.isValidAction(action)) {
-          _results.push(action);
+        item = items[_i];
+        if (this.isValidItem(item)) {
+          _results.push(item);
         }
       }
       return _results;
     };
-    MenuModel.prototype.isValidAction = function(action) {
-      return (action != null) && (action.display != null) && (!(action.action != null) || $.isFunction(action.action));
+    MenuModel.prototype.isValidItem = function(item) {
+      return (item != null) && (item.display != null) && (!(item.action != null) || $.isFunction(item.action)) && (!(item.menu != null) || item.menu instanceof MenuModel);
     };
     return MenuModel;
   })();
   MenuList = (function() {
     __extends(MenuList, Widget);
     function MenuList(model) {
+      if (model == null) {
+        model = new MenuModel;
+      }
       MenuList.__super__.constructor.call(this);
       this.selectedIndex = -1;
       this.createProperty("model");
@@ -1351,36 +1354,18 @@
       this.registerKeyDownCommand(keystroke(keys.right), this.moveSelectionRight);
       this.registerKeyDownCommand(keystroke(keys.left), this.moveSelectionLeft);
     }
-    MenuList.prototype.set_model = function(property, value) {
-      var _ref;
-      this.clearList();
-      if ((_ref = this.properties[property]) != null) {
-        _ref.contentChanged.remove(this.modelChanged, this);
-      }
-      if (value != null) {
-        value.contentChanged.add(this.modelChanged, this);
-      }
-      this.buildList(value);
-      return value;
-    };
-    MenuList.prototype.close = function() {
-      var _ref;
-      this.dummy.blur();
-      this.dummy.detach();
-      return (_ref = this.childList) != null ? _ref.close() : void 0;
-    };
     MenuList.prototype.select = function(index) {
-      var act, item;
+      var item, li;
       if (this.selectedIndex !== -1) {
-        this.getItemAt(this.selectedIndex).removeClass("selected");
+        this.getListItemAt(this.selectedIndex).removeClass("selected");
       }
-      this.selectedIndex = index;
+      this.selectedIndex = index < this.get("model").size() ? index : -1;
       if (this.selectedIndex !== -1) {
-        item = this.getItemAt(this.selectedIndex);
-        item.addClass("selected");
-        act = this.get("model").items[index];
-        if (act.menu != null) {
-          this.openChildList(act.menu, item);
+        li = this.getListItemAt(this.selectedIndex);
+        li.addClass("selected");
+        item = this.get("model").items[index];
+        if (item.menu != null) {
+          this.openChildList(item.menu, li);
         } else if (this.isChildListVisible()) {
           this.closeChildList();
         }
@@ -1389,57 +1374,61 @@
         return this.grabFocus();
       }
     };
+    MenuList.prototype.triggerAction = function() {
+      var item;
+      if (this.selectedIndex !== -1) {
+        item = this.get("model").items[this.selectedIndex];
+        if (item.action != null) {
+          return item.action();
+        }
+      }
+    };
     MenuList.prototype.createDummy = function() {
       return $("<ul class='menulist'></ul>");
     };
-    MenuList.prototype.clearList = function() {
-      return this.dummy.children().remove();
-    };
     MenuList.prototype.buildList = function(model) {
-      var act, item, _i, _len, _ref;
+      var item, li, _i, _len, _ref;
       _ref = model.items;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
-        act = _ref[_i];
-        if (act.menu != null) {
-          item = $("<li class='menu'>" + act.display + "</li>");
+        item = _ref[_i];
+        if (item.menu != null) {
+          li = $("<li class='menu'>" + item.display + "</li>");
         } else {
-          item = $("<li class='menuitem'>" + act.display + "</li>");
+          li = $("<li class='menuitem'>" + item.display + "</li>");
         }
-        this.dummy.append(item);
+        this.dummy.append(li);
       }
       return this.dummy.children().each(__bind(function(i, o) {
-        var a;
-        item = $(o);
-        a = model.items[i];
-        item.mouseup(__bind(function(e) {
+        var _item, _li;
+        _li = $(o);
+        _item = model.items[i];
+        _li.mouseup(__bind(function(e) {
           if (!this.cantInteract()) {
-            if (a.action != null) {
-              return a.action();
+            if (_item.action != null) {
+              return _item.action();
             }
           }
         }, this));
-        return item.mouseover(__bind(function(e) {
+        return _li.mouseover(__bind(function(e) {
           if (!this.cantInteract()) {
             return this.select(i);
           }
         }, this));
       }, this));
     };
-    MenuList.prototype.isChildListVisible = function() {
+    MenuList.prototype.clearList = function() {
+      return this.dummy.children().remove();
+    };
+    MenuList.prototype.close = function() {
       var _ref;
-      return ((_ref = this.childList) != null ? _ref.dummy.parent().length : void 0) === 1;
+      this.dummy.blur();
+      this.dummy.detach();
+      return (_ref = this.childList) != null ? _ref.close() : void 0;
     };
-    MenuList.prototype.closeChildList = function() {
-      var _ref;
-      if ((_ref = this.childList) != null) {
-        _ref.close();
-      }
-      return this.grabFocus();
+    MenuList.prototype.getListItemAt = function(index) {
+      return $(this.dummy.children("li")[index]);
     };
-    MenuList.prototype.mousedown = function(e) {
-      return e.stopImmediatePropagation();
-    };
-    MenuList.prototype.openChildList = function(model, item) {
+    MenuList.prototype.openChildList = function(model, li) {
       var left, top;
       if (this.childList == null) {
         this.childList = new MenuList(new MenuModel);
@@ -1455,20 +1444,34 @@
         this.childList.set("model", model);
       }
       left = this.dummy.offset().left + this.dummy.width();
-      top = item.offset().top;
+      top = li.offset().top;
       return this.childList.dummy.attr("style", "left: " + left + "px; top: " + top + "px;");
     };
-    MenuList.prototype.triggerAction = function() {
-      var item;
-      if (this.selectedIndex !== -1) {
-        item = this.get("model").items[this.selectedIndex];
-        if (item.action != null) {
-          return item.action();
-        }
+    MenuList.prototype.closeChildList = function() {
+      var _ref;
+      if ((_ref = this.childList) != null) {
+        _ref.close();
       }
+      return this.grabFocus();
     };
-    MenuList.prototype.getItemAt = function(index) {
-      return $(this.dummy.children("li")[index]);
+    MenuList.prototype.isChildListVisible = function() {
+      var _ref;
+      return ((_ref = this.childList) != null ? _ref.dummy.parent().length : void 0) === 1;
+    };
+    MenuList.prototype.set_model = function(property, value) {
+      var _ref;
+      this.clearList();
+      if ((_ref = this.properties[property]) != null) {
+        _ref.contentChanged.remove(this.modelChanged, this);
+      }
+      if (value != null) {
+        value.contentChanged.add(this.modelChanged, this);
+      }
+      this.buildList(value);
+      return value;
+    };
+    MenuList.prototype.mousedown = function(e) {
+      return e.stopImmediatePropagation();
     };
     MenuList.prototype.modelChanged = function(model) {
       this.clearList();

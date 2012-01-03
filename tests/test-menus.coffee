@@ -127,6 +127,19 @@ test "MenuList's dummy should be a list that contains the elements in the model"
     assertThat list.dummy.children("li").first().text(), equalTo "display1"
     assertThat list.dummy.children("li").last().text(), equalTo "display3"
 
+test "MenuList should null the selection if the passed-in index is out of bounds", ->
+
+    item1 = display:"display1"
+    item2 = display:"display2"
+    item3 = display:"display3"
+
+    model = new MenuModel item1, item2, item3
+    list = new MenuList model
+
+    list.select 5
+
+    assertThat list.selectedIndex, equalTo -1
+
 test "Clicking on a list item should trigger the corresponding action", ->
 
     itemActionTriggered = false
