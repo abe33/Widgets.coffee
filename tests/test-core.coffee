@@ -236,7 +236,7 @@ test "Input with type checkbox should be replaced by a CheckBox", ->
 
     assertThat target.children(".checkbox").length, equalTo 1
 
-test "Input with type color should be replaced by a ColorPicker", ->
+test "Input with type color should be replaced by a ColorInput", ->
 
     target = $("<p><input type='color'></input></p>")
 

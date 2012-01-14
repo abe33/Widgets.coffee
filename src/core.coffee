@@ -147,7 +147,7 @@ $.widgetPlugin.registerWidgetFor "button",      $.widgetPlugin.inputWithType("bu
 $.widgetPlugin.registerWidgetFor "range",       $.widgetPlugin.inputWithType("range"),                      Slider
 $.widgetPlugin.registerWidgetFor "number",      $.widgetPlugin.inputWithType("number"),                     Stepper
 $.widgetPlugin.registerWidgetFor "checkbox",    $.widgetPlugin.inputWithType("checkbox"),                   CheckBox
-$.widgetPlugin.registerWidgetFor "color",       $.widgetPlugin.inputWithType("color"),                      ColorPicker
+$.widgetPlugin.registerWidgetFor "color",       $.widgetPlugin.inputWithType("color"),                      ColorInput
 $.widgetPlugin.registerWidgetFor "file",        $.widgetPlugin.inputWithType("file"),                       FilePicker
 
 # The radio input are a special case since each radio that have the same name 

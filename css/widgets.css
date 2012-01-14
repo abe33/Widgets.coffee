@@ -1,4 +1,4 @@
-.widget-common, .button, .text, .textarea, .checkbox, .radio, .slider, .stepper, .filepicker, .colorpicker, .gridpicker, .colorpickerdialog, .single-select, .menulist {
+.widget-common, .button, .text, .textarea, .checkbox, .radio, .slider, .stepper, .filepicker, .colorinput, .gridpicker, .colorpicker, .single-select, .menulist {
   display: inline-block;
   margin: 0px;
   margin: 4px 4px 0 0;
@@ -7,7 +7,7 @@
   font-size: 16px;
   vertical-align: bottom;
   color: fff; }
-  .widget-common.disabled, .disabled.button, .disabled.text, .disabled.textarea, .disabled.checkbox, .disabled.radio, .disabled.slider, .disabled.stepper, .disabled.filepicker, .disabled.colorpicker, .disabled.gridpicker, .disabled.colorpickerdialog, .disabled.single-select, .disabled.menulist, .widget-common.readonly, .readonly.button, .readonly.text, .readonly.textarea, .readonly.checkbox, .readonly.radio, .readonly.slider, .readonly.stepper, .readonly.filepicker, .readonly.colorpicker, .readonly.gridpicker, .readonly.colorpickerdialog, .readonly.single-select, .readonly.menulist {
+  .widget-common.disabled, .disabled.button, .disabled.text, .disabled.textarea, .disabled.checkbox, .disabled.radio, .disabled.slider, .disabled.stepper, .disabled.filepicker, .disabled.colorinput, .disabled.gridpicker, .disabled.colorpicker, .disabled.single-select, .disabled.menulist, .widget-common.readonly, .readonly.button, .readonly.text, .readonly.textarea, .readonly.checkbox, .readonly.radio, .readonly.slider, .readonly.stepper, .readonly.filepicker, .readonly.colorinput, .readonly.gridpicker, .readonly.colorpicker, .readonly.single-select, .readonly.menulist {
     opacity: 0.5;
     /* Standard: FF gt 1.5, Opera, Safari */
     filter: alpha(opacity=50);
@@ -18,11 +18,11 @@
     /* Safari 1.x */
     -moz-opacity: 0.5;
     /* FF lt 1.5, Netscape */ }
-  .widget-common:focus, .button:focus, .text:focus, .textarea:focus, .checkbox:focus, .radio:focus, .slider:focus, .stepper:focus, .filepicker:focus, .colorpicker:focus, .gridpicker:focus, .colorpickerdialog:focus, .single-select:focus, .menulist:focus {
+  .widget-common:focus, .button:focus, .text:focus, .textarea:focus, .checkbox:focus, .radio:focus, .slider:focus, .stepper:focus, .filepicker:focus, .colorinput:focus, .gridpicker:focus, .colorpicker:focus, .single-select:focus, .menulist:focus {
     outline: none; }
-  .widget-common.focus, .focus.button, .focus.text, .focus.textarea, .focus.checkbox, .focus.radio, .focus.slider, .focus.stepper, .focus.filepicker, .focus.colorpicker, .focus.gridpicker, .focus.colorpickerdialog, .focus.single-select, .focus.menulist {
+  .widget-common.focus, .focus.button, .focus.text, .focus.textarea, .focus.checkbox, .focus.radio, .focus.slider, .focus.stepper, .focus.filepicker, .focus.colorinput, .focus.gridpicker, .focus.colorpicker, .focus.single-select, .focus.menulist {
     outline: #ff0000 dotted 1px !important; }
-  .widget-common input, .button input, .text input, .textarea input, .checkbox input, .radio input, .slider input, .stepper input, .filepicker input, .colorpicker input, .gridpicker input, .colorpickerdialog input, .single-select input, .menulist input {
+  .widget-common input, .button input, .text input, .textarea input, .checkbox input, .radio input, .slider input, .stepper input, .filepicker input, .colorinput input, .gridpicker input, .colorpicker input, .single-select input, .menulist input {
     outline: none !important;
     color: fff !important;
     margin: 0; }
@@ -56,6 +56,7 @@
   .text input {
     background: none;
     border: none;
+    color: white;
     width: 100%; }
 
 .textarea {
@@ -73,6 +74,7 @@
     background: none;
     border: none;
     width: 100%;
+    color: white;
     resize: none; }
 
 .checkbox {
@@ -229,6 +231,24 @@
   border-radius: 6px; }
   .stepper.disabled .up:hover:after, .stepper.disabled .down:hover:after, .stepper.readonly .up:hover:after, .stepper.readonly .down:hover:after {
     color: #333; }
+  .stepper.disabled:hover:before, .stepper.disabled:hover:after, .stepper.readonly:hover:before, .stepper.readonly:hover:after {
+    display: none; }
+  .stepper:hover:before, .stepper:hover:after {
+    content: "";
+    position: absolute;
+    display: block;
+    width: 0px;
+    height: 0px;
+    border: 1px solid #555555;
+    border-width: 5px;
+    right: 36px;
+    top: 50%; }
+  .stepper:hover:before {
+    border-color: #555555 transparent transparent transparent;
+    margin-top: 2px; }
+  .stepper:hover:after {
+    border-color: transparent transparent #555555 transparent;
+    margin-top: -12px; }
   .stepper.focus .up, .stepper.focus .down {
     background: #777777; }
   .stepper.disabled {
@@ -338,7 +358,7 @@
       left: 50%;
       top: 50%; }
 
-.colorpicker {
+.colorinput {
   background: #555555;
   border: 1px solid #222222;
   width: 100px;
@@ -346,9 +366,9 @@
   -moz-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px; }
-  .colorpicker.focus {
+  .colorinput.focus {
     background: #777777; }
-  .colorpicker .color {
+  .colorinput .color {
     display: block;
     margin: 2px;
     height: 100%;
@@ -599,7 +619,7 @@
 .black-plain {
   background: black; }
 
-.colorpickerdialog {
+.colorpicker {
   background: #444;
   border: 1px solid #222222;
   line-height: 16px;
@@ -613,15 +633,15 @@
   -o-border-radius: 3px;
   border-radius: 3px;
   padding: 0 0 4px 22px; }
-  .colorpickerdialog .gridpicker {
+  .colorpicker .gridpicker {
     width: 160px;
     height: 160px;
     margin: 0;
     margin-right: 4px;
     margin-top: 4px; }
-    .colorpickerdialog .gridpicker.vertical {
+    .colorpicker .gridpicker.vertical {
       width: 12px; }
-  .colorpickerdialog .oldColor, .colorpickerdialog .newColor {
+  .colorpicker .oldColor, .colorpicker .newColor {
     background: #333333;
     display: block;
     position: absolute;
@@ -629,13 +649,13 @@
     height: 80px;
     left: 4px;
     border: 1px solid #222222; }
-  .colorpickerdialog .oldColor {
+  .colorpicker .oldColor {
     border-top: none;
     top: 84px; }
-  .colorpickerdialog .newColor {
+  .colorpicker .newColor {
     border-bottom: none;
     top: 4px; }
-  .colorpickerdialog .radio {
+  .colorpicker .radio {
     float: right;
     width: 10px;
     height: 18px;
@@ -644,7 +664,7 @@
     -o-border-radius: 4px 0 0 4px;
     border-radius: 4px 0 0 4px;
     margin-right: -1px; }
-    .colorpickerdialog .radio.checked:after {
+    .colorpicker .radio.checked:after {
       -webkit-border-radius: 3px 0 0 3px;
       -moz-border-radius: 3px 0 0 3px;
       -o-border-radius: 3px 0 0 3px;
@@ -653,7 +673,7 @@
       height: 16px;
       left: 0px;
       top: 0px; }
-  .colorpickerdialog .text {
+  .colorpicker .text {
     float: right;
     clear: right;
     height: 18px;
@@ -661,19 +681,19 @@
     -moz-border-radius: 4px;
     -o-border-radius: 4px;
     border-radius: 4px; }
-    .colorpickerdialog .text.red, .colorpickerdialog .text.green, .colorpickerdialog .text.blue, .colorpickerdialog .text.hue, .colorpickerdialog .text.saturation, .colorpickerdialog .text.value {
+    .colorpicker .text.red, .colorpicker .text.green, .colorpicker .text.blue, .colorpicker .text.hue, .colorpicker .text.saturation, .colorpicker .text.value {
       -webkit-border-radius: 0 4px 4px 0;
       -moz-border-radius: 0 4px 4px 0;
       -o-border-radius: 0 4px 4px 0;
       border-radius: 0 4px 4px 0; }
-    .colorpickerdialog .text.red, .colorpickerdialog .text.green, .colorpickerdialog .text.blue, .colorpickerdialog .text.hue, .colorpickerdialog .text.saturation, .colorpickerdialog .text.value, .colorpickerdialog .text.hex {
+    .colorpicker .text.red, .colorpicker .text.green, .colorpicker .text.blue, .colorpicker .text.hue, .colorpicker .text.saturation, .colorpicker .text.value, .colorpicker .text.hex {
       width: 40px;
       padding-left: 15px;
       line-height: 16px; }
-      .colorpickerdialog .text.red input, .colorpickerdialog .text.green input, .colorpickerdialog .text.blue input, .colorpickerdialog .text.hue input, .colorpickerdialog .text.saturation input, .colorpickerdialog .text.value input, .colorpickerdialog .text.hex input {
+      .colorpicker .text.red input, .colorpicker .text.green input, .colorpicker .text.blue input, .colorpicker .text.hue input, .colorpicker .text.saturation input, .colorpicker .text.value input, .colorpicker .text.hex input {
         font-size: 12px;
         line-height: 16px; }
-      .colorpickerdialog .text.red:before, .colorpickerdialog .text.green:before, .colorpickerdialog .text.blue:before, .colorpickerdialog .text.hue:before, .colorpickerdialog .text.saturation:before, .colorpickerdialog .text.value:before, .colorpickerdialog .text.hex:before {
+      .colorpicker .text.red:before, .colorpicker .text.green:before, .colorpicker .text.blue:before, .colorpicker .text.hue:before, .colorpicker .text.saturation:before, .colorpicker .text.value:before, .colorpicker .text.hex:before {
         content: "R:";
         color: #898989;
         display: inline;
@@ -681,11 +701,11 @@
         left: 2px;
         font-size: 13px;
         line-height: 18px; }
-    .colorpickerdialog .text.green:before {
+    .colorpicker .text.green:before {
       content: "G:"; }
-    .colorpickerdialog .text.blue:before {
+    .colorpicker .text.blue:before {
       content: "B:"; }
-    .colorpickerdialog .text.hue:after, .colorpickerdialog .text.saturation:after, .colorpickerdialog .text.value:after {
+    .colorpicker .text.hue:after, .colorpicker .text.saturation:after, .colorpicker .text.value:after {
       content: "";
       color: #ccc;
       display: inline;
@@ -693,20 +713,20 @@
       right: 2px;
       font-size: 13px;
       line-height: 18px; }
-    .colorpickerdialog .text.hue:before {
+    .colorpicker .text.hue:before {
       content: "H:"; }
-    .colorpickerdialog .text.hue:after {
+    .colorpicker .text.hue:after {
       content: "°"; }
-    .colorpickerdialog .text.saturation:after, .colorpickerdialog .text.value:after {
+    .colorpicker .text.saturation:after, .colorpicker .text.value:after {
       content: "%"; }
-    .colorpickerdialog .text.saturation:before {
+    .colorpicker .text.saturation:before {
       content: "S:"; }
-    .colorpickerdialog .text.value:before {
+    .colorpicker .text.value:before {
       content: "V:"; }
-    .colorpickerdialog .text.hex {
+    .colorpicker .text.hex {
       padding-left: 13px;
       width: 53px; }
-      .colorpickerdialog .text.hex:before {
+      .colorpicker .text.hex:before {
         content: "#";
         text-indent: 2px; }
 

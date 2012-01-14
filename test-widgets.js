@@ -1,18 +1,10 @@
 (function() {
-  var AbstractMode, BGRMode, Button, CheckBox, ColorPicker, ColorPickerDialog, Container, FilePicker, GRBMode, HSVMode, KeyStroke, MenuList, MenuModel, MockWidget, NumericWidget, RGBMode, Radio, RadioGroup, SHVMode, SingleSelect, Slider, SquarePicker, Stepper, TextArea, TextInput, VHSMode, Widget, WidgetPlugin, area1, area2, area3, button1, button2, button3, checkbox1, checkbox2, checkbox3, colorObjectFromValue, colorObjectToValue, dialog, group, hex2rgb, hsv2rgb, input1, input2, input3, isSafeChannel, isSafeColor, isSafeHSV, isSafeHue, isSafeNumber, isSafePercentage, isSafeRGB, isSafeValue, item1, item2, item3, item4, item5, item6, item7, item8, keys, keystroke, list1, list2, list3, model, picker1, picker2, picker3, radio1, radio2, radio3, rgb2hex, rgb2hsv, s, select1, select2, select3, slider1, slider2, slider3, spicker1, spicker2, spicker3, spicker4, stepper1, stepper2, stepper3, target;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __slice = Array.prototype.slice, __indexOf = Array.prototype.indexOf || function(item) {
-    for (var i = 0, l = this.length; i < l; i++) {
-      if (this[i] === item) return i;
-    }
-    return -1;
-  }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
-    for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
-    function ctor() { this.constructor = child; }
-    ctor.prototype = parent.prototype;
-    child.prototype = new ctor;
-    child.__super__ = parent.prototype;
-    return child;
-  };
+  var AbstractMode, BGRMode, Button, CheckBox, ColorInput, ColorPicker, Container, DateInput, DateMode, DateTimeMode, FilePicker, GRBMode, HSVMode, KeyStroke, MILLISECONDS_IN_DAY, MILLISECONDS_IN_HOUR, MILLISECONDS_IN_MINUTE, MILLISECONDS_IN_SECOND, MILLISECONDS_IN_WEEK, MenuList, MenuModel, MockWidget, MonthMode, NumericWidget, RGBMode, Radio, RadioGroup, SHVMode, SingleSelect, Slider, SquarePicker, Stepper, TextArea, TextInput, TimeMode, VHSMode, WeekMode, Widget, WidgetPlugin, area1, area2, area3, button1, button2, button3, checkbox1, checkbox2, checkbox3, colorObjectFromValue, colorObjectToValue, date2time, date2week, dialog, fill, findFirstWeekFirstDay, group, hex2rgb, hsv2rgb, input1, input2, input3, isSafeChannel, isSafeColor, isSafeHSV, isSafeHue, isSafeNumber, isSafePercentage, isSafeRGB, isSafeValue, item1, item2, item3, item4, item5, item6, item7, item8, keys, keystroke, list1, list2, list3, model, picker1, picker2, picker3, radio1, radio2, radio3, rgb2hex, rgb2hsv, s, safeInt, select1, select2, select3, sinput1, sinput2, sinput3, sinput4, slider1, slider2, slider3, stepper1, stepper2, stepper3, target, time2date, week2date,
+    __slice = Array.prototype.slice,
+    __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
   keystroke = function(keyCode, modifiers) {
     if (("" + keyCode + "-" + modifiers) in KeyStroke.instances) {
       return KeyStroke.instances["" + keyCode + "-" + modifiers];
@@ -20,8 +12,11 @@
       return KeyStroke.instances["" + keyCode + "-" + modifiers] = new KeyStroke(keyCode, modifiers);
     }
   };
+
   KeyStroke = (function() {
+
     KeyStroke.instances = {};
+
     function KeyStroke(keyCode, modifiers) {
       this.keyCode = keyCode;
       this.modifiers = modifiers;
@@ -29,21 +24,17 @@
       this.shift = ((modifiers >> 1) & 0x01) === 1;
       this.alt = ((modifiers >> 2) & 0x01) === 1;
     }
+
     KeyStroke.prototype.match = function(e) {
       return e.keyCode === this.keyCode && e.ctrlKey === this.ctrl && e.shiftKey === this.shift && e.altKey === this.alt;
     };
+
     KeyStroke.prototype.toString = function() {
       var a, k, v;
       a = [];
-      if (this.ctrl) {
-        a.push("Ctrl");
-      }
-      if (this.shift) {
-        a.push("Shift");
-      }
-      if (this.alt) {
-        a.push("Alt");
-      }
+      if (this.ctrl) a.push("Ctrl");
+      if (this.shift) a.push("Shift");
+      if (this.alt) a.push("Alt");
       for (k in keys) {
         v = keys[k];
         if (this.keyCode === v) {
@@ -53,8 +44,11 @@
       }
       return a.join("+");
     };
+
     return KeyStroke;
+
   })();
+
   keys = {
     mod: {
       ctrl: 1,
@@ -161,15 +155,17 @@
     close_bracket: 221,
     single_quote: 222
   };
+
   if (typeof window !== "undefined" && window !== null) {
     window.keystroke = keystroke;
     window.keys = keys;
   }
+
   Widget = (function() {
+
     function Widget(target) {
-      if (target != null) {
-        this.checkTarget(target);
-      }
+      var _this = this;
+      if (target != null) this.checkTarget(target);
       this.propertyChanged = new Signal;
       this.valueChanged = new Signal;
       this.stateChanged = new Signal;
@@ -188,18 +184,16 @@
       this.hasFocus = false;
       if (this.hasTarget) {
         this.targetInitialValue = this.get("value");
-        this.jTarget.bind("change", __bind(function(e) {
-          return this.targetChange(e);
-        }, this));
+        this.jTarget.bind("change", function(e) {
+          return _this.targetChange(e);
+        });
         this.jTarget.addClass("widget-done");
       }
       if (this.hasDummy) {
         this.dummyStates = ["disabled", "readonly"];
         this.setFocusable(!this.get("disabled"));
         this.dummyClass = this.dummy.attr("class");
-        if (this.hasTarget) {
-          this.dummy.attr("style", this.jTarget.attr("style"));
-        }
+        if (this.hasTarget) this.dummy.attr("style", this.jTarget.attr("style"));
         this.registerToDummyEvents();
         this.updateStates();
       }
@@ -208,6 +202,7 @@
       this.keyDownCommands = {};
       this.keyUpCommands = {};
     }
+
     Widget.prototype.get = function(property) {
       if (("get_" + property) in this) {
         return this["get_" + property].call(this, property);
@@ -215,11 +210,10 @@
         return this.properties[property];
       }
     };
+
     Widget.prototype.set = function(propertyOrObject, value) {
       var k, v, _results;
-      if (value == null) {
-        value = null;
-      }
+      if (value == null) value = null;
       if (typeof propertyOrObject === "object") {
         _results = [];
         for (k in propertyOrObject) {
@@ -231,6 +225,7 @@
         return this.handlePropertyChange(propertyOrObject, value);
       }
     };
+
     Widget.prototype.handlePropertyChange = function(property, value) {
       if (property in this.properties) {
         this.properties[property] = ("set_" + property) in this ? this["set_" + property].call(this, property, value) : value;
@@ -238,31 +233,25 @@
       this.updateStates();
       return this.propertyChanged.dispatch(this, property, value);
     };
+
     Widget.prototype.createProperty = function(property, value, setter, getter) {
-      if (value == null) {
-        value = void 0;
-      }
-      if (setter == null) {
-        setter = null;
-      }
-      if (getter == null) {
-        getter = null;
-      }
+      if (value == null) value = void 0;
+      if (setter == null) setter = null;
+      if (getter == null) getter = null;
       this.properties[property] = value;
-      if (setter != null) {
-        this["set_" + property] = setter;
-      }
-      if (getter != null) {
-        return this["get_" + property] = getter;
-      }
+      if (setter != null) this["set_" + property] = setter;
+      if (getter != null) return this["get_" + property] = getter;
     };
+
     Widget.prototype.set_disabled = function(property, value) {
       this.setFocusable(!value);
       return this.booleanToAttribute(property, value);
     };
+
     Widget.prototype.set_readonly = function(property, value) {
       return this.booleanToAttribute(property, value);
     };
+
     Widget.prototype.set_value = function(property, value) {
       if (this.get("readonly")) {
         return this.get(property);
@@ -274,9 +263,11 @@
         return value;
       }
     };
+
     Widget.prototype.set_name = function(property, value) {
       return this.valueToAttribute(property, value);
     };
+
     Widget.prototype.set_id = function(property, value) {
       if (value != null) {
         this.dummy.attr("id", value);
@@ -285,11 +276,11 @@
       }
       return value;
     };
+
     Widget.prototype.checkTarget = function(target) {
-      if (!this.isElement(target)) {
-        throw "Widget's target should be a node";
-      }
+      if (!this.isElement(target)) throw "Widget's target should be a node";
     };
+
     Widget.prototype.isElement = function(o) {
       if (typeof HTMLElement === "object") {
         return o instanceof HTMLElement;
@@ -297,28 +288,34 @@
         return typeof o === "object" && o.nodeType === 1 && typeof o.nodeName === "string";
       }
     };
+
     Widget.prototype.isTag = function(o, tag) {
       var _ref;
       return this.isElement(o) && (o != null ? (_ref = o.nodeName) != null ? _ref.toLowerCase() : void 0 : void 0) === tag;
     };
+
     Widget.prototype.isInputWithType = function() {
       var o, types, _ref;
       o = arguments[0], types = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       return this.isTag(o, "input") && (_ref = $(o).attr("type"), __indexOf.call(types, _ref) >= 0);
     };
+
     Widget.prototype.hideTarget = function() {
-      if (this.hasTarget) {
-        return this.jTarget.hide();
-      }
+      if (this.hasTarget) return this.jTarget.hide();
     };
+
     Widget.prototype.reset = function() {
       return this.set("value", this.targetInitialValue);
     };
+
     Widget.prototype.targetChange = function(e) {};
+
     Widget.prototype.cantInteract = function() {
       return this.get("readonly") || this.get("disabled");
     };
+
     Widget.prototype.createDummy = function() {};
+
     Widget.prototype.updateStates = function() {
       var newState, oldState, outputState, state, _i, _len, _ref;
       if (this.hasDummy) {
@@ -328,15 +325,11 @@
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           state = _ref[_i];
           if (this.get(state)) {
-            if (newState.length > 0) {
-              newState += " ";
-            }
+            if (newState.length > 0) newState += " ";
             newState += state;
           }
         }
-        if (this.hasFocus) {
-          newState = "focus " + newState;
-        }
+        if (this.hasFocus) newState = "focus " + newState;
         outputState = (this.dummyClass != null) && newState !== "" ? this.dummyClass + " " + newState : this.dummyClass != null ? this.dummyClass : newState;
         if (outputState !== oldState) {
           this.dummy.attr("class", outputState);
@@ -344,19 +337,19 @@
         }
       }
     };
+
     Widget.prototype.addClasses = function() {
       var cl, classes, dummyClasses, _i, _len;
       classes = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       dummyClasses = this.dummyClass.split(" ");
       for (_i = 0, _len = classes.length; _i < _len; _i++) {
         cl = classes[_i];
-        if (__indexOf.call(dummyClasses, cl) < 0) {
-          dummyClasses.push(cl);
-        }
+        if (__indexOf.call(dummyClasses, cl) < 0) dummyClasses.push(cl);
       }
       this.dummyClass = dummyClasses.join(" ");
       return this.updateStates();
     };
+
     Widget.prototype.removeClasses = function() {
       var cl, classes, dummyClasses, output, _i, _len;
       classes = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -364,65 +357,81 @@
       output = [];
       for (_i = 0, _len = dummyClasses.length; _i < _len; _i++) {
         cl = dummyClasses[_i];
-        if (__indexOf.call(classes, cl) < 0) {
-          output.push(cl);
-        }
+        if (__indexOf.call(classes, cl) < 0) output.push(cl);
       }
       this.dummyClass = output.join(" ");
       return this.updateStates();
     };
+
     Widget.prototype.registerToDummyEvents = function() {
-      return this.dummy.bind(this.supportedEvents, __bind(function(e) {
-        return this[e.type].apply(this, arguments);
-      }, this));
+      var _this = this;
+      return this.dummy.bind(this.supportedEvents, function(e) {
+        return _this[e.type].apply(_this, arguments);
+      });
     };
+
     Widget.prototype.unregisterFromDummyEvents = function() {
       return this.dummy.unbind(this.supportedEvents);
     };
+
     Widget.prototype.supportedEvents = "mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick focus blur keyup keydown keypress";
+
     Widget.prototype.mousedown = function(e) {
       return true;
     };
+
     Widget.prototype.mouseup = function(e) {
       return true;
     };
+
     Widget.prototype.mousemove = function(e) {
       return true;
     };
+
     Widget.prototype.mouseover = function(e) {
       return true;
     };
+
     Widget.prototype.mouseout = function(e) {
       return true;
     };
+
     Widget.prototype.mousewheel = function(e, d) {
       return true;
     };
+
     Widget.prototype.click = function(e) {
       return true;
     };
+
     Widget.prototype.dblclick = function(e) {
       return true;
     };
+
     Widget.prototype.focus = function(e) {
       this.hasFocus = true;
       this.updateStates();
       return !this.get("disabled");
     };
+
     Widget.prototype.blur = function(e) {
       this.hasFocus = false;
       this.updateStates();
       return true;
     };
+
     Widget.prototype.keydown = function(e) {
       return this.triggerKeyDownCommand(e);
     };
+
     Widget.prototype.keyup = function(e) {
       return this.triggerKeyUpCommand(e);
     };
+
     Widget.prototype.keypress = function(e) {
       return true;
     };
+
     Widget.prototype.setFocusable = function(allowFocus) {
       if (this.hasDummy) {
         if (allowFocus) {
@@ -432,82 +441,76 @@
         }
       }
     };
+
     Widget.prototype.grabFocus = function() {
-      if (this.hasDummy) {
-        return this.dummy.focus();
-      }
+      if (this.hasDummy) return this.dummy.focus();
     };
+
     Widget.prototype.releaseFocus = function() {
-      if (this.hasDummy) {
-        return this.dummy.blur();
-      }
+      if (this.hasDummy) return this.dummy.blur();
     };
+
     Widget.prototype.registerKeyDownCommand = function(ks, command) {
       return this.keyDownCommands[ks] = [ks, command];
     };
+
     Widget.prototype.registerKeyUpCommand = function(ks, command) {
       return this.keyUpCommands[ks] = [ks, command];
     };
+
     Widget.prototype.hasKeyDownCommand = function(ks) {
       return ks in this.keyDownCommands;
     };
+
     Widget.prototype.hasKeyUpCommand = function(ks) {
       return ks in this.keyUpCommands;
     };
+
     Widget.prototype.triggerKeyDownCommand = function(e) {
       var command, key, ks, _ref, _ref2;
       _ref = this.keyDownCommands;
       for (key in _ref) {
         _ref2 = _ref[key], ks = _ref2[0], command = _ref2[1];
-        if (ks.match(e)) {
-          return command.call(this, e);
-        }
+        if (ks.match(e)) return command.call(this, e);
       }
-      if (this.parent != null) {
-        this.parent.triggerKeyDownCommand(e);
-      }
+      if (this.parent != null) this.parent.triggerKeyDownCommand(e);
       return true;
     };
+
     Widget.prototype.triggerKeyUpCommand = function(e) {
       var command, key, ks, _ref, _ref2;
       _ref = this.keyUpCommands;
       for (key in _ref) {
         _ref2 = _ref[key], ks = _ref2[0], command = _ref2[1];
-        if (ks.match(e)) {
-          return command.call(this, e);
-        }
+        if (ks.match(e)) return command.call(this, e);
       }
-      if (this.parent != null) {
-        this.parent.triggerKeyUpCommand(e);
-      }
+      if (this.parent != null) this.parent.triggerKeyUpCommand(e);
       return true;
     };
+
     Widget.prototype.valueFromAttribute = function(property, defaultValue) {
-      if (defaultValue == null) {
-        defaultValue = void 0;
-      }
+      if (defaultValue == null) defaultValue = void 0;
       if (this.hasTarget) {
         return this.jTarget.attr(property);
       } else {
         return defaultValue;
       }
     };
+
     Widget.prototype.valueToAttribute = function(property, value) {
-      if (this.hasTarget) {
-        this.jTarget.attr(property, value);
-      }
+      if (this.hasTarget) this.jTarget.attr(property, value);
       return value;
     };
+
     Widget.prototype.booleanFromAttribute = function(property, defaultValue) {
-      if (defaultValue == null) {
-        defaultValue = void 0;
-      }
+      if (defaultValue == null) defaultValue = void 0;
       if (this.hasTarget) {
         return this.jTarget.attr(property) !== void 0;
       } else {
         return defaultValue;
       }
     };
+
     Widget.prototype.booleanToAttribute = function(property, value) {
       if (this.hasTarget) {
         if (value) {
@@ -518,17 +521,22 @@
       }
       return value;
     };
+
     return Widget;
+
   })();
-  if (typeof window !== "undefined" && window !== null) {
-    window.Widget = Widget;
-  }
-  Container = (function() {
-    __extends(Container, Widget);
+
+  if (typeof window !== "undefined" && window !== null) window.Widget = Widget;
+
+  Container = (function(_super) {
+
+    __extends(Container, _super);
+
     function Container(target) {
       Container.__super__.constructor.call(this, target);
       this.children = [];
     }
+
     Container.prototype.add = function(child) {
       if ((child != null) && child.isWidget && __indexOf.call(this.children, child) < 0) {
         this.children.push(child);
@@ -536,6 +544,7 @@
         return child.parent = this;
       }
     };
+
     Container.prototype.remove = function(child) {
       if ((child != null) && __indexOf.call(this.children, child) >= 0) {
         this.children.splice(this.children.indexOf(child), 1);
@@ -543,21 +552,29 @@
         return child.parent = null;
       }
     };
+
     Container.prototype.createDummy = function() {
       return $("<span class='container'></span>");
     };
+
     Container.prototype.focus = function(e) {
       if (e.target === this.dummy[0]) {
         return Container.__super__.focus.call(this, e);
       }
     };
+
     return Container;
-  })();
+
+  })(Widget);
+
   if (typeof window !== "undefined" && window !== null) {
     window.Container = Container;
   }
-  Button = (function() {
-    __extends(Button, Widget);
+
+  Button = (function(_super) {
+
+    __extends(Button, _super);
+
     function Button() {
       var action, arg, args, target;
       args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -580,14 +597,17 @@
       this.registerKeyDownCommand(keystroke(keys.space), this.click);
       this.registerKeyDownCommand(keystroke(keys.enter), this.click);
     }
+
     Button.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "button", "reset", "submit")) {
         throw "Buttons only support input with a type in button, reset or submit as target";
       }
     };
+
     Button.prototype.createDummy = function() {
       return $("<span class='button'></span>");
     };
+
     Button.prototype.updateContent = function() {
       var action, value;
       this.dummy.find(".content").remove();
@@ -599,51 +619,52 @@
         return this.dummy.append($("<span class='content'>" + value + "</span>"));
       }
     };
+
     Button.prototype.handlePropertyChange = function(property, value) {
       Button.__super__.handlePropertyChange.call(this, property, value);
       if (property === "value" || property === "action") {
         return this.updateContent();
       }
     };
+
     Button.prototype.click = function(e) {
       var action;
-      if (this.cantInteract()) {
-        return;
-      }
+      if (this.cantInteract()) return;
       action = this.get("action");
-      if (action != null) {
-        action.action();
-      }
-      if (this.hasTarget) {
-        return this.jTarget.click();
-      }
+      if (action != null) action.action();
+      if (this.hasTarget) return this.jTarget.click();
     };
+
     return Button;
-  })();
-  if (typeof window !== "undefined" && window !== null) {
-    window.Button = Button;
-  }
-  TextInput = (function() {
-    __extends(TextInput, Widget);
+
+  })(Widget);
+
+  if (typeof window !== "undefined" && window !== null) window.Button = Button;
+
+  TextInput = (function(_super) {
+
+    __extends(TextInput, _super);
+
     function TextInput(target) {
-      if (target == null) {
-        target = $("<input type='text'></input>")[0];
-      }
+      if (target == null) target = $("<input type='text'></input>")[0];
       TextInput.__super__.constructor.call(this, target);
       this.createProperty("maxlength", this.valueFromAttribute("maxlength"));
       this.valueIsObsolete = false;
     }
+
     TextInput.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "text", "password")) {
         throw "TextInput must have an input text as target";
       }
     };
+
     TextInput.prototype.createDummy = function() {
       var dummy;
       dummy = $("<span class='text'></span>");
       dummy.append(this.jTarget);
       return dummy;
     };
+
     TextInput.prototype.set_maxlength = function(property, value) {
       if (value != null) {
         this.jTarget.attr("maxlength", value);
@@ -652,99 +673,126 @@
       }
       return value;
     };
+
     TextInput.prototype.inputSupportedEvents = "focus blur keyup keydown keypress input change";
+
     TextInput.prototype.supportedEvents = "mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick";
+
     TextInput.prototype.registerToDummyEvents = function() {
-      this.jTarget.bind(this.inputSupportedEvents, __bind(function(e) {
-        return this[e.type].apply(this, arguments);
-      }, this));
+      var _this = this;
+      this.jTarget.bind(this.inputSupportedEvents, function(e) {
+        return _this[e.type].apply(_this, arguments);
+      });
       return TextInput.__super__.registerToDummyEvents.call(this);
     };
+
     TextInput.prototype.unregisterFromDummyEvents = function() {
       this.jTarget.unbind(this.inputSupportedEvents);
       return TextInput.__super__.unregisterFromDummyEvents.call(this);
     };
+
     TextInput.prototype.input = function(e) {
       return this.valueIsObsolete = true;
     };
+
     TextInput.prototype.change = function(e) {
       this.set("value", this.valueFromAttribute("value"));
       this.valueIsObsolete = false;
       return false;
     };
+
     TextInput.prototype.mouseup = function() {
-      if (!this.get("disabled")) {
-        this.grabFocus();
-      }
+      if (!this.get("disabled")) this.grabFocus();
       return true;
     };
+
     TextInput.prototype.setFocusable = function() {};
+
     TextInput.prototype.grabFocus = function() {
       return this.jTarget.focus();
     };
+
     return TextInput;
-  })();
+
+  })(Widget);
+
   if (typeof window !== "undefined" && window !== null) {
     window.TextInput = TextInput;
   }
-  TextArea = (function() {
-    __extends(TextArea, Widget);
+
+  TextArea = (function(_super) {
+
+    __extends(TextArea, _super);
+
     function TextArea(target) {
-      if (target == null) {
-        target = $("<textarea></textarea")[0];
-      }
+      if (target == null) target = $("<textarea></textarea")[0];
       TextArea.__super__.constructor.call(this, target);
       this.valueIsObsolete = false;
     }
+
     TextArea.prototype.checkTarget = function(target) {
       if (!this.isTag(target, "textarea")) {
         throw "TextArea only allow textarea nodes as target";
       }
     };
+
     TextArea.prototype.createDummy = function() {
       var dummy;
       dummy = $("<span class='textarea'></span>");
       dummy.append(this.target);
       return dummy;
     };
+
     TextArea.prototype.targetSupportedEvents = "focus blur keyup keydown keypress input change";
+
     TextArea.prototype.supportedEvents = "mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick";
+
     TextArea.prototype.registerToDummyEvents = function() {
-      this.jTarget.bind(this.targetSupportedEvents, __bind(function(e) {
-        return this[e.type].apply(this, arguments);
-      }, this));
+      var _this = this;
+      this.jTarget.bind(this.targetSupportedEvents, function(e) {
+        return _this[e.type].apply(_this, arguments);
+      });
       return TextArea.__super__.registerToDummyEvents.call(this);
     };
+
     TextArea.prototype.unregisterFromDummyEvents = function() {
       this.jTarget.unbind(this.targetSupportedEvents);
       return TextArea.__super__.unregisterFromDummyEvents.call(this);
     };
+
     TextArea.prototype.input = function(e) {
       return this.valueIsObsolete = true;
     };
+
     TextArea.prototype.change = function(e) {
       this.set("value", this.jTarget.val());
       this.valueIsObsolete = false;
       return true;
     };
+
     TextArea.prototype.mouseup = function() {
-      if (!this.get("disabled")) {
-        this.grabFocus();
-      }
+      if (!this.get("disabled")) this.grabFocus();
       return true;
     };
+
     TextArea.prototype.setFocusable = function() {};
+
     TextArea.prototype.grabFocus = function() {
       return this.jTarget.focus();
     };
+
     return TextArea;
-  })();
-  if (typeof window !== "undefined" && window !== null) {
-    window.TextArea = TextArea;
-  }
-  CheckBox = (function() {
-    __extends(CheckBox, Widget);
+
+  })(Widget);
+
+  if (typeof window !== "undefined" && window !== null) window.TextArea = TextArea;
+
+  CheckBox = (function(_super) {
+
+    __extends(CheckBox, _super);
+
     CheckBox.prototype.targetType = "checkbox";
+
     function CheckBox(target) {
       CheckBox.__super__.constructor.call(this, target);
       this.checkedChanged = new Signal;
@@ -757,82 +805,96 @@
       this.updateStates();
       this.hideTarget();
     }
+
     CheckBox.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "checkbox")) {
         throw "CheckBox target must be an input with a checkbox type";
       }
     };
+
     CheckBox.prototype.set_checked = function(property, value) {
       this.updateValue(value, this.get("values"));
       this.booleanToAttribute(property, value);
       this.checkedChanged.dispatch(this, value);
       return value;
     };
+
     CheckBox.prototype.set_value = function(property, value) {
       if (!this.valueSetProgrammatically) {
         this.set("checked", value === this.get("values")[0]);
       }
       return CheckBox.__super__.set_value.call(this, property, value);
     };
+
     CheckBox.prototype.set_values = function(property, value) {
       this.updateValue(this.get("checked"), value);
       return value;
     };
+
     CheckBox.prototype.createDummy = function() {
       return $("<span class='checkbox'></span>");
     };
+
     CheckBox.prototype.toggle = function() {
       return this.set("checked", !this.get("checked"));
     };
+
     CheckBox.prototype.actionToggle = function() {
-      if (!(this.get("readonly") || this.get("disabled"))) {
-        return this.toggle();
-      }
+      if (!(this.get("readonly") || this.get("disabled"))) return this.toggle();
     };
+
     CheckBox.prototype.reset = function() {
       CheckBox.__super__.reset.call(this);
       return this.set("checked", this.targetInitialChecked);
     };
+
     CheckBox.prototype.updateValue = function(checked, values) {
       this.valueSetProgrammatically = true;
       this.set("value", checked ? values[0] : values[1]);
       return this.valueSetProgrammatically = false;
     };
+
     CheckBox.prototype.click = function(e) {
       this.actionToggle();
-      if (!this.get("disabled")) {
-        return this.grabFocus();
-      }
+      if (!this.get("disabled")) return this.grabFocus();
     };
+
     return CheckBox;
-  })();
-  if (typeof window !== "undefined" && window !== null) {
-    window.CheckBox = CheckBox;
-  }
-  Radio = (function() {
-    __extends(Radio, CheckBox);
+
+  })(Widget);
+
+  if (typeof window !== "undefined" && window !== null) window.CheckBox = CheckBox;
+
+  Radio = (function(_super) {
+
+    __extends(Radio, _super);
+
     function Radio() {
       Radio.__super__.constructor.apply(this, arguments);
     }
+
     Radio.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "radio")) {
         throw "Radio target must be an input with a radio type";
       }
     };
+
     Radio.prototype.createDummy = function() {
       return $("<span class='radio'></span>");
     };
+
     Radio.prototype.toggle = function() {
-      if (!this.get("checked")) {
-        return Radio.__super__.toggle.call(this);
-      }
+      if (!this.get("checked")) return Radio.__super__.toggle.call(this);
     };
+
     return Radio;
-  })();
-  if (typeof window !== "undefined" && window !== null) {
-    window.Radio = Radio;
-  }
+
+  })(CheckBox);
+
+  if (typeof window !== "undefined" && window !== null) window.Radio = Radio;
+
   RadioGroup = (function() {
+
     function RadioGroup() {
       var radio, radios, _i, _len;
       radios = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -843,44 +905,44 @@
         this.add(radio);
       }
     }
+
     RadioGroup.prototype.add = function(radio) {
       if (!this.contains(radio)) {
         this.radios.push(radio);
         radio.checkedChanged.add(this.radioCheckedChanged, this);
-        if (radio.get("checked")) {
-          return this.selectedRadio = radio;
-        }
+        if (radio.get("checked")) return this.selectedRadio = radio;
       }
     };
+
     RadioGroup.prototype.remove = function(radio) {
       if (this.contains(radio)) {
         this.radios.splice(this.indexOf(radio), 1);
         return radio.checkedChanged.remove(this.radioCheckedChanged, this);
       }
     };
+
     RadioGroup.prototype.contains = function(radio) {
       return __indexOf.call(this.radios, radio) >= 0;
     };
+
     RadioGroup.prototype.indexOf = function(radio) {
       var r, _i, _len, _ref;
       _ref = this.radios;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         r = _ref[_i];
-        if (r === radio) {
-          return _i;
-        }
+        if (r === radio) return _i;
       }
       return -1;
     };
+
     RadioGroup.prototype.checkedSetProgrammatically = false;
+
     RadioGroup.prototype.select = function(radio) {
       var oldSelectedRadio;
       if (radio !== this.selectedRadio) {
         this.checkedSetProgrammatically = true;
         oldSelectedRadio = this.selectedRadio;
-        if (this.selectedRadio != null) {
-          this.selectedRadio.set("checked", false);
-        }
+        if (this.selectedRadio != null) this.selectedRadio.set("checked", false);
         this.selectedRadio = radio;
         if (this.selectedRadio != null) {
           if (!this.selectedRadio.get("checked")) {
@@ -891,6 +953,7 @@
         return this.selectionChanged.dispatch(this, oldSelectedRadio, this.selectedRadio);
       }
     };
+
     RadioGroup.prototype.radioCheckedChanged = function(radio, checked) {
       if (!this.checkedSetProgrammatically) {
         if (checked) {
@@ -900,13 +963,19 @@
         }
       }
     };
+
     return RadioGroup;
+
   })();
+
   if (typeof window !== "undefined" && window !== null) {
     window.RadioGroup = RadioGroup;
   }
-  NumericWidget = (function() {
-    __extends(NumericWidget, Widget);
+
+  NumericWidget = (function(_super) {
+
+    __extends(NumericWidget, _super);
+
     function NumericWidget(target) {
       NumericWidget.__super__.constructor.call(this, target);
       this.createProperty("min", parseFloat(this.valueFromAttribute("min", 0)));
@@ -924,6 +993,7 @@
       this.registerKeyUpCommand(keystroke(keys.left), this.endDecrement);
       this.hideTarget();
     }
+
     NumericWidget.prototype.cleanValue = function(value, min, max, step) {
       if (value < min) {
         value = min;
@@ -932,41 +1002,51 @@
       }
       return value - (value % step);
     };
+
     NumericWidget.prototype.increment = function() {
       return this.set("value", this.get("value") + this.get("step"));
     };
+
     NumericWidget.prototype.decrement = function() {
       return this.set("value", this.get("value") - this.get("step"));
     };
+
     NumericWidget.prototype.startIncrement = function() {
+      var _this = this;
       if (!this.cantInteract()) {
         if (this.incrementInterval === -1) {
-          this.incrementInterval = setInterval(__bind(function() {
-            return this.increment();
-          }, this), 50);
+          this.incrementInterval = setInterval(function() {
+            return _this.increment();
+          }, 50);
         }
       }
       return false;
     };
+
     NumericWidget.prototype.startDecrement = function() {
+      var _this = this;
       if (!this.cantInteract()) {
         if (this.incrementInterval === -1) {
-          this.incrementInterval = setInterval(__bind(function() {
-            return this.decrement();
-          }, this), 50);
+          this.incrementInterval = setInterval(function() {
+            return _this.decrement();
+          }, 50);
         }
       }
       return false;
     };
+
     NumericWidget.prototype.endIncrement = function() {
       clearInterval(this.incrementInterval);
       return this.incrementInterval = -1;
     };
+
     NumericWidget.prototype.endDecrement = function() {
       clearInterval(this.incrementInterval);
       return this.incrementInterval = -1;
     };
+
     NumericWidget.prototype.updateDummy = function(value, min, max, step) {};
+
     NumericWidget.prototype.set_value = function(property, value) {
       var max, min, step;
       min = this.get("min");
@@ -976,12 +1056,14 @@
       this.updateDummy(value, min, max, step);
       return NumericWidget.__super__.set_value.call(this, property, value);
     };
+
     NumericWidget.prototype.mousewheel = function(event, delta, deltaX, deltaY) {
       if (!(this.get("readonly") || this.get("disabled"))) {
         this.set("value", this.get("value") + delta * this.get("step"));
       }
       return false;
     };
+
     NumericWidget.prototype.set_min = function(property, value) {
       var max, step;
       max = this.get("max");
@@ -994,6 +1076,7 @@
         return value;
       }
     };
+
     NumericWidget.prototype.set_max = function(property, value) {
       var min, step;
       min = this.get("min");
@@ -1006,6 +1089,7 @@
         return value;
       }
     };
+
     NumericWidget.prototype.set_step = function(property, value) {
       var max, min;
       min = this.get("min");
@@ -1014,13 +1098,19 @@
       this.set("value", this.cleanValue(this.get("value"), min, max, value));
       return value;
     };
+
     return NumericWidget;
-  })();
+
+  })(Widget);
+
   if (typeof window !== "undefined" && window !== null) {
     window.NumericWidget = NumericWidget;
   }
-  Slider = (function() {
-    __extends(Slider, NumericWidget);
+
+  Slider = (function(_super) {
+
+    __extends(Slider, _super);
+
     function Slider(target) {
       Slider.__super__.constructor.call(this, target);
       this.draggingKnob = false;
@@ -1031,22 +1121,26 @@
         this.updateDummy(this.get("value"), this.get("min"), this.get("max"));
       }
     }
+
     Slider.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "range")) {
         throw "Slider target must be an input with a range type";
       }
     };
+
     Slider.prototype.startDrag = function(e) {
+      var _this = this;
       this.draggingKnob = true;
       this.lastMouseX = e.pageX;
       this.lastMouseY = e.pageY;
-      $(document).bind("mouseup", this.documentMouseUpDelegate = __bind(function(e) {
-        return this.endDrag();
-      }, this));
-      return $(document).bind("mousemove", this.documentMouseMoveDelegate = __bind(function(e) {
-        return this.drag(e);
-      }, this));
+      $(document).bind("mouseup", this.documentMouseUpDelegate = function(e) {
+        return _this.endDrag();
+      });
+      return $(document).bind("mousemove", this.documentMouseMoveDelegate = function(e) {
+        return _this.drag(e);
+      });
     };
+
     Slider.prototype.drag = function(e) {
       var change, data, knob, knobWidth, max, min, normalizedValue, width;
       data = this.getDragDataFromEvent(e);
@@ -1061,17 +1155,20 @@
       this.lastMouseX = e.pageX;
       return this.lastMouseY = e.pageY;
     };
+
     Slider.prototype.endDrag = function() {
       this.draggingKnob = false;
       $(document).unbind("mousemove", this.documentMouseMoveDelegate);
       return $(document).unbind("mouseup", this.documentMouseUpDelegate);
     };
+
     Slider.prototype.getDragDataFromEvent = function(e) {
       return {
         x: e.pageX - this.lastMouseX,
         y: e.pageY - this.lastMouseY
       };
     };
+
     Slider.prototype.handleKnobMouseDown = function(e) {
       if (!this.cantInteract()) {
         this.startDrag(e);
@@ -1079,6 +1176,7 @@
         return e.preventDefault();
       }
     };
+
     Slider.prototype.handleTrackMouseDown = function(e) {
       var max, min, track, v, x;
       if (!this.cantInteract()) {
@@ -1091,17 +1189,20 @@
         return this.handleKnobMouseDown(e);
       }
     };
+
     Slider.prototype.createDummy = function() {
-      var dummy;
+      var dummy,
+        _this = this;
       dummy = $("<span class='slider'>                        <span class='track'></span>                        <span class='knob'></span>                        <span class='value'></span>                    </span>");
-      dummy.children(".knob").bind("mousedown", __bind(function(e) {
-        return this.handleKnobMouseDown(e);
-      }, this));
-      dummy.children(".track").bind("mousedown", __bind(function(e) {
-        return this.handleTrackMouseDown(e);
-      }, this));
+      dummy.children(".knob").bind("mousedown", function(e) {
+        return _this.handleKnobMouseDown(e);
+      });
+      dummy.children(".track").bind("mousedown", function(e) {
+        return _this.handleTrackMouseDown(e);
+      });
       return dummy;
     };
+
     Slider.prototype.updateDummy = function(value, min, max, step) {
       var knob, knobPos, knobWidth, val, valPos, valWidth, width;
       width = this.dummy.width();
@@ -1119,45 +1220,75 @@
         return val.css("left", "auto");
       }
     };
+
     return Slider;
-  })();
-  if (typeof window !== "undefined" && window !== null) {
-    window.Slider = Slider;
-  }
-  Stepper = (function() {
-    __extends(Stepper, NumericWidget);
+
+  })(NumericWidget);
+
+  if (typeof window !== "undefined" && window !== null) window.Slider = Slider;
+
+  Stepper = (function(_super) {
+
+    __extends(Stepper, _super);
+
     function Stepper(target) {
       Stepper.__super__.constructor.call(this, target);
       this.updateDummy(this.get("value"), this.get("min"), this.get("max"), this.get("step"));
     }
+
     Stepper.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "number")) {
         throw "Stepper target must be an input with a number type";
       }
     };
+
     Stepper.prototype.createDummy = function() {
-      var down, dummy, input, up;
-      dummy = $("<span class='stepper'>				<input type='text' class='value'></input>				<span class='down'></span>				<span class='up'></span>		   </span>");
+      var buttonsMousedown, down, dummy, input, up,
+        _this = this;
+      dummy = $("<span class='stepper'>                <input type='text' class='value'></input>                <span class='down'></span>                <span class='up'></span>           </span>");
       input = dummy.children("input");
       down = dummy.children(".down");
       up = dummy.children(".up");
-      input.bind("change", __bind(function() {
-        return this.validateInput();
-      }, this));
-      down.bind("mousedown", __bind(function() {
-        return this.startDecrement();
-      }, this));
-      down.bind("mouseup", __bind(function() {
-        return this.endDecrement();
-      }, this));
-      up.bind("mousedown", __bind(function() {
-        return this.startIncrement();
-      }, this));
-      up.bind("mouseup", __bind(function() {
-        return this.endIncrement();
-      }, this));
+      input.bind("change", function() {
+        return _this.validateInput();
+      });
+      buttonsMousedown = function(e) {
+        var endFunction, startFunction;
+        e.stopImmediatePropagation();
+        _this.mousePressed = true;
+        switch (e.target) {
+          case down[0]:
+            startFunction = _this.startDecrement;
+            endFunction = _this.endDecrement;
+            break;
+          case up[0]:
+            startFunction = _this.startIncrement;
+            endFunction = _this.endIncrement;
+        }
+        startFunction.call(_this);
+        return $(document).bind("mouseup", _this.documentDelegate = function(e) {
+          _this.mousePressed = false;
+          endFunction.call(_this);
+          return $(document).unbind("mouseup", _this.documentDelegate);
+        });
+      };
+      down.bind("mousedown", buttonsMousedown);
+      up.bind("mousedown", buttonsMousedown);
+      down.bind("mouseout", function() {
+        if (_this.incrementInterval !== -1) return _this.endDecrement();
+      });
+      up.bind("mouseout", function() {
+        if (_this.incrementInterval !== -1) return _this.endIncrement();
+      });
+      down.bind("mouseover", function() {
+        if (_this.mousePressed) return _this.startDecrement();
+      });
+      up.bind("mouseover", function() {
+        if (_this.mousePressed) return _this.startIncrement();
+      });
       return dummy;
     };
+
     Stepper.prototype.updateStates = function() {
       var input;
       Stepper.__super__.updateStates.call(this);
@@ -1173,23 +1304,30 @@
         return input.removeAttr("disabled");
       }
     };
+
     Stepper.prototype.updateDummy = function(value, min, max, step) {
       var input;
       input = this.dummy.children(".value");
       return input.attr("value", value);
     };
+
     Stepper.prototype.inputSupportedEvents = "focus blur keyup keydown keypress";
+
     Stepper.prototype.supportedEvents = "mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick";
+
     Stepper.prototype.registerToDummyEvents = function() {
-      this.dummy.children(".value").bind(this.inputSupportedEvents, __bind(function(e) {
-        return this[e.type].apply(this, arguments);
-      }, this));
+      var _this = this;
+      this.dummy.children(".value").bind(this.inputSupportedEvents, function(e) {
+        return _this[e.type].apply(_this, arguments);
+      });
       return Stepper.__super__.registerToDummyEvents.call(this);
     };
+
     Stepper.prototype.unregisterFromDummyEvents = function() {
       this.dummy.children(".value").unbind(this.inputSupportedEvents);
       return Stepper.__super__.unregisterFromDummyEvents.call(this);
     };
+
     Stepper.prototype.validateInput = function() {
       var value;
       value = parseFloat(this.dummy.children("input").attr("value"));
@@ -1199,56 +1337,91 @@
         return this.updateDummy(this.get("value"), this.get("min"), this.get("max"), this.get("step"));
       }
     };
+
     Stepper.prototype.setFocusable = function() {};
+
     Stepper.prototype.grabFocus = function() {
       return this.dummy.children(".value").focus();
     };
+
     Stepper.prototype.mouseup = function() {
       this.grabFocus();
+      if (this.dragging) {
+        $(document).unbind("mousemove", this.documentMouseMoveDelegate);
+        $(document).unbind("mouseup", this.documentMouseUpDelegate);
+        this.dragging = false;
+      }
       return true;
     };
+
+    Stepper.prototype.mousedown = function(e) {
+      var _this = this;
+      this.dragging = true;
+      this.pressedY = e.pageY;
+      $(document).bind("mousemove", this.documentMouseMoveDelegate = function(e) {
+        return _this.mousemove(e);
+      });
+      return $(document).bind("mouseup", this.documentMouseUpDelegate = function(e) {
+        return _this.mouseup(e);
+      });
+    };
+
+    Stepper.prototype.mousemove = function(e) {
+      var dif, y;
+      if (this.dragging) {
+        y = e.pageY;
+        dif = this.pressedY - y;
+        this.set("value", this.get("value") + dif * this.get("step"));
+        return this.pressedY = y;
+      }
+    };
+
     return Stepper;
-  })();
-  if (typeof window !== "undefined" && window !== null) {
-    window.Stepper = Stepper;
-  }
-  FilePicker = (function() {
-    __extends(FilePicker, Widget);
+
+  })(NumericWidget);
+
+  if (typeof window !== "undefined" && window !== null) window.Stepper = Stepper;
+
+  FilePicker = (function(_super) {
+
+    __extends(FilePicker, _super);
+
     function FilePicker(target) {
-      if (target == null) {
-        target = $("<input type='file'></input>")[0];
-      }
+      var _this = this;
+      if (target == null) target = $("<input type='file'></input>")[0];
       FilePicker.__super__.constructor.call(this, target);
-      if (this.cantInteract()) {
-        this.hideTarget();
-      }
-      this.jTarget.bind("change", __bind(function(e) {
-        return this.targetChange(e);
-      }, this));
+      if (this.cantInteract()) this.hideTarget();
+      this.jTarget.bind("change", function(e) {
+        return _this.targetChange(e);
+      });
     }
+
     FilePicker.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "file")) {
         throw "FilePicker must have an input file as target";
       }
     };
+
     FilePicker.prototype.showTarget = function() {
-      if (this.hasTarget) {
-        return this.jTarget.show();
-      }
+      if (this.hasTarget) return this.jTarget.show();
     };
+
     FilePicker.prototype.targetChange = function(e) {
       this.setValueLabel(this.jTarget.val() != null ? this.jTarget.val() : "Browse");
       return this.dummy.attr("title", this.jTarget.val());
     };
+
     FilePicker.prototype.createDummy = function() {
       var dummy;
       dummy = $("<span class='filepicker'>                    <span class='icon'></span>                    <span class='value'>Browse</span>                 </span>");
       dummy.append(this.jTarget);
       return dummy;
     };
+
     FilePicker.prototype.setValueLabel = function(label) {
       return this.dummy.children(".value").text(label);
     };
+
     FilePicker.prototype.set_disabled = function(property, value) {
       if (value) {
         this.hideTarget();
@@ -1257,6 +1430,7 @@
       }
       return FilePicker.__super__.set_disabled.call(this, property, value);
     };
+
     FilePicker.prototype.set_readonly = function(property, value) {
       if (value) {
         this.hideTarget();
@@ -1265,40 +1439,54 @@
       }
       return FilePicker.__super__.set_readonly.call(this, property, value);
     };
+
     FilePicker.prototype.inputSupportedEvents = "focus blur keyup keydown keypress";
+
     FilePicker.prototype.supportedEvents = "mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick";
+
     FilePicker.prototype.registerToDummyEvents = function() {
-      this.jTarget.bind(this.inputSupportedEvents, __bind(function(e) {
-        return this[e.type].apply(this, arguments);
-      }, this));
+      var _this = this;
+      this.jTarget.bind(this.inputSupportedEvents, function(e) {
+        return _this[e.type].apply(_this, arguments);
+      });
       return FilePicker.__super__.registerToDummyEvents.call(this);
     };
+
     FilePicker.prototype.unregisterFromDummyEvents = function() {
       this.jTarget.unbind(this.inputSupportedEvents);
       return FilePicker.__super__.unregisterFromDummyEvents.call(this);
     };
+
     FilePicker.prototype.setFocusable = function() {};
+
     FilePicker.prototype.grabFocus = function() {
       return this.jTarget.focus();
     };
+
     return FilePicker;
-  })();
+
+  })(Widget);
+
   if (typeof window !== "undefined" && window !== null) {
     window.FilePicker = FilePicker;
   }
+
   MenuModel = (function() {
+
     function MenuModel() {
       var items;
       items = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       this.contentChanged = new Signal;
       this.items = this.filterValidItems(items);
     }
+
     MenuModel.prototype.add = function() {
       var items;
       items = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       this.items = this.items.concat(this.filterValidItems(items));
       return this.contentChanged.dispatch(this);
     };
+
     MenuModel.prototype.remove = function() {
       var item, items;
       items = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -1308,39 +1496,41 @@
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           item = _ref[_i];
-          if (__indexOf.call(items, item) < 0) {
-            _results.push(item);
-          }
+          if (__indexOf.call(items, item) < 0) _results.push(item);
         }
         return _results;
       }).call(this);
       return this.contentChanged.dispatch(this);
     };
+
     MenuModel.prototype.size = function() {
       return this.items.length;
     };
+
     MenuModel.prototype.filterValidItems = function(items) {
       var item, _i, _len, _results;
       _results = [];
       for (_i = 0, _len = items.length; _i < _len; _i++) {
         item = items[_i];
-        if (this.isValidItem(item)) {
-          _results.push(item);
-        }
+        if (this.isValidItem(item)) _results.push(item);
       }
       return _results;
     };
+
     MenuModel.prototype.isValidItem = function(item) {
       return (item != null) && (item.display != null) && (!(item.action != null) || $.isFunction(item.action)) && (!(item.menu != null) || item.menu instanceof MenuModel);
     };
+
     return MenuModel;
+
   })();
-  MenuList = (function() {
-    __extends(MenuList, Widget);
+
+  MenuList = (function(_super) {
+
+    __extends(MenuList, _super);
+
     function MenuList(model) {
-      if (model == null) {
-        model = new MenuModel;
-      }
+      if (model == null) model = new MenuModel;
       MenuList.__super__.constructor.call(this);
       this.selectedIndex = -1;
       this.createProperty("model");
@@ -1354,6 +1544,7 @@
       this.registerKeyDownCommand(keystroke(keys.right), this.moveSelectionRight);
       this.registerKeyDownCommand(keystroke(keys.left), this.moveSelectionLeft);
     }
+
     MenuList.prototype.select = function(index) {
       var item, li;
       if (this.selectedIndex !== -1) {
@@ -1370,24 +1561,24 @@
           this.closeChildList();
         }
       }
-      if (!this.hasFocus) {
-        return this.grabFocus();
-      }
+      if (!this.hasFocus) return this.grabFocus();
     };
+
     MenuList.prototype.triggerAction = function() {
       var item;
       if (this.selectedIndex !== -1) {
         item = this.get("model").items[this.selectedIndex];
-        if (item.action != null) {
-          return item.action();
-        }
+        if (item.action != null) return item.action();
       }
     };
+
     MenuList.prototype.createDummy = function() {
       return $("<ul class='menulist'></ul>");
     };
+
     MenuList.prototype.buildList = function(model) {
-      var item, li, _i, _len, _ref;
+      var item, li, _i, _len, _ref,
+        _this = this;
       _ref = model.items;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         item = _ref[_i];
@@ -1398,48 +1589,44 @@
         }
         this.dummy.append(li);
       }
-      return this.dummy.children().each(__bind(function(i, o) {
+      return this.dummy.children().each(function(i, o) {
         var _item, _li;
         _li = $(o);
         _item = model.items[i];
-        _li.mouseup(__bind(function(e) {
-          if (!this.cantInteract()) {
-            if (_item.action != null) {
-              return _item.action();
-            }
+        _li.mouseup(function(e) {
+          if (!_this.cantInteract()) {
+            if (_item.action != null) return _item.action();
           }
-        }, this));
-        return _li.mouseover(__bind(function(e) {
-          if (!this.cantInteract()) {
-            return this.select(i);
-          }
-        }, this));
-      }, this));
+        });
+        return _li.mouseover(function(e) {
+          if (!_this.cantInteract()) return _this.select(i);
+        });
+      });
     };
+
     MenuList.prototype.clearList = function() {
       return this.dummy.children().remove();
     };
+
     MenuList.prototype.close = function() {
       var _ref;
       this.dummy.blur();
       this.dummy.detach();
       return (_ref = this.childList) != null ? _ref.close() : void 0;
     };
+
     MenuList.prototype.getListItemAt = function(index) {
       return $(this.dummy.children("li")[index]);
     };
+
     MenuList.prototype.openChildList = function(model, li) {
       var left, top;
       if (this.childList == null) {
         this.childList = new MenuList(new MenuModel);
         this.childList.parentList = this;
       }
-      if (this.childList.hasFocus) {
-        this.childList.dummy.blur();
-      }
-      if (!this.isChildListVisible()) {
-        this.dummy.after(this.childList.dummy);
-      }
+      if (this.childList.hasFocus) this.childList.dummy.blur();
+      if (!this.isChildListVisible()) this.dummy.after(this.childList.dummy);
       if (this.childList.get("model") !== model) {
         this.childList.set("model", model);
       }
@@ -1447,66 +1634,65 @@
       top = li.offset().top;
       return this.childList.dummy.attr("style", "left: " + left + "px; top: " + top + "px;");
     };
+
     MenuList.prototype.closeChildList = function() {
       var _ref;
-      if ((_ref = this.childList) != null) {
-        _ref.close();
-      }
+      if ((_ref = this.childList) != null) _ref.close();
       return this.grabFocus();
     };
+
     MenuList.prototype.isChildListVisible = function() {
       var _ref;
       return ((_ref = this.childList) != null ? _ref.dummy.parent().length : void 0) === 1;
     };
+
     MenuList.prototype.set_model = function(property, value) {
       var _ref;
       this.clearList();
       if ((_ref = this.properties[property]) != null) {
         _ref.contentChanged.remove(this.modelChanged, this);
       }
-      if (value != null) {
-        value.contentChanged.add(this.modelChanged, this);
-      }
+      if (value != null) value.contentChanged.add(this.modelChanged, this);
       this.buildList(value);
       return value;
     };
+
     MenuList.prototype.mousedown = function(e) {
       return e.stopImmediatePropagation();
     };
+
     MenuList.prototype.modelChanged = function(model) {
       this.clearList();
       return this.buildList(model);
     };
+
     MenuList.prototype.moveSelectionUp = function(e) {
       var newIndex;
       e.preventDefault();
       if (!this.cantInteract()) {
         newIndex = this.selectedIndex - 1;
-        if (newIndex < 0) {
-          newIndex = this.get("model").size() - 1;
-        }
+        if (newIndex < 0) newIndex = this.get("model").size() - 1;
         return this.select(newIndex);
       }
     };
+
     MenuList.prototype.moveSelectionDown = function(e) {
       var newIndex;
       e.preventDefault();
       if (!this.cantInteract()) {
         newIndex = this.selectedIndex + 1;
-        if (newIndex >= this.get("model").size()) {
-          newIndex = 0;
-        }
+        if (newIndex >= this.get("model").size()) newIndex = 0;
         return this.select(newIndex);
       }
     };
+
     MenuList.prototype.moveSelectionRight = function(e) {
       e.preventDefault();
       if (!this.cantInteract()) {
-        if (this.isChildListVisible) {
-          return this.childList.grabFocus();
-        }
+        if (this.isChildListVisible) return this.childList.grabFocus();
       }
     };
+
     MenuList.prototype.moveSelectionLeft = function(e) {
       var _ref;
       e.preventDefault();
@@ -1515,14 +1701,20 @@
         return (_ref = this.parentList) != null ? _ref.grabFocus() : void 0;
       }
     };
+
     return MenuList;
-  })();
+
+  })(Widget);
+
   if (typeof window !== "undefined" && window !== null) {
     window.MenuModel = MenuModel;
     window.MenuList = MenuList;
   }
-  SingleSelect = (function() {
-    __extends(SingleSelect, Widget);
+
+  SingleSelect = (function(_super) {
+
+    __extends(SingleSelect, _super);
+
     function SingleSelect(target) {
       SingleSelect.__super__.constructor.call(this, target);
       if (this.hasTarget) {
@@ -1541,61 +1733,68 @@
       this.registerKeyDownCommand(keystroke(keys.up), this.moveSelectionUp);
       this.registerKeyDownCommand(keystroke(keys.down), this.moveSelectionDown);
     }
+
     SingleSelect.prototype.checkTarget = function(target) {
       if (!this.isTag(target, "select") || ($(target).attr("multiple") != null)) {
         throw "A SingleSelect only allow select nodes as target";
       }
     };
+
     SingleSelect.prototype.clearOptions = function() {
       return this.jTarget.children().remove();
     };
+
     SingleSelect.prototype.buildOptions = function(model, target) {
-      var act, group, _i, _len, _ref, _results;
-      if (model == null) {
-        model = this.model;
-      }
-      if (target == null) {
-        target = this.jTarget;
-      }
+      var act, group, _i, _len, _ref, _results,
+        _this = this;
+      if (model == null) model = this.model;
+      if (target == null) target = this.jTarget;
       _ref = model.items;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         act = _ref[_i];
-        _results.push(act.menu != null ? (group = $("<optgroup label='" + act.display + "'></optgroup>"), target.append(group), this.buildOptions(act.menu, group)) : (act.action == null ? act.action = __bind(function() {
-          return this.set("value", act.value);
-        }, this) : void 0, target.append($("<option value='" + act.value + "'>" + act.display + "</option>"))));
+        if (act.menu != null) {
+          group = $("<optgroup label='" + act.display + "'></optgroup>");
+          target.append(group);
+          _results.push(this.buildOptions(act.menu, group));
+        } else {
+          if (act.action == null) {
+            act.action = function() {
+              return _this.set("value", act.value);
+            };
+          }
+          _results.push(target.append($("<option value='" + act.value + "'>" + act.display + "</option>")));
+        }
       }
       return _results;
     };
+
     SingleSelect.prototype.updateOptionSelection = function() {
       var _ref;
       return (_ref = this.getOptionAt(this.selectedPath)) != null ? _ref.attr("selected", "selected") : void 0;
     };
+
     SingleSelect.prototype.getOptionLabel = function(option) {
-      if (option == null) {
-        return null;
-      }
+      if (option == null) return null;
       if (option.attr("label")) {
         return option.attr("label");
       } else {
         return option.text();
       }
     };
+
     SingleSelect.prototype.getOptionValue = function(option) {
-      if (option == null) {
-        return null;
-      }
+      if (option == null) return null;
       if (option.attr("value")) {
         return option.attr("value");
       } else {
         return option.text();
       }
     };
+
     SingleSelect.prototype.getOptionAt = function(path) {
       var children, option, step, _i, _len;
-      if (path === null) {
-        return null;
-      }
+      if (path === null) return null;
       option = null;
       if (this.hasTarget) {
         children = this.jTarget.children();
@@ -1613,9 +1812,11 @@
         return null;
       }
     };
+
     SingleSelect.prototype.createDummy = function() {
       return $("<span class='single-select'>               <span class='value'></span>           </span>");
     };
+
     SingleSelect.prototype.updateDummy = function() {
       var display, _ref;
       if (this.selectedPath !== null) {
@@ -1626,55 +1827,49 @@
       this.dummy.find(".value").remove();
       return this.dummy.append($("<span class='value'>" + display + "</span>"));
     };
+
     SingleSelect.prototype.buildModel = function(model, node) {
-      node.each(__bind(function(i, o) {
+      var _this = this;
+      node.each(function(i, o) {
         var option, value;
         option = $(o);
         if (o.nodeName.toLowerCase() === "optgroup") {
           return model.add({
-            display: this.getOptionLabel(option),
-            menu: this.buildModel(new MenuModel, option.children())
+            display: _this.getOptionLabel(option),
+            menu: _this.buildModel(new MenuModel, option.children())
           });
         } else {
-          value = this.getOptionValue(option);
+          value = _this.getOptionValue(option);
           return model.add({
-            display: this.getOptionLabel(option),
+            display: _this.getOptionLabel(option),
             value: value,
-            action: __bind(function() {
-              return this.set("value", value);
-            }, this)
+            action: function() {
+              return _this.set("value", value);
+            }
           });
         }
-      }, this));
+      });
       return model;
     };
+
     SingleSelect.prototype.getItemAt = function(path) {
       var item, model, step, _i, _len;
-      if (path === null) {
-        return null;
-      }
+      if (path === null) return null;
       model = this.model;
       item = null;
       for (_i = 0, _len = path.length; _i < _len; _i++) {
         step = path[_i];
         item = model.items[step];
-        if (item == null) {
-          return null;
-        }
-        if ((item != null ? item.menu : void 0) != null) {
-          model = item.menu;
-        }
+        if (item == null) return null;
+        if ((item != null ? item.menu : void 0) != null) model = item.menu;
       }
       return item;
     };
+
     SingleSelect.prototype.findValue = function(value, model) {
       var item, passResults, subPassResults, _i, _len, _ref;
-      if (model == null) {
-        model = this.model;
-      }
-      if (!(value != null) || value === "") {
-        return null;
-      }
+      if (model == null) model = this.model;
+      if (!(value != null) || value === "") return null;
       passResults = null;
       _ref = model.items;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -1692,34 +1887,32 @@
       }
       return passResults;
     };
+
     SingleSelect.prototype.getModelAt = function(path) {
       var item, model, step, _i, _len;
-      if (path === null) {
-        return null;
-      }
+      if (path === null) return null;
       model = this.model;
       item = null;
       for (_i = 0, _len = path.length; _i < _len; _i++) {
         step = path[_i];
         item = model.items[step];
-        if (item == null) {
-          return null;
-        }
-        if ((item != null ? item.menu : void 0) != null) {
-          model = item.menu;
-        }
+        if (item == null) return null;
+        if ((item != null ? item.menu : void 0) != null) model = item.menu;
       }
       return model;
     };
+
     SingleSelect.prototype.buildMenu = function() {
       return this.menuList = new MenuList(this.model);
     };
+
     SingleSelect.prototype.openMenu = function() {
-      var left, list, step, top, _i, _len, _ref, _results;
+      var left, list, step, top, _i, _len, _ref, _results,
+        _this = this;
       if (!this.cantInteract()) {
-        ($(document)).bind("mousedown", this.documentDelegate = __bind(function(e) {
-          return this.documentMouseDown(e);
-        }, this));
+        ($(document)).bind("mousedown", this.documentDelegate = function(e) {
+          return _this.documentMouseDown(e);
+        });
         this.dummy.after(this.menuList.dummy);
         left = this.dummy.offset().left;
         top = this.dummy.offset().top + this.dummy.height();
@@ -1732,20 +1925,27 @@
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             step = _ref[_i];
             list.select(step);
-            _results.push(list.childList ? list = list.childList : void 0);
+            if (list.childList) {
+              _results.push(list = list.childList);
+            } else {
+              _results.push(void 0);
+            }
           }
           return _results;
         }
       }
     };
+
     SingleSelect.prototype.closeMenu = function() {
       this.menuList.close();
       this.grabFocus();
       return $(document).unbind("mousedown", this.documentDelegate);
     };
+
     SingleSelect.prototype.isMenuVisible = function() {
       return this.menuList.dummy.parent().length === 1;
     };
+
     SingleSelect.prototype.moveSelectionUp = function(e) {
       e.preventDefault();
       if (!this.cantInteract()) {
@@ -1753,6 +1953,7 @@
         return this.set("value", this.getOptionValue(this.getOptionAt(this.selectedPath)));
       }
     };
+
     SingleSelect.prototype.moveSelectionDown = function(e) {
       e.preventDefault();
       if (!this.cantInteract()) {
@@ -1760,6 +1961,7 @@
         return this.set("value", this.getOptionValue(this.getOptionAt(this.selectedPath)));
       }
     };
+
     SingleSelect.prototype.findNext = function(path) {
       var model, newPath, nextItem, step;
       model = this.getModelAt(path);
@@ -1785,6 +1987,7 @@
       }
       return newPath;
     };
+
     SingleSelect.prototype.findPrevious = function(path) {
       var model, newPath, nextItem, step;
       model = this.getModelAt(path);
@@ -1811,6 +2014,7 @@
       }
       return newPath;
     };
+
     SingleSelect.prototype.set_value = function(property, value) {
       var newPath, newValue, oldValue;
       oldValue = this.get("value");
@@ -1820,19 +2024,16 @@
         this.selectedPath = newPath;
         newValue = value;
       }
-      if (this.hasTarget) {
-        this.updateOptionSelection();
-      }
+      if (this.hasTarget) this.updateOptionSelection();
       this.updateDummy();
-      if (this.isMenuVisible()) {
-        this.closeMenu();
-      }
+      if (this.isMenuVisible()) this.closeMenu();
       if ((newValue != null) !== null) {
         return newValue;
       } else {
         return oldValue;
       }
     };
+
     SingleSelect.prototype.modelChanged = function(model) {
       if (this.getItemAt(this.selectedPath) == null) {
         this.selectedPath = this.findNext([0]);
@@ -1844,6 +2045,7 @@
         return this.updateOptionSelection();
       }
     };
+
     SingleSelect.prototype.mousedown = function(e) {
       if (!this.cantInteract()) {
         e.preventDefault();
@@ -1855,14 +2057,19 @@
         }
       }
     };
+
     SingleSelect.prototype.documentMouseDown = function(e) {
       return this.closeMenu();
     };
+
     return SingleSelect;
-  })();
+
+  })(Widget);
+
   if (typeof window !== "undefined" && window !== null) {
     window.SingleSelect = SingleSelect;
   }
+
   rgb2hex = function(r, g, b) {
     var rnd, value;
     rnd = Math.round;
@@ -1872,6 +2079,7 @@
     }
     return value;
   };
+
   hex2rgb = function(hex) {
     var b, color, g, r, rgb;
     rgb = hex.substr(1);
@@ -1881,6 +2089,7 @@
     b = color & 0xff;
     return [r, g, b];
   };
+
   hsv2rgb = function(h, s, v) {
     var b, g, r, rnd, var_1, var_2, var_3, var_h, var_i;
     h = h / 360;
@@ -1929,6 +2138,7 @@
       return [r * 255, g * 255, b * 255];
     }
   };
+
   rgb2hsv = function(r, g, b) {
     var del_B, del_G, del_R, delta, h, maxVal, minVal, rnd, s, v;
     r = r / 255;
@@ -1954,15 +2164,12 @@
       } else if (b === maxVal) {
         h = (2 / 3) + del_G - del_R;
       }
-      if (h < 0) {
-        h += 1;
-      }
-      if (h > 1) {
-        h -= 1;
-      }
+      if (h < 0) h += 1;
+      if (h > 1) h -= 1;
     }
     return [h * 360, s * 100, v * 100];
   };
+
   colorObjectFromValue = function(value) {
     var b, g, r, _ref;
     _ref = hex2rgb(value), r = _ref[0], g = _ref[1], b = _ref[2];
@@ -1972,62 +2179,75 @@
       blue: b
     };
   };
+
   colorObjectToValue = function(rgb) {
     return rgb2hex(rgb.red, rgb.green, rgb.blue);
   };
+
   isSafeValue = function(value) {
     var re;
     re = /^\#[0-9a-fA-F]{6}$/;
     return re.test(value);
   };
+
   isSafeNumber = function(value) {
     return (value != null) && !isNaN(value);
   };
+
   isSafeHue = function(value) {
     return (isSafeNumber(value)) && (0 <= value && value <= 360);
   };
+
   isSafePercentage = function(value) {
     return (isSafeNumber(value)) && (0 <= value && value <= 100);
   };
+
   isSafeChannel = function(value) {
     return (isSafeNumber(value)) && (0 <= value && value <= 255);
   };
+
   isSafeColor = function(value) {
     return (value != null) && (isSafeChannel(value.red)) && (isSafeChannel(value.green)) && (isSafeChannel(value.blue));
   };
+
   isSafeRGB = function(r, g, b) {
     return (isSafeChannel(r)) && (isSafeChannel(g)) && (isSafeChannel(b));
   };
+
   isSafeHSV = function(h, s, v) {
     return (isSafeHue(h)) && (isSafePercentage(s)) && (isSafePercentage(v));
   };
-  ColorPicker = (function() {
-    __extends(ColorPicker, Widget);
-    function ColorPicker(target) {
+
+  ColorInput = (function(_super) {
+
+    __extends(ColorInput, _super);
+
+    function ColorInput(target) {
       var value;
-      ColorPicker.__super__.constructor.call(this, target);
+      ColorInput.__super__.constructor.call(this, target);
       this.dialogRequested = new Signal;
       value = this.valueFromAttribute("value");
-      if (!isSafeValue(value)) {
-        value = "#000000";
-      }
+      if (!isSafeValue(value)) value = "#000000";
       this.properties["value"] = value;
       this.createProperty("color", colorObjectFromValue(value));
-      this.dialogRequested.add(ColorPicker.defaultListener.dialogRequested, ColorPicker.defaultListener);
+      this.dialogRequested.add(ColorInput.defaultListener.dialogRequested, ColorInput.defaultListener);
       this.updateDummy(value);
       this.hideTarget();
       this.registerKeyDownCommand(keystroke(keys.space), this.click);
       this.registerKeyDownCommand(keystroke(keys.enter), this.click);
     }
-    ColorPicker.prototype.checkTarget = function(target) {
+
+    ColorInput.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "color")) {
-        throw "ColorPicker's target should be a color input";
+        throw "ColorInput's target should be a color input";
       }
     };
-    ColorPicker.prototype.createDummy = function() {
-      return $("<span class='colorpicker'>               <span class='color'></span>           </span>");
+
+    ColorInput.prototype.createDummy = function() {
+      return $("<span class='colorinput'>               <span class='color'></span>           </span>");
     };
-    ColorPicker.prototype.updateDummy = function(value) {
+
+    ColorInput.prototype.updateDummy = function(value) {
       var b, colorPreview, g, h, r, s, textColor, v, _ref, _ref2;
       if (this.hasDummy) {
         colorPreview = this.dummy.children(".color");
@@ -2038,32 +2258,34 @@
         return colorPreview.attr("style", "background: " + value + "; color: " + textColor + ";");
       }
     };
-    ColorPicker.prototype.set_color = function(property, value) {
+
+    ColorInput.prototype.set_color = function(property, value) {
       var rgb;
-      if (!isSafeColor(value)) {
-        return this.get("color");
-      }
+      if (!isSafeColor(value)) return this.get("color");
       rgb = colorObjectToValue(value);
       this.set("value", "#" + rgb);
       return this.properties["color"] = value;
     };
-    ColorPicker.prototype.set_value = function(property, value) {
-      if (!isSafeValue(value)) {
-        return this.get("value");
-      }
+
+    ColorInput.prototype.set_value = function(property, value) {
+      if (!isSafeValue(value)) return this.get("value");
       this.properties["color"] = colorObjectFromValue(value);
       this.updateDummy(value);
-      return ColorPicker.__super__.set_value.call(this, property, value);
+      return ColorInput.__super__.set_value.call(this, property, value);
     };
-    ColorPicker.prototype.click = function(e) {
-      if (!this.cantInteract()) {
-        return this.dialogRequested.dispatch(this);
-      }
+
+    ColorInput.prototype.click = function(e) {
+      if (!this.cantInteract()) return this.dialogRequested.dispatch(this);
     };
-    return ColorPicker;
-  })();
-  SquarePicker = (function() {
-    __extends(SquarePicker, Widget);
+
+    return ColorInput;
+
+  })(Widget);
+
+  SquarePicker = (function(_super) {
+
+    __extends(SquarePicker, _super);
+
     function SquarePicker() {
       SquarePicker.__super__.constructor.call(this);
       this.createProperty("rangeX", [0, 1]);
@@ -2073,21 +2295,27 @@
       this.xLocked = false;
       this.yLocked = false;
     }
+
     SquarePicker.prototype.lockX = function() {
       return this.xLocked = true;
     };
+
     SquarePicker.prototype.unlockX = function() {
       return this.xLocked = false;
     };
+
     SquarePicker.prototype.lockY = function() {
       return this.yLocked = true;
     };
+
     SquarePicker.prototype.unlockY = function() {
       return this.yLocked = false;
     };
+
     SquarePicker.prototype.createDummy = function() {
       return $("<span class='gridpicker'>               <span class='cursor'></span>           </span>");
     };
+
     SquarePicker.prototype.updateDummy = function(x, y) {
       var ch, cursor, cw, h, left, rx, ry, top, w, xmax, xmin, ymax, ymin, _ref, _ref2;
       cursor = this.dummy.children(".cursor");
@@ -2104,18 +2332,17 @@
       cursor.css("left", "" + left + "px");
       return cursor.css("top", "" + top + "px");
     };
+
     SquarePicker.prototype.set_rangeX = function(property, value) {
-      if (!this.isValidRange(value)) {
-        return this.get(property);
-      }
+      if (!this.isValidRange(value)) return this.get(property);
       return value;
     };
+
     SquarePicker.prototype.set_rangeY = function(property, value) {
-      if (!this.isValidRange(value)) {
-        return this.get(property);
-      }
+      if (!this.isValidRange(value)) return this.get(property);
       return value;
     };
+
     SquarePicker.prototype.set_value = function(property, value) {
       var v, x, y;
       if (!((value != null) && typeof value === "object" && value.length === 2 && this.isValid(value[0], "rangeX") && this.isValid(value[1], "rangeY"))) {
@@ -2123,15 +2350,12 @@
       }
       v = this.get("value");
       x = value[0], y = value[1];
-      if (this.xLocked) {
-        x = v[0];
-      }
-      if (this.yLocked) {
-        y = v[1];
-      }
+      if (this.xLocked) x = v[0];
+      if (this.yLocked) y = v[1];
       this.updateDummy(x, y);
       return SquarePicker.__super__.set_value.call(this, property, [x, y]);
     };
+
     SquarePicker.prototype.handlePropertyChange = function(property, value) {
       var max, min, x, y, _ref, _ref2;
       SquarePicker.__super__.handlePropertyChange.call(this, property, value);
@@ -2156,40 +2380,40 @@
         return this.set("value", [x, y]);
       }
     };
+
     SquarePicker.prototype.isValid = function(value, range) {
       var max, min, _ref;
       _ref = this.get(range), min = _ref[0], max = _ref[1];
       return (value != null) && !isNaN(value) && (min <= value && value <= max);
     };
+
     SquarePicker.prototype.isValidRange = function(value) {
       var max, min;
-      if (value == null) {
-        return false;
-      }
+      if (value == null) return false;
       min = value[0], max = value[1];
       return (min != null) && (max != null) && !isNaN(min) && !isNaN(max) && min < max;
     };
+
     SquarePicker.prototype.mousedown = function(e) {
+      var _this = this;
       if (!this.cantInteract()) {
         this.dragging = true;
         this.drag(e);
-        $(document).bind("mouseup", this.documentMouseUpDelegate = __bind(function(e) {
-          return this.mouseup(e);
-        }, this));
-        $(document).bind("mousemove", this.documentMouseMoveDelegate = __bind(function(e) {
-          return this.mousemove(e);
-        }, this));
+        $(document).bind("mouseup", this.documentMouseUpDelegate = function(e) {
+          return _this.mouseup(e);
+        });
+        $(document).bind("mousemove", this.documentMouseMoveDelegate = function(e) {
+          return _this.mousemove(e);
+        });
       }
-      if (!this.get("disabled")) {
-        this.grabFocus();
-      }
+      if (!this.get("disabled")) this.grabFocus();
       return false;
     };
+
     SquarePicker.prototype.mousemove = function(e) {
-      if (this.dragging) {
-        return this.drag(e);
-      }
+      if (this.dragging) return this.drag(e);
     };
+
     SquarePicker.prototype.mouseup = function(e) {
       if (this.dragging) {
         this.drag(e);
@@ -2198,36 +2422,34 @@
         return $(document).unbind("mousemove", this.documentMouseMoveDelegate);
       }
     };
+
     SquarePicker.prototype.drag = function(e) {
       var h, vx, vy, w, x, xmax, xmin, y, ymax, ymin, _ref, _ref2;
       w = this.dummy.width();
       h = this.dummy.height();
       x = e.pageX - this.dummy.offset().left;
       y = e.pageY - this.dummy.offset().top;
-      if (x < 0) {
-        x = 0;
-      }
-      if (x > w) {
-        x = w;
-      }
-      if (y < 0) {
-        y = 0;
-      }
-      if (y > h) {
-        y = h;
-      }
+      if (x < 0) x = 0;
+      if (x > w) x = w;
+      if (y < 0) y = 0;
+      if (y > h) y = h;
       _ref = this.get("rangeX"), xmin = _ref[0], xmax = _ref[1];
       _ref2 = this.get("rangeY"), ymin = _ref2[0], ymax = _ref2[1];
       vx = xmin + (x / w) * xmax;
       vy = ymin + (y / h) * ymax;
       return this.set("value", [vx, vy]);
     };
+
     return SquarePicker;
-  })();
-  ColorPickerDialog = (function() {
-    __extends(ColorPickerDialog, Container);
-    function ColorPickerDialog() {
-      ColorPickerDialog.__super__.constructor.call(this);
+
+  })(Widget);
+
+  ColorPicker = (function(_super) {
+
+    __extends(ColorPicker, _super);
+
+    function ColorPicker() {
+      ColorPicker.__super__.constructor.call(this);
       this.model = {
         r: 0,
         g: 0,
@@ -2247,15 +2469,18 @@
       this.registerKeyDownCommand(keystroke(keys.enter), this.comfirmChangesOnEnter);
       this.registerKeyDownCommand(keystroke(keys.escape), this.abortChanges);
     }
-    ColorPickerDialog.prototype.createDummy = function() {
-      var dummy;
-      dummy = $("<span class='colorpickerdialog'>                      <span class='newColor'></span>                      <span class='oldColor'></span>                   </span>");
-      dummy.children(".oldColor").click(__bind(function() {
-        return this.set("value", this.originalValue);
-      }, this));
+
+    ColorPicker.prototype.createDummy = function() {
+      var dummy,
+        _this = this;
+      dummy = $("<span class='colorpicker'>                      <span class='newColor'></span>                      <span class='oldColor'></span>                   </span>");
+      dummy.children(".oldColor").click(function() {
+        return _this.set("value", _this.originalValue);
+      });
       return dummy;
     };
-    ColorPickerDialog.prototype.createDummyChildren = function() {
+
+    ColorPicker.prototype.createDummyChildren = function() {
       this.add(this.redInput = this.createInput("red", 3));
       this.add(this.redMode = this.createRadio("red"));
       this.add(this.greenInput = this.createInput("green", 3));
@@ -2274,35 +2499,39 @@
       this.rangePicker.lockX();
       return this.rangePicker.addClasses("vertical");
     };
-    ColorPickerDialog.prototype.createInput = function(cls, maxlength) {
-      var input;
+
+    ColorPicker.prototype.createInput = function(cls, maxlength) {
+      var input,
+        _this = this;
       input = new TextInput;
       input.addClasses(cls);
       input.set("maxlength", maxlength);
-      input.valueChanged.add(__bind(function(w, v) {
-        this.inputValueChanged(w, v, cls);
+      input.valueChanged.add(function(w, v) {
+        _this.inputValueChanged(w, v, cls);
         return true;
-      }, this));
+      });
       return input;
     };
-    ColorPickerDialog.prototype.createRadio = function(cls, checked) {
+
+    ColorPicker.prototype.createRadio = function(cls, checked) {
       var radio;
-      if (checked == null) {
-        checked = false;
-      }
+      if (checked == null) checked = false;
       radio = new Radio;
       radio.addClasses(cls);
       radio.set("checked", checked);
       this.modesGroup.add(radio);
       return radio;
     };
-    ColorPickerDialog.prototype.invalidate = function() {
+
+    ColorPicker.prototype.invalidate = function() {
+      var _this = this;
       this.update();
-      return setTimeout(__bind(function() {
-        return this.update();
-      }, this), 10);
+      return setTimeout(function() {
+        return _this.update();
+      }, 10);
     };
-    ColorPickerDialog.prototype.update = function() {
+
+    ColorPicker.prototype.update = function() {
       var b, g, h, r, rnd, s, v, value, _ref;
       rnd = Math.round;
       _ref = this.model, r = _ref.r, g = _ref.g, b = _ref.b, h = _ref.h, s = _ref.s, v = _ref.v;
@@ -2320,44 +2549,50 @@
       this.inputValueSetProgrammatically = false;
       return this.dummy.children(".newColor").attr("style", "background: #" + value + ";");
     };
-    ColorPickerDialog.prototype.updateInput = function(input, value) {
+
+    ColorPicker.prototype.updateInput = function(input, value) {
       return input.set("value", value);
     };
-    ColorPickerDialog.prototype.comfirmChangesOnEnter = function() {
+
+    ColorPicker.prototype.comfirmChangesOnEnter = function() {
       if (!(this.redInput.valueIsObsolete || this.greenInput.valueIsObsolete || this.blueInput.valueIsObsolete || this.hueInput.valueIsObsolete || this.saturationInput.valueIsObsolete || this.valueInput.valueIsObsolete || this.hexInput.valueIsObsolete)) {
         return this.comfirmChanges();
       }
     };
-    ColorPickerDialog.prototype.comfirmChanges = function() {
+
+    ColorPicker.prototype.comfirmChanges = function() {
       this.currentTarget.set("value", this.get("value"));
       return this.close();
     };
-    ColorPickerDialog.prototype.abortChanges = function() {
+
+    ColorPicker.prototype.abortChanges = function() {
       return this.close();
     };
-    ColorPickerDialog.prototype.close = function() {
+
+    ColorPicker.prototype.close = function() {
       this.dummy.hide();
       ($(document)).unbind("mouseup", this.documentDelegate);
       return this.currentTarget.grabFocus();
     };
-    ColorPickerDialog.prototype.set_mode = function(property, value) {
+
+    ColorPicker.prototype.set_mode = function(property, value) {
       var oldMode;
       oldMode = this.properties[property];
-      if (oldMode != null) {
-        oldMode.dispose();
-      }
+      if (oldMode != null) oldMode.dispose();
       if (value != null) {
         value.init(this);
         value.update(this.model);
       }
       return value;
     };
-    ColorPickerDialog.prototype.set_value = function(property, value) {
-      value = ColorPickerDialog.__super__.set_value.call(this, property, value);
+
+    ColorPicker.prototype.set_value = function(property, value) {
+      value = ColorPicker.__super__.set_value.call(this, property, value);
       this.fromHex(value);
       return value;
     };
-    ColorPickerDialog.prototype.fromHex = function(hex) {
+
+    ColorPicker.prototype.fromHex = function(hex) {
       var b, g, r, v, _ref;
       v = hex.indexOf("#") === -1 ? "#" + hex : hex;
       if (isSafeValue(v)) {
@@ -2365,7 +2600,8 @@
         return this.fromRGB(r, g, b);
       }
     };
-    ColorPickerDialog.prototype.fromRGB = function(r, g, b) {
+
+    ColorPicker.prototype.fromRGB = function(r, g, b) {
       var h, s, v, _ref;
       r = parseFloat(r);
       g = parseFloat(g);
@@ -2383,7 +2619,8 @@
       }
       return this.invalidate();
     };
-    ColorPickerDialog.prototype.fromHSV = function(h, s, v) {
+
+    ColorPicker.prototype.fromHSV = function(h, s, v) {
       var b, g, r, _ref;
       h = parseFloat(h);
       s = parseFloat(s);
@@ -2401,7 +2638,8 @@
       }
       return this.invalidate();
     };
-    ColorPickerDialog.prototype.modeChanged = function(widget, oldSel, newSel) {
+
+    ColorPicker.prototype.modeChanged = function(widget, oldSel, newSel) {
       switch (newSel) {
         case this.redMode:
           return this.set("mode", this.editModes[0]);
@@ -2417,7 +2655,8 @@
           return this.set("mode", this.editModes[5]);
       }
     };
-    ColorPickerDialog.prototype.inputValueChanged = function(widget, value, component) {
+
+    ColorPicker.prototype.inputValueChanged = function(widget, value, component) {
       var b, g, h, r, s, v, _ref;
       if (!this.inputValueSetProgrammatically) {
         _ref = this.model, r = _ref.r, g = _ref.g, b = _ref.b, h = _ref.h, s = _ref.s, v = _ref.v;
@@ -2439,18 +2678,21 @@
         }
       }
     };
-    ColorPickerDialog.prototype.dialogRequested = function(colorpicker) {
-      var value;
-      this.currentTarget = colorpicker;
+
+    ColorPicker.prototype.dialogRequested = function(colorinput) {
+      var value,
+        _this = this;
+      this.currentTarget = colorinput;
       this.originalValue = value = this.currentTarget.get("value");
       this.set("value", value);
-      ($(document)).bind("mouseup", this.documentDelegate = __bind(function(e) {
-        return this.mouseup(e);
-      }, this));
+      ($(document)).bind("mouseup", this.documentDelegate = function(e) {
+        return _this.mouseup(e);
+      });
       this.dummy.css("left", this.currentTarget.dummy.offset().left).css("top", this.currentTarget.dummy.offset().top + this.currentTarget.dummy.height()).css("position", "absolute").show().children(".oldColor").attr("style", "background: " + value + ";");
       return this.grabFocus();
     };
-    ColorPickerDialog.prototype.mouseup = function(e) {
+
+    ColorPicker.prototype.mouseup = function(e) {
       var h, w, x, y;
       w = this.dummy.width();
       h = this.dummy.height();
@@ -2460,20 +2702,27 @@
         return this.comfirmChanges();
       }
     };
-    return ColorPickerDialog;
-  })();
+
+    return ColorPicker;
+
+  })(Container);
+
   AbstractMode = (function() {
+
     function AbstractMode() {}
+
     AbstractMode.prototype.init = function(dialog) {
       this.dialog = dialog;
       return this.valuesSetProgrammatically = false;
     };
+
     AbstractMode.prototype.dispose = function() {
       this.dialog.rangePicker.valueChanged.remove(this.rangeChanged, this);
       this.dialog.squarePicker.valueChanged.remove(this.squareChanged, this);
       this.dialog.rangePicker.dummy.children(".layer").remove();
       return this.dialog.squarePicker.dummy.children(".layer").remove();
     };
+
     AbstractMode.prototype.initPickers = function(a, b, c, r, s) {
       this.dialog.squarePicker.set({
         rangeX: a,
@@ -2487,17 +2736,24 @@
       this.dialog.rangePicker.dummy.prepend($(r));
       return this.dialog.squarePicker.dummy.prepend($(s));
     };
+
     return AbstractMode;
+
   })();
-  HSVMode = (function() {
-    __extends(HSVMode, AbstractMode);
+
+  HSVMode = (function(_super) {
+
+    __extends(HSVMode, _super);
+
     function HSVMode() {
       HSVMode.__super__.constructor.apply(this, arguments);
     }
+
     HSVMode.prototype.init = function(dialog) {
       HSVMode.__super__.init.call(this, dialog);
       return this.initPickers([0, 100], [0, 100], [0, 360], "<span class='layer hue-vertical-ramp'></span>", "<span class='layer'>                        <span class='layer hue-color'></span>                        <span class='layer white-horizontal-ramp'></span>                        <span class='layer black-vertical-ramp'></span>                     </span>");
     };
+
     HSVMode.prototype.update = function(model) {
       var b, g, h, r, s, v, value, _ref;
       if (model != null) {
@@ -2511,11 +2767,13 @@
         return this.valuesSetProgrammatically = false;
       }
     };
+
     HSVMode.prototype.updateDialog = function(h, s, v) {
       this.valuesSetProgrammatically = true;
       this.dialog.fromHSV(360 - h, s, 100 - v);
       return this.valuesSetProgrammatically = false;
     };
+
     HSVMode.prototype.squareChanged = function(widget, value) {
       var h, s, v;
       if (!this.valuesSetProgrammatically) {
@@ -2524,6 +2782,7 @@
         return this.updateDialog(h, s, v);
       }
     };
+
     HSVMode.prototype.rangeChanged = function(widget, value) {
       var h, s, v, _ref;
       if (!this.valuesSetProgrammatically) {
@@ -2532,17 +2791,24 @@
         return this.updateDialog(h, s, v);
       }
     };
+
     return HSVMode;
-  })();
-  SHVMode = (function() {
-    __extends(SHVMode, AbstractMode);
+
+  })(AbstractMode);
+
+  SHVMode = (function(_super) {
+
+    __extends(SHVMode, _super);
+
     function SHVMode() {
       SHVMode.__super__.constructor.apply(this, arguments);
     }
+
     SHVMode.prototype.init = function(dialog) {
       SHVMode.__super__.init.call(this, dialog);
       return this.initPickers([0, 360], [0, 100], [1, 100], "<span class='layer black-white-vertical-ramp'></span>", "<span class='layer'>                        <span class='layer hue-horizontal-ramp'></span>                        <span class='layer white-plain'></span>                        <span class='layer black-vertical-ramp'></span>                      </span>");
     };
+
     SHVMode.prototype.update = function(model) {
       var h, opacity, s, v;
       h = model.h, s = model.s, v = model.v;
@@ -2553,11 +2819,13 @@
       this.valuesSetProgrammatically = false;
       return this.dialog.squarePicker.dummy.find(".white-plain").attr("style", "opacity: " + opacity + ";");
     };
+
     SHVMode.prototype.updateDialog = function(h, s, v) {
       this.valuesSetProgrammatically = true;
       this.dialog.fromHSV(360 - h, 100 - s, 100 - v);
       return this.valuesSetProgrammatically = false;
     };
+
     SHVMode.prototype.squareChanged = function(widget, value) {
       var h, s, v;
       if (!this.valuesSetProgrammatically) {
@@ -2566,6 +2834,7 @@
         return this.updateDialog(h, s, v);
       }
     };
+
     SHVMode.prototype.rangeChanged = function(widget, value) {
       var h, s, v, _ref;
       if (!this.valuesSetProgrammatically) {
@@ -2574,17 +2843,24 @@
         return this.updateDialog(h, s, v);
       }
     };
+
     return SHVMode;
-  })();
-  VHSMode = (function() {
-    __extends(VHSMode, AbstractMode);
+
+  })(AbstractMode);
+
+  VHSMode = (function(_super) {
+
+    __extends(VHSMode, _super);
+
     function VHSMode() {
       VHSMode.__super__.constructor.apply(this, arguments);
     }
+
     VHSMode.prototype.init = function(dialog) {
       VHSMode.__super__.init.call(this, dialog);
       return this.initPickers([0, 360], [0, 100], [1, 100], "<span class='layer black-white-vertical-ramp'></span>", "<span class='layer'>                        <span class='layer hue-horizontal-ramp'></span>                        <span class='layer white-vertical-ramp'></span>                        <span class='layer black-plain'></span>                      </span>");
     };
+
     VHSMode.prototype.update = function(model) {
       var h, opacity, s, v;
       h = model.h, s = model.s, v = model.v;
@@ -2595,11 +2871,13 @@
       this.valuesSetProgrammatically = false;
       return this.dialog.squarePicker.dummy.find(".black-plain").attr("style", "opacity: " + opacity + ";");
     };
+
     VHSMode.prototype.updateDialog = function(h, s, v) {
       this.valuesSetProgrammatically = true;
       this.dialog.fromHSV(360 - h, 100 - s, 100 - v);
       return this.valuesSetProgrammatically = false;
     };
+
     VHSMode.prototype.squareChanged = function(widget, value) {
       var h, s, v;
       if (!this.valuesSetProgrammatically) {
@@ -2608,6 +2886,7 @@
         return this.updateDialog(h, s, v);
       }
     };
+
     VHSMode.prototype.rangeChanged = function(widget, value) {
       var h, s, v, _ref;
       if (!this.valuesSetProgrammatically) {
@@ -2616,17 +2895,24 @@
         return this.updateDialog(h, s, v);
       }
     };
+
     return VHSMode;
-  })();
-  RGBMode = (function() {
-    __extends(RGBMode, AbstractMode);
+
+  })(AbstractMode);
+
+  RGBMode = (function(_super) {
+
+    __extends(RGBMode, _super);
+
     function RGBMode() {
       RGBMode.__super__.constructor.apply(this, arguments);
     }
+
     RGBMode.prototype.init = function(dialog) {
       RGBMode.__super__.init.call(this, dialog);
       return this.initPickers([0, 255], [0, 255], [0, 255], "<span class='layer black-red-vertical-ramp'></span>", "<span class='layer'>                        <span class='layer rgb-bottom'></span>                        <span class='layer rgb-up'></span>                      </span>");
     };
+
     RGBMode.prototype.update = function(model) {
       var b, g, opacity, r;
       r = model.r, g = model.g, b = model.b;
@@ -2637,11 +2923,13 @@
       this.valuesSetProgrammatically = false;
       return this.dialog.squarePicker.dummy.find(".rgb-up").attr("style", "opacity: " + opacity + ";");
     };
+
     RGBMode.prototype.updateDialog = function(r, g, b) {
       this.valuesSetProgrammatically = true;
       this.dialog.fromRGB(255 - r, 255 - g, b);
       return this.valuesSetProgrammatically = false;
     };
+
     RGBMode.prototype.squareChanged = function(widget, value) {
       var b, g, r;
       if (!this.valuesSetProgrammatically) {
@@ -2650,6 +2938,7 @@
         return this.updateDialog(r, g, b);
       }
     };
+
     RGBMode.prototype.rangeChanged = function(widget, value) {
       var b, g, r, _ref;
       if (!this.valuesSetProgrammatically) {
@@ -2658,17 +2947,24 @@
         return this.updateDialog(r, g, b);
       }
     };
+
     return RGBMode;
-  })();
-  GRBMode = (function() {
-    __extends(GRBMode, AbstractMode);
+
+  })(AbstractMode);
+
+  GRBMode = (function(_super) {
+
+    __extends(GRBMode, _super);
+
     function GRBMode() {
       GRBMode.__super__.constructor.apply(this, arguments);
     }
+
     GRBMode.prototype.init = function(dialog) {
       GRBMode.__super__.init.call(this, dialog);
       return this.initPickers([0, 255], [0, 255], [0, 255], "<span class='layer black-green-vertical-ramp'></span>", "<span class='layer'>                        <span class='layer grb-bottom'></span>                        <span class='layer grb-up'></span>                      </span>");
     };
+
     GRBMode.prototype.update = function(model) {
       var b, g, opacity, r;
       r = model.r, g = model.g, b = model.b;
@@ -2679,11 +2975,13 @@
       this.valuesSetProgrammatically = false;
       return this.dialog.squarePicker.dummy.find(".grb-up").attr("style", "opacity: " + opacity + ";");
     };
+
     GRBMode.prototype.updateDialog = function(r, g, b) {
       this.valuesSetProgrammatically = true;
       this.dialog.fromRGB(255 - r, 255 - g, b);
       return this.valuesSetProgrammatically = false;
     };
+
     GRBMode.prototype.squareChanged = function(widget, value) {
       var b, g, r;
       if (!this.valuesSetProgrammatically) {
@@ -2692,6 +2990,7 @@
         return this.updateDialog(r, g, b);
       }
     };
+
     GRBMode.prototype.rangeChanged = function(widget, value) {
       var b, g, r, _ref;
       if (!this.valuesSetProgrammatically) {
@@ -2700,17 +2999,24 @@
         return this.updateDialog(r, g, b);
       }
     };
+
     return GRBMode;
-  })();
-  BGRMode = (function() {
-    __extends(BGRMode, AbstractMode);
+
+  })(AbstractMode);
+
+  BGRMode = (function(_super) {
+
+    __extends(BGRMode, _super);
+
     function BGRMode() {
       BGRMode.__super__.constructor.apply(this, arguments);
     }
+
     BGRMode.prototype.init = function(dialog) {
       BGRMode.__super__.init.call(this, dialog);
       return this.initPickers([0, 255], [0, 255], [0, 255], "<span class='layer black-blue-vertical-ramp'></span>", "<span class='layer'>                        <span class='layer bgr-bottom'></span>                        <span class='layer bgr-up'></span>                      </span>");
     };
+
     BGRMode.prototype.update = function(model) {
       var b, g, opacity, r;
       r = model.r, g = model.g, b = model.b;
@@ -2721,11 +3027,13 @@
       this.valuesSetProgrammatically = false;
       return this.dialog.squarePicker.dummy.find(".bgr-up").attr("style", "opacity: " + opacity + ";");
     };
+
     BGRMode.prototype.updateDialog = function(r, g, b) {
       this.valuesSetProgrammatically = true;
       this.dialog.fromRGB(255 - r, g, 255 - b);
       return this.valuesSetProgrammatically = false;
     };
+
     BGRMode.prototype.squareChanged = function(widget, value) {
       var b, g, r;
       if (!this.valuesSetProgrammatically) {
@@ -2734,6 +3042,7 @@
         return this.updateDialog(r, g, b);
       }
     };
+
     BGRMode.prototype.rangeChanged = function(widget, value) {
       var b, g, r, _ref;
       if (!this.valuesSetProgrammatically) {
@@ -2742,18 +3051,23 @@
         return this.updateDialog(r, g, b);
       }
     };
+
     return BGRMode;
-  })();
-  ColorPicker.defaultListener = new ColorPickerDialog;
+
+  })(AbstractMode);
+
+  ColorInput.defaultListener = new ColorPicker;
+
   $(document).ready(function() {
-    return $("body").append(ColorPicker.defaultListener.dummy);
+    return $("body").append(ColorInput.defaultListener.dummy);
   });
+
   if (typeof window !== "undefined" && window !== null) {
     window.rgb2hsv = rgb2hsv;
     window.hsv2rgb = hsv2rgb;
-    window.ColorPicker = ColorPicker;
+    window.ColorInput = ColorInput;
     window.SquarePicker = SquarePicker;
-    window.ColorPickerDialog = ColorPickerDialog;
+    window.ColorPicker = ColorPicker;
     window.HSVMode = HSVMode;
     window.SHVMode = SHVMode;
     window.VHSMode = VHSMode;
@@ -2761,21 +3075,316 @@
     window.GRBMode = GRBMode;
     window.BGRMode = BGRMode;
   }
+
+  MILLISECONDS_IN_SECOND = 1000;
+
+  MILLISECONDS_IN_MINUTE = MILLISECONDS_IN_SECOND * 60;
+
+  MILLISECONDS_IN_HOUR = MILLISECONDS_IN_MINUTE * 60;
+
+  MILLISECONDS_IN_DAY = MILLISECONDS_IN_HOUR * 24;
+
+  MILLISECONDS_IN_WEEK = MILLISECONDS_IN_DAY * 7;
+
+  safeInt = function(value, offset) {
+    var n;
+    if (offset == null) offset = 0;
+    n = parseInt(value);
+    if (!isNaN(n)) {
+      return n + offset;
+    } else {
+      return offset;
+    }
+  };
+
+  fill = function(s, l) {
+    if (l == null) l = 2;
+    s = String(s);
+    while (s.length < l) {
+      s = "0" + s;
+    }
+    return s;
+  };
+
+  findFirstWeekFirstDay = function(year) {
+    var d, day;
+    d = new Date(year, 0, 1);
+    day = d.getDay();
+    if (day === 0) day = 7;
+    if (day > 3) {
+      return d = new Date(year, 0, 7 - day + 2);
+    } else {
+      return d = new Date(year, 0, 2 - day);
+    }
+  };
+
+  time2date = function(time) {
+    var d, hours, min, ms, sec, _ref, _ref2;
+    if (!(new TimeMode).isValidValue(time)) {
+      throw "time2date only accept valid RFC time";
+    }
+    _ref = time.split(":"), hours = _ref[0], min = _ref[1], sec = _ref[2];
+    _ref2 = sec != null ? sec.split(".") : [sec], sec = _ref2[0], ms = _ref2[1];
+    time = safeInt(hours, -1) * MILLISECONDS_IN_HOUR + safeInt(min) * MILLISECONDS_IN_MINUTE + safeInt(sec) * MILLISECONDS_IN_SECOND + safeInt(ms);
+    d = new Date(time);
+    return d;
+  };
+
+  date2time = function(date) {
+    var h, m, ms, s, time;
+    h = date.getHours();
+    m = date.getMinutes();
+    s = date.getSeconds();
+    ms = date.getMilliseconds();
+    time = "" + (fill(h)) + ":" + (fill(m)) + ":" + (fill(s));
+    if (ms !== 0) time += "." + ms;
+    return time;
+  };
+
+  week2date = function(string) {
+    var d, s, start, week, year, _ref;
+    if (!(new WeekMode).isValidValue(string)) {
+      throw "time2date only accept valid RFC weeks";
+    }
+    _ref = (function() {
+      var _i, _len, _ref, _results;
+      _ref = string.split("-W");
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        s = _ref[_i];
+        _results.push(parseInt(s));
+      }
+      return _results;
+    })(), year = _ref[0], week = _ref[1];
+    start = findFirstWeekFirstDay(year);
+    return d = new Date(start.valueOf() + MILLISECONDS_IN_WEEK * (week - 1));
+  };
+
+  date2week = function(date) {
+    var dif, start, week;
+    start = findFirstWeekFirstDay(date.getFullYear());
+    dif = date.valueOf() - start.valueOf();
+    week = Math.floor((dif / MILLISECONDS_IN_WEEK) + 1);
+    return "" + (fill(date.getFullYear(), 4)) + "-W" + week;
+  };
+
+  TimeMode = (function() {
+
+    function TimeMode() {}
+
+    TimeMode.prototype.isValidValue = function(value) {
+      if (value == null) return false;
+      return /^[\d]{2}(:[\d]{2}(:[\d]{2}(.[\d]{1,4})?)?)?$/g.test(value);
+    };
+
+    TimeMode.prototype.dateFromString = function(string) {
+      return time2date(string);
+    };
+
+    TimeMode.prototype.dateToString = function(date) {
+      return date2time(date);
+    };
+
+    return TimeMode;
+
+  })();
+
+  DateMode = (function() {
+
+    function DateMode() {}
+
+    DateMode.prototype.isValidValue = function(value) {
+      if (value == null) return false;
+      return /^[\d]{4}-[\d]{2}-[\d]{2}$/g.test(value);
+    };
+
+    DateMode.prototype.dateFromString = function(string) {
+      var returnDate;
+      returnDate = new Date(string);
+      returnDate.setHours(0);
+      return returnDate;
+    };
+
+    DateMode.prototype.dateToString = function(date) {
+      return "" + (fill(date.getFullYear(), 4)) + "-" + (fill(date.getMonth() + 1)) + "-" + (fill(date.getDate()));
+    };
+
+    return DateMode;
+
+  })();
+
+  MonthMode = (function() {
+
+    function MonthMode() {}
+
+    MonthMode.prototype.isValidValue = function(value) {
+      if (value == null) return false;
+      return /^[\d]{4}-[\d]{2}$/g.test(value);
+    };
+
+    MonthMode.prototype.dateFromString = function(string) {
+      var returnDate;
+      returnDate = new Date(string);
+      returnDate.setHours(0);
+      return returnDate;
+    };
+
+    MonthMode.prototype.dateToString = function(date) {
+      return "" + (fill(date.getFullYear(), 4)) + "-" + (fill(date.getMonth() + 1));
+    };
+
+    return MonthMode;
+
+  })();
+
+  WeekMode = (function() {
+
+    function WeekMode() {}
+
+    WeekMode.prototype.isValidValue = function(value) {
+      if (value == null) return false;
+      return /^[\d]{4}-W[\d]{1,2}$/g.test(value);
+    };
+
+    WeekMode.prototype.dateFromString = function(string) {
+      return week2date(string);
+    };
+
+    WeekMode.prototype.dateToString = function(date) {
+      return date2week(date);
+    };
+
+    return WeekMode;
+
+  })();
+
+  DateTimeMode = (function() {
+
+    function DateTimeMode() {}
+
+    DateTimeMode.prototype.isValidValue = function(value) {
+      if (value == null) return false;
+      return /^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}(.[\d]{1,4})?(Z)?$/g.test(value);
+    };
+
+    DateTimeMode.prototype.dateFromString = function(string) {
+      var date, ms, time, _ref;
+      _ref = string.split("T"), date = _ref[0], time = _ref[1];
+      if (__indexOf.call(time, "Z") >= 0) time = time.replace("Z", "");
+      date = new Date(date);
+      time = time2date(time);
+      ms = date.valueOf() + (time.valueOf() - MILLISECONDS_IN_HOUR);
+      return new Date(ms);
+    };
+
+    DateTimeMode.prototype.dateToString = function(date) {};
+
+    return DateTimeMode;
+
+  })();
+
+  DateInput = (function(_super) {
+
+    __extends(DateInput, _super);
+
+    DateInput.prototype.defaultMode = "datetime";
+
+    DateInput.prototype.modes = ["date", "month", "week", "time", "datetime", "datetime-local"];
+
+    DateInput.prototype.modesInstances = {
+      'date': new DateMode,
+      'month': new MonthMode,
+      'week': new WeekMode,
+      'time': new TimeMode,
+      'datetime': new DateTimeMode,
+      'datetime-local': new DateTimeMode
+    };
+
+    function DateInput(target, mode) {
+      var date, max, min;
+      if (mode == null) mode = this.defaultMode;
+      if (target instanceof Date) {
+        DateInput.__super__.constructor.call(this);
+        date = target;
+        if (__indexOf.call(this.modes, mode) < 0) mode = this.defaultMode;
+      } else {
+        DateInput.__super__.constructor.call(this, target);
+        if (this.hasTarget) mode = this.valueFromAttribute("type");
+        date = new Date;
+      }
+      this.currentMode = this.modesInstances[mode];
+      if (this.hasTarget) {
+        date = this.dateFromAttribute("value");
+        min = this.dateFromAttribute("min");
+        max = this.dateFromAttribute("max");
+      }
+      this.createProperty("date", date);
+      this.createProperty("mode", mode);
+      this.createProperty("min", min);
+      this.createProperty("max", max);
+      this.dateSetProgramatically = false;
+    }
+
+    DateInput.prototype.checkTarget = function(target) {
+      if (!this.isInputWithType.apply(this, [target].concat(this.modes))) {
+        throw "The DateTime target must be of type " + (this.modes.join(', '));
+      }
+    };
+
+    DateInput.prototype.dateFromAttribute = function(attr, mode) {
+      var value;
+      value = this.valueFromAttribute(attr);
+      if (!this.currentMode.isValidValue(value)) return new Date(0);
+      return this.currentMode.dateFromString(value);
+    };
+
+    DateInput.prototype.set_value = function(property, value) {
+      if (!this.currentMode.isValidValue(value)) return this.get("value");
+      DateInput.__super__.set_value.call(this, property, value);
+      this.dateSetProgramatically = true;
+      this.set("date", this.currentMode.dateFromString(value));
+      this.dateSetProgramatically = false;
+      return value;
+    };
+
+    DateInput.prototype.set_date = function(property, value) {
+      if (this.dateSetProgramatically) return value;
+      if (value == null) return this.get("date");
+      this.set("value", this.currentMode.dateToString(value));
+      return value;
+    };
+
+    return DateInput;
+
+  })(Widget);
+
+  if (typeof window !== "undefined" && window !== null) {
+    window.time2date = time2date;
+    window.date2time = date2time;
+    window.week2date = week2date;
+    window.date2week = date2week;
+    window.DateInput = DateInput;
+  }
+
   $.fn.extend({
     widgets: function() {
       return $.widgetPlugin.process($(this));
     }
   });
+
   WidgetPlugin = (function() {
+
     function WidgetPlugin() {
       this.processors = {};
     }
+
     WidgetPlugin.prototype.register = function(id, match, processor) {
       if (processor == null) {
         throw "The processor function can't be null in register";
       }
       return this.processors[id] = [match, processor];
     };
+
     WidgetPlugin.prototype.registerWidgetFor = function(id, match, widget) {
       if (widget == null) {
         throw "The widget class can't be null in registerWidgetFor";
@@ -2784,25 +3393,26 @@
         return new widget(target);
       });
     };
+
     WidgetPlugin.prototype.isRegistered = function(id) {
       return id in this.processors;
     };
+
     WidgetPlugin.prototype.process = function(queryset) {
-      return queryset.each(__bind(function(i, o) {
+      var _this = this;
+      return queryset.each(function(i, o) {
         var elementMatched, id, match, next, parent, processor, target, widget, _ref, _ref2, _results;
         target = $(o);
-        if (target.hasClass("widget-done")) {
-          return;
-        }
+        if (target.hasClass("widget-done")) return;
         next = target.next();
         parent = target.parent();
-        _ref = this.processors;
+        _ref = _this.processors;
         _results = [];
         for (id in _ref) {
           _ref2 = _ref[id], match = _ref2[0], processor = _ref2[1];
-          elementMatched = $.isFunction(match) ? match.call(this, o) : o.nodeName.toLowerCase() === match;
+          elementMatched = $.isFunction(match) ? match.call(_this, o) : o.nodeName.toLowerCase() === match;
           if (elementMatched) {
-            widget = processor.call(this, o);
+            widget = processor.call(_this, o);
             if (widget != null) {
               if (next.length > 0) {
                 next.before(widget.dummy);
@@ -2811,11 +3421,14 @@
               }
             }
             break;
+          } else {
+            _results.push(void 0);
           }
         }
         return _results;
-      }, this));
+      });
     };
+
     WidgetPlugin.prototype.isElement = function(o) {
       if (typeof HTMLElement === "object") {
         return o instanceof HTMLElement;
@@ -2823,15 +3436,18 @@
         return typeof o === "object" && o.nodeType === 1 && typeof o.nodeName === "string";
       }
     };
+
     WidgetPlugin.prototype.isTag = function(o, tag) {
       var _ref;
       return this.isElement(o) && (o != null ? (_ref = o.nodeName) != null ? _ref.toLowerCase() : void 0 : void 0) === tag;
     };
+
     WidgetPlugin.prototype.isInputWithType = function() {
       var o, types, _ref;
       o = arguments[0], types = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       return this.isTag(o, "input") && (_ref = $(o).attr("type"), __indexOf.call(types, _ref) >= 0);
     };
+
     WidgetPlugin.prototype.inputWithType = function() {
       var types;
       types = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -2839,46 +3455,59 @@
         return this.isInputWithType.apply(this, [o].concat(types));
       };
     };
+
     return WidgetPlugin;
+
   })();
+
   $.widgetPlugin = new WidgetPlugin;
+
   $.widgetPlugin.registerWidgetFor("textarea", "textarea", TextArea);
+
   $.widgetPlugin.registerWidgetFor("select", "select", SingleSelect);
+
   $.widgetPlugin.registerWidgetFor("textinput", $.widgetPlugin.inputWithType("text", "password"), TextInput);
+
   $.widgetPlugin.registerWidgetFor("button", $.widgetPlugin.inputWithType("button", "reset", "submit"), Button);
+
   $.widgetPlugin.registerWidgetFor("range", $.widgetPlugin.inputWithType("range"), Slider);
+
   $.widgetPlugin.registerWidgetFor("number", $.widgetPlugin.inputWithType("number"), Stepper);
+
   $.widgetPlugin.registerWidgetFor("checkbox", $.widgetPlugin.inputWithType("checkbox"), CheckBox);
-  $.widgetPlugin.registerWidgetFor("color", $.widgetPlugin.inputWithType("color"), ColorPicker);
+
+  $.widgetPlugin.registerWidgetFor("color", $.widgetPlugin.inputWithType("color"), ColorInput);
+
   $.widgetPlugin.registerWidgetFor("file", $.widgetPlugin.inputWithType("file"), FilePicker);
+
   $.widgetPlugin.register("radio", $.widgetPlugin.inputWithType("radio"), function(o) {
     var group, groups, name, widget;
     widget = new Radio(o);
     name = widget.get("name");
     if (name != null) {
-      if ($.widgetPlugin.radiogroups == null) {
-        $.widgetPlugin.radiogroups = {};
-      }
+      if ($.widgetPlugin.radiogroups == null) $.widgetPlugin.radiogroups = {};
       groups = $.widgetPlugin.radiogroups;
-      if (groups[name] == null) {
-        groups[name] = new RadioGroup;
-      }
+      if (groups[name] == null) groups[name] = new RadioGroup;
       group = groups[name];
       group.add(widget);
     }
     return widget;
   });
+
   module("keystroke function tests");
+
   test("The keystroke function should return an object with the specified keyCode", function() {
     var ks;
     ks = keystroke(10);
     return assertThat(ks.keyCode, equalTo(10));
   });
+
   test("The keystroke function should return an object with the passed-in keycode and modifier", function() {
     var ks;
     ks = keystroke(0, 7);
     return assertThat(ks.modifiers, equalTo(7));
   });
+
   test("Modifier's properties should be false when modifiers is 0", function() {
     var ks;
     ks = keystroke(0);
@@ -2886,21 +3515,25 @@
     assertThat(ks, hasProperty("shift", strictlyEqualTo(false)));
     return assertThat(ks, hasProperty("alt", strictlyEqualTo(false)));
   });
+
   test("Ctrl property should be true when mofifiers is 1", function() {
     var ks;
     ks = keystroke(0, 1);
     return assertThat(ks.ctrl);
   });
+
   test("Shift property should be true when mofifiers is 2", function() {
     var ks;
     ks = keystroke(0, 2);
     return assertThat(ks.shift);
   });
+
   test("Alt property should be true when mofifiers is 4", function() {
     var ks;
     ks = keystroke(0, 4);
     return assertThat(ks.alt);
   });
+
   test("All modifier's property should be true when mofifiers is 7", function() {
     var ks;
     ks = keystroke(0, 7);
@@ -2908,12 +3541,14 @@
     assertThat(ks.shift);
     return assertThat(ks.alt);
   });
+
   test("Two calls to keystroke with the same arguments should return the same instance", function() {
     var ks1, ks2;
     ks1 = keystroke(16, 7);
     ks2 = keystroke(16, 7);
     return assertThat(ks1, strictlyEqualTo(ks2));
   });
+
   test("The keystroke object should be able to match an event object", function() {
     var ks;
     ks = keystroke(16, 7);
@@ -2924,18 +3559,22 @@
       altKey: true
     }));
   });
+
   test("The string representation of a keystroke should be a human readable representation", function() {
     var ks;
     ks = keystroke(keys.a, keys.mod.ctrl + keys.mod.shift);
     return assertThat(ks.toString(), equalTo("Ctrl+Shift+A"));
   });
+
   module("widgets base tests");
+
   test("Widgets should have a target node", function() {
     var target, widget;
     target = $("<div></div>")[0];
     widget = new Widget(target);
     return assertThat(widget, hasProperty("target", equalTo(target)));
   });
+
   test("Widgets constructor should fail with an invalid argument", function() {
     var target, widget, widgetFailed;
     target = $("<div></div>");
@@ -2947,11 +3586,13 @@
     }
     return assertThat(widgetFailed);
   });
+
   test("Widgets can be instanciated without a target", function() {
     var widget;
     widget = new Widget;
     return assertThat(widget, hasProperty("target"));
   });
+
   test("Widgets with target should reflect the initial target's state", function() {
     var target, widget;
     target = $("<input type='text' value='foo' name='foo' disabled readonly></input>")[0];
@@ -2961,6 +3602,7 @@
     assertThat(widget.get("value"), equalTo("foo"));
     return assertThat(widget.get("name"), equalTo("foo"));
   });
+
   test("Changes made to the widget should affect its target", function() {
     var target, widget;
     target = $("<input type='text' value='foo' name='foo' disabled readonly></input>")[0];
@@ -2974,6 +3616,7 @@
     assertThat($(target).attr("value"), equalTo("hello"));
     return assertThat($(target).attr("name"), equalTo("name"));
   });
+
   test("Changes made to a widget's property should dispatch a propertyChanged signal", function() {
     var signalDispatched, signalOrigin, signalProperty, signalValue, widget;
     widget = new Widget;
@@ -2993,24 +3636,31 @@
     assertThat(signalProperty, equalTo("disabled"));
     return assertThat(signalValue, equalTo(false));
   });
+
   test("Changes made to the target's value should be catched by the widget", function() {
     var MockWidget, target, targetChangeCalled, widget;
     target = $("<input type='text' value='foo'></input>");
     targetChangeCalled = false;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.targetChange = function(e) {
         return targetChangeCalled = true;
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget(target[0]);
     target.change();
     return assertThat(targetChangeCalled);
   });
+
   test("Widget should dispatch a valueChanged signal on a value change", function() {
     var signalDispatched, signalOrigin, signalValue, widget;
     widget = new Widget;
@@ -3027,6 +3677,7 @@
     assertThat(signalOrigin, equalTo(widget));
     return assertThat(signalValue, equalTo("foo"));
   });
+
   test("Widgets without target should allow modification of their properties", function() {
     var widget;
     widget = new Widget;
@@ -3037,6 +3688,7 @@
     assertThat(widget.get("disabled"), equalTo(true));
     return assertThat(widget.get("readonly"), equalTo(true));
   });
+
   test("Widgets should allow creation of custom properties", function() {
     var widget;
     widget = new Widget;
@@ -3045,6 +3697,7 @@
     widget.set("foo", "hello");
     return assertThat(widget.get("foo"), equalTo("hello"));
   });
+
   test("Widgets should allow to modify several properties with just one call to the set method", function() {
     var widget;
     widget = new Widget;
@@ -3057,6 +3710,7 @@
     assertThat(widget.get("disabled"), equalTo(true));
     return assertThat(widget.get("value"), equalTo("foo"));
   });
+
   test("Widgets should allow creation of custom properties with custom accessors", function() {
     var getter, setter, widget;
     widget = new Widget;
@@ -3071,24 +3725,31 @@
     widget.set("foo", "hello");
     return assertThat(widget.get("foo"), equalTo("hello"));
   });
+
   test("Widget class should allow subclasses to create a dummy in constructor", function() {
     var MockWidget, createDummyWasCalled, widget;
     createDummyWasCalled = false;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         createDummyWasCalled = true;
         return $("<span></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     assertThat(createDummyWasCalled);
     return assertThat(widget.dummy, allOf(notNullValue(), hasProperty("length", equalTo(1))));
   });
+
   test("Widgets that create dummy should have registered to its mouse events", function() {
     var MockWidget, clickReceived, dblclickReceived, mousedownReceived, mousemoveReceived, mouseoutReceived, mouseoverReceived, mouseupReceived, mousewheelReceived, widget;
     mousedownReceived = false;
@@ -3099,40 +3760,53 @@
     mousewheelReceived = false;
     clickReceived = false;
     dblclickReceived = false;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return this.dummy = $("<span></span>");
       };
+
       MockWidget.prototype.mousedown = function() {
         return mousedownReceived = true;
       };
+
       MockWidget.prototype.mouseup = function() {
         return mouseupReceived = true;
       };
+
       MockWidget.prototype.mousemove = function() {
         return mousemoveReceived = true;
       };
+
       MockWidget.prototype.mouseover = function() {
         return mouseoverReceived = true;
       };
+
       MockWidget.prototype.mouseout = function() {
         return mouseoutReceived = true;
       };
+
       MockWidget.prototype.mousewheel = function() {
         return mousewheelReceived = true;
       };
+
       MockWidget.prototype.click = function() {
         return clickReceived = true;
       };
+
       MockWidget.prototype.dblclick = function() {
         return dblclickReceived = true;
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     widget.dummy.mousedown();
     widget.dummy.mouseup();
@@ -3152,6 +3826,7 @@
     assertThat(clickReceived);
     return assertThat(dblclickReceived);
   });
+
   test("Widgets that create dummy sould allow to unregister from its mouse events", function() {
     var MockWidget, clickReceived, dblclickReceived, mousedownReceived, mousemoveReceived, mouseoutReceived, mouseoverReceived, mouseupReceived, mousewheelReceived, widget;
     mousedownReceived = false;
@@ -3162,40 +3837,53 @@
     mousewheelReceived = false;
     clickReceived = false;
     dblclickReceived = false;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span></span>");
       };
+
       MockWidget.prototype.mousedown = function() {
         return mousedownReceived = true;
       };
+
       MockWidget.prototype.mouseup = function() {
         return mouseupReceived = true;
       };
+
       MockWidget.prototype.mousemove = function() {
         return mousemoveReceived = true;
       };
+
       MockWidget.prototype.mouseover = function() {
         return mouseoverReceived = true;
       };
+
       MockWidget.prototype.mouseout = function() {
         return mouseoutReceived = true;
       };
+
       MockWidget.prototype.mousewheel = function() {
         return mousewheelReceived = true;
       };
+
       MockWidget.prototype.click = function() {
         return clickReceived = true;
       };
+
       MockWidget.prototype.dblclick = function() {
         return dblclickReceived = true;
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     widget.unregisterFromDummyEvents();
     widget.dummy.mousedown();
@@ -3215,36 +3903,48 @@
     assertThat(!clickReceived);
     return assertThat(!dblclickReceived);
   });
+
   test("Widget's states should be reflected on the dummy class attribute", function() {
     var MockWidget, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     widget.set("disabled", true);
     assertThat(widget.dummy.hasClass("disabled"));
     widget.set("readonly", true);
     return assertThat(widget.dummy.hasClass("readonly"));
   });
+
   test("Widget's states should have the same order whatever the call order is", function() {
     var MockWidget, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     widget.set("disabled", true);
     widget.set("readonly", true);
@@ -3254,18 +3954,24 @@
     widget.set("disabled", true);
     return assertThat(widget.dummy.attr("class"), equalTo("disabled readonly"));
   });
+
   test("Widget should dispatch a stateChanged signal when the state is changed", function() {
     var MockWidget, signalDispatched, signalOrigin, signalValue, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     signalDispatched = false;
     signalOrigin = null;
@@ -3280,18 +3986,24 @@
     assertThat(signalOrigin, equalTo(widget));
     return assertThat(signalValue, equalTo("disabled"));
   });
+
   test("Widget shouldn't dispatch the stateChanged signal when a property that doesn't affect the state is modified", function() {
     var MockWidget, signalDispatched, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     signalDispatched = false;
     widget.stateChanged.add(function(widget, state) {
@@ -3300,71 +4012,94 @@
     widget.set("name", "hello");
     return assertThat(!signalDispatched);
   });
+
   test("Widget's dummy should allow focus by setting the tabindex attribute", function() {
     var MockWidget, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     return assertThat(widget.dummy.attr("tabindex"), notNullValue());
   });
+
   test("Widgets should receive focus related events from its dummy", function() {
     var MockWidget, blurReceived, focusReceived, widget;
     focusReceived = false;
     blurReceived = false;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span></span>");
       };
+
       MockWidget.prototype.focus = function(e) {
         return focusReceived = true;
       };
+
       MockWidget.prototype.blur = function(e) {
         return blurReceived = true;
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     widget.dummy.focus();
     widget.dummy.blur();
     assertThat(focusReceived);
     return assertThat(blurReceived);
   });
+
   test("Widgets should receive keyboard related events from its dummy", function() {
     var MockWidget, keydownReceived, keypressReceived, keyupReceived, widget;
     keydownReceived = false;
     keyupReceived = false;
     keypressReceived = false;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span></span>");
       };
+
       MockWidget.prototype.keydown = function(e) {
         return keydownReceived = true;
       };
+
       MockWidget.prototype.keyup = function(e) {
         return keyupReceived = true;
       };
+
       MockWidget.prototype.keypress = function(e) {
         return keypressReceived = true;
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     widget.dummy.keydown();
     widget.dummy.keypress();
@@ -3373,103 +4108,140 @@
     assertThat(keypressReceived);
     return assertThat(keyupReceived);
   });
+
   test("Widgets should be able to know when it has focus", function() {
     var MockWidget, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span class='foo'></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget();
     widget.dummy.focus();
     return assertThat(widget.hasFocus);
   });
+
   test("Widgets should be able to know when it lose focus", function() {
     var MockWidget, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span class='foo'></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget();
     widget.dummy.focus();
     widget.dummy.blur();
     return assertThat(!widget.hasFocus);
   });
+
   test("Widgets dummy should reflect the focus state in its class attribute", function() {
     var MockWidget, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span class='foo'></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget();
     widget.dummy.focus();
     return assertThat(widget.dummy.hasClass("focus"));
   });
+
   test("Widgets dummy should reflect the lost focus state in its class attribute", function() {
     var MockWidget, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span class='foo'></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget();
     widget.dummy.focus();
     widget.dummy.blur();
     return assertThat(!widget.dummy.hasClass("focus"));
   });
+
   test("Widgets should preserve the initial class value of the dummy", function() {
     var MockWidget, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span class='foo'></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     return assertThat(widget.dummy.attr("class"), equalTo("foo"));
   });
+
   test("Widgets should preserve the initial class value of the dummy even with state class", function() {
     var MockWidget, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span class='foo'></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     widget.set("disabled", true);
     return assertThat(widget.dummy.attr("class"), equalTo("foo disabled"));
   });
+
   test("Widgets should hide the target when provided", function() {
     var target, widget;
     target = $("<input type='text'></input>");
@@ -3477,6 +4249,7 @@
     widget.hideTarget();
     return assertThat(target.attr("style"), contains("display: none"));
   });
+
   test("Widgets shouldn't fail on hide when the target isn't provided", function() {
     var errorRaised, widget;
     widget = new Widget;
@@ -3488,12 +4261,14 @@
     }
     return assertThat(!errorRaised);
   });
+
   test("Widgets should allow to register function for specific keystrokes on keydown", function() {
     var widget;
     widget = new Widget;
     widget.registerKeyDownCommand(keystroke(keys.a, keys.mod.ctrl), function() {});
     return assertThat(widget.hasKeyDownCommand(keystroke(keys.a, keys.mod.ctrl)));
   });
+
   test("Widgets should trigger the corresponding function with the associated keystroke on keydown", function() {
     var commandCalled, widget;
     widget = new Widget;
@@ -3509,12 +4284,14 @@
     });
     return assertThat(commandCalled);
   });
+
   test("Widgets should allow to register function for specific keystrokes on keyup", function() {
     var widget;
     widget = new Widget;
     widget.registerKeyUpCommand(keystroke(keys.a, keys.mod.ctrl), function() {});
     return assertThat(widget.hasKeyUpCommand(keystroke(keys.a, keys.mod.ctrl)));
   });
+
   test("Widgets should trigger the corresponding function with the associated keystroke on keyup", function() {
     var commandCalled, widget;
     widget = new Widget;
@@ -3530,6 +4307,7 @@
     });
     return assertThat(commandCalled);
   });
+
   test("Widgets keyup events that doesn't trigger a command shouldn't return false", function() {
     var widget;
     widget = new Widget;
@@ -3540,6 +4318,7 @@
       altKey: false
     }));
   });
+
   test("Widgets keydown events that doesn't trigger a command shouldn't return false", function() {
     var widget;
     widget = new Widget;
@@ -3550,6 +4329,7 @@
       altKey: false
     }));
   });
+
   test("Widgets keydown events that trigger a command should return the command return", function() {
     var widget;
     widget = new Widget;
@@ -3563,6 +4343,7 @@
       altKey: false
     }));
   });
+
   test("Widgets keyup events that trigger a command should return the command return", function() {
     var widget;
     widget = new Widget;
@@ -3576,6 +4357,7 @@
       altKey: false
     }));
   });
+
   test("Widgets should pass the event to the keydown commands", function() {
     var event, widget;
     event = null;
@@ -3591,6 +4373,7 @@
     });
     return assertThat(event, notNullValue());
   });
+
   test("Widgets should pass the event to the keyup commands", function() {
     var event, widget;
     event = null;
@@ -3606,6 +4389,7 @@
     });
     return assertThat(event, notNullValue());
   });
+
   test("Widgets should provide a way to reset the target input to its original state", function() {
     var target, widget;
     target = $("<input type='text' value='foo'></input>");
@@ -3615,6 +4399,7 @@
     widget.reset();
     return assertThat(target.attr("value"), equalTo("foo"));
   });
+
   test("Readonly widgets shouldn't allow to modify its value", function() {
     var widget;
     widget = new Widget;
@@ -3623,116 +4408,155 @@
     widget.set("value", "Goodbye");
     return assertThat(widget.get("value"), equalTo("Hello"));
   });
+
   test("Widgets should be able to grab focus", function() {
     var MockWidget, focusReceived, widget;
     focusReceived = false;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span class='foo'></span>");
       };
+
       MockWidget.prototype.focus = function(e) {
         return focusReceived = true;
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     widget.grabFocus();
     return assertThat(focusReceived);
   });
+
   test("Widgets should be able to release the focus", function() {
     var MockWidget, blurReceived, focusReceived, widget;
     focusReceived = false;
     blurReceived = false;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span class='foo'></span>");
       };
+
       MockWidget.prototype.focus = function(e) {
         return focusReceived = true;
       };
+
       MockWidget.prototype.blur = function(e) {
         return blurReceived = true;
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     widget.grabFocus();
     assertThat(focusReceived);
     widget.releaseFocus();
     return assertThat(blurReceived);
   });
+
   test("Disabled widgets shouldn't allow focus", function() {
     var MockWidget, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span class='foo'></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     widget.set("disabled", true);
     assertThat(widget.focus(), equalTo(false));
     return assertThat(widget.dummy.attr("tabindex"), nullValue());
   });
+
   test("Widget's properties getters and setters should be overridable in children classes", function() {
     var MockWidget, setterCalled, widget;
     setterCalled = false;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.set_value = function(property, value) {
         return setterCalled = true;
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     widget.set("value", "foo");
     return assertThat(setterCalled);
   });
+
   test("Widget's custom properties should be overridable in children classes", function() {
     var MockWidgetA, MockWidgetB, setterCalled, widget;
     setterCalled = false;
-    MockWidgetA = (function() {
-      __extends(MockWidgetA, Widget);
+    MockWidgetA = (function(_super) {
+
+      __extends(MockWidgetA, _super);
+
       function MockWidgetA(target) {
         MockWidgetA.__super__.constructor.call(this, target);
         this.createProperty("foo", "bar");
       }
+
       MockWidgetA.prototype.set_foo = function(property, value) {
         return value;
       };
+
       return MockWidgetA;
-    })();
-    MockWidgetB = (function() {
-      __extends(MockWidgetB, MockWidgetA);
+
+    })(Widget);
+    MockWidgetB = (function(_super) {
+
+      __extends(MockWidgetB, _super);
+
       function MockWidgetB() {
         MockWidgetB.__super__.constructor.apply(this, arguments);
       }
+
       MockWidgetB.prototype.set_foo = function(property, value) {
         setterCalled = true;
         return MockWidgetB.__super__.set_foo.call(this, property, value);
       };
+
       return MockWidgetB;
-    })();
+
+    })(MockWidgetA);
     widget = new MockWidgetB;
     widget.set("foo", "hello");
     assertThat(setterCalled);
     return assertThat(widget.get("foo"), equalTo("hello"));
   });
+
   test("Widget's value setter shouldn't dispatch a value changed when set is called with the current value", function() {
     var signalCallCount, widget;
     widget = new Widget;
@@ -3744,153 +4568,200 @@
     widget.set("value", "hello");
     return assertThat(signalCallCount, equalTo(1));
   });
+
   test("When both target and dummy exist and target as a style attribute, the value should be copied to the dummy", function() {
     var MockWidget, target, widget;
     target = $("<input type='text' style='width: 100px;'></input>")[0];
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span class='foo'></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget(target);
     return assertThat(widget.dummy.attr("style"), equalTo("width: 100px;"));
   });
+
   test("Widgets should provide a way to know when the widget don't allow interaction", function() {
     var widget;
     widget = new Widget;
     return assertThat(!widget.cantInteract());
   });
+
   test("Widgets should provide a way to know when the widget don't allow interaction", function() {
     var widget;
     widget = new Widget;
     widget.set("disabled", true);
     return assertThat(widget.cantInteract());
   });
+
   test("Widgets should provide a way to know when the widget don't allow interaction", function() {
     var widget;
     widget = new Widget;
     widget.set("readonly", true);
     return assertThat(widget.cantInteract());
   });
+
   test("Widgets should provides a way to add a class to its dummy", function() {
     var MockWidget, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span class='foo'></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     widget.addClasses("bar", "owl");
     assertThat(widget.dummy.attr("class"), contains("bar"));
     return assertThat(widget.dummy.attr("class"), contains("owl"));
   });
+
   test("Widgets should provides a way to remove a class from its dummy", function() {
     var MockWidget, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span class='foo bar owl'></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     widget.removeClasses("bar", "owl");
     assertThat(widget.dummy.attr("class"), hamcrest.not(contains("bar")));
     return assertThat(widget.dummy.attr("class"), hamcrest.not(contains("owl")));
   });
+
   test("Widgets should provide an id property that is mapped to the dummy", function() {
     var MockWidget, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span class='foo' id='hola'></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     assertThat(widget.dummy.attr("id"), equalTo("hola"));
     widget.set("id", "foo");
     return assertThat(widget.dummy.attr("id"), equalTo("foo"));
   });
+
   test("Setting a null id should remove the attribute from the dummy", function() {
     var MockWidget, widget;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<span class='foo'></span>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     widget = new MockWidget;
     widget.set("id", "foo");
     widget.set("id", null);
     return assertThat(widget.dummy.attr("id"), equalTo(void 0));
   });
+
   test("Widgets should mark their target with a specific class", function() {
     var target, widget;
     target = $("<input type='text'></input>");
     widget = new Widget(target[0]);
     return assertThat(target.hasClass("widget-done"));
   });
-  MockWidget = (function() {
-    __extends(MockWidget, Widget);
+
+  MockWidget = (function(_super) {
+
+    __extends(MockWidget, _super);
+
     function MockWidget() {
       MockWidget.__super__.constructor.apply(this, arguments);
     }
+
     MockWidget.prototype.createDummy = function() {
       return $("<span></span>");
     };
+
     return MockWidget;
-  })();
+
+  })(Widget);
+
   module("container tests");
+
   test("A container should have children", function() {
     var container;
     container = new Container;
     return assertThat(container.children, allOf(notNullValue(), arrayWithLength(0)));
   });
+
   test("A container should allow to add children", function() {
     var container;
     container = new Container;
     container.add(new MockWidget);
     return assertThat(container.children, arrayWithLength(1));
   });
+
   test("A container should prevent to add a null child", function() {
     var container;
     container = new Container;
     container.add(null);
     return assertThat(container.children, arrayWithLength(0));
   });
+
   test("A container should prevent to add an object which is not a widget", function() {
     var container;
     container = new Container;
     container.add({});
     return assertThat(container.children, arrayWithLength(0));
   });
+
   test("A container should allow to add a child that is an instance of a widget subclass", function() {
     var container;
     container = new Container;
     container.add(new MockWidget);
     return assertThat(container.children, arrayWithLength(1));
   });
+
   test("A container should prevent to add the same child twice", function() {
     var child, container;
     container = new Container;
@@ -3899,6 +4770,7 @@
     container.add(child);
     return assertThat(container.children, array(child));
   });
+
   test("A container should allow to remove a previously added child", function() {
     var child, container;
     container = new Container;
@@ -3907,6 +4779,7 @@
     container.remove(child);
     return assertThat(container.children, arrayWithLength(0));
   });
+
   test("A container shouldn't proceed when remove is called with null", function() {
     var child, container;
     container = new Container;
@@ -3915,6 +4788,7 @@
     container.remove(null);
     return assertThat(container.children, arrayWithLength(1));
   });
+
   test("A container shouldn't proceed when remove is called with an object that isn't a widget", function() {
     var child, container;
     container = new Container;
@@ -3923,6 +4797,7 @@
     container.remove({});
     return assertThat(container.children, arrayWithLength(1));
   });
+
   test("A container shouldn't proceed when remove is called with a widget which is not a child", function() {
     var child, container, notChild;
     container = new Container;
@@ -3932,11 +4807,13 @@
     container.remove(notChild);
     return assertThat(container.children, arrayWithLength(1));
   });
+
   test("A container should have a dummy", function() {
     var container;
     container = new Container;
     return assertThat(container.dummy, notNullValue());
   });
+
   test("Adding a widget in a container should add its dummy as a child of the container's one", function() {
     var child, container;
     container = new Container;
@@ -3945,6 +4822,7 @@
     assertThat(container.dummy.children().length, equalTo(1));
     return assertThat(container.dummy.children()[0], equalTo(child.dummy[0]));
   });
+
   test("Removing a widget should remove its dummy from the container's one", function() {
     var child, container;
     container = new Container;
@@ -3953,6 +4831,7 @@
     container.remove(child);
     return assertThat(container.dummy.children().length, equalTo(0));
   });
+
   test("Widgets added as child of a container should be able to access its parent", function() {
     var child, container;
     container = new Container;
@@ -3960,6 +4839,7 @@
     container.add(child);
     return assertThat(child.parent === container);
   });
+
   test("Widgets that are no longer a child of a container shouldn't hold a reference to it anymore", function() {
     var child, container;
     container = new Container;
@@ -3968,6 +4848,7 @@
     container.remove(child);
     return assertThat(child.parent === null);
   });
+
   test("A container should prevent to take focus when one of its child receive it", function() {
     var container, widget;
     widget = new MockWidget;
@@ -3976,23 +4857,30 @@
     widget.dummy.focus();
     return assertThat(!container.hasFocus);
   });
+
   test("Keyboard commands that can't be found in children should be bubbled to the parent", function() {
     var MockContainer, container, event, keyDownCommandCalled, keyUpCommandCalled, widget;
     keyDownCommandCalled = false;
     keyUpCommandCalled = false;
-    MockContainer = (function() {
-      __extends(MockContainer, Container);
+    MockContainer = (function(_super) {
+
+      __extends(MockContainer, _super);
+
       function MockContainer() {
         MockContainer.__super__.constructor.apply(this, arguments);
       }
+
       MockContainer.prototype.triggerKeyDownCommand = function(e) {
         return keyDownCommandCalled = true;
       };
+
       MockContainer.prototype.triggerKeyUpCommand = function(e) {
         return keyUpCommandCalled = true;
       };
+
       return MockContainer;
-    })();
+
+    })(Container);
     widget = new MockWidget;
     container = new MockContainer;
     container.add(widget);
@@ -4007,25 +4895,30 @@
     assertThat(keyDownCommandCalled);
     return assertThat(keyUpCommandCalled);
   });
+
   module("button tests");
+
   test("Buttons should allow to pass a button input as argument", function() {
     var button, target;
     target = ($("<input type='button'></input>"))[0];
     button = new Button(target);
     return assertThat(button.target === target);
   });
+
   test("Buttons should allow to pass a submit input as argument", function() {
     var button, target;
     target = ($("<input type='submit'></input>"))[0];
     button = new Button(target);
     return assertThat(button.target === target);
   });
+
   test("Buttons should allow to pass a reset input as argument", function() {
     var button, target;
     target = ($("<input type='reset'></input>"))[0];
     button = new Button(target);
     return assertThat(button.target === target);
   });
+
   test("Buttons shouldn't allow any other type of input as argument", function() {
     var button, errorRaised, target;
     target = ($("<input type='text'></input>"))[0];
@@ -4037,6 +4930,7 @@
     }
     return assertThat(errorRaised);
   });
+
   test("Buttons should also allow an action object as argument", function() {
     var action, button;
     action = {
@@ -4045,6 +4939,7 @@
     button = new Button(action);
     return assertThat(button.get("action") === action);
   });
+
   test("Buttons should accept both a target and an action as arguments", function() {
     var action, button, target;
     target = ($("<input type='reset'></input>"))[0];
@@ -4055,6 +4950,7 @@
     assertThat(button.target === target);
     return assertThat(button.get("action") === action);
   });
+
   test("Buttons content should be provided through the action object", function() {
     var action, button;
     action = {
@@ -4064,6 +4960,7 @@
     button = new Button(action);
     return assertThat(button.dummy.find(".content").text(), equalTo("label"));
   });
+
   test("Buttons should trigger the action on a click", function() {
     var action, actionTriggered, button;
     actionTriggered = false;
@@ -4076,6 +4973,7 @@
     button.dummy.click();
     return assertThat(actionTriggered);
   });
+
   test("Buttons should trigger their target click on a click", function() {
     var button, clickCalled, target;
     clickCalled = false;
@@ -4087,12 +4985,14 @@
     button.click();
     return assertThat(clickCalled);
   });
+
   test("Buttons should hide their target at creation", function() {
     var button, target;
     target = $("<input type='reset'></input>");
     button = new Button(target[0]);
     return assertThat(target.attr("style"), contains("display: none"));
   });
+
   test("Readonly buttons should not trigger the action on a click", function() {
     var action, actionTriggered, button;
     actionTriggered = false;
@@ -4106,6 +5006,7 @@
     button.dummy.click();
     return assertThat(!actionTriggered);
   });
+
   test("Disabled buttons should not trigger the action on a click", function() {
     var action, actionTriggered, button;
     actionTriggered = false;
@@ -4119,6 +5020,7 @@
     button.dummy.click();
     return assertThat(!actionTriggered);
   });
+
   test("Readonly buttons shouldn't trigger their target click on a click", function() {
     var button, clickCalled, target;
     clickCalled = false;
@@ -4131,6 +5033,7 @@
     button.click();
     return assertThat(!clickCalled);
   });
+
   test("Disabled buttons shouldn't trigger their target click on a click", function() {
     var button, clickCalled, target;
     clickCalled = false;
@@ -4143,6 +5046,7 @@
     button.click();
     return assertThat(!clickCalled);
   });
+
   test("Buttons should allow to use the space key instead of a click", function() {
     var action, actionTriggered, button;
     actionTriggered = false;
@@ -4160,6 +5064,7 @@
     });
     return assertThat(actionTriggered);
   });
+
   test("Buttons should allow to use the enter key instead of a click", function() {
     var action, actionTriggered, button;
     actionTriggered = false;
@@ -4177,6 +5082,7 @@
     });
     return assertThat(actionTriggered);
   });
+
   test("Changing the action of a button should update its content", function() {
     var button;
     button = new Button;
@@ -4186,31 +5092,47 @@
     });
     return assertThat(button.dummy.find(".content").text(), equalTo("label"));
   });
+
   button1 = new Button;
+
   button2 = new Button;
+
   button3 = new Button;
+
   button1.set("value", "Button <span class='icon'></span>");
+
   button2.set("value", "Readonly");
+
   button3.set("value", "Disabled");
+
   button2.set("readonly", true);
+
   button3.set("disabled", true);
+
   $("#qunit-header").before($("<h4>Button</h4>"));
+
   $("#qunit-header").before(button1.dummy);
+
   $("#qunit-header").before(button2.dummy);
+
   $("#qunit-header").before(button3.dummy);
+
   module("textinput tests");
+
   test("TextInput should allow a target of type text", function() {
     var input, target;
     target = $("<input type='text'></input>")[0];
     input = new TextInput(target);
     return assertThat(input.target === target);
   });
+
   test("TextInput should allow a target of type password", function() {
     var input, target;
     target = $("<input type='password'></input>")[0];
     input = new TextInput(target);
     return assertThat(input.target === target);
   });
+
   test("A TextInput shouldn't allow a target of with a type different than text or password", function() {
     var errorRaised, input, target;
     target = $("<input type='file'></input>")[0];
@@ -4222,16 +5144,19 @@
     }
     return assertThat(errorRaised);
   });
+
   test("A TextInput should create a target when not provided in the constructor", function() {
     var input;
     input = new TextInput;
     return assertThat(input.target, notNullValue());
   });
+
   test("A TextInput should have a dummy that contains the target", function() {
     var input;
     input = new TextInput;
     return assertThat(input.dummy.children("input").length, equalTo(1));
   });
+
   test("A TextInput focus should be placed on the target", function() {
     var focusPlacedOnTheInput, input;
     focusPlacedOnTheInput = false;
@@ -4244,6 +5169,7 @@
     assertThat(input.dummy.attr("tabindex"), nullValue());
     return assertThat(input.hasFocus);
   });
+
   test("Changing the value in the target should update the widget", function() {
     var input, signalCalled, signalValue;
     signalCalled = false;
@@ -4257,12 +5183,14 @@
     input.dummy.children("input").change();
     return assertThat(input.get("value"), equalTo("hello"));
   });
+
   test("Clicking on a textinput should give him the focus", function() {
     var input;
     input = new TextInput;
     input.dummy.mouseup();
     return assertThat(input.hasFocus);
   });
+
   test("Clicking on a disabled textinput shouldn't give him the focus", function() {
     var input;
     input = new TextInput;
@@ -4270,6 +5198,7 @@
     input.dummy.mouseup();
     return assertThat(!input.hasFocus);
   });
+
   test("TextInput should support the maxlength attribute of an input text", function() {
     var input, target;
     target = $("<input type='text' maxlength='5'></input>");
@@ -4281,35 +5210,55 @@
     input.set("maxlength", null);
     return assertThat(target.attr("maxlength"), equalTo(void 0));
   });
+
   test("TextInput should know when its content had changed and the change events isn't triggered already", function() {
     var input;
     input = new TextInput;
     input.dummy.children("input").trigger("input");
     return assertThat(input.valueIsObsolete);
   });
+
   input1 = new TextInput;
+
   input2 = new TextInput;
+
   input3 = new TextInput;
+
   input1.set("value", "Hello");
+
   input2.set("value", "Readonly");
+
   input3.set("value", "Disabled");
+
   input1.dummyClass = input1.dummyClass + " a";
+
   input2.dummyClass = input2.dummyClass + " b";
+
   input3.dummyClass = input3.dummyClass + " c";
+
   input1.updateStates();
+
   input2.set("readonly", true);
+
   input3.set("disabled", true);
+
   $("#qunit-header").before($("<h4>TextInput</h4>"));
+
   $("#qunit-header").before(input1.dummy);
+
   $("#qunit-header").before(input2.dummy);
+
   $("#qunit-header").before(input3.dummy);
+
   module("textareas tests");
+
   test("A TextArea should allow an textarea as target", function() {
     var area, target;
     target = $("<textarea></textarea>")[0];
     area = new TextArea(target);
     return assertThat(area.target === target);
   });
+
   test("A TextArea shouldn't allow any other node as target", function() {
     var area, errorRaised, target;
     target = $("<input type='text'></input>")[0];
@@ -4321,17 +5270,20 @@
     }
     return assertThat(errorRaised);
   });
+
   test("A TextArea should create its own target if not provided", function() {
     var area;
     area = new TextArea;
     assertThat(area.target, notNullValue());
     return assertThat(area.target.nodeName.toLowerCase(), equalTo("textarea"));
   });
+
   test("The TextArea target should be added as a child of the dummy", function() {
     var area;
     area = new TextArea;
     return assertThat(area.dummy.find("textarea").length, equalTo(1));
   });
+
   test("The TextArea focus should be handled by the target", function() {
     var area, focusPlacedOnTheTarget;
     focusPlacedOnTheTarget = false;
@@ -4344,6 +5296,7 @@
     assertThat(area.dummy.attr("tabindex"), nullValue());
     return assertThat(area.hasFocus);
   });
+
   test("Changing the value in the target should update the widget", function() {
     var signalCalled, signalValue, textarea;
     signalCalled = false;
@@ -4357,12 +5310,14 @@
     textarea.dummy.children("textarea").change();
     return assertThat(textarea.get("value"), equalTo("hello"));
   });
+
   test("Clicking on a textarea should give him the focus", function() {
     var textarea;
     textarea = new TextArea;
     textarea.dummy.mouseup();
     return assertThat(textarea.hasFocus);
   });
+
   test("Clicking on a disabled textarea shouldn't give him the focus", function() {
     var textarea;
     textarea = new TextArea;
@@ -4370,31 +5325,47 @@
     textarea.dummy.mouseup();
     return assertThat(!textarea.hasFocus);
   });
+
   test("TextArea should know when its content had changed and the change events isn't triggered already", function() {
     var area;
     area = new TextArea;
     area.dummy.children("textarea").trigger("input");
     return assertThat(area.valueIsObsolete);
   });
+
   area1 = new TextArea;
+
   area2 = new TextArea;
+
   area3 = new TextArea;
+
   area1.set("value", "Hello World");
+
   area2.set("value", "Readonly");
+
   area3.set("value", "Disabled");
+
   area2.set("readonly", true);
+
   area3.set("disabled", true);
+
   $("#qunit-header").before($("<h4>TextArea</h4>"));
+
   $("#qunit-header").before(area1.dummy);
+
   $("#qunit-header").before(area2.dummy);
+
   $("#qunit-header").before(area3.dummy);
+
   module("checkbox tests");
+
   test("CheckBox should allow input with a checkbox type", function() {
     var checkbox, target;
     target = $("<input type='checkbox'></input>")[0];
     checkbox = new CheckBox(target);
     return assertThat(checkbox.target === target);
   });
+
   test("CheckBox should allow only input with a checkbox type", function() {
     var checkbox, errorRaised, target;
     target = $("<input type='text'></input>")[0];
@@ -4406,12 +5377,14 @@
     }
     return assertThat(errorRaised);
   });
+
   test("CheckBox should reflect the checked state of the input", function() {
     var checkbox, target;
     target = $("<input type='checkbox' checked></input>")[0];
     checkbox = new CheckBox(target);
     return assertThat(checkbox.get("checked"));
   });
+
   test("CheckBox should apply change made to the checked property on the target", function() {
     var checkbox, target;
     target = $("<input type='checkbox' checked></input>")[0];
@@ -4419,6 +5392,7 @@
     checkbox.set("checked", false);
     return assertThat(checkbox.get("checked"), equalTo(false));
   });
+
   test("CheckBox should be created without a target", function() {
     var checkbox, errorRaised;
     errorRaised = false;
@@ -4429,23 +5403,27 @@
     }
     return assertThat(!errorRaised);
   });
+
   test("CheckBox should provide a dummy", function() {
     var checkbox;
     checkbox = new CheckBox;
     return assertThat(checkbox.dummy, notNullValue());
   });
+
   test("CheckBox should handle the checked property as a state", function() {
     var checkbox;
     checkbox = new CheckBox;
     checkbox.set("checked", true);
     return assertThat(checkbox.dummy.hasClass("checked"));
   });
+
   test("CheckBox should hide its target on creation", function() {
     var checkbox, target;
     target = $("<input type='checkbox' checked></input>");
     checkbox = new CheckBox(target[0]);
     return assertThat(target.attr("style"), contains("display: none"));
   });
+
   test("Clicking on a CheckBox should toggle its checked state", function() {
     var checkbox;
     checkbox = new CheckBox;
@@ -4455,6 +5433,7 @@
     checkbox.click();
     return assertThat(checkbox.get("checked"), equalTo(false));
   });
+
   test("Clicking on a CheckBox shouldn't toggle its checked state when readonly", function() {
     var checkbox;
     checkbox = new CheckBox;
@@ -4463,6 +5442,7 @@
     checkbox.click();
     return assertThat(checkbox.get("checked"), equalTo(false));
   });
+
   test("Clicking on a CheckBox shouldn't toggle its checked state when disabled", function() {
     var checkbox;
     checkbox = new CheckBox;
@@ -4471,23 +5451,30 @@
     checkbox.click();
     return assertThat(checkbox.get("checked"), equalTo(false));
   });
+
   test("Clicking on a CheckBox should grab the focus", function() {
     var MockCheckBox, checkbox, focusReveiced;
     focusReveiced = false;
-    MockCheckBox = (function() {
-      __extends(MockCheckBox, CheckBox);
+    MockCheckBox = (function(_super) {
+
+      __extends(MockCheckBox, _super);
+
       function MockCheckBox() {
         MockCheckBox.__super__.constructor.apply(this, arguments);
       }
+
       MockCheckBox.prototype.focus = function(e) {
         return focusReveiced = true;
       };
+
       return MockCheckBox;
-    })();
+
+    })(CheckBox);
     checkbox = new MockCheckBox;
     checkbox.click();
     return assertThat(focusReveiced);
   });
+
   test("Using enter should toggle the checkbox's checked state", function() {
     var checkbox;
     checkbox = new CheckBox;
@@ -4500,6 +5487,7 @@
     });
     return assertThat(checkbox.get("checked"));
   });
+
   test("Using space should toggle the checkbox's checked state", function() {
     var checkbox;
     checkbox = new CheckBox;
@@ -4512,6 +5500,7 @@
     });
     return assertThat(checkbox.get("checked"));
   });
+
   test("Using enter shouldn't toggle the checkbox's checked state when readonly", function() {
     var checkbox;
     checkbox = new CheckBox;
@@ -4525,6 +5514,7 @@
     });
     return assertThat(!checkbox.get("checked"));
   });
+
   test("Using space shouldn't toggle the checkbox's checked state when readonly", function() {
     var checkbox;
     checkbox = new CheckBox;
@@ -4538,6 +5528,7 @@
     });
     return assertThat(!checkbox.get("checked"));
   });
+
   test("CheckBox reset should operate on the checked state", function() {
     var checkbox;
     checkbox = new CheckBox;
@@ -4545,12 +5536,14 @@
     checkbox.reset();
     return assertThat(!checkbox.get("checked"));
   });
+
   test("CheckBox should modify the value state synchronously with checked", function() {
     var checkbox;
     checkbox = new CheckBox;
     checkbox.set("checked", true);
     return assertThat(checkbox.get("value"), equalTo(true));
   });
+
   test("CheckBox should allow to specify a tuple of possible values", function() {
     var checkbox;
     checkbox = new CheckBox;
@@ -4559,12 +5552,14 @@
     checkbox.set("checked", true);
     return assertThat(checkbox.get("value"), equalTo("on"));
   });
+
   test("Modifying the checkbox value should modify the checked state", function() {
     var checkbox;
     checkbox = new CheckBox;
     checkbox.set("value", true);
     return assertThat(checkbox.get("checked"));
   });
+
   test("Modifying the checkbox value should modify the checked state according to the values property", function() {
     var checkbox;
     checkbox = new CheckBox;
@@ -4572,6 +5567,7 @@
     checkbox.set("value", "on");
     return assertThat(checkbox.get("checked"));
   });
+
   test("CheckBox should dispatch a checkedChanged signal", function() {
     var checkbox, signalCalled, signalOrigin, signalValue;
     checkbox = new CheckBox;
@@ -4588,26 +5584,42 @@
     assertThat(signalOrigin, equalTo(checkbox));
     return assertThat(signalValue, equalTo(true));
   });
+
   target = $("<input type='checkbox'></input>");
+
   checkbox1 = new CheckBox(target[0]);
+
   checkbox2 = new CheckBox;
+
   checkbox3 = new CheckBox;
+
   checkbox1.set("checked", true);
+
   checkbox2.set("readonly", true);
+
   checkbox2.set("checked", true);
+
   checkbox3.set("disabled", true);
+
   $("#qunit-header").before($("<h4>CheckBox</h4>"));
+
   $("#qunit-header").before(target);
+
   $("#qunit-header").before(checkbox1.dummy);
+
   $("#qunit-header").before(checkbox2.dummy);
+
   $("#qunit-header").before(checkbox3.dummy);
+
   module("radio tests");
+
   test("Radio should allow input with a radio type", function() {
     var radio;
     target = $("<input type='radio'></input>")[0];
     radio = new Radio(target);
     return assertThat(radio.target === target);
   });
+
   test("Radio should allow only input with a radio type", function() {
     var errorRaised, radio;
     target = $("<input type='text'></input>")[0];
@@ -4619,12 +5631,14 @@
     }
     return assertThat(errorRaised);
   });
+
   test("Radio should reflect the checked state of the input", function() {
     var radio;
     target = $("<input type='radio' checked></input>")[0];
     radio = new Radio(target);
     return assertThat(radio.get("checked"));
   });
+
   test("Radio should apply change made to the checked property on the target", function() {
     var radio;
     target = $("<input type='radio' checked></input>")[0];
@@ -4632,6 +5646,7 @@
     radio.set("checked", false);
     return assertThat(radio.get("checked"), equalTo(false));
   });
+
   test("Radio should be created without a target", function() {
     var errorRaised, radio;
     errorRaised = false;
@@ -4642,23 +5657,27 @@
     }
     return assertThat(!errorRaised);
   });
+
   test("Radio should provide a dummy", function() {
     var radio;
     radio = new Radio;
     return assertThat(radio.dummy, notNullValue());
   });
+
   test("Radio should handle the checked property as a state", function() {
     var radio;
     radio = new Radio;
     radio.set("checked", true);
     return assertThat(radio.dummy.hasClass("checked"));
   });
+
   test("Radio should hide its target on creation", function() {
     var radio;
     target = $("<input type='radio' checked></input>");
     radio = new Radio(target[0]);
     return assertThat(target.attr("style"), contains("display: none"));
   });
+
   test("Clicking on a Radio should toggle its checked state", function() {
     var radio;
     radio = new Radio;
@@ -4666,6 +5685,7 @@
     radio.click();
     return assertThat(radio.get("checked"), equalTo(true));
   });
+
   test("Clicking on a Radio several time should never toggle checked back to false", function() {
     var radio;
     radio = new Radio;
@@ -4675,6 +5695,7 @@
     radio.click();
     return assertThat(radio.get("checked"), equalTo(true));
   });
+
   test("Clicking on a Radio shouldn't toggle its checked state when readonly", function() {
     var radio;
     radio = new Radio;
@@ -4683,6 +5704,7 @@
     radio.click();
     return assertThat(radio.get("checked"), equalTo(false));
   });
+
   test("Clicking on a Radio shouldn't toggle its checked state when disabled", function() {
     var radio;
     radio = new Radio;
@@ -4691,23 +5713,30 @@
     radio.click();
     return assertThat(radio.get("checked"), equalTo(false));
   });
+
   test("Clicking on a Radio should grab the focus", function() {
     var MockRadio, focusReveiced, radio;
     focusReveiced = false;
-    MockRadio = (function() {
-      __extends(MockRadio, Radio);
+    MockRadio = (function(_super) {
+
+      __extends(MockRadio, _super);
+
       function MockRadio() {
         MockRadio.__super__.constructor.apply(this, arguments);
       }
+
       MockRadio.prototype.focus = function(e) {
         return focusReveiced = true;
       };
+
       return MockRadio;
-    })();
+
+    })(Radio);
     radio = new MockRadio;
     radio.click();
     return assertThat(focusReveiced);
   });
+
   test("Using enter should toggle the radio's checked state", function() {
     var radio;
     radio = new Radio;
@@ -4720,6 +5749,7 @@
     });
     return assertThat(radio.get("checked"));
   });
+
   test("Using space should toggle the radio's checked state", function() {
     var radio;
     radio = new Radio;
@@ -4732,6 +5762,7 @@
     });
     return assertThat(radio.get("checked"));
   });
+
   test("Using enter shouldn't toggle the radio's checked state when readonly", function() {
     var radio;
     radio = new Radio;
@@ -4745,6 +5776,7 @@
     });
     return assertThat(!radio.get("checked"));
   });
+
   test("Using space shouldn't toggle the radio's checked state when readonly", function() {
     var radio;
     radio = new Radio;
@@ -4758,6 +5790,7 @@
     });
     return assertThat(!radio.get("checked"));
   });
+
   test("Radio reset should operate on the checked state", function() {
     var radio;
     radio = new Radio;
@@ -4765,12 +5798,14 @@
     radio.reset();
     return assertThat(!radio.get("checked"));
   });
+
   test("Radio should modify the value state synchronously with checked", function() {
     var radio;
     radio = new Radio;
     radio.set("checked", true);
     return assertThat(radio.get("value"), equalTo(true));
   });
+
   test("Radio should allow to specify a tuple of possible values", function() {
     var radio;
     radio = new Radio;
@@ -4779,12 +5814,14 @@
     radio.set("checked", true);
     return assertThat(radio.get("value"), equalTo("on"));
   });
+
   test("Modifying the radio value should modify the checked state", function() {
     var radio;
     radio = new Radio;
     radio.set("value", true);
     return assertThat(radio.get("checked"));
   });
+
   test("Modifying the radio value should modify the checked state according to the values property", function() {
     var radio;
     radio = new Radio;
@@ -4792,6 +5829,7 @@
     radio.set("value", "on");
     return assertThat(radio.get("checked"));
   });
+
   test("Radio should dispatch a checkedChanged signal", function() {
     var radio, signalCalled, signalOrigin, signalValue;
     radio = new Radio;
@@ -4808,67 +5846,95 @@
     assertThat(signalOrigin, equalTo(radio));
     return assertThat(signalValue, equalTo(true));
   });
+
   target = $("<input type='radio'></input>");
+
   radio1 = new Radio(target[0]);
+
   radio2 = new Radio;
+
   radio3 = new Radio;
+
   radio2.set("readonly", true);
+
   radio2.set("checked", true);
+
   radio3.set("disabled", true);
+
   $("#qunit-header").before($("<h4>Radio</h4>"));
+
   $("#qunit-header").before(target);
+
   $("#qunit-header").before(radio1.dummy);
+
   $("#qunit-header").before(radio2.dummy);
+
   $("#qunit-header").before(radio3.dummy);
+
   module("radiogroup tests");
+
   test("A RadioGroup should allow any number of Radio as constructor arguments", function() {
     var group;
     group = new RadioGroup(new Radio, new Radio, new Radio);
     return assertThat(group.radios, arrayWithLength(3));
   });
+
   test("A RadioGroup should listen to the checkedChanged signal of its radios", function() {
     var MockRadioGroup, group, radio, signalCalled;
     signalCalled = false;
-    MockRadioGroup = (function() {
-      __extends(MockRadioGroup, RadioGroup);
+    MockRadioGroup = (function(_super) {
+
+      __extends(MockRadioGroup, _super);
+
       function MockRadioGroup() {
         MockRadioGroup.__super__.constructor.apply(this, arguments);
       }
+
       MockRadioGroup.prototype.radioCheckedChanged = function(radio, checked) {
         return signalCalled = true;
       };
+
       return MockRadioGroup;
-    })();
+
+    })(RadioGroup);
     radio = new Radio;
     group = new MockRadioGroup(radio);
     radio.set("checked", true);
     return assertThat(signalCalled);
   });
+
   test("A RadioGroup should allow to add a Radio after its instanciation", function() {
     var group;
     group = new RadioGroup;
     group.add(new Radio);
     return assertThat(group.radios, arrayWithLength(1));
   });
+
   test("A RadioGroup should listen to a Radio added via the add method", function() {
     var MockRadioGroup, group, radio, signalCalled;
     signalCalled = false;
-    MockRadioGroup = (function() {
-      __extends(MockRadioGroup, RadioGroup);
+    MockRadioGroup = (function(_super) {
+
+      __extends(MockRadioGroup, _super);
+
       function MockRadioGroup() {
         MockRadioGroup.__super__.constructor.apply(this, arguments);
       }
+
       MockRadioGroup.prototype.radioCheckedChanged = function(radio, checked) {
         return signalCalled = true;
       };
+
       return MockRadioGroup;
-    })();
+
+    })(RadioGroup);
     radio = new Radio;
     group = new MockRadioGroup;
     group.add(radio);
     radio.set("checked", true);
     return assertThat(signalCalled);
   });
+
   test("A RadioGroup should allow to remove a radio", function() {
     var group, radio;
     radio = new Radio;
@@ -4876,25 +5942,32 @@
     group.remove(radio);
     return assertThat(group.radios, arrayWithLength(0));
   });
+
   test("A RadioGroup shouldn't listen to a Radio that have been removed", function() {
     var MockRadioGroup, group, radio, signalCalled;
     signalCalled = false;
-    MockRadioGroup = (function() {
-      __extends(MockRadioGroup, RadioGroup);
+    MockRadioGroup = (function(_super) {
+
+      __extends(MockRadioGroup, _super);
+
       function MockRadioGroup() {
         MockRadioGroup.__super__.constructor.apply(this, arguments);
       }
+
       MockRadioGroup.prototype.radioCheckedChanged = function(radio, checked) {
         return signalCalled = true;
       };
+
       return MockRadioGroup;
-    })();
+
+    })(RadioGroup);
     radio = new Radio;
     group = new MockRadioGroup(radio);
     group.remove(radio);
     radio.set("checked", true);
     return assertThat(!signalCalled);
   });
+
   test("A RadioGroup shouldn't allow to add twice the same radio", function() {
     var group, radio;
     radio = new Radio;
@@ -4902,6 +5975,7 @@
     group.add(radio);
     return assertThat(group.radios, arrayWithLength(1));
   });
+
   test("Adding a checked radio should automatically select it", function() {
     var group, radio;
     radio = new Radio;
@@ -4909,6 +5983,7 @@
     group = new RadioGroup(radio);
     return assertThat(group.selectedRadio, equalTo(radio));
   });
+
   test("RadioGroup should be able to select a radio in the group", function() {
     var group;
     radio1 = new Radio;
@@ -4918,6 +5993,7 @@
     group.select(radio1);
     return assertThat(group.selectedRadio, radio1);
   });
+
   test("Given three radios in a group, checking one should uncheck the others", function() {
     var group;
     radio1 = new Radio;
@@ -4930,6 +6006,7 @@
     assertThat(!radio2.get("checked"));
     return assertThat(radio3.get("checked"));
   });
+
   test("Given three radios in a group, clicking on one should uncheck the others", function() {
     var group;
     radio1 = new Radio;
@@ -4942,6 +6019,7 @@
     assertThat(!radio2.get("checked"));
     return assertThat(radio3.get("checked"));
   });
+
   test("Given three radios in a group, unchecking the selected one should clear the selection", function() {
     var group;
     radio1 = new Radio;
@@ -4952,6 +6030,7 @@
     radio1.set("checked", false);
     return assertThat(group.selectedRadio, nullValue());
   });
+
   test("Given three radios in a group, calling select without an argument should clear the selection.", function() {
     var group;
     radio1 = new Radio;
@@ -4962,6 +6041,7 @@
     group.select();
     return assertThat(group.selectedRadio, nullValue());
   });
+
   test("Selection change on a radio group should dispatch a selectionChanged signal.", function() {
     var group, signalCalled, signalNewRadio, signalOldRadio, signalSource;
     signalCalled = false;
@@ -4984,6 +6064,7 @@
     assertThat(signalOldRadio, nullValue());
     return assertThat(signalNewRadio === radio1);
   });
+
   test("The selectionChanged signal shouldn't be dispatched when select is called with the current selection", function() {
     var group, signalCallCount;
     signalCallCount = 0;
@@ -4998,29 +6079,43 @@
     group.select(radio1);
     return assertThat(signalCallCount, equalTo(1));
   });
+
   radio1 = new Radio;
+
   radio2 = new Radio;
+
   radio3 = new Radio;
+
   radio3.set("checked", true);
+
   radio3.set("disabled", true);
+
   group = new RadioGroup(radio1, radio2, radio3);
+
   $("#qunit-header").before($("<h4>RadioGroup</h4>"));
+
   $("#qunit-header").before(radio1.dummy);
+
   $("#qunit-header").before(radio2.dummy);
+
   $("#qunit-header").before(radio3.dummy);
+
   module("numeric-widget tests");
+
   test("NumericWidget should allow input with type number as target", function() {
     var widget;
     target = $("<input type='number'></input>")[0];
     widget = new NumericWidget(target);
     return assertThat(widget.target === target);
   });
+
   test("NumericWidget should allow input with type range as target", function() {
     var widget;
     target = $("<input type='range'></input>")[0];
     widget = new NumericWidget(target);
     return assertThat(widget.target === target);
   });
+
   test("NumericWidget initial data should be taken from the target if provided", function() {
     var widget;
     target = $("<input type='number' value='10' min='5' max='15' step='1'></input>")[0];
@@ -5030,6 +6125,7 @@
     assertThat(widget.get("max"), strictlyEqualTo(15));
     return assertThat(widget.get("step"), strictlyEqualTo(1));
   });
+
   test("Changing the widget data should modify the target", function() {
     var widget;
     target = $("<input type='number' value='10' min='5' max='15' step='1'></input>");
@@ -5043,6 +6139,7 @@
     assertThat(target.attr("step"), strictlyEqualTo("0.5"));
     return assertThat(target.attr("value"), strictlyEqualTo("20"));
   });
+
   test("NumericWidget initial data should be set even without a target", function() {
     var widget;
     widget = new NumericWidget;
@@ -5051,6 +6148,7 @@
     assertThat(widget.get("max"), strictlyEqualTo(100));
     return assertThat(widget.get("step"), strictlyEqualTo(1));
   });
+
   test("NumericWidget value shouldn't be set on a value outside of the range", function() {
     var widget;
     widget = new NumericWidget;
@@ -5059,6 +6157,7 @@
     widget.set("value", 1000);
     return assertThat(widget.get("value"), strictlyEqualTo(100));
   });
+
   test("NumericWidget value should be constrained by step", function() {
     var widget;
     widget = new NumericWidget;
@@ -5066,12 +6165,14 @@
     widget.set("value", 10);
     return assertThat(widget.get("value"), strictlyEqualTo(9));
   });
+
   test("Changing widget's min property should correct the value if it goes out of the range", function() {
     var widget;
     widget = new NumericWidget;
     widget.set("min", 50);
     return assertThat(widget.get("value"), strictlyEqualTo(50));
   });
+
   test("Changing widget's max property should correct the value if it goes out of the range", function() {
     var widget;
     widget = new NumericWidget;
@@ -5079,6 +6180,7 @@
     widget.set("max", 50);
     return assertThat(widget.get("value"), strictlyEqualTo(50));
   });
+
   test("Changing widget's step property should correct the value if it doesn't snap anymore", function() {
     var widget;
     widget = new NumericWidget;
@@ -5086,41 +6188,51 @@
     widget.set("step", 3);
     return assertThat(widget.get("value"), strictlyEqualTo(9));
   });
+
   test("Setting a min value greater than the max value shouldn't be allowed", function() {
     var widget;
     widget = new NumericWidget;
     widget.set("min", 100);
     return assertThat(widget.get("min"), strictlyEqualTo(0));
   });
+
   test("Setting a max value lower than the min value shouldn't be allowed", function() {
     var widget;
     widget = new NumericWidget;
     widget.set("max", 0);
     return assertThat(widget.get("max"), strictlyEqualTo(100));
   });
+
   test("NumericWidget should hide their target", function() {
     var widget;
     target = $("<input type='range' value='10' min='0' max='50' step='1'></input>");
     widget = new NumericWidget(target[0]);
     return assertThat(target.attr("style"), contains("display: none"));
   });
+
   test("Concret numeric widgets class should receive an updateDummy call when value change", function() {
     var MockNumericWidget, updateDummyCalled, widget;
     updateDummyCalled = false;
-    MockNumericWidget = (function() {
-      __extends(MockNumericWidget, NumericWidget);
+    MockNumericWidget = (function(_super) {
+
+      __extends(MockNumericWidget, _super);
+
       function MockNumericWidget() {
         MockNumericWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockNumericWidget.prototype.updateDummy = function(value, min, max) {
         return updateDummyCalled = true;
       };
+
       return MockNumericWidget;
-    })();
+
+    })(NumericWidget);
     widget = new MockNumericWidget;
     widget.set("value", 20);
     return assertThat(updateDummyCalled);
   });
+
   test("NumericWidget should allow to increment the value through a function", function() {
     var widget;
     widget = new NumericWidget;
@@ -5128,6 +6240,7 @@
     widget.increment();
     return assertThat(widget.get("value"), equalTo(5));
   });
+
   test("NumericWidget should allow to increment the value through a function", function() {
     var widget;
     widget = new NumericWidget;
@@ -5136,6 +6249,7 @@
     widget.decrement();
     return assertThat(widget.get("value"), equalTo(5));
   });
+
   asyncTest("NumericWidget should provide a way to increment the value on an interval", function() {
     var widget;
     widget = new NumericWidget;
@@ -5145,6 +6259,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("NumericWidget should be able to stop an increment interval", function() {
     var widget;
     widget = new NumericWidget;
@@ -5157,6 +6272,7 @@
       return start();
     }, 300);
   });
+
   asyncTest("NumericWidget should provide a way to decrement the value on an interval", function() {
     var widget;
     widget = new NumericWidget;
@@ -5167,6 +6283,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("NumericWidget should be able to stop an decrement interval", function() {
     var widget;
     widget = new NumericWidget;
@@ -5180,6 +6297,7 @@
       return start();
     }, 300);
   });
+
   asyncTest("NumericWidget shouldn't start several interval when startIncrement is called many times", function() {
     var widget;
     widget = new NumericWidget;
@@ -5192,6 +6310,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("NumericWidget shouldn't start several interval when startDecrement is called many times", function() {
     var widget;
     widget = new NumericWidget;
@@ -5205,6 +6324,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the up key is pressed the widget should increment the value", function() {
     var widget;
     widget = new NumericWidget;
@@ -5220,6 +6340,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Receiving several keydown of the up key shouldn't trigger several increment", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5240,6 +6361,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the up key is released the widget should stop increment the value", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5259,6 +6381,7 @@
       return start();
     }, 200);
   });
+
   asyncTest("Stopping the increment on keyup should allow to start a new one", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5277,6 +6400,7 @@
       return start();
     }, 100);
   });
+
   test("Pressing the down key should return false to prevent scrolling", function() {
     var widget;
     widget = new NumericWidget;
@@ -5288,6 +6412,7 @@
       altKey: false
     }));
   });
+
   test("Pressing the up key should return false to prevent scrolling", function() {
     var widget;
     widget = new NumericWidget;
@@ -5299,6 +6424,7 @@
       altKey: false
     }));
   });
+
   asyncTest("When the down key is pressed the widget should decrement the value", function() {
     var widget;
     widget = new NumericWidget;
@@ -5315,6 +6441,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Receiving several keydown of the down key shouldn't trigger several decrement", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5336,6 +6463,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the down key is released the widget should stop decrement the value", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5356,6 +6484,7 @@
       return start();
     }, 200);
   });
+
   asyncTest("Stopping the decrement on keyup should allow to start a new one", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5375,6 +6504,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to increment a readonly widget shouldn't work", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5392,6 +6522,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to decrement a readonly widget shouldn't work", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5410,6 +6541,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to increment a disabled widget shouldn't work", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5427,6 +6559,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to decrement a disabled widget shouldn't work", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5445,6 +6578,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the right key is pressed the widget should increment the value", function() {
     var widget;
     widget = new NumericWidget;
@@ -5460,6 +6594,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Receiving several keydown of the right key shouldn't trigger several increment", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5480,6 +6615,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the right key is released the widget should stop increment the value", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5499,6 +6635,7 @@
       return start();
     }, 200);
   });
+
   asyncTest("Stopping the increment on keyup should allow to start a new one", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5517,6 +6654,7 @@
       return start();
     }, 100);
   });
+
   test("Pressing the left key should return false to prevent scrolling", function() {
     var widget;
     widget = new NumericWidget;
@@ -5528,6 +6666,7 @@
       altKey: false
     }));
   });
+
   test("Pressing the right key should return false to prevent scrolling", function() {
     var widget;
     widget = new NumericWidget;
@@ -5539,6 +6678,7 @@
       altKey: false
     }));
   });
+
   asyncTest("When the left key is pressed the widget should decrement the value", function() {
     var widget;
     widget = new NumericWidget;
@@ -5555,6 +6695,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Receiving several keydown of the left key shouldn't trigger several decrement", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5576,6 +6717,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the left key is released the widget should stop decrement the value", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5596,6 +6738,7 @@
       return start();
     }, 200);
   });
+
   asyncTest("Stopping the decrement on keyup should allow to start a new one", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5615,6 +6758,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to increment a readonly widget shouldn't work", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5632,6 +6776,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to decrement a readonly widget shouldn't work", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5650,6 +6795,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to increment a disabled widget shouldn't work", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5667,6 +6813,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to decrement a disabled widget shouldn't work", function() {
     var e, widget;
     widget = new NumericWidget;
@@ -5685,76 +6832,100 @@
       return start();
     }, 100);
   });
+
   test("Using the mousewheel over a widget should change the value according to the step", function() {
     var MockNumericWidget, widget;
-    MockNumericWidget = (function() {
-      __extends(MockNumericWidget, NumericWidget);
+    MockNumericWidget = (function(_super) {
+
+      __extends(MockNumericWidget, _super);
+
       function MockNumericWidget() {
         MockNumericWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockNumericWidget.prototype.createDummy = function() {
         return $("<span></span>");
       };
+
       MockNumericWidget.prototype.mousewheel = function(e, d) {
         d = 1;
         return MockNumericWidget.__super__.mousewheel.call(this, e, d);
       };
+
       return MockNumericWidget;
-    })();
+
+    })(NumericWidget);
     widget = new MockNumericWidget;
     widget.set("step", 4);
     widget.dummy.mousewheel();
     return assertThat(widget.get("value"), strictlyEqualTo(4));
   });
+
   test("Using the mousewheel over a readonly widget shouldn't change the value", function() {
     var MockNumericWidget, widget;
-    MockNumericWidget = (function() {
-      __extends(MockNumericWidget, NumericWidget);
+    MockNumericWidget = (function(_super) {
+
+      __extends(MockNumericWidget, _super);
+
       function MockNumericWidget() {
         MockNumericWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockNumericWidget.prototype.createDummy = function() {
         return $("<span></span>");
       };
+
       MockNumericWidget.prototype.mousewheel = function(e, d) {
         d = 1;
         return MockNumericWidget.__super__.mousewheel.call(this, e, d);
       };
+
       return MockNumericWidget;
-    })();
+
+    })(NumericWidget);
     widget = new MockNumericWidget;
     widget.set("readonly", true);
     widget.dummy.mousewheel();
     return assertThat(widget.get("value"), strictlyEqualTo(0));
   });
+
   test("Using the mousewheel over a disabled widget shouldn't change the value", function() {
     var MockNumericWidget, widget;
-    MockNumericWidget = (function() {
-      __extends(MockNumericWidget, NumericWidget);
+    MockNumericWidget = (function(_super) {
+
+      __extends(MockNumericWidget, _super);
+
       function MockNumericWidget() {
         MockNumericWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockNumericWidget.prototype.createDummy = function() {
         return $("<span></span>");
       };
+
       MockNumericWidget.prototype.mousewheel = function(e, d) {
         d = 1;
         return MockNumericWidget.__super__.mousewheel.call(this, e, d);
       };
+
       return MockNumericWidget;
-    })();
+
+    })(NumericWidget);
     widget = new MockNumericWidget;
     widget.set("disabled", true);
     widget.dummy.mousewheel();
     return assertThat(widget.get("value"), strictlyEqualTo(0));
   });
+
   module("sliders tests");
+
   test("Slider should allow input of type range", function() {
     var slider;
     target = $("<input type='range'></input>")[0];
     slider = new Slider(target);
     return assertThat(slider.target === target);
   });
+
   test("Slider shouldn't allow input of a type different than range", function() {
     var errorRaised, slider;
     target = $("<input type='text'></input>")[0];
@@ -5766,6 +6937,7 @@
     }
     return assertThat(errorRaised);
   });
+
   test("Slider initial data should be taken from the target if provided", function() {
     var slider;
     target = $("<input type='range' value='10' min='5' max='15' step='1'></input>")[0];
@@ -5775,6 +6947,7 @@
     assertThat(slider.get("max"), strictlyEqualTo(15));
     return assertThat(slider.get("step"), strictlyEqualTo(1));
   });
+
   test("Changing the slider data should modify the target", function() {
     var slider;
     target = $("<input type='range' value='10' min='5' max='15' step='1'></input>");
@@ -5788,6 +6961,7 @@
     assertThat(target.attr("step"), strictlyEqualTo("0.5"));
     return assertThat(target.attr("value"), strictlyEqualTo("20"));
   });
+
   test("Slider initial data should be set even without a target", function() {
     var slider;
     slider = new Slider;
@@ -5796,6 +6970,7 @@
     assertThat(slider.get("max"), strictlyEqualTo(100));
     return assertThat(slider.get("step"), strictlyEqualTo(1));
   });
+
   test("Slider value shouldn't be set on a value outside of the range", function() {
     var slider;
     slider = new Slider;
@@ -5804,6 +6979,7 @@
     slider.set("value", 1000);
     return assertThat(slider.get("value"), strictlyEqualTo(100));
   });
+
   test("Slider value should be constrained by step", function() {
     var slider;
     slider = new Slider;
@@ -5811,12 +6987,14 @@
     slider.set("value", 10);
     return assertThat(slider.get("value"), strictlyEqualTo(9));
   });
+
   test("Changing slider's min property should correct the value if it goes out of the range", function() {
     var slider;
     slider = new Slider;
     slider.set("min", 50);
     return assertThat(slider.get("value"), strictlyEqualTo(50));
   });
+
   test("Changing slider's max property should correct the value if it goes out of the range", function() {
     var slider;
     slider = new Slider;
@@ -5824,6 +7002,7 @@
     slider.set("max", 50);
     return assertThat(slider.get("value"), strictlyEqualTo(50));
   });
+
   test("Changing slider's step property should correct the value if it doesn't snap anymore", function() {
     var slider;
     slider = new Slider;
@@ -5831,34 +7010,40 @@
     slider.set("step", 3);
     return assertThat(slider.get("value"), strictlyEqualTo(9));
   });
+
   test("Setting a min value greater than the max value shouldn't be allowed", function() {
     var slider;
     slider = new Slider;
     slider.set("min", 100);
     return assertThat(slider.get("min"), strictlyEqualTo(0));
   });
+
   test("Setting a max value lower than the min value shouldn't be allowed", function() {
     var slider;
     slider = new Slider;
     slider.set("max", 0);
     return assertThat(slider.get("max"), strictlyEqualTo(100));
   });
+
   test("Sliders should have a dummy", function() {
     var slider;
     slider = new Slider;
     return assertThat(slider.dummy, notNullValue());
   });
+
   test("Sliders's .value child text should be the sliders value", function() {
     var slider;
     slider = new Slider;
     slider.set("value", 15);
     return assertThat(slider.dummy.children(".value").text(), strictlyEqualTo("15"));
   });
+
   test("Sliders's .value child text should be the sliders value even after instanciation", function() {
     var slider;
     slider = new Slider;
     return assertThat(slider.dummy.children(".value").text(), strictlyEqualTo("0"));
   });
+
   test("Sliders's .knob child position should be proportionate to the value", function() {
     var slider;
     slider = new Slider;
@@ -5867,6 +7052,7 @@
     slider.set("value", 25);
     return assertThat(slider.dummy.children(".knob").css("left"), strictlyEqualTo("20px"));
   });
+
   test("The slider should allow to adjust the value text to the knob", function() {
     var slider;
     slider = new Slider;
@@ -5876,18 +7062,21 @@
     slider.set("value", 25);
     return assertThat(slider.dummy.children(".value").css("left"), strictlyEqualTo("25px"));
   });
+
   test("Sliders should hide their target", function() {
     var slider;
     target = $("<input type='range' value='10' min='0' max='50' step='1'></input>");
     slider = new Slider(target[0]);
     return assertThat(target.attr("style"), contains("display: none"));
   });
+
   test("Pressing the mouse on the knob should init drag", function() {
     var slider;
     slider = new Slider;
     slider.dummy.children(".knob").mousedown();
     return assertThat(slider.draggingKnob);
   });
+
   test("Releasing the mouse anywhere when a slider is dragging should stop the drag", function() {
     var slider;
     slider = new Slider;
@@ -5895,40 +7084,52 @@
     $(document).mouseup();
     return assertThat(!slider.draggingKnob);
   });
+
   test("Moving the mouse during a drag should call the drag method", function() {
     var MockSlider, dragCalled, slider;
     dragCalled = false;
-    MockSlider = (function() {
-      __extends(MockSlider, Slider);
+    MockSlider = (function(_super) {
+
+      __extends(MockSlider, _super);
+
       function MockSlider() {
         MockSlider.__super__.constructor.apply(this, arguments);
       }
+
       MockSlider.prototype.drag = function() {
         return dragCalled = true;
       };
+
       return MockSlider;
-    })();
+
+    })(Slider);
     slider = new MockSlider;
     slider.dummy.children(".knob").mousedown();
     $(document).mousemove();
     return assertThat(dragCalled);
   });
+
   test("Starting a drag should register the mouse page position", function() {
     var MockSlider, event, slider;
     event = null;
-    MockSlider = (function() {
-      __extends(MockSlider, Slider);
+    MockSlider = (function(_super) {
+
+      __extends(MockSlider, _super);
+
       function MockSlider() {
         MockSlider.__super__.constructor.apply(this, arguments);
       }
+
       MockSlider.prototype.startDrag = function(e) {
         e.pageX = 40;
         e.pageY = 40;
         MockSlider.__super__.startDrag.call(this, e);
         return event = e;
       };
+
       return MockSlider;
-    })();
+
+    })(Slider);
     slider = new MockSlider;
     $("#qunit-header").before(slider.dummy);
     slider.dummy.children(".knob").mousedown();
@@ -5937,71 +7138,91 @@
     assertThat(slider.lastMouseX, equalTo(event.pageX));
     return assertThat(slider.lastMouseY, equalTo(event.pageY));
   });
+
   test("While dragging the knob, a slider should be able to measure the distance since the last callback", function() {
     var MockSlider, dragData, slider;
     dragData = null;
-    MockSlider = (function() {
-      __extends(MockSlider, Slider);
+    MockSlider = (function(_super) {
+
+      __extends(MockSlider, _super);
+
       function MockSlider() {
         MockSlider.__super__.constructor.apply(this, arguments);
       }
+
       MockSlider.prototype.startDrag = function(e) {
         e.pageX = 40;
         e.pageY = 38;
         return MockSlider.__super__.startDrag.call(this, e);
       };
+
       MockSlider.prototype.drag = function(e) {
         e.pageX = 50;
         e.pageY = 52;
         dragData = this.getDragDataFromEvent(e);
         return MockSlider.__super__.drag.call(this, e);
       };
+
       return MockSlider;
-    })();
+
+    })(Slider);
     slider = new MockSlider;
     slider.dummy.children(".knob").mousedown();
     $(document).mousemove();
     return assertThat(dragData, allOf(notNullValue(), hasProperty("x", equalTo(10)), hasProperty("y", equalTo(14))));
   });
+
   test("While dragging the knob, a slider should register the new mouse position at the end of the callback", function() {
     var MockSlider, slider;
-    MockSlider = (function() {
-      __extends(MockSlider, Slider);
+    MockSlider = (function(_super) {
+
+      __extends(MockSlider, _super);
+
       function MockSlider() {
         MockSlider.__super__.constructor.apply(this, arguments);
       }
+
       MockSlider.prototype.drag = function(e) {
         e.pageX = 50;
         e.pageY = 52;
         return MockSlider.__super__.drag.call(this, e);
       };
+
       return MockSlider;
-    })();
+
+    })(Slider);
     slider = new MockSlider;
     slider.dummy.children(".knob").mousedown();
     $(document).mousemove();
     assertThat(slider.lastMouseX, strictlyEqualTo(50));
     return assertThat(slider.lastMouseY, strictlyEqualTo(52));
   });
+
   test("While dragging the knob, a slider should update its value according to the move distance", function() {
     var MockSlider, slider;
-    MockSlider = (function() {
-      __extends(MockSlider, Slider);
+    MockSlider = (function(_super) {
+
+      __extends(MockSlider, _super);
+
       function MockSlider() {
         MockSlider.__super__.constructor.apply(this, arguments);
       }
+
       MockSlider.prototype.startDrag = function(e) {
         e.pageX = 40;
         e.pageY = 38;
         return MockSlider.__super__.startDrag.call(this, e);
       };
+
       MockSlider.prototype.drag = function(e) {
         e.pageX = 50;
         e.pageY = 52;
         return MockSlider.__super__.drag.call(this, e);
       };
+
       return MockSlider;
-    })();
+
+    })(Slider);
     slider = new MockSlider;
     slider.set("min", 10);
     slider.set("max", 110);
@@ -6011,12 +7232,14 @@
     $(document).mousemove();
     return assertThat(slider.get("value"), strictlyEqualTo(30));
   });
+
   test("Sliders should have the focus after starting a drag gesture", function() {
     var slider;
     slider = new Slider;
     slider.dummy.children(".knob").mousedown();
     return assertThat(slider.hasFocus);
   });
+
   test("Readonly sliders shouldn't allow drag", function() {
     var slider;
     slider = new Slider;
@@ -6024,6 +7247,7 @@
     slider.dummy.children(".knob").mousedown();
     return assertThat(!slider.draggingKnob);
   });
+
   test("Disabled sliders shouldn't allow drag", function() {
     var slider;
     slider = new Slider;
@@ -6031,60 +7255,79 @@
     slider.dummy.children(".knob").mousedown();
     return assertThat(!slider.draggingKnob);
   });
+
   test("Using the mousewheel over a slider should change the value according to the step", function() {
     var MockSlider, slider;
-    MockSlider = (function() {
-      __extends(MockSlider, Slider);
+    MockSlider = (function(_super) {
+
+      __extends(MockSlider, _super);
+
       function MockSlider() {
         MockSlider.__super__.constructor.apply(this, arguments);
       }
+
       MockSlider.prototype.mousewheel = function(e, d) {
         d = 1;
         return MockSlider.__super__.mousewheel.call(this, e, d);
       };
+
       return MockSlider;
-    })();
+
+    })(Slider);
     slider = new MockSlider;
     slider.set("step", 4);
     slider.dummy.mousewheel();
     return assertThat(slider.get("value"), strictlyEqualTo(4));
   });
+
   test("Using the mousewheel over a readonly slider shouldn't change the value", function() {
     var MockSlider, slider;
-    MockSlider = (function() {
-      __extends(MockSlider, Slider);
+    MockSlider = (function(_super) {
+
+      __extends(MockSlider, _super);
+
       function MockSlider() {
         MockSlider.__super__.constructor.apply(this, arguments);
       }
+
       MockSlider.prototype.mousewheel = function(e, d) {
         d = 1;
         return MockSlider.__super__.mousewheel.call(this, e, d);
       };
+
       return MockSlider;
-    })();
+
+    })(Slider);
     slider = new MockSlider;
     slider.set("readonly", true);
     slider.dummy.mousewheel();
     return assertThat(slider.get("value"), strictlyEqualTo(0));
   });
+
   test("Using the mousewheel over a disabled slider shouldn't change the value", function() {
     var MockSlider, slider;
-    MockSlider = (function() {
-      __extends(MockSlider, Slider);
+    MockSlider = (function(_super) {
+
+      __extends(MockSlider, _super);
+
       function MockSlider() {
         MockSlider.__super__.constructor.apply(this, arguments);
       }
+
       MockSlider.prototype.mousewheel = function(e, d) {
         d = 1;
         return MockSlider.__super__.mousewheel.call(this, e, d);
       };
+
       return MockSlider;
-    })();
+
+    })(Slider);
     slider = new MockSlider;
     slider.set("disabled", true);
     slider.dummy.mousewheel();
     return assertThat(slider.get("value"), strictlyEqualTo(0));
   });
+
   asyncTest("When the up key is pressed the slider should increment the value", function() {
     var slider;
     slider = new Slider;
@@ -6100,6 +7343,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Receiving several keydown of the up key shouldn't trigger several increment", function() {
     var e, slider;
     slider = new Slider;
@@ -6120,6 +7364,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the up key is released the slider should stop increment the value", function() {
     var e, slider;
     slider = new Slider;
@@ -6139,6 +7384,7 @@
       return start();
     }, 200);
   });
+
   asyncTest("Stopping the increment on keyup should allow to start a new one", function() {
     var e, slider;
     slider = new Slider;
@@ -6157,6 +7403,7 @@
       return start();
     }, 100);
   });
+
   test("Pressing the down key should return false to prevent scrolling", function() {
     var slider;
     slider = new Slider;
@@ -6168,6 +7415,7 @@
       altKey: false
     }));
   });
+
   test("Pressing the up key should return false to prevent scrolling", function() {
     var slider;
     slider = new Slider;
@@ -6179,6 +7427,7 @@
       altKey: false
     }));
   });
+
   asyncTest("When the down key is pressed the slider should decrement the value", function() {
     var slider;
     slider = new Slider;
@@ -6195,6 +7444,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Receiving several keydown of the down key shouldn't trigger several decrement", function() {
     var e, slider;
     slider = new Slider;
@@ -6216,6 +7466,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the down key is released the slider should stop decrement the value", function() {
     var e, slider;
     slider = new Slider;
@@ -6236,6 +7487,7 @@
       return start();
     }, 200);
   });
+
   asyncTest("Stopping the decrement on keyup should allow to start a new one", function() {
     var e, slider;
     slider = new Slider;
@@ -6255,6 +7507,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to increment a readonly slider shouldn't work", function() {
     var e, slider;
     slider = new Slider;
@@ -6272,6 +7525,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to decrement a readonly slider shouldn't work", function() {
     var e, slider;
     slider = new Slider;
@@ -6290,6 +7544,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to increment a disabled slider shouldn't work", function() {
     var e, slider;
     slider = new Slider;
@@ -6307,6 +7562,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to decrement a disabled slider shouldn't work", function() {
     var e, slider;
     slider = new Slider;
@@ -6325,6 +7581,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the right key is pressed the slider should increment the value", function() {
     var slider;
     slider = new Slider;
@@ -6340,6 +7597,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Receiving several keydown of the right key shouldn't trigger several increment", function() {
     var e, slider;
     slider = new Slider;
@@ -6360,6 +7618,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the right key is released the slider should stop increment the value", function() {
     var e, slider;
     slider = new Slider;
@@ -6379,6 +7638,7 @@
       return start();
     }, 200);
   });
+
   asyncTest("Stopping the increment on keyup should allow to start a new one", function() {
     var e, slider;
     slider = new Slider;
@@ -6397,6 +7657,7 @@
       return start();
     }, 100);
   });
+
   test("Pressing the left key should return false to prevent scrolling", function() {
     var slider;
     slider = new Slider;
@@ -6408,6 +7669,7 @@
       altKey: false
     }));
   });
+
   test("Pressing the right key should return false to prevent scrolling", function() {
     var slider;
     slider = new Slider;
@@ -6419,6 +7681,7 @@
       altKey: false
     }));
   });
+
   asyncTest("When the left key is pressed the slider should decrement the value", function() {
     var slider;
     slider = new Slider;
@@ -6435,6 +7698,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Receiving several keydown of the left key shouldn't trigger several decrement", function() {
     var e, slider;
     slider = new Slider;
@@ -6456,6 +7720,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the left key is released the slider should stop decrement the value", function() {
     var e, slider;
     slider = new Slider;
@@ -6476,6 +7741,7 @@
       return start();
     }, 200);
   });
+
   asyncTest("Stopping the decrement on keyup should allow to start a new one", function() {
     var e, slider;
     slider = new Slider;
@@ -6495,6 +7761,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to increment a readonly slider shouldn't work", function() {
     var e, slider;
     slider = new Slider;
@@ -6512,6 +7779,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to decrement a readonly slider shouldn't work", function() {
     var e, slider;
     slider = new Slider;
@@ -6530,6 +7798,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to increment a disabled slider shouldn't work", function() {
     var e, slider;
     slider = new Slider;
@@ -6547,6 +7816,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to decrement a disabled slider shouldn't work", function() {
     var e, slider;
     slider = new Slider;
@@ -6565,19 +7835,25 @@
       return start();
     }, 100);
   });
+
   test("Pressing the mouse over the track should change the value, grab the focus and start a knob drag", function() {
     var MockSlider, slider;
-    MockSlider = (function() {
-      __extends(MockSlider, Slider);
+    MockSlider = (function(_super) {
+
+      __extends(MockSlider, _super);
+
       function MockSlider() {
         MockSlider.__super__.constructor.apply(this, arguments);
       }
+
       MockSlider.prototype.handleTrackMouseDown = function(e) {
         e.pageX = 10;
         return MockSlider.__super__.handleTrackMouseDown.call(this, e);
       };
+
       return MockSlider;
-    })();
+
+    })(Slider);
     slider = new MockSlider;
     slider.dummy.width(100);
     slider.dummy.find(".track").width(100);
@@ -6586,19 +7862,25 @@
     assertThat(slider.draggingKnob);
     return assertThat(slider.hasFocus);
   });
+
   test("Pressing the mouse over a disabled track shouldn't change the value ", function() {
     var MockSlider, slider;
-    MockSlider = (function() {
-      __extends(MockSlider, Slider);
+    MockSlider = (function(_super) {
+
+      __extends(MockSlider, _super);
+
       function MockSlider() {
         MockSlider.__super__.constructor.apply(this, arguments);
       }
+
       MockSlider.prototype.handleTrackMouseDown = function(e) {
         e.pageX = 10;
         return MockSlider.__super__.handleTrackMouseDown.call(this, e);
       };
+
       return MockSlider;
-    })();
+
+    })(Slider);
     slider = new MockSlider;
     slider.set("disabled", true);
     slider.dummy.width(100);
@@ -6606,19 +7888,25 @@
     assertThat(slider.get("value"), equalTo(0));
     return assertThat(!slider.draggingKnob);
   });
+
   test("Pressing the mouse over a readonly track shouldn't change the value ", function() {
     var MockSlider, slider;
-    MockSlider = (function() {
-      __extends(MockSlider, Slider);
+    MockSlider = (function(_super) {
+
+      __extends(MockSlider, _super);
+
       function MockSlider() {
         MockSlider.__super__.constructor.apply(this, arguments);
       }
+
       MockSlider.prototype.handleTrackMouseDown = function(e) {
         e.pageX = 10;
         return MockSlider.__super__.handleTrackMouseDown.call(this, e);
       };
+
       return MockSlider;
-    })();
+
+    })(Slider);
     slider = new MockSlider;
     slider.set("readonly", true);
     slider.dummy.width(100);
@@ -6626,6 +7914,7 @@
     assertThat(slider.get("value"), equalTo(0));
     return assertThat(!slider.draggingKnob);
   });
+
   test("Stepper should allow to increment the value through a function", function() {
     var slider;
     slider = new Slider;
@@ -6633,6 +7922,7 @@
     slider.increment();
     return assertThat(slider.get("value"), equalTo(5));
   });
+
   test("Stepper should allow to increment the value through a function", function() {
     var slider;
     slider = new Slider;
@@ -6641,31 +7931,52 @@
     slider.decrement();
     return assertThat(slider.get("value"), equalTo(5));
   });
+
   $(document).mouseup();
+
   target = $("<input type='range' value='10' min='0' max='50' step='1'></input>");
+
   slider1 = new Slider(target[0]);
+
   slider2 = new Slider;
+
   slider3 = new Slider;
+
   slider1.valueCenteredOnKnob = true;
+
   slider2.valueCenteredOnKnob = true;
+
   slider3.valueCenteredOnKnob = true;
+
   slider1.set("value", 12);
+
   slider2.set("value", 45);
+
   slider3.set("value", 78);
+
   slider2.set("readonly", true);
+
   slider3.set("disabled", true);
+
   $("#qunit-header").before($("<h4>Sliders</h4>"));
+
   $("#qunit-header").before(target);
+
   $("#qunit-header").before(slider1.dummy);
+
   $("#qunit-header").before(slider2.dummy);
+
   $("#qunit-header").before(slider3.dummy);
+
   module("stepper tests");
+
   test("Stepper should allow input with type number as target", function() {
     var stepper;
     target = $("<input type='number'></input>")[0];
     stepper = new Stepper(target);
     return assertThat(stepper.target === target);
   });
+
   test("Stepper shouldn't allow input of a type different than range", function() {
     var errorRaised, stepper;
     target = $("<input type='text'></input>")[0];
@@ -6677,6 +7988,7 @@
     }
     return assertThat(errorRaised);
   });
+
   test("Stepper initial data should be taken from the target if provided", function() {
     var stepper;
     target = $("<input type='number' value='10' min='5' max='15' step='1'></input>")[0];
@@ -6686,6 +7998,7 @@
     assertThat(stepper.get("max"), strictlyEqualTo(15));
     return assertThat(stepper.get("step"), strictlyEqualTo(1));
   });
+
   test("Changing the stepper data should modify the target", function() {
     var stepper;
     target = $("<input type='number' value='10' min='5' max='15' step='1'></input>");
@@ -6699,6 +8012,7 @@
     assertThat(target.attr("step"), strictlyEqualTo("0.5"));
     return assertThat(target.attr("value"), strictlyEqualTo("20"));
   });
+
   test("Stepper initial data should be set even without a target", function() {
     var stepper;
     stepper = new Stepper;
@@ -6707,6 +8021,7 @@
     assertThat(stepper.get("max"), strictlyEqualTo(100));
     return assertThat(stepper.get("step"), strictlyEqualTo(1));
   });
+
   test("Stepper value shouldn't be set on a value outside of the range", function() {
     var stepper;
     stepper = new Stepper;
@@ -6715,6 +8030,7 @@
     stepper.set("value", 1000);
     return assertThat(stepper.get("value"), strictlyEqualTo(100));
   });
+
   test("Stepper value should be constrained by step", function() {
     var stepper;
     stepper = new Stepper;
@@ -6722,12 +8038,14 @@
     stepper.set("value", 10);
     return assertThat(stepper.get("value"), strictlyEqualTo(9));
   });
+
   test("Changing stepper's min property should correct the value if it goes out of the range", function() {
     var stepper;
     stepper = new Stepper;
     stepper.set("min", 50);
     return assertThat(stepper.get("value"), strictlyEqualTo(50));
   });
+
   test("Changing stepper's max property should correct the value if it goes out of the range", function() {
     var stepper;
     stepper = new Stepper;
@@ -6735,6 +8053,7 @@
     stepper.set("max", 50);
     return assertThat(stepper.get("value"), strictlyEqualTo(50));
   });
+
   test("Changing stepper's step property should correct the value if it doesn't snap anymore", function() {
     var stepper;
     stepper = new Stepper;
@@ -6742,18 +8061,21 @@
     stepper.set("step", 3);
     return assertThat(stepper.get("value"), strictlyEqualTo(9));
   });
+
   test("Setting a min value greater than the max value shouldn't be allowed", function() {
     var stepper;
     stepper = new Stepper;
     stepper.set("min", 100);
     return assertThat(stepper.get("min"), strictlyEqualTo(0));
   });
+
   test("Setting a max value lower than the min value shouldn't be allowed", function() {
     var stepper;
     stepper = new Stepper;
     stepper.set("max", 0);
     return assertThat(stepper.get("max"), strictlyEqualTo(100));
   });
+
   test("Stepper should allow to increment the value through a function", function() {
     var stepper;
     stepper = new Stepper;
@@ -6761,6 +8083,7 @@
     stepper.increment();
     return assertThat(stepper.get("value"), equalTo(5));
   });
+
   test("Stepper should allow to increment the value through a function", function() {
     var stepper;
     stepper = new Stepper;
@@ -6769,6 +8092,7 @@
     stepper.decrement();
     return assertThat(stepper.get("value"), equalTo(5));
   });
+
   asyncTest("When the up key is pressed the stepper should increment the value", function() {
     var stepper;
     stepper = new Stepper;
@@ -6784,6 +8108,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Receiving several keydown of the up key shouldn't trigger several increment", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -6804,6 +8129,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the up key is released the stepper should stop increment the value", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -6823,6 +8149,7 @@
       return start();
     }, 200);
   });
+
   asyncTest("Stopping the increment on keyup should allow to start a new one", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -6841,6 +8168,7 @@
       return start();
     }, 100);
   });
+
   test("Pressing the down key should return false to prevent scrolling", function() {
     var stepper;
     stepper = new Stepper;
@@ -6852,6 +8180,7 @@
       altKey: false
     }));
   });
+
   test("Pressing the up key should return false to prevent scrolling", function() {
     var stepper;
     stepper = new Stepper;
@@ -6863,6 +8192,7 @@
       altKey: false
     }));
   });
+
   asyncTest("When the down key is pressed the stepper should decrement the value", function() {
     var stepper;
     stepper = new Stepper;
@@ -6879,6 +8209,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Receiving several keydown of the down key shouldn't trigger several decrement", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -6900,6 +8231,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the down key is released the stepper should stop decrement the value", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -6920,6 +8252,7 @@
       return start();
     }, 200);
   });
+
   asyncTest("Stopping the decrement on keyup should allow to start a new one", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -6939,6 +8272,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to increment a readonly stepper shouldn't work", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -6956,6 +8290,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to decrement a readonly stepper shouldn't work", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -6974,6 +8309,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to increment a disabled stepper shouldn't work", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -6991,6 +8327,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to decrement a disabled stepper shouldn't work", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -7009,6 +8346,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the right key is pressed the stepper should increment the value", function() {
     var stepper;
     stepper = new Stepper;
@@ -7024,6 +8362,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Receiving several keydown of the right key shouldn't trigger several increment", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -7044,6 +8383,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the right key is released the stepper should stop increment the value", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -7063,6 +8403,7 @@
       return start();
     }, 200);
   });
+
   asyncTest("Stopping the increment on keyup should allow to start a new one", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -7081,6 +8422,7 @@
       return start();
     }, 100);
   });
+
   test("Pressing the left key should return false to prevent scrolling", function() {
     var stepper;
     stepper = new Stepper;
@@ -7092,6 +8434,7 @@
       altKey: false
     }));
   });
+
   test("Pressing the right key should return false to prevent scrolling", function() {
     var stepper;
     stepper = new Stepper;
@@ -7103,6 +8446,7 @@
       altKey: false
     }));
   });
+
   asyncTest("When the left key is pressed the stepper should decrement the value", function() {
     var stepper;
     stepper = new Stepper;
@@ -7119,6 +8463,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Receiving several keydown of the left key shouldn't trigger several decrement", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -7140,6 +8485,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("When the left key is released the stepper should stop decrement the value", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -7160,6 +8506,7 @@
       return start();
     }, 200);
   });
+
   asyncTest("Stopping the decrement on keyup should allow to start a new one", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -7179,6 +8526,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to increment a readonly stepper shouldn't work", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -7196,6 +8544,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to decrement a readonly stepper shouldn't work", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -7214,6 +8563,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to increment a disabled stepper shouldn't work", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -7231,6 +8581,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Trying to decrement a disabled stepper shouldn't work", function() {
     var e, stepper;
     stepper = new Stepper;
@@ -7249,60 +8600,79 @@
       return start();
     }, 100);
   });
+
   test("Using the mousewheel over a stepper should change the value according to the step", function() {
     var MockStepper, stepper;
-    MockStepper = (function() {
-      __extends(MockStepper, Stepper);
+    MockStepper = (function(_super) {
+
+      __extends(MockStepper, _super);
+
       function MockStepper() {
         MockStepper.__super__.constructor.apply(this, arguments);
       }
+
       MockStepper.prototype.mousewheel = function(e, d) {
         d = 1;
         return MockStepper.__super__.mousewheel.call(this, e, d);
       };
+
       return MockStepper;
-    })();
+
+    })(Stepper);
     stepper = new MockStepper;
     stepper.set("step", 4);
     stepper.dummy.mousewheel();
     return assertThat(stepper.get("value"), strictlyEqualTo(4));
   });
+
   test("Using the mousewheel over a readonly stepper shouldn't change the value", function() {
     var MockStepper, stepper;
-    MockStepper = (function() {
-      __extends(MockStepper, Stepper);
+    MockStepper = (function(_super) {
+
+      __extends(MockStepper, _super);
+
       function MockStepper() {
         MockStepper.__super__.constructor.apply(this, arguments);
       }
+
       MockStepper.prototype.mousewheel = function(e, d) {
         d = 1;
         return MockStepper.__super__.mousewheel.call(this, e, d);
       };
+
       return MockStepper;
-    })();
+
+    })(Stepper);
     stepper = new MockStepper;
     stepper.set("readonly", true);
     stepper.dummy.mousewheel();
     return assertThat(stepper.get("value"), strictlyEqualTo(0));
   });
+
   test("Using the mousewheel over a disabled stepper shouldn't change the value", function() {
     var MockStepper, stepper;
-    MockStepper = (function() {
-      __extends(MockStepper, Stepper);
+    MockStepper = (function(_super) {
+
+      __extends(MockStepper, _super);
+
       function MockStepper() {
         MockStepper.__super__.constructor.apply(this, arguments);
       }
+
       MockStepper.prototype.mousewheel = function(e, d) {
         d = 1;
         return MockStepper.__super__.mousewheel.call(this, e, d);
       };
+
       return MockStepper;
-    })();
+
+    })(Stepper);
     stepper = new MockStepper;
     stepper.set("disabled", true);
     stepper.dummy.mousewheel();
     return assertThat(stepper.get("value"), strictlyEqualTo(0));
   });
+
   test("Stepper shouldn't take focus, instead it should give it to its value input", function() {
     var focusPlacedOnTheInput, stepper;
     focusPlacedOnTheInput = false;
@@ -7315,12 +8685,14 @@
     assertThat(stepper.dummy.attr("tabindex"), nullValue());
     return assertThat(stepper.hasFocus);
   });
+
   test("Clicking on a stepper should give him the focus", function() {
     var stepper;
     stepper = new Stepper;
     stepper.dummy.mouseup();
     return assertThat(stepper.hasFocus);
   });
+
   test("Stepper's input should reflect the state of the widget", function() {
     var stepper;
     stepper = new Stepper;
@@ -7329,17 +8701,20 @@
     assertThat(stepper.dummy.children(".value").attr("readonly"), notNullValue());
     return assertThat(stepper.dummy.children(".value").attr("disabled"), notNullValue());
   });
+
   test("Stepper's input value should be the stepper value", function() {
     var stepper;
     stepper = new Stepper;
     return assertThat(stepper.dummy.children(".value").attr("value"), equalTo("0"));
   });
+
   test("Stepper's input value should be the stepper value after a change", function() {
     var stepper;
     stepper = new Stepper;
     stepper.set("value", 20);
     return assertThat(stepper.dummy.children(".value").attr("value"), equalTo("20"));
   });
+
   test("When the value change in the stepper's input, the stepper should validate the new value", function() {
     var stepper;
     stepper = new Stepper;
@@ -7347,6 +8722,7 @@
     stepper.dummy.children(".value").change();
     return assertThat(stepper.get("value"), strictlyEqualTo(40));
   });
+
   test("When the value in the stepper's input is invalid, the stepper should turn it back to the valid value", function() {
     var stepper;
     stepper = new Stepper;
@@ -7354,6 +8730,7 @@
     stepper.dummy.children(".value").change();
     return assertThat(stepper.dummy.children(".value").attr("value"), strictlyEqualTo("0"));
   });
+
   asyncTest("Pressing the mouse on the minus button should start a decrement interval", function() {
     var stepper;
     stepper = new Stepper;
@@ -7364,6 +8741,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Releasing the mouse on the minus button should stop the decrement interval", function() {
     var stepper;
     stepper = new Stepper;
@@ -7377,6 +8755,51 @@
       return start();
     }, 200);
   });
+
+  asyncTest("Releasing the mouse outside of the minus button should stop the decrement interval", function() {
+    var stepper;
+    stepper = new Stepper;
+    stepper.set("value", 10);
+    stepper.dummy.children(".down").mousedown();
+    setTimeout(function() {
+      return $(document).mouseup();
+    }, 100);
+    return setTimeout(function() {
+      assertThat(stepper.get("value"), closeTo(8, 1));
+      assertThat(!stepper.mousePressed);
+      return start();
+    }, 200);
+  });
+
+  asyncTest("Moving the mouse out of the minus button should stop the decrement interval", function() {
+    var stepper;
+    stepper = new Stepper;
+    stepper.set("value", 10);
+    stepper.dummy.children(".down").mousedown();
+    setTimeout(function() {
+      return stepper.dummy.children(".down").mouseout();
+    }, 100);
+    return setTimeout(function() {
+      assertThat(stepper.get("value"), closeTo(8, 1));
+      return start();
+    }, 200);
+  });
+
+  asyncTest("Moving the mouse back to the minus button should restart the decrement interval", function() {
+    var stepper;
+    stepper = new Stepper;
+    stepper.set("value", 10);
+    stepper.dummy.children(".down").mousedown();
+    setTimeout(function() {
+      stepper.dummy.children(".down").mouseout();
+      return stepper.dummy.children(".down").mouseover();
+    }, 100);
+    return setTimeout(function() {
+      assertThat(stepper.get("value"), closeTo(6, 1));
+      return start();
+    }, 200);
+  });
+
   asyncTest("Pressing the mouse on the plus button should start a increment interval", function() {
     var stepper;
     stepper = new Stepper;
@@ -7386,6 +8809,7 @@
       return start();
     }, 100);
   });
+
   asyncTest("Releasing the mouse on the plus button should stop the increment interval", function() {
     var stepper;
     stepper = new Stepper;
@@ -7398,30 +8822,122 @@
       return start();
     }, 200);
   });
+
+  asyncTest("Releasing the mouse outside of the minus button should stop the decrement interval", function() {
+    var stepper;
+    stepper = new Stepper;
+    stepper.dummy.children(".up").mousedown();
+    setTimeout(function() {
+      return $(document).mouseup();
+    }, 100);
+    return setTimeout(function() {
+      assertThat(stepper.get("value"), closeTo(2, 1));
+      assertThat(!stepper.mousePressed);
+      return start();
+    }, 200);
+  });
+
+  asyncTest("Moving the mouse out of the minus button should stop the decrement interval", function() {
+    var stepper;
+    stepper = new Stepper;
+    stepper.dummy.children(".up").mousedown();
+    setTimeout(function() {
+      return stepper.dummy.children(".up").mouseout();
+    }, 100);
+    return setTimeout(function() {
+      assertThat(stepper.get("value"), closeTo(2, 1));
+      return start();
+    }, 200);
+  });
+
+  asyncTest("Moving the mouse back to the minus button should restart the decrement interval", function() {
+    var stepper;
+    stepper = new Stepper;
+    stepper.dummy.children(".up").mousedown();
+    setTimeout(function() {
+      stepper.dummy.children(".up").mouseout();
+      return stepper.dummy.children(".up").mouseover();
+    }, 100);
+    return setTimeout(function() {
+      assertThat(stepper.get("value"), closeTo(4, 1));
+      return start();
+    }, 200);
+  });
+
+  test("Pressing the mouse over the stepper and moving it to the up should increment the value until the mouse is released", function() {
+    var MockStepper, stepper;
+    MockStepper = (function(_super) {
+
+      __extends(MockStepper, _super);
+
+      function MockStepper() {
+        MockStepper.__super__.constructor.apply(this, arguments);
+      }
+
+      MockStepper.prototype.mousedown = function(e) {
+        e.pageY = 5;
+        return MockStepper.__super__.mousedown.call(this, e);
+      };
+
+      MockStepper.prototype.mousemove = function(e) {
+        e.pageY = 0;
+        return MockStepper.__super__.mousemove.call(this, e);
+      };
+
+      return MockStepper;
+
+    })(Stepper);
+    stepper = new MockStepper;
+    stepper.dummy.mousedown();
+    $(document).mousemove();
+    $(document).mouseup();
+    assertThat(stepper.get("value"), closeTo(5, 1));
+    return assertThat(!stepper.dragging);
+  });
+
   target = $("<input type='number' value='10' min='0' max='50' step='1'></input>");
+
   stepper1 = new Stepper(target[0]);
+
   stepper2 = new Stepper;
+
   stepper3 = new Stepper;
+
   stepper1.valueCenteredOnKnob = true;
+
   stepper2.valueCenteredOnKnob = true;
+
   stepper3.valueCenteredOnKnob = true;
+
   stepper1.set("value", 12);
+
   stepper2.set("value", 45);
+
   stepper3.set("value", 78);
+
   stepper2.set("readonly", true);
+
   stepper3.set("disabled", true);
+
   $("#qunit-header").before($("<h4>Steppers</h4>"));
+
   $("#qunit-header").before(target);
+
   $("#qunit-header").before(stepper1.dummy);
+
   $("#qunit-header").before(stepper2.dummy);
+
   $("#qunit-header").before(stepper3.dummy);
+
   module("file picker tests");
+
   test("A FilePicker should allow a target of type file", function() {
     var picker;
     target = $("<input type='file'></input>")[0];
     picker = new FilePicker(target);
     return assertThat(picker.target === target);
   });
+
   test("A FilePicker shouldn't allow a target of with a type different than file", function() {
     var errorRaised, picker;
     target = $("<input type='text'></input>")[0];
@@ -7433,33 +8949,39 @@
     }
     return assertThat(errorRaised);
   });
+
   test("A FilePicker should create a target when not provided in the constructor", function() {
     var picker;
     picker = new FilePicker;
     return assertThat(picker.target, notNullValue());
   });
+
   test("The FilePicker's dummy should contains the target as child.", function() {
     var picker;
     picker = new FilePicker;
     return assertThat(picker.dummy.children("input").length, equalTo(1));
   });
+
   test("The FilePicker's value span should contains a default value when no file was picked", function() {
     var picker;
     picker = new FilePicker;
     return assertThat(picker.dummy.children(".value").text(), equalTo("Browse"));
   });
+
   test("A readonly FilePicker should hide its target", function() {
     var picker;
     picker = new FilePicker;
     picker.set("readonly", true);
     return assertThat(picker.dummy.children("input").attr("style"), contains("display: none"));
   });
+
   test("A disabled FilePicker should hide its target", function() {
     var picker;
     picker = new FilePicker;
     picker.set("disabled", true);
     return assertThat(picker.dummy.children("input").attr("style"), contains("display: none"));
   });
+
   test("Enabling a FilePicker should show its target", function() {
     var picker;
     picker = new FilePicker;
@@ -7467,6 +8989,7 @@
     picker.set("disabled", false);
     return assertThat(picker.dummy.children("input").attr("style"), hamcrest.not(contains("display: none")));
   });
+
   test("Allowing writing in a FilePicker should show its target", function() {
     var picker;
     picker = new FilePicker;
@@ -7474,6 +8997,7 @@
     picker.set("readonly", false);
     return assertThat(picker.dummy.children("input").attr("style"), hamcrest.not(contains("display: none")));
   });
+
   test("Enabling a readonly widget shouldn't show the target", function() {
     var picker;
     picker = new FilePicker;
@@ -7482,6 +9006,7 @@
     picker.set("disabled", false);
     return assertThat(picker.dummy.children("input").attr("style"), contains("display: none"));
   });
+
   test("Enabling writing on a disabled widget shouldn't show the target", function() {
     var picker;
     picker = new FilePicker;
@@ -7490,29 +9015,37 @@
     picker.set("readonly", false);
     return assertThat(picker.dummy.children("input").attr("style"), contains("display: none"));
   });
+
   test("A FilePicker should register to the change event of the target", function() {
     var MockFilePicker, picker, targetChangeWasCalled;
     targetChangeWasCalled = false;
-    MockFilePicker = (function() {
-      __extends(MockFilePicker, FilePicker);
+    MockFilePicker = (function(_super) {
+
+      __extends(MockFilePicker, _super);
+
       function MockFilePicker() {
         MockFilePicker.__super__.constructor.apply(this, arguments);
       }
+
       MockFilePicker.prototype.targetChange = function(e) {
         return targetChangeWasCalled = true;
       };
+
       return MockFilePicker;
-    })();
+
+    })(FilePicker);
     picker = new MockFilePicker;
     picker.jTarget.change();
     return assertThat(targetChangeWasCalled);
   });
+
   test("A FilePicker should be able to set a new text in the value span", function() {
     var picker;
     picker = new FilePicker;
     picker.setValueLabel("hello");
     return assertThat(picker.dummy.children(".value").text(), equalTo("hello"));
   });
+
   test("A change made to the target that end with an undefined value should empty the dummy's title attribute", function() {
     var picker;
     picker = new FilePicker;
@@ -7520,6 +9053,7 @@
     picker.jTarget.change();
     return assertThat(picker.dummy.attr("title"), equalTo(""));
   });
+
   test("FilePicker shouldn't take focus, instead it should give it to its target input", function() {
     var focusPlacedOnTheInput, picker;
     focusPlacedOnTheInput = false;
@@ -7532,16 +9066,27 @@
     assertThat(picker.dummy.attr("tabindex"), nullValue());
     return assertThat(picker.hasFocus);
   });
+
   picker1 = new FilePicker;
+
   picker2 = new FilePicker;
+
   picker3 = new FilePicker;
+
   picker2.set("readonly", true);
+
   picker3.set("disabled", true);
+
   $("#qunit-header").before($("<h4>File Pickers</h4>"));
+
   $("#qunit-header").before(picker1.dummy);
+
   $("#qunit-header").before(picker2.dummy);
+
   $("#qunit-header").before(picker3.dummy);
+
   module("menu model tests");
+
   test("MenuModel should contains a list of action items", function() {
     var item1, item2, model;
     item1 = {
@@ -7555,6 +9100,7 @@
     assertThat(model.items[0] === item1);
     return assertThat(model.items[1] === item2);
   });
+
   test("MenuModel should prevent invalid or incomplete actions to be passed in its constructor", function() {
     var item1, item2, item3, item4, model;
     item1 = {
@@ -7569,6 +9115,7 @@
     model = new MenuModel(item1, item2, item3, item4);
     return assertThat(model.size(), equalTo(0));
   });
+
   test("MenuModel should allow to add items later", function() {
     var item1, item2, model;
     model = new MenuModel;
@@ -7583,6 +9130,7 @@
     assertThat(model.items[0] === item1);
     return assertThat(model.items[1] === item2);
   });
+
   test("MenuModel should prevent invalid or incomplete actions to be added", function() {
     var item1, item2, item3, item4, model;
     item1 = {
@@ -7598,6 +9146,7 @@
     model.add(item1, item2, item3, item4);
     return assertThat(model.size(), equalTo(0));
   });
+
   test("MenuModel should allow to remove items", function() {
     var item1, item2, item3, model;
     item1 = {
@@ -7614,6 +9163,7 @@
     assertThat(model.size(), equalTo(1));
     return assertThat(model.items[0] === item3);
   });
+
   test("When modified, a MenuModel should dispatch a contentChanged signal", function() {
     var item, listener, model, signalCalled;
     model = new MenuModel;
@@ -7631,6 +9181,7 @@
     model.remove(item);
     return assertThat(signalCalled);
   });
+
   test("A MenuModel should be able to handle sub models", function() {
     var item1, item2, item3, item4, model;
     item3 = {
@@ -7651,7 +9202,9 @@
     assertThat(model.items[1].menu.items[0] === item3);
     return assertThat(model.items[1].menu.items[1] === item4);
   });
+
   module("menu list tests");
+
   test("A MenuList should take a MenuModel as argument", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -7667,6 +9220,7 @@
     list = new MenuList(model);
     return assertThat(list.get("model") === model);
   });
+
   test("MenuList's dummy should be a list that contains the elements in the model", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -7684,6 +9238,7 @@
     assertThat(list.dummy.children("li").first().text(), equalTo("display1"));
     return assertThat(list.dummy.children("li").last().text(), equalTo("display3"));
   });
+
   test("MenuList should null the selection if the passed-in index is out of bounds", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -7700,6 +9255,7 @@
     list.select(5);
     return assertThat(list.selectedIndex, equalTo(-1));
   });
+
   test("Clicking on a list item should trigger the corresponding action", function() {
     var item1, item2, item3, itemActionTriggered, list, model;
     itemActionTriggered = false;
@@ -7720,6 +9276,7 @@
     $(list.dummy.children("li")[1]).mouseup();
     return assertThat(itemActionTriggered);
   });
+
   test("Clicking on a readonly select's list item shouldn't trigger the corresponding action", function() {
     var item1, item2, item3, itemActionTriggered, list, model;
     itemActionTriggered = false;
@@ -7741,6 +9298,7 @@
     $(list.dummy.children("li")[1]).mouseup();
     return assertThat(!itemActionTriggered);
   });
+
   test("Clicking on a disabled select's list item shouldn't trigger the corresponding action", function() {
     var item1, item2, item3, itemActionTriggered, list, model;
     itemActionTriggered = false;
@@ -7762,6 +9320,7 @@
     $(list.dummy.children("li")[1]).mouseup();
     return assertThat(!itemActionTriggered);
   });
+
   test("Changing the model's content should update the list", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -7780,6 +9339,7 @@
     assertThat(list.dummy.children("li").first().text(), equalTo("display1"));
     return assertThat(list.dummy.children("li").last().text(), equalTo("display2"));
   });
+
   test("Passing the mouse over a list item should select it", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -7797,6 +9357,7 @@
     assertThat(list.selectedIndex, equalTo(2));
     return assertThat(list.dummy.children("li").last().hasClass("selected"));
   });
+
   test("Passing the mouse over a readonly select's list item shouldn't select it", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -7814,6 +9375,7 @@
     list.dummy.children("li").last().mouseover();
     return assertThat(list.selectedIndex, equalTo(-1));
   });
+
   test("Passing the mouse over a disabled select's list item shouldn't select it", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -7831,6 +9393,7 @@
     list.dummy.children("li").last().mouseover();
     return assertThat(list.selectedIndex, equalTo(-1));
   });
+
   test("Pressing the up key should move the selection up", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -7855,6 +9418,7 @@
     assertThat(list.selectedIndex, equalTo(0));
     return assertThat(list.dummy.children("li").first().hasClass("selected"));
   });
+
   test("Pressing the down down should move the selection down", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -7879,6 +9443,7 @@
     assertThat(list.selectedIndex, equalTo(2));
     return assertThat(list.dummy.children("li").last().hasClass("selected"));
   });
+
   test("Pressing the up key when the selection is at the top should move the selection to the bottom", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -7903,6 +9468,7 @@
     assertThat(list.selectedIndex, equalTo(2));
     return assertThat(list.dummy.children("li").last().hasClass("selected"));
   });
+
   test("Pressing the down key when the selection is at the bottom should move the selection to the top", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -7927,6 +9493,7 @@
     assertThat(list.selectedIndex, equalTo(0));
     return assertThat(list.dummy.children("li").first().hasClass("selected"));
   });
+
   test("Pressing the enter key should trigger the action of the selected item", function() {
     var actionTriggered, item1, item2, item3, list, model;
     actionTriggered = false;
@@ -7954,6 +9521,7 @@
     });
     return assertThat(actionTriggered);
   });
+
   test("Pressing the space key should trigger the action of the selected item", function() {
     var actionTriggered, item1, item2, item3, list, model;
     actionTriggered = false;
@@ -7981,6 +9549,7 @@
     });
     return assertThat(actionTriggered);
   });
+
   test("Pressing the up key should prevent the default behavior", function() {
     var item1, item2, item3, list, model, preventDefaultCalled;
     item1 = {
@@ -8007,6 +9576,7 @@
     });
     return assertThat(preventDefaultCalled);
   });
+
   test("Pressing the down key should prevent the default behavior", function() {
     var item1, item2, item3, list, model, preventDefaultCalled;
     item1 = {
@@ -8033,6 +9603,7 @@
     });
     return assertThat(preventDefaultCalled);
   });
+
   test("Pressing the up key on a readonly select shouldn't move the selection up", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -8057,6 +9628,7 @@
     });
     return assertThat(list.selectedIndex, equalTo(1));
   });
+
   test("Pressing the down key on a readonly select shouldn't move the selection down", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -8081,6 +9653,7 @@
     });
     return assertThat(list.selectedIndex, equalTo(1));
   });
+
   test("Pressing the up key on a disabled select shouldn't move the selection up", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -8105,6 +9678,7 @@
     });
     return assertThat(list.selectedIndex, equalTo(1));
   });
+
   test("Pressing the down key on a disabled select shouldn't move the selection down", function() {
     var item1, item2, item3, list, model;
     item1 = {
@@ -8129,6 +9703,7 @@
     });
     return assertThat(list.selectedIndex, equalTo(1));
   });
+
   test("MenuList items that contains a sub model should have a specific class", function() {
     var item1, item2, item3, item4, list, model;
     item1 = {
@@ -8149,6 +9724,7 @@
     list = new MenuList(model);
     return assertThat(list.dummy.children("li").last().hasClass("menu"));
   });
+
   test("Passing the mouse over a MenuList item that contains a submodel should popup a new menulist next to the former", function() {
     var item1, item2, item3, item4, left, list, model, top;
     item1 = {
@@ -8177,6 +9753,7 @@
     list.dummy.detach();
     return list.childList.dummy.detach();
   });
+
   test("Passing the mouse over a basic item when a child list is displayed should close the child list", function() {
     var item1, item2, item3, item4, left, list, model, top;
     item1 = {
@@ -8203,6 +9780,7 @@
     assertThat(list.childList.dummy.parent().length, equalTo(0));
     return list.dummy.detach();
   });
+
   test("Closing a child list should make it lose the focus", function() {
     var item1, item2, list, model;
     item1 = {
@@ -8224,6 +9802,7 @@
     assertThat(list.hasFocus);
     return list.dummy.detach();
   });
+
   test("Closing a child list should also close the descendant list", function() {
     var item1, item2, list, model;
     item1 = {
@@ -8247,6 +9826,7 @@
     assertThat(list.childList.childList.dummy.parent().length, equalTo(0));
     return list.dummy.detach();
   });
+
   test("A childlist should have a reference to its parent", function() {
     var item1, item2, list, model;
     item1 = {
@@ -8266,6 +9846,7 @@
     list.dummy.detach();
     return list.childList.dummy.detach();
   });
+
   test("A menu should stop the propagation of the mousedown event", function() {
     var item1, item2, list, model, stopImmediatePropagationCalled;
     item1 = {
@@ -8284,6 +9865,7 @@
     });
     return assertThat(stopImmediatePropagationCalled);
   });
+
   test("Passing the mouse over an item should give the focus to the list", function() {
     var item1, item2, list, model;
     item1 = {
@@ -8297,6 +9879,7 @@
     list.dummy.children("li").first().mouseover();
     return assertThat(list.hasFocus);
   });
+
   test("Coming back from a child list to the original menu item should blur the child list", function() {
     var item1, item2, list, model;
     item1 = {
@@ -8318,6 +9901,7 @@
     list.dummy.detach();
     return list.childList.dummy.detach();
   });
+
   test("Coming back from a child list to a menu item that also have a submenu should change the child List", function() {
     var item1, item2, list, model;
     item1 = {
@@ -8343,6 +9927,7 @@
     list.dummy.detach();
     return list.childList.dummy.detach();
   });
+
   test("Pressing the right key when the selection is on a sub menu should move the focus to the child list", function() {
     var item1, item2, list, model;
     item1 = {
@@ -8366,6 +9951,7 @@
     });
     return assertThat(list.childList.hasFocus);
   });
+
   test("Pressing the left key when the focus is on a child list should return the focus to the parent", function() {
     var item1, item2, list, model;
     item1 = {
@@ -8391,72 +9977,98 @@
     assertThat(!list.childList.hasFocus);
     return assertThat(list.hasFocus);
   });
+
   item1 = {
     display: "display1",
     action: function() {
       return console.log("item 1 clicked");
     }
   };
+
   item2 = {
     display: "display2",
     action: function() {
       return console.log("item 2 clicked");
     }
   };
+
   item3 = {
     display: "display3",
     menu: new MenuModel
   };
+
   item4 = {
     display: "display4",
     action: function() {
       return console.log("item 4 clicked");
     }
   };
+
   item5 = {
     display: "display5",
     action: function() {
       return console.log("item 5 clicked");
     }
   };
+
   item6 = {
     display: "display6",
     menu: new MenuModel
   };
+
   item7 = {
     display: "display7",
     action: function() {
       return console.log("item 7 clicked");
     }
   };
+
   item8 = {
     display: "display8",
     action: function() {
       return console.log("item 8 clicked");
     }
   };
+
   item3.menu.add(item4, item5, item6);
+
   item6.menu.add(item7, item8);
+
   model = new MenuModel(item1, item2, item3);
+
   list1 = new MenuList(model);
+
   list2 = new MenuList(model);
+
   list3 = new MenuList(model);
+
   list2.set("readonly", true);
+
   list3.set("disabled", true);
+
   list1.addClasses("dummy");
+
   list2.addClasses("dummy");
+
   list3.addClasses("dummy");
+
   $("#qunit-header").before($("<h4>MenuList</h4>"));
+
   $("#qunit-header").before(list1.dummy);
+
   $("#qunit-header").before(list2.dummy);
+
   $("#qunit-header").before(list3.dummy);
+
   module("single select tests");
+
   test("SingleSelect should accept select node as target", function() {
     var select;
     target = $("<select></select>")[0];
     select = new SingleSelect(target);
     return assertThat(select.target === target);
   });
+
   test("SingleSelect shouldn't accept anything else that a select as target", function() {
     var errorRaised, select;
     target = $("<input></input>")[0];
@@ -8468,6 +10080,7 @@
     }
     return assertThat(errorRaised);
   });
+
   test("SingleSelect shouldn't accept a select with multiple attribute as target", function() {
     var errorRaised, select;
     target = $("<select multiple></select>")[0];
@@ -8479,6 +10092,7 @@
     }
     return assertThat(errorRaised);
   });
+
   test("SingleSelect's dummy should display the selected option label", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected value='__BAR__' label='BAR'>bar</option>                 </select>")[0];
@@ -8486,6 +10100,7 @@
     assertThat(select.dummy.find(".value").text(), equalTo("BAR"));
     return assertThat(select.get("value"), equalTo("__BAR__"));
   });
+
   test("SingleSelect's dummy should display the selected option", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected value='BAR'>bar</option>                 </select>")[0];
@@ -8493,12 +10108,14 @@
     assertThat(select.dummy.find(".value").text(), equalTo("bar"));
     return assertThat(select.get("value"), equalTo("BAR"));
   });
+
   test("SingleSelect's selected index should be the index of the child with the selected attribute", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>")[0];
     select = new SingleSelect(target);
     return assertThat(select.selectedPath, array(1));
   });
+
   test("Setting the value should change the selected index", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected value='BAR'>bar</option>                 </select>")[0];
@@ -8510,12 +10127,14 @@
     assertThat(select.selectedPath, array(1));
     return assertThat(select.dummy.find(".value").text(), equalTo("bar"));
   });
+
   test("SingleSelect's target should be hidden at start", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
     select = new SingleSelect(target[0]);
     return assertThat(target.attr("style"), contains("display: none"));
   });
+
   test("SingleSelect should build a MenuModel with the option of the select", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option label='BAR' selected>bar</option>                 </select>");
@@ -8524,6 +10143,7 @@
     assertThat(select.model.items[0], hasProperty("display", equalTo("foo")));
     return assertThat(select.model.items[1], hasProperty("display", equalTo("BAR")));
   });
+
   test("SingleSelect model's items should have an action that select the item", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8531,6 +10151,7 @@
     select.model.items[0].action();
     return assertThat(select.get("value"), equalTo("foo"));
   });
+
   test("Changes made to the widget should be reflected on the target", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8540,6 +10161,7 @@
     select.model.items[1].action();
     return assertThat(target.children("option[selected]").text(), equalTo("bar"));
   });
+
   test("Changes made to the model should be reflected on the target (with add)", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8550,6 +10172,7 @@
     });
     return assertThat(target.children("option").length, equalTo(3));
   });
+
   test("Changes made to the model should preserve the optgroup nodes", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <optgroup>                        <option selected>bar</option>                        <option>rab</option>                    </optgroup>                 </select>");
@@ -8561,6 +10184,7 @@
     assertThat(target.find("optgroup").length, equalTo(1));
     return assertThat(target.find("optgroup").children().length, equalTo(2));
   });
+
   test("Items added to the model of a select should have their action defined automatically", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8572,6 +10196,7 @@
     select.model.items[2].action();
     return assertThat(target.children("option[selected]").text(), equalTo("new item"));
   });
+
   test("Changes made to the model should be reflected on the target (with remove)", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8579,6 +10204,7 @@
     select.model.remove(select.model.items[1]);
     return assertThat(target.children("option").length, equalTo(1));
   });
+
   test("Changes made to the model should preserved the selection", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8590,6 +10216,7 @@
     assertThat(target.children("option[selected]").length, equalTo(1));
     return assertThat(target.children("option[selected]").text(), equalTo("bar"));
   });
+
   test("Changes made to the model should preserve a valid selection", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8599,6 +10226,7 @@
     assertThat(target.children("option[selected]").text(), equalTo("foo"));
     return assertThat(select.get("value"), equalTo("foo"));
   });
+
   test("SingleSelect should provide a MenuList instance linked to the model", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8606,6 +10234,7 @@
     assertThat(select.menuList, notNullValue());
     return assertThat(select.menuList.get("model") === select.model);
   });
+
   test("Pressing the mouse on a SingleSelect should display its menuList", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8616,6 +10245,7 @@
     select.dummy.detach();
     return select.menuList.dummy.detach();
   });
+
   test("Pressing the mouse on a SingleSelect should select the value in the menuList", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8626,6 +10256,7 @@
     select.dummy.detach();
     return select.menuList.dummy.detach();
   });
+
   test("Pressing the mouse on a SingleSelect that have its menu list displayed should detach its menuList", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8636,6 +10267,7 @@
     assertThat(select.menuList.dummy.parent().length, equalTo(0));
     return select.dummy.detach();
   });
+
   test("When displayed, the menulist should be placed below the select", function() {
     var left, select, top;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8649,6 +10281,7 @@
     select.dummy.detach();
     return select.menuList.dummy.detach();
   });
+
   test("When displayed, clicking on a list item should hide the menu list", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8659,6 +10292,7 @@
     assertThat(select.menuList.dummy.parent().length, equalTo(0));
     return select.dummy.detach();
   });
+
   test("Pressing the mouse on the select dummy should prevent the default behavior", function() {
     var preventDefaultCalled, select;
     select = new SingleSelect;
@@ -8671,6 +10305,7 @@
     });
     return assertThat(preventDefaultCalled);
   });
+
   test("Readonly select should prevent the mousedown to open the menu list", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8681,6 +10316,7 @@
     assertThat(select.menuList.dummy.parent().length, equalTo(0));
     return select.dummy.detach();
   });
+
   test("Pressing the mouse on a SingleSelect should give the focus to the menu list", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8691,6 +10327,7 @@
     select.dummy.detach();
     return select.menuList.dummy.detach();
   });
+
   test("Pressing the mouse to hide the menu list should give the focus back to the select", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8703,6 +10340,7 @@
     select.dummy.detach();
     return select.menuList.dummy.detach();
   });
+
   test("When displayed, clicking on a list item should give the focus back to the select", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8714,6 +10352,7 @@
     assertThat(select.hasFocus);
     return select.dummy.detach();
   });
+
   test("A SingleSelect should allow html content in items display", function() {
     var select;
     select = new SingleSelect;
@@ -8724,20 +10363,26 @@
     select.set("value", "foo");
     return assertThat(select.dummy.find("b").length, equalTo(1));
   });
+
   test("Pressing the mouse outside of the select and its menu should hide the menu", function() {
     var MockSingleSelect, select;
-    MockSingleSelect = (function() {
-      __extends(MockSingleSelect, SingleSelect);
+    MockSingleSelect = (function(_super) {
+
+      __extends(MockSingleSelect, _super);
+
       function MockSingleSelect() {
         MockSingleSelect.__super__.constructor.apply(this, arguments);
       }
+
       MockSingleSelect.prototype.documentMouseDown = function(e) {
         e.pageX = 1000;
         e.pageY = 1000;
         return MockSingleSelect.__super__.documentMouseDown.call(this, e);
       };
+
       return MockSingleSelect;
-    })();
+
+    })(SingleSelect);
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
     select = new MockSingleSelect(target[0]);
     $("body").append(select.dummy);
@@ -8746,6 +10391,7 @@
     assertThat(select.menuList.dummy.parent().length, equalTo(0));
     return select.dummy.detach();
   });
+
   test("Pressing the enter key when the select has the focus should open the menu", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8761,6 +10407,7 @@
     select.dummy.detach();
     return select.menuList.dummy.detach();
   });
+
   test("Pressing the space key when the select has the focus should open the menu", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8776,6 +10423,7 @@
     select.dummy.detach();
     return select.menuList.dummy.detach();
   });
+
   test("Pressing the space key when the select is readonly shouldn't open the menu", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8791,6 +10439,7 @@
     assertThat(select.menuList.dummy.parent().length, equalTo(0));
     return select.dummy.detach();
   });
+
   test("Pressing the up key should move the selection cursor to the up", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8804,6 +10453,7 @@
     });
     return assertThat(select.get("value"), equalTo("foo"));
   });
+
   test("Pressing the down key should move the selection cursor to the down", function() {
     var select;
     target = $("<select>                    <option selected>foo</option>                    <option>bar</option>                 </select>");
@@ -8817,6 +10467,7 @@
     });
     return assertThat(select.get("value"), equalTo("bar"));
   });
+
   test("Pressing the down key should move the selection cursor to the start when it is already a the bottom", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8830,6 +10481,7 @@
     });
     return assertThat(select.get("value"), equalTo("foo"));
   });
+
   test("Pressing the up key should move the selection cursor to the end when its already at the top", function() {
     var select;
     target = $("<select>                    <option selected>foo</option>                    <option>bar</option>                 </select>");
@@ -8843,6 +10495,7 @@
     });
     return assertThat(select.get("value"), equalTo("bar"));
   });
+
   test("Pressing the down key when the select has optgroups should move the selection to the optgroup", function() {
     var select;
     target = $("<select>                    <option selected>foo</option>                    <optgroup>                        <option>bar</option>                        <option>rab</option>                    </optgroup>                 </select>");
@@ -8856,12 +10509,14 @@
     });
     return assertThat(select.get("value"), equalTo("bar"));
   });
+
   test("The selectedPath should be valid even when the selected items is in a optgroup", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <optgroup>                        <option selected>bar</option>                        <option>rab</option>                    </optgroup>                 </select>");
     select = new SingleSelect(target[0]);
     return assertThat(select.selectedPath, array(1, 0));
   });
+
   test("Moving down the selection when the selection is at the end of an optgroup should move the selection outside of the group", function() {
     var select;
     target = $("<select>                    <optgroup>                        <option>bar</option>                        <option selected>rab</option>                    </optgroup>                    <option>foo</option>                 </select>");
@@ -8875,6 +10530,7 @@
     });
     return assertThat(select.get("value"), equalTo("foo"));
   });
+
   test("Moving down the selection when the selection is at the end of the last optgroup should move the selection to the top", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <optgroup>                        <option>bar</option>                        <option selected>rab</option>                    </optgroup>                 </select>");
@@ -8888,6 +10544,7 @@
     });
     return assertThat(select.get("value"), equalTo("foo"));
   });
+
   test("Moving down the selection when the selection is at the end of the last optgroup should move the selection to the top", function() {
     var select;
     target = $("<select>                    <optgroup>                        <option>foo</option>                    </optgroup>                    <optgroup>                        <option>bar</option>                        <option selected>rab</option>                    </optgroup>                 </select>");
@@ -8901,6 +10558,7 @@
     });
     return assertThat(select.get("value"), equalTo("foo"));
   });
+
   test("Moving up the selection when the selection is at the start of an optgroup should move the selection outside of the group", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <optgroup>                        <option selected>bar</option>                        <option>rab</option>                    </optgroup>                 </select>");
@@ -8914,6 +10572,7 @@
     });
     return assertThat(select.get("value"), equalTo("foo"));
   });
+
   test("Moving up the selection when the selection is at the start of an optgroup that is at the top should move the selection bottom", function() {
     var select;
     target = $("<select>                    <optgroup>                        <option selected>bar</option>                        <option>rab</option>                    </optgroup>                    <option>foo</option>                 </select>");
@@ -8927,6 +10586,7 @@
     });
     return assertThat(select.get("value"), equalTo("foo"));
   });
+
   test("Moving up the selection when the selection is at the start of an optgroup that is at the top should move the selection bottom", function() {
     var select;
     target = $("<select>                    <optgroup>                        <option selected>bar</option>                        <option>rab</option>                    </optgroup>                    <optgroup>                        <option>foo</option>                    </optgroup>                 </select>");
@@ -8940,6 +10600,7 @@
     });
     return assertThat(select.get("value"), equalTo("foo"));
   });
+
   test("Pressing the down key should prevent the default behavior", function() {
     var preventDefaultCalled, select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8956,6 +10617,7 @@
     });
     return assertThat(preventDefaultCalled);
   });
+
   test("Pressing the up key should prevent the default behavior", function() {
     var preventDefaultCalled, select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8972,6 +10634,7 @@
     });
     return assertThat(preventDefaultCalled);
   });
+
   test("Pressing the up key on a readonly select shouldn't move the selection cursor to the up", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <option selected>bar</option>                 </select>");
@@ -8986,6 +10649,7 @@
     });
     return assertThat(select.get("value"), equalTo("bar"));
   });
+
   test("Pressing the down key on a readonly select shouldn't move the selection cursor to the down", function() {
     var select;
     target = $("<select>                    <option selected>foo</option>                    <option>bar</option>                 </select>");
@@ -9000,12 +10664,14 @@
     });
     return assertThat(select.get("value"), equalTo("foo"));
   });
+
   test("Optgroups with a select should be handled as sub menus", function() {
     var select;
     target = $("<select>                    <option selected>foo</option>                    <optgroup label='irrelevant'>                        <option>bar</option>                        <option>rab</option>                    </option>                 </select>");
     select = new SingleSelect(target[0]);
     return assertThat(select.model.items[1].menu, notNullValue());
   });
+
   test("Clicking on a list item in a child list should also set the value", function() {
     var select;
     target = $("<select>                    <option selected>foo</option>                    <optgroup label='irrelevant'>                        <option>bar</option>                        <option>rab</option>                    </option>                 </select>");
@@ -9018,6 +10684,7 @@
     assertThat(select.dummy.find(".value").text(), equalTo("rab"));
     return select.dummy.detach();
   });
+
   test("Pressing the mouse outside of the select list but on a child list shouldn't close the dialog before mouseup", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <optgroup label='irrelevant'>                        <option>bar</option>                        <option>rab</option>                    </option>                 </select>");
@@ -9032,6 +10699,7 @@
     select.menuList.dummy.detach();
     return select.menuList.childList.dummy.detach();
   });
+
   test("Pressing the mouse on a SingleSelect should select the value in the menuList even when there're optgroups", function() {
     var select;
     target = $("<select>                    <option>foo</option>                    <optgroup label='irrelevant'>                        <option>bar</option>                        <option>rab</option>                    </option>                 </select>");
@@ -9048,6 +10716,7 @@
     select.menuList.dummy.detach();
     return select.menuList.childList.dummy.detach();
   });
+
   test("The value for a select that only have optgroup and no selected item should be the default value of the select", function() {
     var select;
     target = $("<select>                    <optgroup label='irrelevant'>                        <option>bar</option>                        <option>rab</option>                    </option>                    <optgroup label='irrelevant'>                        <option>foo</option>                        <option>oof</option>                    </option>                 </select>");
@@ -9055,242 +10724,284 @@
     assertThat(select.get("value"), equalTo("bar"));
     return assertThat(select.selectedPath, array(0, 0));
   });
+
   test("Empty SingleSelect should display a default label", function() {
     var select;
     target = $("<select></select>")[0];
     select = new SingleSelect(target);
     return assertThat(select.dummy.find(".value").text(), equalTo("Empty"));
   });
-  test("Empty SingleSelect should display a default label", function() {
+
+  test("Empty SingleSelect should display a default placeholder", function() {
     var select;
     select = new SingleSelect;
     return assertThat(select.dummy.find(".value").text(), equalTo("Empty"));
   });
+
   test("Empty SingleSelect should use the title attribute of the target as placeholder for the display", function() {
     var select;
     target = $("<select title='foo'></select>")[0];
     select = new SingleSelect(target);
     return assertThat(select.dummy.find(".value").text(), equalTo("foo"));
   });
+
+  test("SingleSelect with the default model should display the default placeholder", function() {
+    var select;
+    select = new SingleSelect;
+    return assertThat(select.dummy.find(".value").text(), equalTo("Empty"));
+  });
+
   s = "<select>        <option>List Item 1</option>        <option selected>List Item 2</option>        <option>Long List Item 3</option>        <option>Very Long List Item 4</option>        <optgroup label='Group 1'>            <option>List Item 5</option>            <option>List Item 6</option>            <option>Long List Item 7</option>        </optgroup>        <optgroup label='Group 2'>            <option>List Item 8</option>            <option>List Item 9</option>            <option>Long List Item 10</option>        </optgroup>     </select>";
+
   select1 = new SingleSelect($(s)[0]);
+
   select2 = new SingleSelect($(s)[0]);
+
   select3 = new SingleSelect($(s)[0]);
+
   select2.set("readonly", true);
+
   select3.set("disabled", true);
+
   $("#qunit-header").before($("<h4>SingleSelect</h4>"));
+
   $("#qunit-header").before(select1.dummy);
+
   $("#qunit-header").before(select2.dummy);
+
   $("#qunit-header").before(select3.dummy);
-  module("colorpicker tests");
-  test("A color picker should accept a target input with type color", function() {
-    var picker;
+
+  module("colorinput tests");
+
+  test("A color input should accept a target input with type color", function() {
+    var input;
     target = $("<input type='color'></input>")[0];
-    picker = new ColorPicker(target);
-    return assertThat(picker.target === target);
+    input = new ColorInput(target);
+    return assertThat(input.target === target);
   });
-  test("A color picker should hide its target", function() {
-    var picker;
+
+  test("A color input should hide its target", function() {
+    var input;
     target = $("<input type='color'></input>")[0];
-    picker = new ColorPicker(target);
-    return assertThat(picker.jTarget.attr("style"), contains("display: none"));
+    input = new ColorInput(target);
+    return assertThat(input.jTarget.attr("style"), contains("display: none"));
   });
-  test("A color picker shouldn't accept a target input with a type different than color", function() {
-    var errorRaised, picker;
+
+  test("A color input shouldn't accept a target input with a type different than color", function() {
+    var errorRaised, input;
     target = $("<input type='text'></input>")[0];
     errorRaised = false;
     try {
-      picker = new ColorPicker(target);
+      input = new ColorInput(target);
     } catch (e) {
       errorRaised = true;
     }
     return assertThat(errorRaised);
   });
-  test("A color picker should retreive the color from its target", function() {
-    var picker;
+
+  test("A color input should retreive the color from its target", function() {
+    var input;
     target = $("<input type='color' value='#ff0000'></input>")[0];
-    picker = new ColorPicker(target);
-    return assertThat(picker.get("value"), equalTo("#ff0000"));
+    input = new ColorInput(target);
+    return assertThat(input.get("value"), equalTo("#ff0000"));
   });
-  test("A color picker should have a default color even without target", function() {
-    var picker;
-    picker = new ColorPicker;
-    return assertThat(picker.get("value"), equalTo("#000000"));
+
+  test("A color input should have a default color even without target", function() {
+    var input;
+    input = new ColorInput;
+    return assertThat(input.get("value"), equalTo("#000000"));
   });
-  test("A color picker should provide a color property that provide a more code friendly color object", function() {
-    var color, picker;
-    picker = new ColorPicker;
-    color = picker.get("color");
+
+  test("A color input should provide a color property that provide a more code friendly color object", function() {
+    var color, input;
+    input = new ColorInput;
+    color = input.get("color");
     return assertThat(color, allOf(notNullValue(), hasProperties({
       red: 0,
       green: 0,
       blue: 0
     })));
   });
-  test("A color picker color should reflect the initial value", function() {
-    var color, picker;
+
+  test("A color input color should reflect the initial value", function() {
+    var color, input;
     target = $("<input type='color' value='#abcdef'></input>")[0];
-    picker = new ColorPicker(target);
-    color = picker.get("color");
+    input = new ColorInput(target);
+    color = input.get("color");
     return assertThat(color, allOf(notNullValue(), hasProperties({
       red: 0xab,
       green: 0xcd,
       blue: 0xef
     })));
   });
-  test("A color picker should update the value when the color is changed", function() {
-    var picker;
-    picker = new ColorPicker;
-    picker.set("color", {
+
+  test("A color input should update the value when the color is changed", function() {
+    var input;
+    input = new ColorInput;
+    input.set("color", {
       red: 0xab,
       green: 0xcd,
       blue: 0xef
     });
-    return assertThat(picker.get("value"), equalTo("#abcdef"));
+    return assertThat(input.get("value"), equalTo("#abcdef"));
   });
-  test("A color picker should preserve the length of the value even with black", function() {
-    var picker;
-    picker = new ColorPicker;
-    picker.set("color", {
+
+  test("A color input should preserve the length of the value even with black", function() {
+    var input;
+    input = new ColorInput;
+    input.set("color", {
       red: 0,
       green: 0,
       blue: 0
     });
-    return assertThat(picker.get("value"), equalTo("#000000"));
+    return assertThat(input.get("value"), equalTo("#000000"));
   });
-  test("A color picker should update its color property when the value is changed", function() {
-    var color, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    color = picker.get("color");
+
+  test("A color input should update its color property when the value is changed", function() {
+    var color, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    color = input.get("color");
     return assertThat(color, allOf(notNullValue(), hasProperties({
       red: 0xab,
       green: 0xcd,
       blue: 0xef
     })));
   });
-  test("A color picker should prevent invalid values to alter its properties", function() {
-    var picker;
+
+  test("A color input should prevent invalid values to alter its properties", function() {
+    var input;
     target = $("<input type='color' value='#foobar'></input>")[0];
-    picker = new ColorPicker(target);
-    picker.set("value", "foo");
-    picker.set("value", "#ghijkl");
-    picker.set("value", "#abc");
-    picker.set("value", void 0);
-    assertThat(picker.get("value"), equalTo("#000000"));
-    return assertThat(picker.get("color"), hasProperties({
+    input = new ColorInput(target);
+    input.set("value", "foo");
+    input.set("value", "#ghijkl");
+    input.set("value", "#abc");
+    input.set("value", void 0);
+    assertThat(input.get("value"), equalTo("#000000"));
+    return assertThat(input.get("color"), hasProperties({
       red: 0,
       green: 0,
       blue: 0
     }));
   });
-  test("A color picker should prevent invalid color to alter its properties", function() {
-    var picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    picker.set("color", null);
-    picker.set("color", {
+
+  test("A color input should prevent invalid color to alter its properties", function() {
+    var input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    input.set("color", null);
+    input.set("color", {
       red: NaN,
       green: 0,
       blue: 0
     });
-    picker.set("color", {
+    input.set("color", {
       red: 0,
       green: -1,
       blue: 0
     });
-    picker.set("color", {
+    input.set("color", {
       red: 0,
       green: 0,
       blue: "foo"
     });
-    picker.set("color", {
+    input.set("color", {
       red: 0,
       green: 0,
       blue: 300
     });
-    assertThat(picker.get("value"), equalTo("#abcdef"));
-    return assertThat(picker.get("color"), hasProperties({
+    assertThat(input.get("value"), equalTo("#abcdef"));
+    return assertThat(input.get("color"), hasProperties({
       red: 0xab,
       green: 0xcd,
       blue: 0xef
     }));
   });
-  test("A color picker should provide a dummy", function() {
-    var picker;
-    picker = new ColorPicker;
-    return assertThat(picker.dummy, notNullValue());
+
+  test("A color input should provide a dummy", function() {
+    var input;
+    input = new ColorInput;
+    return assertThat(input.dummy, notNullValue());
   });
-  test("The color span of a color picker should have its background filled with the widget's value", function() {
-    var picker;
+
+  test("The color span of a color input should have its background filled with the widget's value", function() {
+    var input;
     target = $("<input type='color' value='#abcdef'></input>")[0];
-    picker = new ColorPicker(target);
-    return assertThat(picker.dummy.children(".color").attr("style"), contains("background: #abcdef"));
+    input = new ColorInput(target);
+    return assertThat(input.dummy.children(".color").attr("style"), contains("background: #abcdef"));
   });
-  test("The color span of a color picker should have its background filled with the widget's value even after a change", function() {
-    var picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    return assertThat(picker.dummy.children(".color").attr("style"), contains("background: #abcdef"));
+
+  test("The color span of a color input should have its background filled with the widget's value even after a change", function() {
+    var input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    return assertThat(input.dummy.children(".color").attr("style"), contains("background: #abcdef"));
   });
-  test("Clicking on a color picker should trigger a dialogRequested signal", function() {
-    var picker, signalCalled, signalSource;
+
+  test("Clicking on a color input should trigger a dialogRequested signal", function() {
+    var input, signalCalled, signalSource;
     signalCalled = false;
     signalSource = null;
-    picker = new ColorPicker;
-    picker.dialogRequested.add(function(widget) {
+    input = new ColorInput;
+    input.dialogRequested.add(function(widget) {
       signalCalled = true;
       return signalSource = widget;
     });
-    picker.dummy.click();
+    input.dummy.click();
     assertThat(signalCalled);
-    return assertThat(signalSource === picker);
+    return assertThat(signalSource === input);
   });
+
   test("The color child text should be the value hexadecimal code", function() {
-    var picker;
-    picker = new ColorPicker;
-    return assertThat(picker.dummy.children(".color").text(), equalTo("#000000"));
+    var input;
+    input = new ColorInput;
+    return assertThat(input.dummy.children(".color").text(), equalTo("#000000"));
   });
+
   test("The color child text color should be defined according the luminosity of the color", function() {
-    var picker;
-    picker = new ColorPicker;
-    assertThat(picker.dummy.children(".color").attr("style"), contains("color: #ffffff"));
-    picker.set("value", "#ffffff");
-    return assertThat(picker.dummy.children(".color").attr("style"), contains("color: #000000"));
+    var input;
+    input = new ColorInput;
+    assertThat(input.dummy.children(".color").attr("style"), contains("color: #ffffff"));
+    input.set("value", "#ffffff");
+    return assertThat(input.dummy.children(".color").attr("style"), contains("color: #000000"));
   });
+
   test("The ColorWidget's class should have a default listener defined for the dialogRequested signal of its instance", function() {
-    return assertThat(ColorPicker.defaultListener instanceof ColorPickerDialog);
+    return assertThat(ColorInput.defaultListener instanceof ColorPicker);
   });
-  test("Disabled ColorPicker should trigger the dialogRequested on click", function() {
-    var picker, signalCalled;
+
+  test("Disabled ColorInput should trigger the dialogRequested on click", function() {
+    var input, signalCalled;
     signalCalled = false;
-    picker = new ColorPicker;
-    picker.dialogRequested.add(function() {
+    input = new ColorInput;
+    input.dialogRequested.add(function() {
       return signalCalled = true;
     });
-    picker.set("disabled", true);
-    picker.dummy.click();
+    input.set("disabled", true);
+    input.dummy.click();
     return assertThat(!signalCalled);
   });
-  test("Readonly ColorPicker should trigger the dialogRequested on click", function() {
-    var picker, signalCalled;
+
+  test("Readonly ColorInput should trigger the dialogRequested on click", function() {
+    var input, signalCalled;
     signalCalled = false;
-    picker = new ColorPicker;
-    picker.dialogRequested.add(function() {
+    input = new ColorInput;
+    input.dialogRequested.add(function() {
       return signalCalled = true;
     });
-    picker.set("readonly", true);
-    picker.dummy.click();
+    input.set("readonly", true);
+    input.dummy.click();
     return assertThat(!signalCalled);
   });
+
   test("Pressing Enter should dispatch the dialogRequested signal", function() {
-    var picker, signalCalled;
+    var input, signalCalled;
     signalCalled = false;
-    picker = new ColorPicker;
-    picker.dialogRequested.add(function() {
+    input = new ColorInput;
+    input.dialogRequested.add(function() {
       return signalCalled = true;
     });
-    picker.keydown({
+    input.keydown({
       keyCode: keys.enter,
       ctrlKey: false,
       shiftKey: false,
@@ -9298,14 +11009,15 @@
     });
     return assertThat(signalCalled);
   });
+
   test("Pressing Space should dispatch the dialogRequested signal", function() {
-    var picker, signalCalled;
+    var input, signalCalled;
     signalCalled = false;
-    picker = new ColorPicker;
-    picker.dialogRequested.add(function() {
+    input = new ColorInput;
+    input.dialogRequested.add(function() {
       return signalCalled = true;
     });
-    picker.keydown({
+    input.keydown({
       keyCode: keys.space,
       ctrlKey: false,
       shiftKey: false,
@@ -9313,19 +11025,33 @@
     });
     return assertThat(signalCalled);
   });
-  picker1 = new ColorPicker;
-  picker2 = new ColorPicker;
-  picker3 = new ColorPicker;
-  picker1.set("value", "#cbdc1b");
-  picker2.set("value", "#66ff99");
-  picker3.set("value", "#6699ff");
-  picker2.set("readonly", true);
-  picker3.set("disabled", true);
-  $("#qunit-header").before($("<h4>ColorPicker</h4>"));
-  $("#qunit-header").before(picker1.dummy);
-  $("#qunit-header").before(picker2.dummy);
-  $("#qunit-header").before(picker3.dummy);
-  module("squarepicker tests");
+
+  input1 = new ColorInput;
+
+  input2 = new ColorInput;
+
+  input3 = new ColorInput;
+
+  input1.set("value", "#cbdc1b");
+
+  input2.set("value", "#66ff99");
+
+  input3.set("value", "#6699ff");
+
+  input2.set("readonly", true);
+
+  input3.set("disabled", true);
+
+  $("#qunit-header").before($("<h4>ColorInput</h4>"));
+
+  $("#qunit-header").before(input1.dummy);
+
+  $("#qunit-header").before(input2.dummy);
+
+  $("#qunit-header").before(input3.dummy);
+
+  module("squareinput tests");
+
   test("A SquarePicker should provides two ranges of values for its x and y axis", function() {
     var grid;
     grid = new SquarePicker;
@@ -9336,11 +11062,13 @@
     assertThat(grid.get("rangeX"), array(0, 100));
     return assertThat(grid.get("rangeY"), array(0, 100));
   });
+
   test("The SquarePicker's value should be a tuple of values in the x and y range", function() {
     var grid;
     grid = new SquarePicker;
     return assertThat(grid.get("value"), array(0, 0));
   });
+
   test("The SquarePicker should prevent any attempt to set invalid values", function() {
     var grid;
     grid = new SquarePicker;
@@ -9377,6 +11105,7 @@
     });
     return assertThat(grid.get("value"), array(50, 65));
   });
+
   test("Changing the ranges midway should alter the values", function() {
     var grid;
     grid = new SquarePicker;
@@ -9393,6 +11122,7 @@
     });
     return assertThat(grid.get("value"), array(10, 10));
   });
+
   test("A SquarePicker should prevent all attempt to set an invalid range", function() {
     var grid;
     grid = new SquarePicker;
@@ -9431,25 +11161,32 @@
     assertThat(grid.get("rangeX"), array(0, 100));
     return assertThat(grid.get("rangeY"), array(0, 100));
   });
+
   test("SquarePicker should provide a dummy", function() {
     var grid;
     grid = new SquarePicker;
     return assertThat(grid.dummy, notNullValue());
   });
+
   test("Given a specific size, pressing the mouse inside a grid should change the value according to the x and y ranges", function() {
     var MockSquarePicker, grid;
-    MockSquarePicker = (function() {
-      __extends(MockSquarePicker, SquarePicker);
+    MockSquarePicker = (function(_super) {
+
+      __extends(MockSquarePicker, _super);
+
       function MockSquarePicker() {
         MockSquarePicker.__super__.constructor.apply(this, arguments);
       }
+
       MockSquarePicker.prototype.mousedown = function(e) {
         e.pageX = 45;
         e.pageY = 65;
         return MockSquarePicker.__super__.mousedown.call(this, e);
       };
+
       return MockSquarePicker;
-    })();
+
+    })(SquarePicker);
     grid = new MockSquarePicker;
     grid.dummy.attr("style", "width:100px; height:100px");
     grid.set({
@@ -9459,30 +11196,38 @@
     grid.dummy.mousedown();
     return assertThat(grid.get("value"), array(4.5, 6.5));
   });
+
   test("A SquarePicker should allow to drag the mouse to change the value", function() {
     var MockSquarePicker, grid;
-    MockSquarePicker = (function() {
-      __extends(MockSquarePicker, SquarePicker);
+    MockSquarePicker = (function(_super) {
+
+      __extends(MockSquarePicker, _super);
+
       function MockSquarePicker() {
         MockSquarePicker.__super__.constructor.apply(this, arguments);
       }
+
       MockSquarePicker.prototype.mousedown = function(e) {
         e.pageX = 45;
         e.pageY = 65;
         return MockSquarePicker.__super__.mousedown.call(this, e);
       };
+
       MockSquarePicker.prototype.mousemove = function(e) {
         e.pageX = 47;
         e.pageY = 67;
         return MockSquarePicker.__super__.mousemove.call(this, e);
       };
+
       MockSquarePicker.prototype.mouseup = function(e) {
         e.pageX = 49;
         e.pageY = 69;
         return MockSquarePicker.__super__.mouseup.call(this, e);
       };
+
       return MockSquarePicker;
-    })();
+
+    })(SquarePicker);
     grid = new MockSquarePicker;
     grid.dummy.attr("style", "width:100px; height:100px");
     grid.set({
@@ -9496,20 +11241,26 @@
     grid.dummy.mouseup();
     return assertThat(grid.get("value"), array(closeTo(4.9, 0.1), closeTo(6.9, 0.1)));
   });
+
   test("Dragging the mouse outside of the SquarePicker on the bottom right should set the values on the max", function() {
     var MockSquarePicker, grid;
-    MockSquarePicker = (function() {
-      __extends(MockSquarePicker, SquarePicker);
+    MockSquarePicker = (function(_super) {
+
+      __extends(MockSquarePicker, _super);
+
       function MockSquarePicker() {
         MockSquarePicker.__super__.constructor.apply(this, arguments);
       }
+
       MockSquarePicker.prototype.mouseup = function(e) {
         e.pageX = 110;
         e.pageY = 110;
         return MockSquarePicker.__super__.mouseup.call(this, e);
       };
+
       return MockSquarePicker;
-    })();
+
+    })(SquarePicker);
     grid = new MockSquarePicker;
     grid.dummy.attr("style", "width:100px; height:100px");
     grid.set({
@@ -9520,20 +11271,26 @@
     grid.dummy.mouseup();
     return assertThat(grid.get("value"), array(closeTo(10, 0.1), closeTo(10, 0.1)));
   });
+
   test("Dragging the mouse outside of the SquarePicker on the top left should set the values on the min", function() {
     var MockSquarePicker, grid;
-    MockSquarePicker = (function() {
-      __extends(MockSquarePicker, SquarePicker);
+    MockSquarePicker = (function(_super) {
+
+      __extends(MockSquarePicker, _super);
+
       function MockSquarePicker() {
         MockSquarePicker.__super__.constructor.apply(this, arguments);
       }
+
       MockSquarePicker.prototype.mouseup = function(e) {
         e.pageX = -10;
         e.pageY = -10;
         return MockSquarePicker.__super__.mouseup.call(this, e);
       };
+
       return MockSquarePicker;
-    })();
+
+    })(SquarePicker);
     grid = new MockSquarePicker;
     grid.dummy.attr("style", "width:100px; height:100px");
     grid.set({
@@ -9544,6 +11301,7 @@
     grid.dummy.mouseup();
     return assertThat(grid.get("value"), array(closeTo(0, 0.1), closeTo(0, 0.1)));
   });
+
   test("A disabled SquarePicker should prevent dragging to occurs", function() {
     var grid;
     grid = new SquarePicker;
@@ -9551,6 +11309,7 @@
     grid.dummy.mousedown();
     return assertThat(!grid.dragging);
   });
+
   test("A readonly SquarePicker should prevent dragging to occurs", function() {
     var grid;
     grid = new SquarePicker;
@@ -9558,23 +11317,30 @@
     grid.dummy.mousedown();
     return assertThat(!grid.dragging);
   });
+
   test("Starting a drag should return false", function() {
     var MockSquarePicker, grid, result;
     result = true;
-    MockSquarePicker = (function() {
-      __extends(MockSquarePicker, SquarePicker);
+    MockSquarePicker = (function(_super) {
+
+      __extends(MockSquarePicker, _super);
+
       function MockSquarePicker() {
         MockSquarePicker.__super__.constructor.apply(this, arguments);
       }
+
       MockSquarePicker.prototype.mousedown = function(e) {
         return result = MockSquarePicker.__super__.mousedown.call(this, e);
       };
+
       return MockSquarePicker;
-    })();
+
+    })(SquarePicker);
     grid = new MockSquarePicker;
     grid.dummy.mousedown();
     return assertThat(!result);
   });
+
   test("A SquarePicker should have a cursor that display the selected position", function() {
     var grid;
     grid = new SquarePicker;
@@ -9584,6 +11350,7 @@
     assertThat(grid.dummy.children(".cursor").attr("style"), contains("left: 40px"));
     return assertThat(grid.dummy.children(".cursor").attr("style"), contains("top: 50px"));
   });
+
   test("When dragging, releasing the mouse outside of the widget should stop the drag", function() {
     var grid;
     grid = new SquarePicker;
@@ -9591,12 +11358,14 @@
     $(document).mouseup();
     return assertThat(!grid.dragging);
   });
+
   test("Clicking on a SquarePicker should give the focus to the widget", function() {
     var grid;
     grid = new SquarePicker;
     grid.dummy.mousedown();
     return assertThat(grid.hasFocus);
   });
+
   test("Clicking on a disabled SquarePicker shouldn't give the focus to the widget", function() {
     var grid;
     grid = new SquarePicker;
@@ -9604,6 +11373,7 @@
     grid.dummy.mousedown();
     return assertThat(!grid.hasFocus);
   });
+
   test("A SquarePicker should allow to lock the X axis", function() {
     var grid;
     grid = new SquarePicker;
@@ -9611,6 +11381,7 @@
     grid.set("value", [1, 0]);
     return assertThat(grid.get("value"), array(0, 0));
   });
+
   test("A SquarePicker should allow to lock the Y axis", function() {
     var grid;
     grid = new SquarePicker;
@@ -9618,6 +11389,7 @@
     grid.set("value", [0, 1]);
     return assertThat(grid.get("value"), array(0, 0));
   });
+
   test("A SquarePicker should allow to unlock the X axis", function() {
     var grid;
     grid = new SquarePicker;
@@ -9626,6 +11398,7 @@
     grid.set("value", [1, 0]);
     return assertThat(grid.get("value"), array(1, 0));
   });
+
   test("A SquarePicker should allow to unlock the Y axis", function() {
     var grid;
     grid = new SquarePicker;
@@ -9634,266 +11407,321 @@
     grid.set("value", [0, 1]);
     return assertThat(grid.get("value"), array(0, 1));
   });
-  spicker1 = new SquarePicker;
-  spicker2 = new SquarePicker;
-  spicker3 = new SquarePicker;
-  spicker4 = new SquarePicker;
-  spicker1.set("value", [.2, .5]);
-  spicker2.set("value", [0, .6]);
-  spicker3.set("value", [.7, .2]);
-  spicker4.set("value", [.8, 0]);
-  spicker2.lockX();
-  spicker2.dummyClass = spicker2.dummyClass + " vertical";
-  spicker2.updateStates();
-  spicker4.dummyClass = spicker4.dummyClass + " horizontal";
-  spicker4.updateStates();
-  spicker3.set("readonly", true);
-  spicker4.set("disabled", true);
+
+  sinput1 = new SquarePicker;
+
+  sinput2 = new SquarePicker;
+
+  sinput3 = new SquarePicker;
+
+  sinput4 = new SquarePicker;
+
+  sinput1.set("value", [.2, .5]);
+
+  sinput2.set("value", [0, .6]);
+
+  sinput3.set("value", [.7, .2]);
+
+  sinput4.set("value", [.8, 0]);
+
+  sinput2.lockX();
+
+  sinput2.dummyClass = sinput2.dummyClass + " vertical";
+
+  sinput2.updateStates();
+
+  sinput4.dummyClass = sinput4.dummyClass + " horizontal";
+
+  sinput4.updateStates();
+
+  sinput3.set("readonly", true);
+
+  sinput4.set("disabled", true);
+
   $("#qunit-header").before($("<h4>SquarePicker</h4>"));
-  $("#qunit-header").before(spicker1.dummy);
-  $("#qunit-header").before(spicker2.dummy);
-  $("#qunit-header").before(spicker3.dummy);
-  $("#qunit-header").before(spicker4.dummy);
-  module("colorpickerdialog tests");
-  test("A ColorPickerDialog should be hidden at startup", function() {
+
+  $("#qunit-header").before(sinput1.dummy);
+
+  $("#qunit-header").before(sinput2.dummy);
+
+  $("#qunit-header").before(sinput3.dummy);
+
+  $("#qunit-header").before(sinput4.dummy);
+
+  module("colorinput tests");
+
+  test("A ColorPicker should be hidden at startup", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     return assertThat(dialog.dummy.attr("style"), contains("display: none"));
   });
-  test("A ColorPickerDialog should have a listener for the dialogRequested signal that setup the dialog", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("A ColorPicker should have a listener for the dialogRequested signal that setup the dialog", function() {
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     return assertThat(dialog.get("value") === "#abcdef");
   });
-  test("A ColorPickerDialog should show itself on a dialog request", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("A ColorPicker should show itself on a dialog request", function() {
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
-  test("A ColorPickerDialog should provides a method to convert a rgb color to hsv values", function() {
+
+  test("A ColorPicker should provides a method to convert a rgb color to hsv values", function() {
     var dialog, hsv;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     hsv = rgb2hsv(10, 100, 200);
     return assertThat(hsv, array(closeTo(212, 2), closeTo(95, 2), closeTo(78, 2)));
   });
-  test("A ColorPickerDialog should provides a method to convert a hsv color to rgb values", function() {
+
+  test("A ColorPicker should provides a method to convert a hsv color to rgb values", function() {
     var dialog, rgb;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     rgb = hsv2rgb(212, 95, 78);
     return assertThat(rgb, array(closeTo(10, 2), closeTo(100, 2), closeTo(200, 2)));
   });
-  test("A ColorPickerDialog should provides a dummy", function() {
+
+  test("A ColorPicker should provides a dummy", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     return assertThat(dialog.dummy, notNullValue());
   });
-  test("A ColorPickerDialog should provides a TextInput for each channel of the color", function() {
+
+  test("A ColorPicker should provides a TextInput for each channel of the color", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     assertThat(dialog.redInput instanceof TextInput);
     assertThat(dialog.greenInput instanceof TextInput);
     return assertThat(dialog.blueInput instanceof TextInput);
   });
+
   test("The inputs for the color channels should be limited to three chars", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     assertThat(dialog.redInput.get("maxlength"), equalTo(3));
     assertThat(dialog.greenInput.get("maxlength"), equalTo(3));
     return assertThat(dialog.blueInput.get("maxlength"), equalTo(3));
   });
-  test("A ColorPickerDialog should have the channels input as child of the dummy", function() {
+
+  test("A ColorPicker should have the channels input as child of the dummy", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     assertThat(dialog.dummy.children(".red")[0], equalTo(dialog.redInput.dummy[0]));
     assertThat(dialog.dummy.children(".green")[0], equalTo(dialog.greenInput.dummy[0]));
     return assertThat(dialog.dummy.children(".blue")[0], equalTo(dialog.blueInput.dummy[0]));
   });
-  test("Setting the value of a ColorPickerDialog should fill the channels input", function() {
+
+  test("Setting the value of a ColorPicker should fill the channels input", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     assertThat(dialog.redInput.get("value"), equalTo(0xab));
     assertThat(dialog.greenInput.get("value"), equalTo(0xcd));
     return assertThat(dialog.blueInput.get("value"), equalTo(0xef));
   });
-  test("A ColorPickerDialog should provides a TextInput for each channel of the hsv color", function() {
+
+  test("A ColorPicker should provides a TextInput for each channel of the hsv color", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     assertThat(dialog.hueInput instanceof TextInput);
     assertThat(dialog.saturationInput instanceof TextInput);
     return assertThat(dialog.valueInput instanceof TextInput);
   });
+
   test("The inputs for the hsv channels should be limited to three chars", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     assertThat(dialog.hueInput.get("maxlength"), equalTo(3));
     assertThat(dialog.saturationInput.get("maxlength"), equalTo(3));
     return assertThat(dialog.valueInput.get("maxlength"), equalTo(3));
   });
-  test("A ColorPickerDialog should have the channels input as child of the dummy", function() {
+
+  test("A ColorPicker should have the channels input as child of the dummy", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     assertThat(dialog.dummy.children(".hue")[0], equalTo(dialog.hueInput.dummy[0]));
     assertThat(dialog.dummy.children(".saturation")[0], equalTo(dialog.saturationInput.dummy[0]));
     return assertThat(dialog.dummy.children(".value")[0], equalTo(dialog.valueInput.dummy[0]));
   });
-  test("Setting the value of a ColorPickerDialog should fill the channels input", function() {
+
+  test("Setting the value of a ColorPicker should fill the channels input", function() {
     var dialog, h, v, _ref;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     _ref = rgb2hsv(0xab, 0xcd, 0xef), h = _ref[0], s = _ref[1], v = _ref[2];
     assertThat(dialog.hueInput.get("value"), equalTo(Math.round(h)));
     assertThat(dialog.saturationInput.get("value"), equalTo(Math.round(s)));
     return assertThat(dialog.valueInput.get("value"), equalTo(Math.round(v)));
   });
-  test("A ColorPickerDialog should provides a TextInput for the hexadecimal color", function() {
+
+  test("A ColorPicker should provides a TextInput for the hexadecimal color", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     return assertThat(dialog.hexInput instanceof TextInput);
   });
+
   test("The hexadecimal input should be limited to 6 chars", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     return assertThat(dialog.hexInput.get("maxlength"), equalTo(6));
   });
-  test("A ColorPickerDialog should have the hexadecimal input as child of the dummy", function() {
+
+  test("A ColorPicker should have the hexadecimal input as child of the dummy", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     return assertThat(dialog.dummy.children(".hex")[0], equalTo(dialog.hexInput.dummy[0]));
   });
-  test("Setting the value of a ColorPickerDialog should fill the hexadecimal input", function() {
+
+  test("Setting the value of a ColorPicker should fill the hexadecimal input", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     return assertThat(dialog.hexInput.get("value"), equalTo("abcdef"));
   });
+
   test("Setting the value of the red input should update the dialog's value", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#000000");
     dialog.redInput.set("value", 0xff);
     assertThat(dialog.get("value"), equalTo("#ff0000"));
     dialog.redInput.set("value", "69");
     return assertThat(dialog.get("value"), equalTo("#450000"));
   });
+
   test("Setting an invalid value for the red input shouldn't update the dialog's value", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#000000");
     dialog.redInput.set("value", "foo");
     return assertThat(dialog.get("value"), equalTo("#000000"));
   });
+
   test("Setting the value of the green input should update the dialog's value", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#000000");
     dialog.greenInput.set("value", 0xff);
     assertThat(dialog.get("value"), equalTo("#00ff00"));
     dialog.greenInput.set("value", "69");
     return assertThat(dialog.get("value"), equalTo("#004500"));
   });
+
   test("Setting an invalid value for the green input shouldn't update the dialog's value", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#000000");
     dialog.greenInput.set("value", "foo");
     return assertThat(dialog.get("value"), equalTo("#000000"));
   });
+
   test("Setting the value of the blue input should update the dialog's value", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#000000");
     dialog.blueInput.set("value", 0xff);
     assertThat(dialog.get("value"), equalTo("#0000ff"));
     dialog.blueInput.set("value", "69");
     return assertThat(dialog.get("value"), equalTo("#000045"));
   });
+
   test("Setting an invalid value for the blue input shouldn't update the dialog's value", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#000000");
     dialog.blueInput.set("value", "foo");
     return assertThat(dialog.get("value"), equalTo("#000000"));
   });
+
   test("Setting the value of the hue input should update the dialog's value", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#332929");
     dialog.hueInput.set("value", 100);
     assertThat(dialog.get("value"), equalTo("#2c3329"));
     dialog.hueInput.set("value", "69");
     return assertThat(dialog.get("value"), equalTo("#323329"));
   });
+
   test("Setting an invalid value for the hue input shouldn't update the dialog's value", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#332929");
     dialog.hueInput.set("value", "foo");
     return assertThat(dialog.get("value"), equalTo("#332929"));
   });
+
   test("Setting the value of the saturation input should update the dialog's value", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#313329");
     dialog.saturationInput.set("value", 50);
     assertThat(dialog.get("value"), equalTo("#2e331a"));
     dialog.saturationInput.set("value", "69");
     return assertThat(dialog.get("value"), equalTo("#2c3310"));
   });
+
   test("Setting an invalid value for the saturation input shouldn't update the dialog's value", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#313329");
     dialog.saturationInput.set("value", "foo");
     return assertThat(dialog.get("value"), equalTo("#313329"));
   });
+
   test("Setting the value of the value input should update the dialog's value", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#313329");
     dialog.valueInput.set("value", 50);
     assertThat(dialog.get("value"), equalTo("#7b8067"));
     dialog.valueInput.set("value", "69");
     return assertThat(dialog.get("value"), equalTo("#a9b08d"));
   });
+
   test("Setting an invalid value for the value input shouldn't update the dialog's value", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#313329");
     dialog.valueInput.set("value", "foo");
     return assertThat(dialog.get("value"), equalTo("#313329"));
   });
+
   test("Setting the value of the hex input should update the dialog's value", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#313329");
     dialog.hexInput.set("value", "abcdef");
     assertThat(dialog.get("value"), equalTo("#abcdef"));
     dialog.hexInput.set("value", "012345");
     return assertThat(dialog.get("value"), equalTo("#012345"));
   });
+
   test("Setting an invalid value for the hex input shouldn't update the dialog's value", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#313329");
     dialog.hexInput.set("value", "foo");
     return assertThat(dialog.get("value"), equalTo("#313329"));
   });
-  test("The ColorPickerDialog should provides two grid pickers", function() {
+
+  test("The ColorPicker should provides two grid inputs", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     assertThat(dialog.squarePicker instanceof SquarePicker);
     return assertThat(dialog.rangePicker instanceof SquarePicker);
   });
-  test("A ColorPickerDialog should have a default edit mode for color manipulation through the SquarePickers", function() {
+
+  test("A ColorPicker should have a default edit mode for color manipulation through the SquarePickers", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     assertThat(dialog.squarePicker.get("rangeX"), array(0, 100));
     assertThat(dialog.squarePicker.get("rangeY"), array(0, 100));
@@ -9901,35 +11729,42 @@
     assertThat(dialog.squarePicker.get("value"), array(closeTo(28, 1), closeTo(100 - 94, 1)));
     return assertThat(dialog.rangePicker.get("value")[1], equalTo(360 - 210));
   });
-  test("Clicking outside of the ColorPickerDialog should terminate the modification and set the value on the ColorPicker", function() {
-    var MockColorPickerDialog, dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    MockColorPickerDialog = (function() {
-      __extends(MockColorPickerDialog, ColorPickerDialog);
-      function MockColorPickerDialog() {
-        MockColorPickerDialog.__super__.constructor.apply(this, arguments);
+
+  test("Clicking outside of the ColorPicker should terminate the modification and set the value on the ColorInput", function() {
+    var MockColorPicker, dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    MockColorPicker = (function(_super) {
+
+      __extends(MockColorPicker, _super);
+
+      function MockColorPicker() {
+        MockColorPicker.__super__.constructor.apply(this, arguments);
       }
-      MockColorPickerDialog.prototype.mouseup = function(e) {
+
+      MockColorPicker.prototype.mouseup = function(e) {
         e.pageX = 1000;
         e.pageY = 1000;
-        return MockColorPickerDialog.__super__.mouseup.call(this, e);
+        return MockColorPicker.__super__.mouseup.call(this, e);
       };
-      return MockColorPickerDialog;
-    })();
-    dialog = new MockColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+      return MockColorPicker;
+
+    })(ColorPicker);
+    dialog = new MockColorPicker;
+    dialog.dialogRequested(input);
     dialog.fromHex("ff0000");
     $(document).mouseup();
-    assertThat(picker.get("value"), "#ff0000");
+    assertThat(input.get("value"), "#ff0000");
     return assertThat(dialog.dummy.attr("style"), contains("display: none"));
   });
-  test("Pressing enter on the ColorPickerDialog should terminate the modification and set the value on the ColorPicker", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("Pressing enter on the ColorPicker should terminate the modification and set the value on the ColorInput", function() {
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     dialog.fromHex("ff0000");
     dialog.keydown({
       keyCode: keys.enter,
@@ -9937,15 +11772,16 @@
       shiftKey: false,
       altKey: false
     });
-    assertThat(picker.get("value"), "#ff0000");
+    assertThat(input.get("value"), "#ff0000");
     return assertThat(dialog.dummy.attr("style"), contains("display: none"));
   });
-  test("Pressing enter on the ColorPickerDialog while there was changes made to the red input shouldn't comfirm the color changes", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("Pressing enter on the ColorPicker while there was changes made to the red input shouldn't comfirm the color changes", function() {
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     dialog.fromHex("ff0000");
     dialog.redInput.input();
     dialog.keydown({
@@ -9954,15 +11790,16 @@
       shiftKey: false,
       altKey: false
     });
-    assertThat(picker.get("value"), "#abcdef");
+    assertThat(input.get("value"), "#abcdef");
     return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
-  test("Pressing enter on the ColorPickerDialog while there was changes made to the green input shouldn't comfirm the color changes", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("Pressing enter on the ColorPicker while there was changes made to the green input shouldn't comfirm the color changes", function() {
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     dialog.fromHex("ff0000");
     dialog.greenInput.input();
     dialog.keydown({
@@ -9971,15 +11808,16 @@
       shiftKey: false,
       altKey: false
     });
-    assertThat(picker.get("value"), "#abcdef");
+    assertThat(input.get("value"), "#abcdef");
     return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
-  test("Pressing enter on the ColorPickerDialog while there was changes made to the blue input shouldn't comfirm the color changes", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("Pressing enter on the ColorPicker while there was changes made to the blue input shouldn't comfirm the color changes", function() {
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     dialog.fromHex("ff0000");
     dialog.blueInput.input();
     dialog.keydown({
@@ -9988,15 +11826,16 @@
       shiftKey: false,
       altKey: false
     });
-    assertThat(picker.get("value"), "#abcdef");
+    assertThat(input.get("value"), "#abcdef");
     return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
-  test("Pressing enter on the ColorPickerDialog while there was changes made to the hue input shouldn't comfirm the color changes", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("Pressing enter on the ColorPicker while there was changes made to the hue input shouldn't comfirm the color changes", function() {
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     dialog.fromHex("ff0000");
     dialog.hueInput.input();
     dialog.keydown({
@@ -10005,15 +11844,16 @@
       shiftKey: false,
       altKey: false
     });
-    assertThat(picker.get("value"), "#abcdef");
+    assertThat(input.get("value"), "#abcdef");
     return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
-  test("Pressing enter on the ColorPickerDialog while there was changes made to the saturation input shouldn't comfirm the color changes", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("Pressing enter on the ColorPicker while there was changes made to the saturation input shouldn't comfirm the color changes", function() {
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     dialog.fromHex("ff0000");
     dialog.saturationInput.input();
     dialog.keydown({
@@ -10022,15 +11862,16 @@
       shiftKey: false,
       altKey: false
     });
-    assertThat(picker.get("value"), "#abcdef");
+    assertThat(input.get("value"), "#abcdef");
     return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
-  test("Pressing enter on the ColorPickerDialog while there was changes made to the value input shouldn't comfirm the color changes", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("Pressing enter on the ColorPicker while there was changes made to the value input shouldn't comfirm the color changes", function() {
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     dialog.fromHex("ff0000");
     dialog.valueInput.input();
     dialog.keydown({
@@ -10039,15 +11880,16 @@
       shiftKey: false,
       altKey: false
     });
-    assertThat(picker.get("value"), "#abcdef");
+    assertThat(input.get("value"), "#abcdef");
     return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
-  test("Pressing enter on the ColorPickerDialog while there was changes made to the hex input shouldn't comfirm the color changes", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("Pressing enter on the ColorPicker while there was changes made to the hex input shouldn't comfirm the color changes", function() {
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     dialog.fromHex("ff0000");
     dialog.hexInput.input();
     dialog.keydown({
@@ -10056,45 +11898,49 @@
       shiftKey: false,
       altKey: false
     });
-    assertThat(picker.get("value"), "#abcdef");
+    assertThat(input.get("value"), "#abcdef");
     return assertThat(dialog.dummy.attr("style"), hamcrest.not(contains("display: none")));
   });
-  test("A ColorPickerDialog should be placed next to the colorpicker a dialog request", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("A ColorPicker should be placed next to the colorinput a dialog request", function() {
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     assertThat(dialog.dummy.attr("style"), contains("left: 0px"));
-    assertThat(dialog.dummy.attr("style"), contains("top: " + picker.dummy.height() + "px"));
+    assertThat(dialog.dummy.attr("style"), contains("top: " + input.dummy.height() + "px"));
     return assertThat(dialog.dummy.attr("style"), contains("position: absolute"));
   });
-  test("A ColorPickerDialog should provides two more chidren that will be used to present the previous and current color", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("A ColorPicker should provides two more chidren that will be used to present the previous and current color", function() {
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     dialog.fromHex("ff0000");
     assertThat(dialog.dummy.children(".oldColor").attr("style"), contains("background: #abcdef"));
     return assertThat(dialog.dummy.children(".newColor").attr("style"), contains("background: #ff0000"));
   });
+
   test("Clicking on the old color should reset the value to the original one", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     dialog.fromHex("ff0000");
     dialog.dummy.children(".oldColor").click();
     return assertThat(dialog.get("value"), equalTo("#abcdef"));
   });
-  test("Pressing escape on the ColorPickerDialog should close the dialog", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("Pressing escape on the ColorPicker should close the dialog", function() {
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     dialog.fromHex("ff0000");
     dialog.keydown({
       keyCode: keys.escape,
@@ -10102,163 +11948,210 @@
       shiftKey: false,
       altKey: false
     });
-    assertThat(picker.get("value"), "#abcdef");
+    assertThat(input.get("value"), "#abcdef");
     return assertThat(dialog.dummy.attr("style"), contains("display: none"));
   });
-  test("ColorPickerDialog should take focus on dialogRequested", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    picker.set("value", "#abcdef");
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("ColorPicker should take focus on dialogRequested", function() {
+    var dialog, input;
+    input = new ColorInput;
+    input.set("value", "#abcdef");
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     return assertThat(dialog.hasFocus);
   });
-  test("ColorPickerDialog should call the dispose method of the previous mode when it's changed", function() {
+
+  test("ColorPicker should call the dispose method of the previous mode when it's changed", function() {
     var MockMode, dialog, disposeCalled;
     disposeCalled = false;
     MockMode = (function() {
+
       function MockMode() {}
+
       MockMode.prototype.init = function() {};
+
       MockMode.prototype.update = function() {};
+
       MockMode.prototype.dispose = function() {
         return disposeCalled = true;
       };
+
       return MockMode;
+
     })();
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("mode", new MockMode);
     dialog.set("mode", new MockMode);
     return assertThat(disposeCalled);
   });
-  test("ColorPickerDialog should call the update method when a new set is defined", function() {
+
+  test("ColorPicker should call the update method when a new set is defined", function() {
     var MockMode, dialog, updateCalled;
     updateCalled = false;
     MockMode = (function() {
+
       function MockMode() {}
+
       MockMode.prototype.init = function() {};
+
       MockMode.prototype.update = function() {
         return updateCalled = true;
       };
+
       MockMode.prototype.dispose = function() {};
+
       return MockMode;
+
     })();
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("mode", new MockMode);
     return assertThat(updateCalled);
   });
-  test("A ColorPickerDialog should contains a radio group to select the color modes", function() {
+
+  test("A ColorPicker should contains a radio group to select the color modes", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     assertThat(dialog.modesGroup instanceof RadioGroup);
     return assertThat(dialog.dummy.find(".radio").length, equalTo(6));
   });
-  test("A ColorPickerDialog should provides 6 color edit modes", function() {
+
+  test("A ColorPicker should provides 6 color edit modes", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     return assertThat(dialog.editModes, arrayWithLength(6));
   });
+
   test("The HSV radio should be checked at start", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     return assertThat(dialog.hueMode.get("checked"));
   });
+
   test("Checking a mode radio should select the mode for this dialog", function() {
     var dialog;
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.valueMode.set("checked", true);
     return assertThat(dialog.get("mode") === dialog.editModes[5]);
   });
-  test("Ending the edit should return the focus on the color picker", function() {
-    var dialog, picker;
-    picker = new ColorPicker;
-    dialog = new ColorPickerDialog;
-    dialog.dialogRequested(picker);
+
+  test("Ending the edit should return the focus on the color input", function() {
+    var dialog, input;
+    input = new ColorInput;
+    dialog = new ColorPicker;
+    dialog.dialogRequested(input);
     dialog.keydown({
       keyCode: keys.enter,
       ctrlKey: false,
       shiftKey: false,
       altKey: false
     });
-    return assertThat(picker.hasFocus);
+    return assertThat(input.hasFocus);
   });
-  dialog = new ColorPickerDialog;
+
+  dialog = new ColorPicker;
+
   dialog.set("value", "#abcdef");
+
   dialog.addClasses("dummy");
-  $("#qunit-header").before($("<h4>ColorPickerDialog</h4>"));
+
+  $("#qunit-header").before($("<h4>ColorPicker</h4>"));
+
   $("#qunit-header").before(dialog.dummy);
+
   module("hsv mode tests");
-  test("The HSV mode should creates layer in the squarepickers of its target dialog", function() {
-    dialog = new ColorPickerDialog;
+
+  test("The HSV mode should creates layer in the squareinputs of its target dialog", function() {
+    dialog = new ColorPicker;
     assertThat(dialog.squarePicker.dummy.children(".layer").length, equalTo(1));
     return assertThat(dialog.rangePicker.dummy.children(".layer").length, equalTo(1));
   });
-  test("The HSV mode should set the background of the color layer of the squarepicker according to the color", function() {
-    dialog = new ColorPickerDialog;
+
+  test("The HSV mode should set the background of the color layer of the squareinput according to the color", function() {
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     return assertThat(dialog.squarePicker.dummy.find(".hue-color").attr("style"), contains("background: #0080ff"));
   });
+
   test("When in HSV mode, changing the value of the rangePicker should affect the dialog's value", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     dialog.rangePicker.set("value", [0, 260]);
     return assertThat(dialog.get("value"), equalTo("#c2efab"));
   });
+
   test("When in HSV mode, changing the value of the squarePicker should affect the dialog's value", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     dialog.squarePicker.set("value", [20, 80]);
     return assertThat(dialog.get("value"), equalTo("#292e33"));
   });
+
   test("Disposing the HSV mode should remove the html content placed in the dialog by the mode", function() {
     var MockMode;
     MockMode = (function() {
+
       function MockMode() {}
+
       MockMode.prototype.init = function() {};
+
       MockMode.prototype.update = function() {};
+
       MockMode.prototype.dispose = function() {};
+
       return MockMode;
+
     })();
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("mode", new MockMode);
     assertThat(dialog.squarePicker.dummy.children(".layer").length, equalTo(0));
     return assertThat(dialog.rangePicker.dummy.children(".layer").length, equalTo(0));
   });
+
   test("HSVMode should no longer receive events from the dialog when it was disposed", function() {
     var MockHSVMode, MockMode, disposeCalled, rangeChangedCalled, squareChangedCalled;
     squareChangedCalled = false;
     rangeChangedCalled = false;
     disposeCalled = false;
     MockMode = (function() {
+
       function MockMode() {}
+
       MockMode.prototype.init = function() {};
+
       MockMode.prototype.update = function() {};
+
       MockMode.prototype.dispose = function() {};
+
       return MockMode;
+
     })();
-    MockHSVMode = (function() {
-      __extends(MockHSVMode, HSVMode);
+    MockHSVMode = (function(_super) {
+
+      __extends(MockHSVMode, _super);
+
       function MockHSVMode() {
         MockHSVMode.__super__.constructor.call(this);
         this.allowSignal = false;
       }
+
       MockHSVMode.prototype.dispose = function() {
         disposeCalled = true;
         this.allowSignal = true;
         return MockHSVMode.__super__.dispose.call(this);
       };
+
       MockHSVMode.prototype.squareChanged = function(widget, value) {
-        if (this.allowSignal) {
-          return squareChangedCalled = true;
-        }
+        if (this.allowSignal) return squareChangedCalled = true;
       };
+
       MockHSVMode.prototype.rangeChanged = function(widget, value) {
-        if (this.allowSignal) {
-          return rangeChangedCalled = true;
-        }
+        if (this.allowSignal) return rangeChangedCalled = true;
       };
+
       return MockHSVMode;
-    })();
-    dialog = new ColorPickerDialog;
+
+    })(HSVMode);
+    dialog = new ColorPicker;
     dialog.set("mode", new MockHSVMode);
     dialog.set("mode", new MockMode);
     dialog.rangePicker.set("value", [0, 0]);
@@ -10267,237 +12160,780 @@
     assertThat(!squareChangedCalled);
     return assertThat(!rangeChangedCalled);
   });
+
   module("shv mode tests");
-  test("The SHV mode should creates layer in the squarepickers of its target dialog", function() {
-    dialog = new ColorPickerDialog;
+
+  test("The SHV mode should creates layer in the squareinputs of its target dialog", function() {
+    dialog = new ColorPicker;
     dialog.set("mode", new SHVMode);
     assertThat(dialog.squarePicker.dummy.children(".layer").length, equalTo(1));
     return assertThat(dialog.rangePicker.dummy.children(".layer").length, equalTo(1));
   });
+
   test("Disposing the SHV mode should remove the html content placed in the dialog by the mode", function() {
     var MockMode;
     MockMode = (function() {
+
       function MockMode() {}
+
       MockMode.prototype.init = function() {};
+
       MockMode.prototype.update = function() {};
+
       MockMode.prototype.dispose = function() {};
+
       return MockMode;
+
     })();
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("mode", new SHVMode);
     dialog.set("mode", new MockMode);
     assertThat(dialog.squarePicker.dummy.children(".layer").length, equalTo(0));
     return assertThat(dialog.rangePicker.dummy.children(".layer").length, equalTo(0));
   });
+
   test("The SHV mode should alter the opacity of the white plain span according to the color data", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#ff0000");
     dialog.set("mode", new SHVMode);
     assertThat(dialog.squarePicker.dummy.find(".white-plain").attr("style"), contains("opacity: 0"));
     dialog.set("value", "#ffffff");
     return assertThat(dialog.squarePicker.dummy.find(".white-plain").attr("style"), contains("opacity: 1"));
   });
+
   test("When in SHV mode, changing the value of the rangePicker should affect the dialog's value", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     dialog.set("mode", new SHVMode);
     dialog.rangePicker.set("value", [0, 90]);
     return assertThat(dialog.get("value"), equalTo("#d7e3ef"));
   });
+
   test("When in SHV mode, changing the value of the squarePicker should affect the dialog's value", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     dialog.set("mode", new SHVMode);
     dialog.squarePicker.set("value", [200, 80]);
     assertThat(dialog.get("value"), equalTo("#24332e"));
     module("shv mode tests");
-    return test("The SHV mode should creates layer in the squarepickers of its target dialog", function() {
-      dialog = new ColorPickerDialog;
+    return test("The SHV mode should creates layer in the squareinputs of its target dialog", function() {
+      dialog = new ColorPicker;
       dialog.set("mode", new SHVMode);
       assertThat(dialog.squarePicker.dummy.children(".layer").length, equalTo(1));
       return assertThat(dialog.rangePicker.dummy.children(".layer").length, equalTo(1));
     });
   });
+
   module("vhs mode tests");
-  test("The VHS mode should creates layer in the squarepickers of its target dialog", function() {
-    dialog = new ColorPickerDialog;
+
+  test("The VHS mode should creates layer in the squareinputs of its target dialog", function() {
+    dialog = new ColorPicker;
     dialog.set("mode", new VHSMode);
     assertThat(dialog.squarePicker.dummy.children(".layer").length, equalTo(1));
     return assertThat(dialog.rangePicker.dummy.children(".layer").length, equalTo(1));
   });
+
   test("Disposing the VHS mode should remove the html content placed in the dialog by the mode", function() {
     var MockMode;
     MockMode = (function() {
+
       function MockMode() {}
+
       MockMode.prototype.init = function() {};
+
       MockMode.prototype.update = function() {};
+
       MockMode.prototype.dispose = function() {};
+
       return MockMode;
+
     })();
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("mode", new VHSMode);
     dialog.set("mode", new MockMode);
     assertThat(dialog.squarePicker.dummy.children(".layer").length, equalTo(0));
     return assertThat(dialog.rangePicker.dummy.children(".layer").length, equalTo(0));
   });
+
   test("The VHS mode should alter the opacity of the black plain span according to the color data", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#000000");
     dialog.set("mode", new VHSMode);
     assertThat(dialog.squarePicker.dummy.find(".black-plain").attr("style"), contains("opacity: 1"));
     dialog.set("value", "#ffffff");
     return assertThat(dialog.squarePicker.dummy.find(".black-plain").attr("style"), contains("opacity: 0"));
   });
+
   test("When in VHS mode, changing the value of the rangePicker should affect the dialog's value", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     dialog.set("mode", new VHSMode);
     dialog.rangePicker.set("value", [0, 80]);
     return assertThat(dialog.get("value"), equalTo("#242c33"));
   });
+
   test("When in VHS mode, changing the value of the squarePicker should affect the dialog's value", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     dialog.set("mode", new VHSMode);
     dialog.squarePicker.set("value", [200, 60]);
     return assertThat(dialog.get("value"), equalTo("#8fefcf"));
   });
+
   module("rgb mode tests");
-  test("The RGB mode should creates layer in the squarepickers of its target dialog", function() {
-    dialog = new ColorPickerDialog;
+
+  test("The RGB mode should creates layer in the squareinputs of its target dialog", function() {
+    dialog = new ColorPicker;
     dialog.set("mode", new RGBMode);
     assertThat(dialog.squarePicker.dummy.children(".layer").length, equalTo(1));
     return assertThat(dialog.rangePicker.dummy.children(".layer").length, equalTo(1));
   });
+
   test("Disposing the RGB mode should remove the html content placed in the dialog by the mode", function() {
     var MockMode;
     MockMode = (function() {
+
       function MockMode() {}
+
       MockMode.prototype.init = function() {};
+
       MockMode.prototype.update = function() {};
+
       MockMode.prototype.dispose = function() {};
+
       return MockMode;
+
     })();
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("mode", new RGBMode);
     dialog.set("mode", new MockMode);
     assertThat(dialog.squarePicker.dummy.children(".layer").length, equalTo(0));
     return assertThat(dialog.rangePicker.dummy.children(".layer").length, equalTo(0));
   });
+
   test("The RGB mode should alter the opacity of the upper layer according to the color data", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#000000");
     dialog.set("mode", new RGBMode);
     assertThat(dialog.squarePicker.dummy.find(".rgb-up").attr("style"), contains("opacity: 0"));
     dialog.set("value", "#ffffff");
     return assertThat(dialog.squarePicker.dummy.find(".rgb-up").attr("style"), contains("opacity: 1"));
   });
+
   test("When in RGB mode, changing the value of the rangePicker should affect the dialog's value", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     dialog.set("mode", new RGBMode);
     dialog.rangePicker.set("value", [0, 55]);
     return assertThat(dialog.get("value"), equalTo("#c8cdef"));
   });
+
   test("When in RGB mode, changing the value of the squarePicker should affect the dialog's value", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     dialog.set("mode", new RGBMode);
     dialog.squarePicker.set("value", [100, 205]);
     return assertThat(dialog.get("value"), equalTo("#ab3264"));
   });
+
   module("grb mode tests");
-  test("The GRB mode should creates layer in the squarepickers of its target dialog", function() {
-    dialog = new ColorPickerDialog;
+
+  test("The GRB mode should creates layer in the squareinputs of its target dialog", function() {
+    dialog = new ColorPicker;
     dialog.set("mode", new GRBMode);
     assertThat(dialog.squarePicker.dummy.children(".layer").length, equalTo(1));
     return assertThat(dialog.rangePicker.dummy.children(".layer").length, equalTo(1));
   });
+
   test("Disposing the GRB mode should remove the html content placed in the dialog by the mode", function() {
     var MockMode;
     MockMode = (function() {
+
       function MockMode() {}
+
       MockMode.prototype.init = function() {};
+
       MockMode.prototype.update = function() {};
+
       MockMode.prototype.dispose = function() {};
+
       return MockMode;
+
     })();
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("mode", new GRBMode);
     dialog.set("mode", new MockMode);
     assertThat(dialog.squarePicker.dummy.children(".layer").length, equalTo(0));
     return assertThat(dialog.rangePicker.dummy.children(".layer").length, equalTo(0));
   });
+
   test("The GRB mode should alter the opacity of the upper layer according to the color data", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#000000");
     dialog.set("mode", new GRBMode);
     assertThat(dialog.squarePicker.dummy.find(".grb-up").attr("style"), contains("opacity: 0"));
     dialog.set("value", "#ffffff");
     return assertThat(dialog.squarePicker.dummy.find(".grb-up").attr("style"), contains("opacity: 1"));
   });
+
   test("When in GRB mode, changing the value of the rangePicker should affect the dialog's value", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     dialog.set("mode", new GRBMode);
     dialog.rangePicker.set("value", [0, 55]);
     return assertThat(dialog.get("value"), equalTo("#abc8ef"));
   });
+
   test("When in GRB mode, changing the value of the squarePicker should affect the dialog's value", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     dialog.set("mode", new GRBMode);
     dialog.squarePicker.set("value", [100, 205]);
     return assertThat(dialog.get("value"), equalTo("#32cd64"));
   });
+
   module("bgr mode tests");
-  test("The BGR mode should creates layer in the squarepickers of its target dialog", function() {
-    dialog = new ColorPickerDialog;
+
+  test("The BGR mode should creates layer in the squareinputs of its target dialog", function() {
+    dialog = new ColorPicker;
     dialog.set("mode", new BGRMode);
     assertThat(dialog.squarePicker.dummy.children(".layer").length, equalTo(1));
     return assertThat(dialog.rangePicker.dummy.children(".layer").length, equalTo(1));
   });
+
   test("Disposing the BGR mode should remove the html content placed in the dialog by the mode", function() {
     var MockMode;
     MockMode = (function() {
+
       function MockMode() {}
+
       MockMode.prototype.init = function() {};
+
       MockMode.prototype.update = function() {};
+
       MockMode.prototype.dispose = function() {};
+
       return MockMode;
+
     })();
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("mode", new BGRMode);
     dialog.set("mode", new MockMode);
     assertThat(dialog.squarePicker.dummy.children(".layer").length, equalTo(0));
     return assertThat(dialog.rangePicker.dummy.children(".layer").length, equalTo(0));
   });
+
   test("The BGR mode should alter the opacity of the upper layer according to the color data", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#000000");
     dialog.set("mode", new BGRMode);
     assertThat(dialog.squarePicker.dummy.find(".bgr-up").attr("style"), contains("opacity: 0"));
     dialog.set("value", "#ffffff");
     return assertThat(dialog.squarePicker.dummy.find(".bgr-up").attr("style"), contains("opacity: 1"));
   });
+
   test("When in BGR mode, changing the value of the rangePicker should affect the dialog's value", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     dialog.set("mode", new BGRMode);
     dialog.rangePicker.set("value", [0, 155]);
     return assertThat(dialog.get("value"), equalTo("#abcd64"));
   });
+
   test("When in BGR mode, changing the value of the squarePicker should affect the dialog's value", function() {
-    dialog = new ColorPickerDialog;
+    dialog = new ColorPicker;
     dialog.set("value", "#abcdef");
     dialog.set("mode", new BGRMode);
     dialog.squarePicker.set("value", [100, 155]);
     return assertThat(dialog.get("value"), equalTo("#6464ef"));
   });
+
+  module("dateutils tests");
+
+  test("time2date should return a Date with the valid time when passing '10'", function() {
+    var d;
+    d = time2date("10");
+    return assertThat(d.getHours(), equalTo(10));
+  });
+
+  test("time2date should return a Date with the valid time when passing '10:12'", function() {
+    var d;
+    d = time2date("10:12");
+    assertThat(d.getHours(), equalTo(10));
+    return assertThat(d.getMinutes(), equalTo(12));
+  });
+
+  test("time2date should return a Date with the valid time when passing '10:12:56'", function() {
+    var d;
+    d = time2date("10:12:56");
+    assertThat(d.getHours(), equalTo(10));
+    assertThat(d.getMinutes(), equalTo(12));
+    return assertThat(d.getSeconds(), equalTo(56));
+  });
+
+  test("time2date should return a Date with the valid time when passing '10:12:56.145'", function() {
+    var d;
+    d = time2date("10:12:56.145");
+    assertThat(d.getHours(), equalTo(10));
+    assertThat(d.getMinutes(), equalTo(12));
+    assertThat(d.getSeconds(), equalTo(56));
+    return assertThat(d.getMilliseconds(), equalTo(145));
+  });
+
+  test("week2date should return a date when passing valid weeks", function() {
+    assertThat(week2date("2011-W16"), dateEquals(new Date(2011, 3, 18, 1)));
+    assertThat(week2date("2012-W24"), dateEquals(new Date(2012, 5, 11, 1)));
+    return assertThat(week2date("2016-W42"), dateEquals(new Date(2016, 9, 17, 1)));
+  });
+
+  test("week2date should fail with '2011-11'", function() {
+    var errorRaised;
+    errorRaised = false;
+    try {
+      week2date("2011-11");
+    } catch (e) {
+      errorRaised = true;
+    }
+    return assertThat(errorRaised);
+  });
+
+  test("week2date should fail with null", function() {
+    var errorRaised;
+    errorRaised = false;
+    try {
+      week2date(null);
+    } catch (e) {
+      errorRaised = true;
+    }
+    return assertThat(errorRaised);
+  });
+
+  test("week2date should fail with '2011-W11 foo'", function() {
+    var errorRaised;
+    errorRaised = false;
+    try {
+      week2date("2011-W11 foo");
+    } catch (e) {
+      errorRaised = true;
+    }
+    return assertThat(errorRaised);
+  });
+
+  test("week2date should fail with 'foo 2011-W11'", function() {
+    var errorRaised;
+    errorRaised = false;
+    try {
+      week2date("foo 2011-W11");
+    } catch (e) {
+      errorRaised = true;
+    }
+    return assertThat(errorRaised);
+  });
+
+  test("week2date should fail with 'W11'", function() {
+    var errorRaised;
+    errorRaised = false;
+    try {
+      week2date("W11");
+    } catch (e) {
+      errorRaised = true;
+    }
+    return assertThat(errorRaised);
+  });
+
+  module("dateinput tests");
+
+  test("A DateInput should allow an input of type date as target", function() {
+    var input;
+    target = $("<input type='date'></input>")[0];
+    input = new DateInput(target);
+    return assertThat(input.target === target);
+  });
+
+  test("A DateInput should allow an input of type month as target", function() {
+    var input;
+    target = $("<input type='month'></input>")[0];
+    input = new DateInput(target);
+    return assertThat(input.target === target);
+  });
+
+  test("A DateInput should allow an input of type week as target", function() {
+    var input;
+    target = $("<input type='week'></input>")[0];
+    input = new DateInput(target);
+    return assertThat(input.target === target);
+  });
+
+  test("A DateInput should allow an input of type time as target", function() {
+    var input;
+    target = $("<input type='time'></input>")[0];
+    input = new DateInput(target);
+    return assertThat(input.target === target);
+  });
+
+  test("A DateInput should allow an input of type datetime as target", function() {
+    var input;
+    target = $("<input type='datetime'></input>")[0];
+    input = new DateInput(target);
+    return assertThat(input.target === target);
+  });
+
+  test("A DateInput should allow an input of type datetime-local as target", function() {
+    var input;
+    target = $("<input type='datetime-local'></input>")[0];
+    input = new DateInput(target);
+    return assertThat(input.target === target);
+  });
+
+  test("A DateInput shouldn't allow any other type of inputs as target", function() {
+    var errorRaised, input;
+    target = $("<input type='text'></input>")[0];
+    errorRaised = false;
+    try {
+      input = new DateInput(target);
+    } catch (e) {
+      errorRaised = true;
+    }
+    return assertThat(errorRaised);
+  });
+
+  test("A DateInput should allow to be created without target", function() {
+    var errorRaised, input;
+    errorRaised = false;
+    try {
+      input = new DateInput;
+    } catch (e) {
+      errorRaised = true;
+    }
+    return assertThat(!errorRaised);
+  });
+
+  test("A DateInput should have a date property that is a date", function() {
+    var input;
+    input = new DateInput;
+    return assertThat(input.get("date") instanceof Date);
+  });
+
+  test("A DateInput should accept a Date object as first argument", function() {
+    var d, input;
+    d = new Date;
+    input = new DateInput(d);
+    return assertThat(input.get("date") === d);
+  });
+
+  test("When taking a input as target, a DateInput should have its mode set to the input's type", function() {
+    var input_date, input_datetime, input_datetime_local, input_month, input_time, input_week, target_date, target_datetime, target_datetime_local, target_month, target_time, target_week;
+    target_time = $("<input type='time'></input>")[0];
+    target_date = $("<input type='date'></input>")[0];
+    target_month = $("<input type='month'></input>")[0];
+    target_week = $("<input type='week'></input>")[0];
+    target_datetime = $("<input type='datetime'></input>")[0];
+    target_datetime_local = $("<input type='datetime-local'></input>")[0];
+    input_time = new DateInput(target_time);
+    input_date = new DateInput(target_date);
+    input_month = new DateInput(target_month);
+    input_week = new DateInput(target_week);
+    input_datetime = new DateInput(target_datetime);
+    input_datetime_local = new DateInput(target_datetime_local);
+    assertThat(input_time.get("mode"), equalTo("time"));
+    assertThat(input_date.get("mode"), equalTo("date"));
+    assertThat(input_month.get("mode"), equalTo("month"));
+    assertThat(input_week.get("mode"), equalTo("week"));
+    assertThat(input_datetime.get("mode"), equalTo("datetime"));
+    return assertThat(input_datetime_local.get("mode"), equalTo("datetime-local"));
+  });
+
+  test("When taking a Date as first argument, the DateInput should accept a second argument for the mode", function() {
+    var d, input, input_date, input_datetime, input_datetime_local, input_month, input_time, input_week;
+    d = new Date;
+    input = new DateInput(d);
+    input_time = new DateInput(d, "time");
+    input_date = new DateInput(d, "date");
+    input_month = new DateInput(d, "month");
+    input_week = new DateInput(d, "week");
+    input_datetime = new DateInput(d, "datetime");
+    input_datetime_local = new DateInput(d, "datetime-local");
+    assertThat(input.get("mode"), equalTo("datetime"));
+    assertThat(input_time.get("mode"), equalTo("time"));
+    assertThat(input_date.get("mode"), equalTo("date"));
+    assertThat(input_month.get("mode"), equalTo("month"));
+    assertThat(input_week.get("mode"), equalTo("week"));
+    assertThat(input_datetime.get("mode"), equalTo("datetime"));
+    return assertThat(input_datetime_local.get("mode"), equalTo("datetime-local"));
+  });
+
+  test("When an invalid mode is passed to the constructor, the DateInput should keep the default", function() {
+    var d, input;
+    d = new Date;
+    input = new DateInput(d, "invalid");
+    return assertThat(input.get("mode"), equalTo("datetime"));
+  });
+
+  test("DateInput should convert the value to a Date according to its mode", function() {
+    var input_date, input_datetime, input_datetime_local, input_month, input_time, input_week, target_date, target_datetime, target_datetime_local, target_month, target_time, target_week;
+    console.log("---------");
+    target_time = $("<input type='time' value='10:45:25'></input>")[0];
+    target_date = $("<input type='date' value='2011-11-11'></input>")[0];
+    target_month = $("<input type='month' value='2012-12'></input>")[0];
+    target_week = $("<input type='week' value='2011-W16'></input>")[0];
+    target_datetime = $("<input type='datetime' value='2001-09-11T10:22:45.12Z'></input>")[0];
+    target_datetime_local = $("<input type='datetime-local' value='2003-07-14T16:46:35.25'></input>")[0];
+    input_time = new DateInput(target_time);
+    input_date = new DateInput(target_date);
+    input_month = new DateInput(target_month);
+    input_week = new DateInput(target_week);
+    input_datetime = new DateInput(target_datetime);
+    input_datetime_local = new DateInput(target_datetime_local);
+    assertThat(input_time.get("date"), dateEquals(time2date("10:45:25")));
+    assertThat(input_date.get("date"), dateEquals(new Date(2011, 10, 11)));
+    assertThat(input_month.get("date"), dateEquals(new Date(2012, 11)));
+    assertThat(input_week.get("date"), dateEquals(new Date(2011, 3, 18, 1)));
+    assertThat(input_datetime.get("date"), dateEquals(new Date(2001, 8, 11, 10, 22, 45, 12)));
+    return assertThat(input_datetime_local.get("date"), dateEquals(new Date(2003, 6, 14, 16, 46, 35, 25)));
+  });
+
+  test("Invalid value in the target should make the DateInput to fallback on a default date", function() {
+    var d, input_date, input_datetime, input_datetime_local, input_month, input_time, input_week, target_date, target_datetime, target_datetime_local, target_month, target_time, target_week;
+    target_time = $("<input type='time' value='foo'></input>")[0];
+    target_date = $("<input type='date' value='foo'></input>")[0];
+    target_month = $("<input type='month' value='foo'></input>")[0];
+    target_week = $("<input type='week' value='foo'></input>")[0];
+    target_datetime = $("<input type='datetime' value='foo'></input>")[0];
+    target_datetime_local = $("<input type='datetime-local' value='foo'></input>")[0];
+    input_time = new DateInput(target_time);
+    input_date = new DateInput(target_date);
+    input_month = new DateInput(target_month);
+    input_week = new DateInput(target_week);
+    input_datetime = new DateInput(target_datetime);
+    input_datetime_local = new DateInput(target_datetime_local);
+    d = new Date(0);
+    assertThat(input_time.get("date"), dateEquals(d));
+    assertThat(input_date.get("date"), dateEquals(d));
+    assertThat(input_month.get("date"), dateEquals(d));
+    assertThat(input_week.get("date"), dateEquals(d));
+    assertThat(input_datetime.get("date"), dateEquals(d));
+    return assertThat(input_datetime_local.get("date"), dateEquals(d));
+  });
+
+  module("dateinput time mode tests");
+
+  test("In time mode, the DateInput should accept the min and max attributes", function() {
+    var input;
+    target = $("<input type='time' value='10:10' min='10:00' max='10:20'></input>")[0];
+    input = new DateInput(target);
+    assertThat(input.get('min'), dateEquals(time2date("10:00")));
+    return assertThat(input.get('max'), dateEquals(time2date("10:20")));
+  });
+
+  test("In time mode, changing the date should update the value accordingly", function() {
+    var input;
+    target = $("<input type='time' value='10:10'></input>")[0];
+    input = new DateInput(target);
+    input.set("date", time2date("11:10"));
+    assertThat(input.get("value"), equalTo("11:10:00"));
+    assertThat(input.get("date"), dateEquals(time2date("11:10")));
+    input.set("date", time2date("06:45:16"));
+    assertThat(input.get("value"), equalTo("06:45:16"));
+    input.set("date", time2date("05"));
+    assertThat(input.get("value"), equalTo("05:00:00"));
+    input.set("date", time2date("04:12:45.467"));
+    return assertThat(input.get("value"), equalTo("04:12:45.467"));
+  });
+
+  test("In time mode, changing the value should update the date", function() {
+    var input;
+    target = $("<input type='time' value='10:10'></input>")[0];
+    input = new DateInput(target);
+    input.set("value", "11:53");
+    assertThat(input.get("date"), dateEquals(time2date("11:53")));
+    assertThat(input.get("value"), equalTo("11:53"));
+    input.set("value", "05:35:12");
+    assertThat(input.get("date"), dateEquals(time2date("05:35:12")));
+    input.set("value", "04:22:45.542");
+    return assertThat(input.get("date"), dateEquals(time2date("04:22:45.542")));
+  });
+
+  test("In time mode, DateInput should prevent invalid time to be passed to value", function() {
+    var input;
+    target = $("<input type='time' value='10:10'></input>")[0];
+    input = new DateInput(target);
+    input.set("value", "2001-11");
+    input.set("value", "foo");
+    input.set("value", null);
+    return assertThat(input.get("value"), equalTo("10:10"));
+  });
+
+  test("In time mode, DateInput should prevent invalid date to be passed to date", function() {
+    var input;
+    target = $("<input type='time' value='10:10'></input>")[0];
+    input = new DateInput(target);
+    input.set("date", new Date("Foo"));
+    input.set("date", null);
+    return assertThat(input.get("value"), equalTo("10:10"));
+  });
+
+  module("dateinput date mode tests");
+
+  test("In date mode, the DateInput should accept the min and max attributes", function() {
+    var input;
+    target = $("<input type='date' value='2011-10-01' min='2011-01-01' max='2011-12-31'></input>")[0];
+    input = new DateInput(target);
+    assertThat(input.get('min'), dateEquals(new Date(2011, 0, 1)));
+    return assertThat(input.get('max'), dateEquals(new Date(2011, 11, 31)));
+  });
+
+  test("In date mode, changing the date should update the value accordingly", function() {
+    var input;
+    target = $("<input type='date' value='2011-10-01'></input>")[0];
+    input = new DateInput(target);
+    input.set("date", new Date(2012, 11, 05));
+    assertThat(input.get("value"), equalTo("2012-12-05"));
+    assertThat(input.get("date"), dateEquals(new Date(2012, 11, 05)));
+    input.set("date", new Date(2016, 5, 12));
+    return assertThat(input.get("value"), equalTo("2016-06-12"));
+  });
+
+  test("In date mode, changing the value should update the date", function() {
+    var input;
+    target = $("<input type='date' value='2011-10-01'></input>")[0];
+    input = new DateInput(target);
+    input.set("value", "2012-12-05");
+    assertThat(input.get("date"), dateEquals(new Date(2012, 11, 05)));
+    assertThat(input.get("value"), equalTo("2012-12-05"));
+    input.set("value", "2016-06-12");
+    return assertThat(input.get("date"), dateEquals(new Date(2016, 5, 12)));
+  });
+
+  test("In date mode, DateInput should prevent invalid date to be passed to value", function() {
+    var input;
+    target = $("<input type='date' value='2011-10-01'></input>")[0];
+    input = new DateInput(target);
+    input.set("value", "10:11");
+    input.set("value", "foo");
+    input.set("value", null);
+    return assertThat(input.get("value"), equalTo("2011-10-01"));
+  });
+
+  test("In date mode, DateInput should prevent invalid date to be passed to date", function() {
+    var input;
+    target = $("<input type='date' value='2011-10-01'></input>")[0];
+    input = new DateInput(target);
+    input.set("date", new Date("Foo"));
+    input.set("date", null);
+    return assertThat(input.get("value"), equalTo("2011-10-01"));
+  });
+
+  module("dateinput month mode tests");
+
+  test("In month mode, the DateInput should accept the min and max attributes", function() {
+    var input;
+    target = $("<input type='month' value='2011-10' min='2011-01' max='2011-12'></input>")[0];
+    input = new DateInput(target);
+    assertThat(input.get('min'), dateEquals(new Date(2011, 0)));
+    return assertThat(input.get('max'), dateEquals(new Date(2011, 11)));
+  });
+
+  test("In month mode, changing the date should update the value accordingly", function() {
+    var input;
+    target = $("<input type='month' value='2011-10'></input>")[0];
+    input = new DateInput(target);
+    input.set("date", new Date(2012, 11));
+    assertThat(input.get("value"), equalTo("2012-12"));
+    assertThat(input.get("date"), dateEquals(new Date(2012, 11)));
+    input.set("date", new Date(2016, 5));
+    return assertThat(input.get("value"), equalTo("2016-06"));
+  });
+
+  test("In month mode, changing the value should update the date", function() {
+    var input;
+    target = $("<input type='month' value='2011-10-01'></input>")[0];
+    input = new DateInput(target);
+    input.set("value", "2012-12");
+    assertThat(input.get("date"), dateEquals(new Date(2012, 11)));
+    assertThat(input.get("value"), equalTo("2012-12"));
+    input.set("value", "2016-06");
+    return assertThat(input.get("date"), dateEquals(new Date(2016, 5)));
+  });
+
+  test("In month mode, DateInput should prevent invalid month to be passed to value", function() {
+    var input;
+    target = $("<input type='month' value='2011-10'></input>")[0];
+    input = new DateInput(target);
+    input.set("value", "10:11");
+    input.set("value", "foo");
+    input.set("value", null);
+    return assertThat(input.get("value"), equalTo("2011-10"));
+  });
+
+  test("In month mode, DateInput should prevent invalid month to be passed to date", function() {
+    var input;
+    target = $("<input type='month' value='2011-10'></input>")[0];
+    input = new DateInput(target);
+    input.set("date", new Date("Foo"));
+    input.set("date", null);
+    return assertThat(input.get("value"), equalTo("2011-10"));
+  });
+
+  module("dateinput week mode tests");
+
+  test("In week mode, the DateInput should accept the min and max attributes", function() {
+    var input;
+    target = $("<input type='week' value='2011-W12' min='2011-W1' max='2011-W52'></input>")[0];
+    input = new DateInput(target);
+    assertThat(input.get('min'), dateEquals(week2date("2011-W1")));
+    return assertThat(input.get('max'), dateEquals(week2date("2011-W52")));
+  });
+
+  test("In week mode, changing the date should update the value accordingly", function() {
+    var input;
+    target = $("<input type='week' value='2011-W10'></input>")[0];
+    input = new DateInput(target);
+    input.set("date", week2date("2012-W1"));
+    assertThat(input.get("value"), equalTo("2012-W1"));
+    assertThat(input.get("date"), dateEquals(week2date("2012-W1")));
+    input.set("date", week2date("2016-W6"));
+    return assertThat(input.get("value"), equalTo("2016-W6"));
+  });
+
+  test("In week mode, changing the value should update the date", function() {
+    var input;
+    target = $("<input type='week' value='2011-W10'></input>")[0];
+    input = new DateInput(target);
+    input.set("value", "2012-W1");
+    assertThat(input.get("value"), equalTo("2012-W1"));
+    assertThat(input.get("date"), dateEquals(week2date("2012-W1")));
+    input.set("value", "2016-W6");
+    return assertThat(input.get("date"), dateEquals(week2date("2016-W6")));
+  });
+
+  test("In week mode, DateInput should prevent invalid week to be passed to value", function() {
+    var input;
+    target = $("<input type='week' value='2011-W10'></input>")[0];
+    input = new DateInput(target);
+    input.set("value", "foo-W12");
+    input.set("value", "1000-W");
+    input.set("value", "foo2001-W10");
+    input.set("value", "2001-W10foo");
+    input.set("value", "01-W10");
+    input.set("value", null);
+    return assertThat(input.get("value"), equalTo("2011-W10"));
+  });
+
+  test("In week mode, DateInput should prevent invalid week to be passed to date", function() {
+    var input;
+    target = $("<input type='week' value='2011-W10'></input>")[0];
+    input = new DateInput(target);
+    input.set("date", new Date("Foo"));
+    input.set("date", null);
+    return assertThat(input.get("value"), equalTo("2011-W10"));
+  });
+
   module("core tests");
+
   test("The widget's plugin should be available through the $ object", function() {
     return assertThat($.widgetPlugin, notNullValue());
   });
+
   test("The widget's plugin should provide a way to register custom widgets handlers", function() {
     var elementMatch, elementProcessor, id, plugin;
     plugin = $.widgetPlugin;
@@ -10507,6 +12943,7 @@
     plugin.register(id, elementMatch, elementProcessor);
     return assertThat(plugin.isRegistered(id));
   });
+
   test("When the widget's plugin function is executed, the processor registered with an element in a set should be triggered", function() {
     var elementMatch, elementProcessor, id, plugin, processorCalled, processorScope, processorTarget;
     processorCalled = false;
@@ -10527,6 +12964,7 @@
     assertThat(processorScope === plugin);
     return assertThat(processorTarget === target[0]);
   });
+
   test("Widget's plugin processors should also be able to use a function as element match", function() {
     var elementMatch, elementProcessor, id, plugin, processorCalled, processorScope, processorTarget;
     processorCalled = false;
@@ -10549,18 +12987,24 @@
     assertThat(processorScope === plugin);
     return assertThat(processorTarget === target[0]);
   });
+
   test("When a processor returns a widget, the plugin should place it in the element parent", function() {
     var elementMatch, elementProcessor, id, plugin;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<div></div>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     plugin = $.widgetPlugin;
     id = "irrelevant id";
     elementMatch = "span";
@@ -10572,6 +13016,7 @@
     target.children().widgets();
     return assertThat(target.children("div").length, equalTo(1));
   });
+
   test("The widget plugin should prevent to register an invalid processor", function() {
     var elementMatch, elementProcessor, errorRaised, id, plugin;
     errorRaised = false;
@@ -10586,18 +13031,24 @@
     }
     return assertThat(errorRaised);
   });
+
   test("The widget plugin should provide a shortcut for widget that doesn't require extra setup", function() {
     var elementMatch, id, plugin;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<div></div>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     plugin = $.widgetPlugin;
     id = "irrelevant id";
     elementMatch = "span";
@@ -10606,6 +13057,7 @@
     target.children().widgets();
     return assertThat(target.children("div").length, equalTo(1));
   });
+
   test("The widget plugin should prevent to register an invalid widget", function() {
     var elementMatch, errorRaised, id, plugin;
     errorRaised = false;
@@ -10619,18 +13071,24 @@
     }
     return assertThat(errorRaised);
   });
+
   test("When processed, an element should be flagged with a specific class", function() {
     var elementMatch, id, plugin;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<div></div>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     plugin = $.widgetPlugin;
     id = "irrelevant id";
     elementMatch = "span";
@@ -10639,18 +13097,24 @@
     target.children().widgets();
     return assertThat(target.children("span").hasClass("widget-done"));
   });
+
   test("The plugin process should prevent to process twice an element", function() {
     var elementMatch, id, plugin;
-    MockWidget = (function() {
-      __extends(MockWidget, Widget);
+    MockWidget = (function(_super) {
+
+      __extends(MockWidget, _super);
+
       function MockWidget() {
         MockWidget.__super__.constructor.apply(this, arguments);
       }
+
       MockWidget.prototype.createDummy = function() {
         return $("<div></div>");
       };
+
       return MockWidget;
-    })();
+
+    })(Widget);
     plugin = $.widgetPlugin;
     id = "irrelevant id";
     elementMatch = "span";
@@ -10661,62 +13125,75 @@
     assertThat(target.children("div").length, equalTo(1));
     return $("body").append(target);
   });
+
   module("core processors tests");
+
   test("Input with type text should be replaced by a TextInput", function() {
     target = $("<p><input type='text'></input></p>");
     target.children().widgets();
     return assertThat(target.children(".text").length, equalTo(1));
   });
+
   test("Input with type password should be replaced by a TextInput", function() {
     target = $("<p><input type='password'></input></p>");
     target.children().widgets();
     return assertThat(target.children(".text").length, equalTo(1));
   });
+
   test("Input with type button should be replaced by a Button", function() {
     target = $("<p><input type='button'></input></p>");
     target.children().widgets();
     return assertThat(target.children(".button").length, equalTo(1));
   });
+
   test("Input with type reset should be replaced by a Button", function() {
     target = $("<p><input type='reset'></input></p>");
     target.children().widgets();
     return assertThat(target.children(".button").length, equalTo(1));
   });
+
   test("Input with type submit should be replaced by a Button", function() {
     target = $("<p><input type='submit'></input></p>");
     target.children().widgets();
     return assertThat(target.children(".button").length, equalTo(1));
   });
+
   test("Input with type range should be replaced by a Slider", function() {
     target = $("<p><input type='range'></input></p>");
     target.children().widgets();
     return assertThat(target.children(".slider").length, equalTo(1));
   });
+
   test("Input with type number should be replaced by a Stepper", function() {
     target = $("<p><input type='number'></input></p>");
     target.children().widgets();
     return assertThat(target.children(".stepper").length, equalTo(1));
   });
+
   test("Input with type checkbox should be replaced by a CheckBox", function() {
     target = $("<p><input type='checkbox'></input></p>");
     target.children().widgets();
     return assertThat(target.children(".checkbox").length, equalTo(1));
   });
-  test("Input with type color should be replaced by a ColorPicker", function() {
+
+  test("Input with type color should be replaced by a ColorInput", function() {
     target = $("<p><input type='color'></input></p>");
     target.children().widgets();
     return assertThat(target.children(".colorpicker").length, equalTo(1));
   });
+
   test("Input with type file should be replaced by a FilePicker", function() {
     target = $("<p><input type='file'></input></p>");
     target.children().widgets();
     return assertThat(target.children(".filepicker").length, equalTo(1));
   });
+
   test("Input with type radio should be replaced by a Radio", function() {
     target = $("<p><input type='radio'></input></p>");
     target.children().widgets();
     return assertThat(target.children(".radio").length, equalTo(1));
   });
+
   test("Many inputs with type radio and the same name should be handled by a RadioGroup", function() {
     var plugin;
     plugin = $.widgetPlugin;
@@ -10724,14 +13201,17 @@
     target.children().widgets();
     return assertThat(plugin.radiogroups["foo"], allOf(notNullValue(), hasProperty("radios", arrayWithLength(2))));
   });
+
   test("textarea nodes should be replaced by a TextArea", function() {
     target = $("<p><textarea></textarea></p>");
     target.children().widgets();
     return assertThat(target.children(".textarea").length, equalTo(1));
   });
+
   test("select nodes should be replaced by a SingleSelect", function() {
     target = $("<p><select></select></p>");
     target.children().widgets();
     return assertThat(target.children(".single-select").length, equalTo(1));
   });
+
 }).call(this);

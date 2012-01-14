@@ -1,18 +1,10 @@
 (function() {
-  var AbstractMode, BGRMode, Button, CheckBox, ColorPicker, ColorPickerDialog, Container, FilePicker, GRBMode, HSVMode, KeyStroke, MenuList, MenuModel, NumericWidget, RGBMode, Radio, RadioGroup, SHVMode, SingleSelect, Slider, SquarePicker, Stepper, TextArea, TextInput, VHSMode, Widget, WidgetPlugin, colorObjectFromValue, colorObjectToValue, hex2rgb, hsv2rgb, isSafeChannel, isSafeColor, isSafeHSV, isSafeHue, isSafeNumber, isSafePercentage, isSafeRGB, isSafeValue, keys, keystroke, rgb2hex, rgb2hsv;
-  var __bind = function(fn, me){ return function(){ return fn.apply(me, arguments); }; }, __slice = Array.prototype.slice, __indexOf = Array.prototype.indexOf || function(item) {
-    for (var i = 0, l = this.length; i < l; i++) {
-      if (this[i] === item) return i;
-    }
-    return -1;
-  }, __hasProp = Object.prototype.hasOwnProperty, __extends = function(child, parent) {
-    for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; }
-    function ctor() { this.constructor = child; }
-    ctor.prototype = parent.prototype;
-    child.prototype = new ctor;
-    child.__super__ = parent.prototype;
-    return child;
-  };
+  var AbstractMode, BGRMode, Button, CheckBox, ColorInput, ColorPicker, Container, DateInput, DateMode, DateTimeMode, FilePicker, GRBMode, HSVMode, KeyStroke, MILLISECONDS_IN_DAY, MILLISECONDS_IN_HOUR, MILLISECONDS_IN_MINUTE, MILLISECONDS_IN_SECOND, MILLISECONDS_IN_WEEK, MenuList, MenuModel, MonthMode, NumericWidget, RGBMode, Radio, RadioGroup, SHVMode, SingleSelect, Slider, SquarePicker, Stepper, TextArea, TextInput, TimeMode, VHSMode, WeekMode, Widget, WidgetPlugin, colorObjectFromValue, colorObjectToValue, date2time, date2week, fill, findFirstWeekFirstDay, hex2rgb, hsv2rgb, isSafeChannel, isSafeColor, isSafeHSV, isSafeHue, isSafeNumber, isSafePercentage, isSafeRGB, isSafeValue, keys, keystroke, rgb2hex, rgb2hsv, safeInt, time2date, week2date,
+    __slice = Array.prototype.slice,
+    __indexOf = Array.prototype.indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
+    __hasProp = Object.prototype.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor; child.__super__ = parent.prototype; return child; };
+
   keystroke = function(keyCode, modifiers) {
     if (("" + keyCode + "-" + modifiers) in KeyStroke.instances) {
       return KeyStroke.instances["" + keyCode + "-" + modifiers];
@@ -20,8 +12,11 @@
       return KeyStroke.instances["" + keyCode + "-" + modifiers] = new KeyStroke(keyCode, modifiers);
     }
   };
+
   KeyStroke = (function() {
+
     KeyStroke.instances = {};
+
     function KeyStroke(keyCode, modifiers) {
       this.keyCode = keyCode;
       this.modifiers = modifiers;
@@ -29,21 +24,17 @@
       this.shift = ((modifiers >> 1) & 0x01) === 1;
       this.alt = ((modifiers >> 2) & 0x01) === 1;
     }
+
     KeyStroke.prototype.match = function(e) {
       return e.keyCode === this.keyCode && e.ctrlKey === this.ctrl && e.shiftKey === this.shift && e.altKey === this.alt;
     };
+
     KeyStroke.prototype.toString = function() {
       var a, k, v;
       a = [];
-      if (this.ctrl) {
-        a.push("Ctrl");
-      }
-      if (this.shift) {
-        a.push("Shift");
-      }
-      if (this.alt) {
-        a.push("Alt");
-      }
+      if (this.ctrl) a.push("Ctrl");
+      if (this.shift) a.push("Shift");
+      if (this.alt) a.push("Alt");
       for (k in keys) {
         v = keys[k];
         if (this.keyCode === v) {
@@ -53,8 +44,11 @@
       }
       return a.join("+");
     };
+
     return KeyStroke;
+
   })();
+
   keys = {
     mod: {
       ctrl: 1,
@@ -161,15 +155,17 @@
     close_bracket: 221,
     single_quote: 222
   };
+
   if (typeof window !== "undefined" && window !== null) {
     window.keystroke = keystroke;
     window.keys = keys;
   }
+
   Widget = (function() {
+
     function Widget(target) {
-      if (target != null) {
-        this.checkTarget(target);
-      }
+      var _this = this;
+      if (target != null) this.checkTarget(target);
       this.propertyChanged = new Signal;
       this.valueChanged = new Signal;
       this.stateChanged = new Signal;
@@ -188,18 +184,16 @@
       this.hasFocus = false;
       if (this.hasTarget) {
         this.targetInitialValue = this.get("value");
-        this.jTarget.bind("change", __bind(function(e) {
-          return this.targetChange(e);
-        }, this));
+        this.jTarget.bind("change", function(e) {
+          return _this.targetChange(e);
+        });
         this.jTarget.addClass("widget-done");
       }
       if (this.hasDummy) {
         this.dummyStates = ["disabled", "readonly"];
         this.setFocusable(!this.get("disabled"));
         this.dummyClass = this.dummy.attr("class");
-        if (this.hasTarget) {
-          this.dummy.attr("style", this.jTarget.attr("style"));
-        }
+        if (this.hasTarget) this.dummy.attr("style", this.jTarget.attr("style"));
         this.registerToDummyEvents();
         this.updateStates();
       }
@@ -208,6 +202,7 @@
       this.keyDownCommands = {};
       this.keyUpCommands = {};
     }
+
     Widget.prototype.get = function(property) {
       if (("get_" + property) in this) {
         return this["get_" + property].call(this, property);
@@ -215,11 +210,10 @@
         return this.properties[property];
       }
     };
+
     Widget.prototype.set = function(propertyOrObject, value) {
       var k, v, _results;
-      if (value == null) {
-        value = null;
-      }
+      if (value == null) value = null;
       if (typeof propertyOrObject === "object") {
         _results = [];
         for (k in propertyOrObject) {
@@ -231,6 +225,7 @@
         return this.handlePropertyChange(propertyOrObject, value);
       }
     };
+
     Widget.prototype.handlePropertyChange = function(property, value) {
       if (property in this.properties) {
         this.properties[property] = ("set_" + property) in this ? this["set_" + property].call(this, property, value) : value;
@@ -238,31 +233,25 @@
       this.updateStates();
       return this.propertyChanged.dispatch(this, property, value);
     };
+
     Widget.prototype.createProperty = function(property, value, setter, getter) {
-      if (value == null) {
-        value = void 0;
-      }
-      if (setter == null) {
-        setter = null;
-      }
-      if (getter == null) {
-        getter = null;
-      }
+      if (value == null) value = void 0;
+      if (setter == null) setter = null;
+      if (getter == null) getter = null;
       this.properties[property] = value;
-      if (setter != null) {
-        this["set_" + property] = setter;
-      }
-      if (getter != null) {
-        return this["get_" + property] = getter;
-      }
+      if (setter != null) this["set_" + property] = setter;
+      if (getter != null) return this["get_" + property] = getter;
     };
+
     Widget.prototype.set_disabled = function(property, value) {
       this.setFocusable(!value);
       return this.booleanToAttribute(property, value);
     };
+
     Widget.prototype.set_readonly = function(property, value) {
       return this.booleanToAttribute(property, value);
     };
+
     Widget.prototype.set_value = function(property, value) {
       if (this.get("readonly")) {
         return this.get(property);
@@ -274,9 +263,11 @@
         return value;
       }
     };
+
     Widget.prototype.set_name = function(property, value) {
       return this.valueToAttribute(property, value);
     };
+
     Widget.prototype.set_id = function(property, value) {
       if (value != null) {
         this.dummy.attr("id", value);
@@ -285,11 +276,11 @@
       }
       return value;
     };
+
     Widget.prototype.checkTarget = function(target) {
-      if (!this.isElement(target)) {
-        throw "Widget's target should be a node";
-      }
+      if (!this.isElement(target)) throw "Widget's target should be a node";
     };
+
     Widget.prototype.isElement = function(o) {
       if (typeof HTMLElement === "object") {
         return o instanceof HTMLElement;
@@ -297,28 +288,34 @@
         return typeof o === "object" && o.nodeType === 1 && typeof o.nodeName === "string";
       }
     };
+
     Widget.prototype.isTag = function(o, tag) {
       var _ref;
       return this.isElement(o) && (o != null ? (_ref = o.nodeName) != null ? _ref.toLowerCase() : void 0 : void 0) === tag;
     };
+
     Widget.prototype.isInputWithType = function() {
       var o, types, _ref;
       o = arguments[0], types = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       return this.isTag(o, "input") && (_ref = $(o).attr("type"), __indexOf.call(types, _ref) >= 0);
     };
+
     Widget.prototype.hideTarget = function() {
-      if (this.hasTarget) {
-        return this.jTarget.hide();
-      }
+      if (this.hasTarget) return this.jTarget.hide();
     };
+
     Widget.prototype.reset = function() {
       return this.set("value", this.targetInitialValue);
     };
+
     Widget.prototype.targetChange = function(e) {};
+
     Widget.prototype.cantInteract = function() {
       return this.get("readonly") || this.get("disabled");
     };
+
     Widget.prototype.createDummy = function() {};
+
     Widget.prototype.updateStates = function() {
       var newState, oldState, outputState, state, _i, _len, _ref;
       if (this.hasDummy) {
@@ -328,15 +325,11 @@
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           state = _ref[_i];
           if (this.get(state)) {
-            if (newState.length > 0) {
-              newState += " ";
-            }
+            if (newState.length > 0) newState += " ";
             newState += state;
           }
         }
-        if (this.hasFocus) {
-          newState = "focus " + newState;
-        }
+        if (this.hasFocus) newState = "focus " + newState;
         outputState = (this.dummyClass != null) && newState !== "" ? this.dummyClass + " " + newState : this.dummyClass != null ? this.dummyClass : newState;
         if (outputState !== oldState) {
           this.dummy.attr("class", outputState);
@@ -344,19 +337,19 @@
         }
       }
     };
+
     Widget.prototype.addClasses = function() {
       var cl, classes, dummyClasses, _i, _len;
       classes = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       dummyClasses = this.dummyClass.split(" ");
       for (_i = 0, _len = classes.length; _i < _len; _i++) {
         cl = classes[_i];
-        if (__indexOf.call(dummyClasses, cl) < 0) {
-          dummyClasses.push(cl);
-        }
+        if (__indexOf.call(dummyClasses, cl) < 0) dummyClasses.push(cl);
       }
       this.dummyClass = dummyClasses.join(" ");
       return this.updateStates();
     };
+
     Widget.prototype.removeClasses = function() {
       var cl, classes, dummyClasses, output, _i, _len;
       classes = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -364,65 +357,81 @@
       output = [];
       for (_i = 0, _len = dummyClasses.length; _i < _len; _i++) {
         cl = dummyClasses[_i];
-        if (__indexOf.call(classes, cl) < 0) {
-          output.push(cl);
-        }
+        if (__indexOf.call(classes, cl) < 0) output.push(cl);
       }
       this.dummyClass = output.join(" ");
       return this.updateStates();
     };
+
     Widget.prototype.registerToDummyEvents = function() {
-      return this.dummy.bind(this.supportedEvents, __bind(function(e) {
-        return this[e.type].apply(this, arguments);
-      }, this));
+      var _this = this;
+      return this.dummy.bind(this.supportedEvents, function(e) {
+        return _this[e.type].apply(_this, arguments);
+      });
     };
+
     Widget.prototype.unregisterFromDummyEvents = function() {
       return this.dummy.unbind(this.supportedEvents);
     };
+
     Widget.prototype.supportedEvents = "mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick focus blur keyup keydown keypress";
+
     Widget.prototype.mousedown = function(e) {
       return true;
     };
+
     Widget.prototype.mouseup = function(e) {
       return true;
     };
+
     Widget.prototype.mousemove = function(e) {
       return true;
     };
+
     Widget.prototype.mouseover = function(e) {
       return true;
     };
+
     Widget.prototype.mouseout = function(e) {
       return true;
     };
+
     Widget.prototype.mousewheel = function(e, d) {
       return true;
     };
+
     Widget.prototype.click = function(e) {
       return true;
     };
+
     Widget.prototype.dblclick = function(e) {
       return true;
     };
+
     Widget.prototype.focus = function(e) {
       this.hasFocus = true;
       this.updateStates();
       return !this.get("disabled");
     };
+
     Widget.prototype.blur = function(e) {
       this.hasFocus = false;
       this.updateStates();
       return true;
     };
+
     Widget.prototype.keydown = function(e) {
       return this.triggerKeyDownCommand(e);
     };
+
     Widget.prototype.keyup = function(e) {
       return this.triggerKeyUpCommand(e);
     };
+
     Widget.prototype.keypress = function(e) {
       return true;
     };
+
     Widget.prototype.setFocusable = function(allowFocus) {
       if (this.hasDummy) {
         if (allowFocus) {
@@ -432,82 +441,76 @@
         }
       }
     };
+
     Widget.prototype.grabFocus = function() {
-      if (this.hasDummy) {
-        return this.dummy.focus();
-      }
+      if (this.hasDummy) return this.dummy.focus();
     };
+
     Widget.prototype.releaseFocus = function() {
-      if (this.hasDummy) {
-        return this.dummy.blur();
-      }
+      if (this.hasDummy) return this.dummy.blur();
     };
+
     Widget.prototype.registerKeyDownCommand = function(ks, command) {
       return this.keyDownCommands[ks] = [ks, command];
     };
+
     Widget.prototype.registerKeyUpCommand = function(ks, command) {
       return this.keyUpCommands[ks] = [ks, command];
     };
+
     Widget.prototype.hasKeyDownCommand = function(ks) {
       return ks in this.keyDownCommands;
     };
+
     Widget.prototype.hasKeyUpCommand = function(ks) {
       return ks in this.keyUpCommands;
     };
+
     Widget.prototype.triggerKeyDownCommand = function(e) {
       var command, key, ks, _ref, _ref2;
       _ref = this.keyDownCommands;
       for (key in _ref) {
         _ref2 = _ref[key], ks = _ref2[0], command = _ref2[1];
-        if (ks.match(e)) {
-          return command.call(this, e);
-        }
+        if (ks.match(e)) return command.call(this, e);
       }
-      if (this.parent != null) {
-        this.parent.triggerKeyDownCommand(e);
-      }
+      if (this.parent != null) this.parent.triggerKeyDownCommand(e);
       return true;
     };
+
     Widget.prototype.triggerKeyUpCommand = function(e) {
       var command, key, ks, _ref, _ref2;
       _ref = this.keyUpCommands;
       for (key in _ref) {
         _ref2 = _ref[key], ks = _ref2[0], command = _ref2[1];
-        if (ks.match(e)) {
-          return command.call(this, e);
-        }
+        if (ks.match(e)) return command.call(this, e);
       }
-      if (this.parent != null) {
-        this.parent.triggerKeyUpCommand(e);
-      }
+      if (this.parent != null) this.parent.triggerKeyUpCommand(e);
       return true;
     };
+
     Widget.prototype.valueFromAttribute = function(property, defaultValue) {
-      if (defaultValue == null) {
-        defaultValue = void 0;
-      }
+      if (defaultValue == null) defaultValue = void 0;
       if (this.hasTarget) {
         return this.jTarget.attr(property);
       } else {
         return defaultValue;
       }
     };
+
     Widget.prototype.valueToAttribute = function(property, value) {
-      if (this.hasTarget) {
-        this.jTarget.attr(property, value);
-      }
+      if (this.hasTarget) this.jTarget.attr(property, value);
       return value;
     };
+
     Widget.prototype.booleanFromAttribute = function(property, defaultValue) {
-      if (defaultValue == null) {
-        defaultValue = void 0;
-      }
+      if (defaultValue == null) defaultValue = void 0;
       if (this.hasTarget) {
         return this.jTarget.attr(property) !== void 0;
       } else {
         return defaultValue;
       }
     };
+
     Widget.prototype.booleanToAttribute = function(property, value) {
       if (this.hasTarget) {
         if (value) {
@@ -518,17 +521,22 @@
       }
       return value;
     };
+
     return Widget;
+
   })();
-  if (typeof window !== "undefined" && window !== null) {
-    window.Widget = Widget;
-  }
-  Container = (function() {
-    __extends(Container, Widget);
+
+  if (typeof window !== "undefined" && window !== null) window.Widget = Widget;
+
+  Container = (function(_super) {
+
+    __extends(Container, _super);
+
     function Container(target) {
       Container.__super__.constructor.call(this, target);
       this.children = [];
     }
+
     Container.prototype.add = function(child) {
       if ((child != null) && child.isWidget && __indexOf.call(this.children, child) < 0) {
         this.children.push(child);
@@ -536,6 +544,7 @@
         return child.parent = this;
       }
     };
+
     Container.prototype.remove = function(child) {
       if ((child != null) && __indexOf.call(this.children, child) >= 0) {
         this.children.splice(this.children.indexOf(child), 1);
@@ -543,21 +552,29 @@
         return child.parent = null;
       }
     };
+
     Container.prototype.createDummy = function() {
       return $("<span class='container'></span>");
     };
+
     Container.prototype.focus = function(e) {
       if (e.target === this.dummy[0]) {
         return Container.__super__.focus.call(this, e);
       }
     };
+
     return Container;
-  })();
+
+  })(Widget);
+
   if (typeof window !== "undefined" && window !== null) {
     window.Container = Container;
   }
-  Button = (function() {
-    __extends(Button, Widget);
+
+  Button = (function(_super) {
+
+    __extends(Button, _super);
+
     function Button() {
       var action, arg, args, target;
       args = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -580,14 +597,17 @@
       this.registerKeyDownCommand(keystroke(keys.space), this.click);
       this.registerKeyDownCommand(keystroke(keys.enter), this.click);
     }
+
     Button.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "button", "reset", "submit")) {
         throw "Buttons only support input with a type in button, reset or submit as target";
       }
     };
+
     Button.prototype.createDummy = function() {
       return $("<span class='button'></span>");
     };
+
     Button.prototype.updateContent = function() {
       var action, value;
       this.dummy.find(".content").remove();
@@ -599,51 +619,52 @@
         return this.dummy.append($("<span class='content'>" + value + "</span>"));
       }
     };
+
     Button.prototype.handlePropertyChange = function(property, value) {
       Button.__super__.handlePropertyChange.call(this, property, value);
       if (property === "value" || property === "action") {
         return this.updateContent();
       }
     };
+
     Button.prototype.click = function(e) {
       var action;
-      if (this.cantInteract()) {
-        return;
-      }
+      if (this.cantInteract()) return;
       action = this.get("action");
-      if (action != null) {
-        action.action();
-      }
-      if (this.hasTarget) {
-        return this.jTarget.click();
-      }
+      if (action != null) action.action();
+      if (this.hasTarget) return this.jTarget.click();
     };
+
     return Button;
-  })();
-  if (typeof window !== "undefined" && window !== null) {
-    window.Button = Button;
-  }
-  TextInput = (function() {
-    __extends(TextInput, Widget);
+
+  })(Widget);
+
+  if (typeof window !== "undefined" && window !== null) window.Button = Button;
+
+  TextInput = (function(_super) {
+
+    __extends(TextInput, _super);
+
     function TextInput(target) {
-      if (target == null) {
-        target = $("<input type='text'></input>")[0];
-      }
+      if (target == null) target = $("<input type='text'></input>")[0];
       TextInput.__super__.constructor.call(this, target);
       this.createProperty("maxlength", this.valueFromAttribute("maxlength"));
       this.valueIsObsolete = false;
     }
+
     TextInput.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "text", "password")) {
         throw "TextInput must have an input text as target";
       }
     };
+
     TextInput.prototype.createDummy = function() {
       var dummy;
       dummy = $("<span class='text'></span>");
       dummy.append(this.jTarget);
       return dummy;
     };
+
     TextInput.prototype.set_maxlength = function(property, value) {
       if (value != null) {
         this.jTarget.attr("maxlength", value);
@@ -652,99 +673,126 @@
       }
       return value;
     };
+
     TextInput.prototype.inputSupportedEvents = "focus blur keyup keydown keypress input change";
+
     TextInput.prototype.supportedEvents = "mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick";
+
     TextInput.prototype.registerToDummyEvents = function() {
-      this.jTarget.bind(this.inputSupportedEvents, __bind(function(e) {
-        return this[e.type].apply(this, arguments);
-      }, this));
+      var _this = this;
+      this.jTarget.bind(this.inputSupportedEvents, function(e) {
+        return _this[e.type].apply(_this, arguments);
+      });
       return TextInput.__super__.registerToDummyEvents.call(this);
     };
+
     TextInput.prototype.unregisterFromDummyEvents = function() {
       this.jTarget.unbind(this.inputSupportedEvents);
       return TextInput.__super__.unregisterFromDummyEvents.call(this);
     };
+
     TextInput.prototype.input = function(e) {
       return this.valueIsObsolete = true;
     };
+
     TextInput.prototype.change = function(e) {
       this.set("value", this.valueFromAttribute("value"));
       this.valueIsObsolete = false;
       return false;
     };
+
     TextInput.prototype.mouseup = function() {
-      if (!this.get("disabled")) {
-        this.grabFocus();
-      }
+      if (!this.get("disabled")) this.grabFocus();
       return true;
     };
+
     TextInput.prototype.setFocusable = function() {};
+
     TextInput.prototype.grabFocus = function() {
       return this.jTarget.focus();
     };
+
     return TextInput;
-  })();
+
+  })(Widget);
+
   if (typeof window !== "undefined" && window !== null) {
     window.TextInput = TextInput;
   }
-  TextArea = (function() {
-    __extends(TextArea, Widget);
+
+  TextArea = (function(_super) {
+
+    __extends(TextArea, _super);
+
     function TextArea(target) {
-      if (target == null) {
-        target = $("<textarea></textarea")[0];
-      }
+      if (target == null) target = $("<textarea></textarea")[0];
       TextArea.__super__.constructor.call(this, target);
       this.valueIsObsolete = false;
     }
+
     TextArea.prototype.checkTarget = function(target) {
       if (!this.isTag(target, "textarea")) {
         throw "TextArea only allow textarea nodes as target";
       }
     };
+
     TextArea.prototype.createDummy = function() {
       var dummy;
       dummy = $("<span class='textarea'></span>");
       dummy.append(this.target);
       return dummy;
     };
+
     TextArea.prototype.targetSupportedEvents = "focus blur keyup keydown keypress input change";
+
     TextArea.prototype.supportedEvents = "mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick";
+
     TextArea.prototype.registerToDummyEvents = function() {
-      this.jTarget.bind(this.targetSupportedEvents, __bind(function(e) {
-        return this[e.type].apply(this, arguments);
-      }, this));
+      var _this = this;
+      this.jTarget.bind(this.targetSupportedEvents, function(e) {
+        return _this[e.type].apply(_this, arguments);
+      });
       return TextArea.__super__.registerToDummyEvents.call(this);
     };
+
     TextArea.prototype.unregisterFromDummyEvents = function() {
       this.jTarget.unbind(this.targetSupportedEvents);
       return TextArea.__super__.unregisterFromDummyEvents.call(this);
     };
+
     TextArea.prototype.input = function(e) {
       return this.valueIsObsolete = true;
     };
+
     TextArea.prototype.change = function(e) {
       this.set("value", this.jTarget.val());
       this.valueIsObsolete = false;
       return true;
     };
+
     TextArea.prototype.mouseup = function() {
-      if (!this.get("disabled")) {
-        this.grabFocus();
-      }
+      if (!this.get("disabled")) this.grabFocus();
       return true;
     };
+
     TextArea.prototype.setFocusable = function() {};
+
     TextArea.prototype.grabFocus = function() {
       return this.jTarget.focus();
     };
+
     return TextArea;
-  })();
-  if (typeof window !== "undefined" && window !== null) {
-    window.TextArea = TextArea;
-  }
-  CheckBox = (function() {
-    __extends(CheckBox, Widget);
+
+  })(Widget);
+
+  if (typeof window !== "undefined" && window !== null) window.TextArea = TextArea;
+
+  CheckBox = (function(_super) {
+
+    __extends(CheckBox, _super);
+
     CheckBox.prototype.targetType = "checkbox";
+
     function CheckBox(target) {
       CheckBox.__super__.constructor.call(this, target);
       this.checkedChanged = new Signal;
@@ -757,82 +805,96 @@
       this.updateStates();
       this.hideTarget();
     }
+
     CheckBox.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "checkbox")) {
         throw "CheckBox target must be an input with a checkbox type";
       }
     };
+
     CheckBox.prototype.set_checked = function(property, value) {
       this.updateValue(value, this.get("values"));
       this.booleanToAttribute(property, value);
       this.checkedChanged.dispatch(this, value);
       return value;
     };
+
     CheckBox.prototype.set_value = function(property, value) {
       if (!this.valueSetProgrammatically) {
         this.set("checked", value === this.get("values")[0]);
       }
       return CheckBox.__super__.set_value.call(this, property, value);
     };
+
     CheckBox.prototype.set_values = function(property, value) {
       this.updateValue(this.get("checked"), value);
       return value;
     };
+
     CheckBox.prototype.createDummy = function() {
       return $("<span class='checkbox'></span>");
     };
+
     CheckBox.prototype.toggle = function() {
       return this.set("checked", !this.get("checked"));
     };
+
     CheckBox.prototype.actionToggle = function() {
-      if (!(this.get("readonly") || this.get("disabled"))) {
-        return this.toggle();
-      }
+      if (!(this.get("readonly") || this.get("disabled"))) return this.toggle();
     };
+
     CheckBox.prototype.reset = function() {
       CheckBox.__super__.reset.call(this);
       return this.set("checked", this.targetInitialChecked);
     };
+
     CheckBox.prototype.updateValue = function(checked, values) {
       this.valueSetProgrammatically = true;
       this.set("value", checked ? values[0] : values[1]);
       return this.valueSetProgrammatically = false;
     };
+
     CheckBox.prototype.click = function(e) {
       this.actionToggle();
-      if (!this.get("disabled")) {
-        return this.grabFocus();
-      }
+      if (!this.get("disabled")) return this.grabFocus();
     };
+
     return CheckBox;
-  })();
-  if (typeof window !== "undefined" && window !== null) {
-    window.CheckBox = CheckBox;
-  }
-  Radio = (function() {
-    __extends(Radio, CheckBox);
+
+  })(Widget);
+
+  if (typeof window !== "undefined" && window !== null) window.CheckBox = CheckBox;
+
+  Radio = (function(_super) {
+
+    __extends(Radio, _super);
+
     function Radio() {
       Radio.__super__.constructor.apply(this, arguments);
     }
+
     Radio.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "radio")) {
         throw "Radio target must be an input with a radio type";
       }
     };
+
     Radio.prototype.createDummy = function() {
       return $("<span class='radio'></span>");
     };
+
     Radio.prototype.toggle = function() {
-      if (!this.get("checked")) {
-        return Radio.__super__.toggle.call(this);
-      }
+      if (!this.get("checked")) return Radio.__super__.toggle.call(this);
     };
+
     return Radio;
-  })();
-  if (typeof window !== "undefined" && window !== null) {
-    window.Radio = Radio;
-  }
+
+  })(CheckBox);
+
+  if (typeof window !== "undefined" && window !== null) window.Radio = Radio;
+
   RadioGroup = (function() {
+
     function RadioGroup() {
       var radio, radios, _i, _len;
       radios = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -843,44 +905,44 @@
         this.add(radio);
       }
     }
+
     RadioGroup.prototype.add = function(radio) {
       if (!this.contains(radio)) {
         this.radios.push(radio);
         radio.checkedChanged.add(this.radioCheckedChanged, this);
-        if (radio.get("checked")) {
-          return this.selectedRadio = radio;
-        }
+        if (radio.get("checked")) return this.selectedRadio = radio;
       }
     };
+
     RadioGroup.prototype.remove = function(radio) {
       if (this.contains(radio)) {
         this.radios.splice(this.indexOf(radio), 1);
         return radio.checkedChanged.remove(this.radioCheckedChanged, this);
       }
     };
+
     RadioGroup.prototype.contains = function(radio) {
       return __indexOf.call(this.radios, radio) >= 0;
     };
+
     RadioGroup.prototype.indexOf = function(radio) {
       var r, _i, _len, _ref;
       _ref = this.radios;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         r = _ref[_i];
-        if (r === radio) {
-          return _i;
-        }
+        if (r === radio) return _i;
       }
       return -1;
     };
+
     RadioGroup.prototype.checkedSetProgrammatically = false;
+
     RadioGroup.prototype.select = function(radio) {
       var oldSelectedRadio;
       if (radio !== this.selectedRadio) {
         this.checkedSetProgrammatically = true;
         oldSelectedRadio = this.selectedRadio;
-        if (this.selectedRadio != null) {
-          this.selectedRadio.set("checked", false);
-        }
+        if (this.selectedRadio != null) this.selectedRadio.set("checked", false);
         this.selectedRadio = radio;
         if (this.selectedRadio != null) {
           if (!this.selectedRadio.get("checked")) {
@@ -891,6 +953,7 @@
         return this.selectionChanged.dispatch(this, oldSelectedRadio, this.selectedRadio);
       }
     };
+
     RadioGroup.prototype.radioCheckedChanged = function(radio, checked) {
       if (!this.checkedSetProgrammatically) {
         if (checked) {
@@ -900,13 +963,19 @@
         }
       }
     };
+
     return RadioGroup;
+
   })();
+
   if (typeof window !== "undefined" && window !== null) {
     window.RadioGroup = RadioGroup;
   }
-  NumericWidget = (function() {
-    __extends(NumericWidget, Widget);
+
+  NumericWidget = (function(_super) {
+
+    __extends(NumericWidget, _super);
+
     function NumericWidget(target) {
       NumericWidget.__super__.constructor.call(this, target);
       this.createProperty("min", parseFloat(this.valueFromAttribute("min", 0)));
@@ -924,6 +993,7 @@
       this.registerKeyUpCommand(keystroke(keys.left), this.endDecrement);
       this.hideTarget();
     }
+
     NumericWidget.prototype.cleanValue = function(value, min, max, step) {
       if (value < min) {
         value = min;
@@ -932,41 +1002,51 @@
       }
       return value - (value % step);
     };
+
     NumericWidget.prototype.increment = function() {
       return this.set("value", this.get("value") + this.get("step"));
     };
+
     NumericWidget.prototype.decrement = function() {
       return this.set("value", this.get("value") - this.get("step"));
     };
+
     NumericWidget.prototype.startIncrement = function() {
+      var _this = this;
       if (!this.cantInteract()) {
         if (this.incrementInterval === -1) {
-          this.incrementInterval = setInterval(__bind(function() {
-            return this.increment();
-          }, this), 50);
+          this.incrementInterval = setInterval(function() {
+            return _this.increment();
+          }, 50);
         }
       }
       return false;
     };
+
     NumericWidget.prototype.startDecrement = function() {
+      var _this = this;
       if (!this.cantInteract()) {
         if (this.incrementInterval === -1) {
-          this.incrementInterval = setInterval(__bind(function() {
-            return this.decrement();
-          }, this), 50);
+          this.incrementInterval = setInterval(function() {
+            return _this.decrement();
+          }, 50);
         }
       }
       return false;
     };
+
     NumericWidget.prototype.endIncrement = function() {
       clearInterval(this.incrementInterval);
       return this.incrementInterval = -1;
     };
+
     NumericWidget.prototype.endDecrement = function() {
       clearInterval(this.incrementInterval);
       return this.incrementInterval = -1;
     };
+
     NumericWidget.prototype.updateDummy = function(value, min, max, step) {};
+
     NumericWidget.prototype.set_value = function(property, value) {
       var max, min, step;
       min = this.get("min");
@@ -976,12 +1056,14 @@
       this.updateDummy(value, min, max, step);
       return NumericWidget.__super__.set_value.call(this, property, value);
     };
+
     NumericWidget.prototype.mousewheel = function(event, delta, deltaX, deltaY) {
       if (!(this.get("readonly") || this.get("disabled"))) {
         this.set("value", this.get("value") + delta * this.get("step"));
       }
       return false;
     };
+
     NumericWidget.prototype.set_min = function(property, value) {
       var max, step;
       max = this.get("max");
@@ -994,6 +1076,7 @@
         return value;
       }
     };
+
     NumericWidget.prototype.set_max = function(property, value) {
       var min, step;
       min = this.get("min");
@@ -1006,6 +1089,7 @@
         return value;
       }
     };
+
     NumericWidget.prototype.set_step = function(property, value) {
       var max, min;
       min = this.get("min");
@@ -1014,13 +1098,19 @@
       this.set("value", this.cleanValue(this.get("value"), min, max, value));
       return value;
     };
+
     return NumericWidget;
-  })();
+
+  })(Widget);
+
   if (typeof window !== "undefined" && window !== null) {
     window.NumericWidget = NumericWidget;
   }
-  Slider = (function() {
-    __extends(Slider, NumericWidget);
+
+  Slider = (function(_super) {
+
+    __extends(Slider, _super);
+
     function Slider(target) {
       Slider.__super__.constructor.call(this, target);
       this.draggingKnob = false;
@@ -1031,22 +1121,26 @@
         this.updateDummy(this.get("value"), this.get("min"), this.get("max"));
       }
     }
+
     Slider.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "range")) {
         throw "Slider target must be an input with a range type";
       }
     };
+
     Slider.prototype.startDrag = function(e) {
+      var _this = this;
       this.draggingKnob = true;
       this.lastMouseX = e.pageX;
       this.lastMouseY = e.pageY;
-      $(document).bind("mouseup", this.documentMouseUpDelegate = __bind(function(e) {
-        return this.endDrag();
-      }, this));
-      return $(document).bind("mousemove", this.documentMouseMoveDelegate = __bind(function(e) {
-        return this.drag(e);
-      }, this));
+      $(document).bind("mouseup", this.documentMouseUpDelegate = function(e) {
+        return _this.endDrag();
+      });
+      return $(document).bind("mousemove", this.documentMouseMoveDelegate = function(e) {
+        return _this.drag(e);
+      });
     };
+
     Slider.prototype.drag = function(e) {
       var change, data, knob, knobWidth, max, min, normalizedValue, width;
       data = this.getDragDataFromEvent(e);
@@ -1061,17 +1155,20 @@
       this.lastMouseX = e.pageX;
       return this.lastMouseY = e.pageY;
     };
+
     Slider.prototype.endDrag = function() {
       this.draggingKnob = false;
       $(document).unbind("mousemove", this.documentMouseMoveDelegate);
       return $(document).unbind("mouseup", this.documentMouseUpDelegate);
     };
+
     Slider.prototype.getDragDataFromEvent = function(e) {
       return {
         x: e.pageX - this.lastMouseX,
         y: e.pageY - this.lastMouseY
       };
     };
+
     Slider.prototype.handleKnobMouseDown = function(e) {
       if (!this.cantInteract()) {
         this.startDrag(e);
@@ -1079,6 +1176,7 @@
         return e.preventDefault();
       }
     };
+
     Slider.prototype.handleTrackMouseDown = function(e) {
       var max, min, track, v, x;
       if (!this.cantInteract()) {
@@ -1091,17 +1189,20 @@
         return this.handleKnobMouseDown(e);
       }
     };
+
     Slider.prototype.createDummy = function() {
-      var dummy;
+      var dummy,
+        _this = this;
       dummy = $("<span class='slider'>                        <span class='track'></span>                        <span class='knob'></span>                        <span class='value'></span>                    </span>");
-      dummy.children(".knob").bind("mousedown", __bind(function(e) {
-        return this.handleKnobMouseDown(e);
-      }, this));
-      dummy.children(".track").bind("mousedown", __bind(function(e) {
-        return this.handleTrackMouseDown(e);
-      }, this));
+      dummy.children(".knob").bind("mousedown", function(e) {
+        return _this.handleKnobMouseDown(e);
+      });
+      dummy.children(".track").bind("mousedown", function(e) {
+        return _this.handleTrackMouseDown(e);
+      });
       return dummy;
     };
+
     Slider.prototype.updateDummy = function(value, min, max, step) {
       var knob, knobPos, knobWidth, val, valPos, valWidth, width;
       width = this.dummy.width();
@@ -1119,45 +1220,75 @@
         return val.css("left", "auto");
       }
     };
+
     return Slider;
-  })();
-  if (typeof window !== "undefined" && window !== null) {
-    window.Slider = Slider;
-  }
-  Stepper = (function() {
-    __extends(Stepper, NumericWidget);
+
+  })(NumericWidget);
+
+  if (typeof window !== "undefined" && window !== null) window.Slider = Slider;
+
+  Stepper = (function(_super) {
+
+    __extends(Stepper, _super);
+
     function Stepper(target) {
       Stepper.__super__.constructor.call(this, target);
       this.updateDummy(this.get("value"), this.get("min"), this.get("max"), this.get("step"));
     }
+
     Stepper.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "number")) {
         throw "Stepper target must be an input with a number type";
       }
     };
+
     Stepper.prototype.createDummy = function() {
-      var down, dummy, input, up;
-      dummy = $("<span class='stepper'>				<input type='text' class='value'></input>				<span class='down'></span>				<span class='up'></span>		   </span>");
+      var buttonsMousedown, down, dummy, input, up,
+        _this = this;
+      dummy = $("<span class='stepper'>                <input type='text' class='value'></input>                <span class='down'></span>                <span class='up'></span>           </span>");
       input = dummy.children("input");
       down = dummy.children(".down");
       up = dummy.children(".up");
-      input.bind("change", __bind(function() {
-        return this.validateInput();
-      }, this));
-      down.bind("mousedown", __bind(function() {
-        return this.startDecrement();
-      }, this));
-      down.bind("mouseup", __bind(function() {
-        return this.endDecrement();
-      }, this));
-      up.bind("mousedown", __bind(function() {
-        return this.startIncrement();
-      }, this));
-      up.bind("mouseup", __bind(function() {
-        return this.endIncrement();
-      }, this));
+      input.bind("change", function() {
+        return _this.validateInput();
+      });
+      buttonsMousedown = function(e) {
+        var endFunction, startFunction;
+        e.stopImmediatePropagation();
+        _this.mousePressed = true;
+        switch (e.target) {
+          case down[0]:
+            startFunction = _this.startDecrement;
+            endFunction = _this.endDecrement;
+            break;
+          case up[0]:
+            startFunction = _this.startIncrement;
+            endFunction = _this.endIncrement;
+        }
+        startFunction.call(_this);
+        return $(document).bind("mouseup", _this.documentDelegate = function(e) {
+          _this.mousePressed = false;
+          endFunction.call(_this);
+          return $(document).unbind("mouseup", _this.documentDelegate);
+        });
+      };
+      down.bind("mousedown", buttonsMousedown);
+      up.bind("mousedown", buttonsMousedown);
+      down.bind("mouseout", function() {
+        if (_this.incrementInterval !== -1) return _this.endDecrement();
+      });
+      up.bind("mouseout", function() {
+        if (_this.incrementInterval !== -1) return _this.endIncrement();
+      });
+      down.bind("mouseover", function() {
+        if (_this.mousePressed) return _this.startDecrement();
+      });
+      up.bind("mouseover", function() {
+        if (_this.mousePressed) return _this.startIncrement();
+      });
       return dummy;
     };
+
     Stepper.prototype.updateStates = function() {
       var input;
       Stepper.__super__.updateStates.call(this);
@@ -1173,23 +1304,30 @@
         return input.removeAttr("disabled");
       }
     };
+
     Stepper.prototype.updateDummy = function(value, min, max, step) {
       var input;
       input = this.dummy.children(".value");
       return input.attr("value", value);
     };
+
     Stepper.prototype.inputSupportedEvents = "focus blur keyup keydown keypress";
+
     Stepper.prototype.supportedEvents = "mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick";
+
     Stepper.prototype.registerToDummyEvents = function() {
-      this.dummy.children(".value").bind(this.inputSupportedEvents, __bind(function(e) {
-        return this[e.type].apply(this, arguments);
-      }, this));
+      var _this = this;
+      this.dummy.children(".value").bind(this.inputSupportedEvents, function(e) {
+        return _this[e.type].apply(_this, arguments);
+      });
       return Stepper.__super__.registerToDummyEvents.call(this);
     };
+
     Stepper.prototype.unregisterFromDummyEvents = function() {
       this.dummy.children(".value").unbind(this.inputSupportedEvents);
       return Stepper.__super__.unregisterFromDummyEvents.call(this);
     };
+
     Stepper.prototype.validateInput = function() {
       var value;
       value = parseFloat(this.dummy.children("input").attr("value"));
@@ -1199,56 +1337,91 @@
         return this.updateDummy(this.get("value"), this.get("min"), this.get("max"), this.get("step"));
       }
     };
+
     Stepper.prototype.setFocusable = function() {};
+
     Stepper.prototype.grabFocus = function() {
       return this.dummy.children(".value").focus();
     };
+
     Stepper.prototype.mouseup = function() {
       this.grabFocus();
+      if (this.dragging) {
+        $(document).unbind("mousemove", this.documentMouseMoveDelegate);
+        $(document).unbind("mouseup", this.documentMouseUpDelegate);
+        this.dragging = false;
+      }
       return true;
     };
+
+    Stepper.prototype.mousedown = function(e) {
+      var _this = this;
+      this.dragging = true;
+      this.pressedY = e.pageY;
+      $(document).bind("mousemove", this.documentMouseMoveDelegate = function(e) {
+        return _this.mousemove(e);
+      });
+      return $(document).bind("mouseup", this.documentMouseUpDelegate = function(e) {
+        return _this.mouseup(e);
+      });
+    };
+
+    Stepper.prototype.mousemove = function(e) {
+      var dif, y;
+      if (this.dragging) {
+        y = e.pageY;
+        dif = this.pressedY - y;
+        this.set("value", this.get("value") + dif * this.get("step"));
+        return this.pressedY = y;
+      }
+    };
+
     return Stepper;
-  })();
-  if (typeof window !== "undefined" && window !== null) {
-    window.Stepper = Stepper;
-  }
-  FilePicker = (function() {
-    __extends(FilePicker, Widget);
+
+  })(NumericWidget);
+
+  if (typeof window !== "undefined" && window !== null) window.Stepper = Stepper;
+
+  FilePicker = (function(_super) {
+
+    __extends(FilePicker, _super);
+
     function FilePicker(target) {
-      if (target == null) {
-        target = $("<input type='file'></input>")[0];
-      }
+      var _this = this;
+      if (target == null) target = $("<input type='file'></input>")[0];
       FilePicker.__super__.constructor.call(this, target);
-      if (this.cantInteract()) {
-        this.hideTarget();
-      }
-      this.jTarget.bind("change", __bind(function(e) {
-        return this.targetChange(e);
-      }, this));
+      if (this.cantInteract()) this.hideTarget();
+      this.jTarget.bind("change", function(e) {
+        return _this.targetChange(e);
+      });
     }
+
     FilePicker.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "file")) {
         throw "FilePicker must have an input file as target";
       }
     };
+
     FilePicker.prototype.showTarget = function() {
-      if (this.hasTarget) {
-        return this.jTarget.show();
-      }
+      if (this.hasTarget) return this.jTarget.show();
     };
+
     FilePicker.prototype.targetChange = function(e) {
       this.setValueLabel(this.jTarget.val() != null ? this.jTarget.val() : "Browse");
       return this.dummy.attr("title", this.jTarget.val());
     };
+
     FilePicker.prototype.createDummy = function() {
       var dummy;
       dummy = $("<span class='filepicker'>                    <span class='icon'></span>                    <span class='value'>Browse</span>                 </span>");
       dummy.append(this.jTarget);
       return dummy;
     };
+
     FilePicker.prototype.setValueLabel = function(label) {
       return this.dummy.children(".value").text(label);
     };
+
     FilePicker.prototype.set_disabled = function(property, value) {
       if (value) {
         this.hideTarget();
@@ -1257,6 +1430,7 @@
       }
       return FilePicker.__super__.set_disabled.call(this, property, value);
     };
+
     FilePicker.prototype.set_readonly = function(property, value) {
       if (value) {
         this.hideTarget();
@@ -1265,40 +1439,54 @@
       }
       return FilePicker.__super__.set_readonly.call(this, property, value);
     };
+
     FilePicker.prototype.inputSupportedEvents = "focus blur keyup keydown keypress";
+
     FilePicker.prototype.supportedEvents = "mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick";
+
     FilePicker.prototype.registerToDummyEvents = function() {
-      this.jTarget.bind(this.inputSupportedEvents, __bind(function(e) {
-        return this[e.type].apply(this, arguments);
-      }, this));
+      var _this = this;
+      this.jTarget.bind(this.inputSupportedEvents, function(e) {
+        return _this[e.type].apply(_this, arguments);
+      });
       return FilePicker.__super__.registerToDummyEvents.call(this);
     };
+
     FilePicker.prototype.unregisterFromDummyEvents = function() {
       this.jTarget.unbind(this.inputSupportedEvents);
       return FilePicker.__super__.unregisterFromDummyEvents.call(this);
     };
+
     FilePicker.prototype.setFocusable = function() {};
+
     FilePicker.prototype.grabFocus = function() {
       return this.jTarget.focus();
     };
+
     return FilePicker;
-  })();
+
+  })(Widget);
+
   if (typeof window !== "undefined" && window !== null) {
     window.FilePicker = FilePicker;
   }
+
   MenuModel = (function() {
+
     function MenuModel() {
       var items;
       items = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       this.contentChanged = new Signal;
       this.items = this.filterValidItems(items);
     }
+
     MenuModel.prototype.add = function() {
       var items;
       items = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
       this.items = this.items.concat(this.filterValidItems(items));
       return this.contentChanged.dispatch(this);
     };
+
     MenuModel.prototype.remove = function() {
       var item, items;
       items = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -1308,39 +1496,41 @@
         _results = [];
         for (_i = 0, _len = _ref.length; _i < _len; _i++) {
           item = _ref[_i];
-          if (__indexOf.call(items, item) < 0) {
-            _results.push(item);
-          }
+          if (__indexOf.call(items, item) < 0) _results.push(item);
         }
         return _results;
       }).call(this);
       return this.contentChanged.dispatch(this);
     };
+
     MenuModel.prototype.size = function() {
       return this.items.length;
     };
+
     MenuModel.prototype.filterValidItems = function(items) {
       var item, _i, _len, _results;
       _results = [];
       for (_i = 0, _len = items.length; _i < _len; _i++) {
         item = items[_i];
-        if (this.isValidItem(item)) {
-          _results.push(item);
-        }
+        if (this.isValidItem(item)) _results.push(item);
       }
       return _results;
     };
+
     MenuModel.prototype.isValidItem = function(item) {
       return (item != null) && (item.display != null) && (!(item.action != null) || $.isFunction(item.action)) && (!(item.menu != null) || item.menu instanceof MenuModel);
     };
+
     return MenuModel;
+
   })();
-  MenuList = (function() {
-    __extends(MenuList, Widget);
+
+  MenuList = (function(_super) {
+
+    __extends(MenuList, _super);
+
     function MenuList(model) {
-      if (model == null) {
-        model = new MenuModel;
-      }
+      if (model == null) model = new MenuModel;
       MenuList.__super__.constructor.call(this);
       this.selectedIndex = -1;
       this.createProperty("model");
@@ -1354,6 +1544,7 @@
       this.registerKeyDownCommand(keystroke(keys.right), this.moveSelectionRight);
       this.registerKeyDownCommand(keystroke(keys.left), this.moveSelectionLeft);
     }
+
     MenuList.prototype.select = function(index) {
       var item, li;
       if (this.selectedIndex !== -1) {
@@ -1370,24 +1561,24 @@
           this.closeChildList();
         }
       }
-      if (!this.hasFocus) {
-        return this.grabFocus();
-      }
+      if (!this.hasFocus) return this.grabFocus();
     };
+
     MenuList.prototype.triggerAction = function() {
       var item;
       if (this.selectedIndex !== -1) {
         item = this.get("model").items[this.selectedIndex];
-        if (item.action != null) {
-          return item.action();
-        }
+        if (item.action != null) return item.action();
       }
     };
+
     MenuList.prototype.createDummy = function() {
       return $("<ul class='menulist'></ul>");
     };
+
     MenuList.prototype.buildList = function(model) {
-      var item, li, _i, _len, _ref;
+      var item, li, _i, _len, _ref,
+        _this = this;
       _ref = model.items;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         item = _ref[_i];
@@ -1398,48 +1589,44 @@
         }
         this.dummy.append(li);
       }
-      return this.dummy.children().each(__bind(function(i, o) {
+      return this.dummy.children().each(function(i, o) {
         var _item, _li;
         _li = $(o);
         _item = model.items[i];
-        _li.mouseup(__bind(function(e) {
-          if (!this.cantInteract()) {
-            if (_item.action != null) {
-              return _item.action();
-            }
+        _li.mouseup(function(e) {
+          if (!_this.cantInteract()) {
+            if (_item.action != null) return _item.action();
           }
-        }, this));
-        return _li.mouseover(__bind(function(e) {
-          if (!this.cantInteract()) {
-            return this.select(i);
-          }
-        }, this));
-      }, this));
+        });
+        return _li.mouseover(function(e) {
+          if (!_this.cantInteract()) return _this.select(i);
+        });
+      });
     };
+
     MenuList.prototype.clearList = function() {
       return this.dummy.children().remove();
     };
+
     MenuList.prototype.close = function() {
       var _ref;
       this.dummy.blur();
       this.dummy.detach();
       return (_ref = this.childList) != null ? _ref.close() : void 0;
     };
+
     MenuList.prototype.getListItemAt = function(index) {
       return $(this.dummy.children("li")[index]);
     };
+
     MenuList.prototype.openChildList = function(model, li) {
       var left, top;
       if (this.childList == null) {
         this.childList = new MenuList(new MenuModel);
         this.childList.parentList = this;
       }
-      if (this.childList.hasFocus) {
-        this.childList.dummy.blur();
-      }
-      if (!this.isChildListVisible()) {
-        this.dummy.after(this.childList.dummy);
-      }
+      if (this.childList.hasFocus) this.childList.dummy.blur();
+      if (!this.isChildListVisible()) this.dummy.after(this.childList.dummy);
       if (this.childList.get("model") !== model) {
         this.childList.set("model", model);
       }
@@ -1447,66 +1634,65 @@
       top = li.offset().top;
       return this.childList.dummy.attr("style", "left: " + left + "px; top: " + top + "px;");
     };
+
     MenuList.prototype.closeChildList = function() {
       var _ref;
-      if ((_ref = this.childList) != null) {
-        _ref.close();
-      }
+      if ((_ref = this.childList) != null) _ref.close();
       return this.grabFocus();
     };
+
     MenuList.prototype.isChildListVisible = function() {
       var _ref;
       return ((_ref = this.childList) != null ? _ref.dummy.parent().length : void 0) === 1;
     };
+
     MenuList.prototype.set_model = function(property, value) {
       var _ref;
       this.clearList();
       if ((_ref = this.properties[property]) != null) {
         _ref.contentChanged.remove(this.modelChanged, this);
       }
-      if (value != null) {
-        value.contentChanged.add(this.modelChanged, this);
-      }
+      if (value != null) value.contentChanged.add(this.modelChanged, this);
       this.buildList(value);
       return value;
     };
+
     MenuList.prototype.mousedown = function(e) {
       return e.stopImmediatePropagation();
     };
+
     MenuList.prototype.modelChanged = function(model) {
       this.clearList();
       return this.buildList(model);
     };
+
     MenuList.prototype.moveSelectionUp = function(e) {
       var newIndex;
       e.preventDefault();
       if (!this.cantInteract()) {
         newIndex = this.selectedIndex - 1;
-        if (newIndex < 0) {
-          newIndex = this.get("model").size() - 1;
-        }
+        if (newIndex < 0) newIndex = this.get("model").size() - 1;
         return this.select(newIndex);
       }
     };
+
     MenuList.prototype.moveSelectionDown = function(e) {
       var newIndex;
       e.preventDefault();
       if (!this.cantInteract()) {
         newIndex = this.selectedIndex + 1;
-        if (newIndex >= this.get("model").size()) {
-          newIndex = 0;
-        }
+        if (newIndex >= this.get("model").size()) newIndex = 0;
         return this.select(newIndex);
       }
     };
+
     MenuList.prototype.moveSelectionRight = function(e) {
       e.preventDefault();
       if (!this.cantInteract()) {
-        if (this.isChildListVisible) {
-          return this.childList.grabFocus();
-        }
+        if (this.isChildListVisible) return this.childList.grabFocus();
       }
     };
+
     MenuList.prototype.moveSelectionLeft = function(e) {
       var _ref;
       e.preventDefault();
@@ -1515,14 +1701,20 @@
         return (_ref = this.parentList) != null ? _ref.grabFocus() : void 0;
       }
     };
+
     return MenuList;
-  })();
+
+  })(Widget);
+
   if (typeof window !== "undefined" && window !== null) {
     window.MenuModel = MenuModel;
     window.MenuList = MenuList;
   }
-  SingleSelect = (function() {
-    __extends(SingleSelect, Widget);
+
+  SingleSelect = (function(_super) {
+
+    __extends(SingleSelect, _super);
+
     function SingleSelect(target) {
       SingleSelect.__super__.constructor.call(this, target);
       if (this.hasTarget) {
@@ -1541,61 +1733,68 @@
       this.registerKeyDownCommand(keystroke(keys.up), this.moveSelectionUp);
       this.registerKeyDownCommand(keystroke(keys.down), this.moveSelectionDown);
     }
+
     SingleSelect.prototype.checkTarget = function(target) {
       if (!this.isTag(target, "select") || ($(target).attr("multiple") != null)) {
         throw "A SingleSelect only allow select nodes as target";
       }
     };
+
     SingleSelect.prototype.clearOptions = function() {
       return this.jTarget.children().remove();
     };
+
     SingleSelect.prototype.buildOptions = function(model, target) {
-      var act, group, _i, _len, _ref, _results;
-      if (model == null) {
-        model = this.model;
-      }
-      if (target == null) {
-        target = this.jTarget;
-      }
+      var act, group, _i, _len, _ref, _results,
+        _this = this;
+      if (model == null) model = this.model;
+      if (target == null) target = this.jTarget;
       _ref = model.items;
       _results = [];
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
         act = _ref[_i];
-        _results.push(act.menu != null ? (group = $("<optgroup label='" + act.display + "'></optgroup>"), target.append(group), this.buildOptions(act.menu, group)) : (act.action == null ? act.action = __bind(function() {
-          return this.set("value", act.value);
-        }, this) : void 0, target.append($("<option value='" + act.value + "'>" + act.display + "</option>"))));
+        if (act.menu != null) {
+          group = $("<optgroup label='" + act.display + "'></optgroup>");
+          target.append(group);
+          _results.push(this.buildOptions(act.menu, group));
+        } else {
+          if (act.action == null) {
+            act.action = function() {
+              return _this.set("value", act.value);
+            };
+          }
+          _results.push(target.append($("<option value='" + act.value + "'>" + act.display + "</option>")));
+        }
       }
       return _results;
     };
+
     SingleSelect.prototype.updateOptionSelection = function() {
       var _ref;
       return (_ref = this.getOptionAt(this.selectedPath)) != null ? _ref.attr("selected", "selected") : void 0;
     };
+
     SingleSelect.prototype.getOptionLabel = function(option) {
-      if (option == null) {
-        return null;
-      }
+      if (option == null) return null;
       if (option.attr("label")) {
         return option.attr("label");
       } else {
         return option.text();
       }
     };
+
     SingleSelect.prototype.getOptionValue = function(option) {
-      if (option == null) {
-        return null;
-      }
+      if (option == null) return null;
       if (option.attr("value")) {
         return option.attr("value");
       } else {
         return option.text();
       }
     };
+
     SingleSelect.prototype.getOptionAt = function(path) {
       var children, option, step, _i, _len;
-      if (path === null) {
-        return null;
-      }
+      if (path === null) return null;
       option = null;
       if (this.hasTarget) {
         children = this.jTarget.children();
@@ -1613,9 +1812,11 @@
         return null;
       }
     };
+
     SingleSelect.prototype.createDummy = function() {
       return $("<span class='single-select'>               <span class='value'></span>           </span>");
     };
+
     SingleSelect.prototype.updateDummy = function() {
       var display, _ref;
       if (this.selectedPath !== null) {
@@ -1626,55 +1827,49 @@
       this.dummy.find(".value").remove();
       return this.dummy.append($("<span class='value'>" + display + "</span>"));
     };
+
     SingleSelect.prototype.buildModel = function(model, node) {
-      node.each(__bind(function(i, o) {
+      var _this = this;
+      node.each(function(i, o) {
         var option, value;
         option = $(o);
         if (o.nodeName.toLowerCase() === "optgroup") {
           return model.add({
-            display: this.getOptionLabel(option),
-            menu: this.buildModel(new MenuModel, option.children())
+            display: _this.getOptionLabel(option),
+            menu: _this.buildModel(new MenuModel, option.children())
           });
         } else {
-          value = this.getOptionValue(option);
+          value = _this.getOptionValue(option);
           return model.add({
-            display: this.getOptionLabel(option),
+            display: _this.getOptionLabel(option),
             value: value,
-            action: __bind(function() {
-              return this.set("value", value);
-            }, this)
+            action: function() {
+              return _this.set("value", value);
+            }
           });
         }
-      }, this));
+      });
       return model;
     };
+
     SingleSelect.prototype.getItemAt = function(path) {
       var item, model, step, _i, _len;
-      if (path === null) {
-        return null;
-      }
+      if (path === null) return null;
       model = this.model;
       item = null;
       for (_i = 0, _len = path.length; _i < _len; _i++) {
         step = path[_i];
         item = model.items[step];
-        if (item == null) {
-          return null;
-        }
-        if ((item != null ? item.menu : void 0) != null) {
-          model = item.menu;
-        }
+        if (item == null) return null;
+        if ((item != null ? item.menu : void 0) != null) model = item.menu;
       }
       return item;
     };
+
     SingleSelect.prototype.findValue = function(value, model) {
       var item, passResults, subPassResults, _i, _len, _ref;
-      if (model == null) {
-        model = this.model;
-      }
-      if (!(value != null) || value === "") {
-        return null;
-      }
+      if (model == null) model = this.model;
+      if (!(value != null) || value === "") return null;
       passResults = null;
       _ref = model.items;
       for (_i = 0, _len = _ref.length; _i < _len; _i++) {
@@ -1692,34 +1887,32 @@
       }
       return passResults;
     };
+
     SingleSelect.prototype.getModelAt = function(path) {
       var item, model, step, _i, _len;
-      if (path === null) {
-        return null;
-      }
+      if (path === null) return null;
       model = this.model;
       item = null;
       for (_i = 0, _len = path.length; _i < _len; _i++) {
         step = path[_i];
         item = model.items[step];
-        if (item == null) {
-          return null;
-        }
-        if ((item != null ? item.menu : void 0) != null) {
-          model = item.menu;
-        }
+        if (item == null) return null;
+        if ((item != null ? item.menu : void 0) != null) model = item.menu;
       }
       return model;
     };
+
     SingleSelect.prototype.buildMenu = function() {
       return this.menuList = new MenuList(this.model);
     };
+
     SingleSelect.prototype.openMenu = function() {
-      var left, list, step, top, _i, _len, _ref, _results;
+      var left, list, step, top, _i, _len, _ref, _results,
+        _this = this;
       if (!this.cantInteract()) {
-        ($(document)).bind("mousedown", this.documentDelegate = __bind(function(e) {
-          return this.documentMouseDown(e);
-        }, this));
+        ($(document)).bind("mousedown", this.documentDelegate = function(e) {
+          return _this.documentMouseDown(e);
+        });
         this.dummy.after(this.menuList.dummy);
         left = this.dummy.offset().left;
         top = this.dummy.offset().top + this.dummy.height();
@@ -1732,20 +1925,27 @@
           for (_i = 0, _len = _ref.length; _i < _len; _i++) {
             step = _ref[_i];
             list.select(step);
-            _results.push(list.childList ? list = list.childList : void 0);
+            if (list.childList) {
+              _results.push(list = list.childList);
+            } else {
+              _results.push(void 0);
+            }
           }
           return _results;
         }
       }
     };
+
     SingleSelect.prototype.closeMenu = function() {
       this.menuList.close();
       this.grabFocus();
       return $(document).unbind("mousedown", this.documentDelegate);
     };
+
     SingleSelect.prototype.isMenuVisible = function() {
       return this.menuList.dummy.parent().length === 1;
     };
+
     SingleSelect.prototype.moveSelectionUp = function(e) {
       e.preventDefault();
       if (!this.cantInteract()) {
@@ -1753,6 +1953,7 @@
         return this.set("value", this.getOptionValue(this.getOptionAt(this.selectedPath)));
       }
     };
+
     SingleSelect.prototype.moveSelectionDown = function(e) {
       e.preventDefault();
       if (!this.cantInteract()) {
@@ -1760,6 +1961,7 @@
         return this.set("value", this.getOptionValue(this.getOptionAt(this.selectedPath)));
       }
     };
+
     SingleSelect.prototype.findNext = function(path) {
       var model, newPath, nextItem, step;
       model = this.getModelAt(path);
@@ -1785,6 +1987,7 @@
       }
       return newPath;
     };
+
     SingleSelect.prototype.findPrevious = function(path) {
       var model, newPath, nextItem, step;
       model = this.getModelAt(path);
@@ -1811,6 +2014,7 @@
       }
       return newPath;
     };
+
     SingleSelect.prototype.set_value = function(property, value) {
       var newPath, newValue, oldValue;
       oldValue = this.get("value");
@@ -1820,19 +2024,16 @@
         this.selectedPath = newPath;
         newValue = value;
       }
-      if (this.hasTarget) {
-        this.updateOptionSelection();
-      }
+      if (this.hasTarget) this.updateOptionSelection();
       this.updateDummy();
-      if (this.isMenuVisible()) {
-        this.closeMenu();
-      }
+      if (this.isMenuVisible()) this.closeMenu();
       if ((newValue != null) !== null) {
         return newValue;
       } else {
         return oldValue;
       }
     };
+
     SingleSelect.prototype.modelChanged = function(model) {
       if (this.getItemAt(this.selectedPath) == null) {
         this.selectedPath = this.findNext([0]);
@@ -1844,6 +2045,7 @@
         return this.updateOptionSelection();
       }
     };
+
     SingleSelect.prototype.mousedown = function(e) {
       if (!this.cantInteract()) {
         e.preventDefault();
@@ -1855,14 +2057,19 @@
         }
       }
     };
+
     SingleSelect.prototype.documentMouseDown = function(e) {
       return this.closeMenu();
     };
+
     return SingleSelect;
-  })();
+
+  })(Widget);
+
   if (typeof window !== "undefined" && window !== null) {
     window.SingleSelect = SingleSelect;
   }
+
   rgb2hex = function(r, g, b) {
     var rnd, value;
     rnd = Math.round;
@@ -1872,6 +2079,7 @@
     }
     return value;
   };
+
   hex2rgb = function(hex) {
     var b, color, g, r, rgb;
     rgb = hex.substr(1);
@@ -1881,6 +2089,7 @@
     b = color & 0xff;
     return [r, g, b];
   };
+
   hsv2rgb = function(h, s, v) {
     var b, g, r, rnd, var_1, var_2, var_3, var_h, var_i;
     h = h / 360;
@@ -1929,6 +2138,7 @@
       return [r * 255, g * 255, b * 255];
     }
   };
+
   rgb2hsv = function(r, g, b) {
     var del_B, del_G, del_R, delta, h, maxVal, minVal, rnd, s, v;
     r = r / 255;
@@ -1954,15 +2164,12 @@
       } else if (b === maxVal) {
         h = (2 / 3) + del_G - del_R;
       }
-      if (h < 0) {
-        h += 1;
-      }
-      if (h > 1) {
-        h -= 1;
-      }
+      if (h < 0) h += 1;
+      if (h > 1) h -= 1;
     }
     return [h * 360, s * 100, v * 100];
   };
+
   colorObjectFromValue = function(value) {
     var b, g, r, _ref;
     _ref = hex2rgb(value), r = _ref[0], g = _ref[1], b = _ref[2];
@@ -1972,62 +2179,75 @@
       blue: b
     };
   };
+
   colorObjectToValue = function(rgb) {
     return rgb2hex(rgb.red, rgb.green, rgb.blue);
   };
+
   isSafeValue = function(value) {
     var re;
     re = /^\#[0-9a-fA-F]{6}$/;
     return re.test(value);
   };
+
   isSafeNumber = function(value) {
     return (value != null) && !isNaN(value);
   };
+
   isSafeHue = function(value) {
     return (isSafeNumber(value)) && (0 <= value && value <= 360);
   };
+
   isSafePercentage = function(value) {
     return (isSafeNumber(value)) && (0 <= value && value <= 100);
   };
+
   isSafeChannel = function(value) {
     return (isSafeNumber(value)) && (0 <= value && value <= 255);
   };
+
   isSafeColor = function(value) {
     return (value != null) && (isSafeChannel(value.red)) && (isSafeChannel(value.green)) && (isSafeChannel(value.blue));
   };
+
   isSafeRGB = function(r, g, b) {
     return (isSafeChannel(r)) && (isSafeChannel(g)) && (isSafeChannel(b));
   };
+
   isSafeHSV = function(h, s, v) {
     return (isSafeHue(h)) && (isSafePercentage(s)) && (isSafePercentage(v));
   };
-  ColorPicker = (function() {
-    __extends(ColorPicker, Widget);
-    function ColorPicker(target) {
+
+  ColorInput = (function(_super) {
+
+    __extends(ColorInput, _super);
+
+    function ColorInput(target) {
       var value;
-      ColorPicker.__super__.constructor.call(this, target);
+      ColorInput.__super__.constructor.call(this, target);
       this.dialogRequested = new Signal;
       value = this.valueFromAttribute("value");
-      if (!isSafeValue(value)) {
-        value = "#000000";
-      }
+      if (!isSafeValue(value)) value = "#000000";
       this.properties["value"] = value;
       this.createProperty("color", colorObjectFromValue(value));
-      this.dialogRequested.add(ColorPicker.defaultListener.dialogRequested, ColorPicker.defaultListener);
+      this.dialogRequested.add(ColorInput.defaultListener.dialogRequested, ColorInput.defaultListener);
       this.updateDummy(value);
       this.hideTarget();
       this.registerKeyDownCommand(keystroke(keys.space), this.click);
       this.registerKeyDownCommand(keystroke(keys.enter), this.click);
     }
-    ColorPicker.prototype.checkTarget = function(target) {
+
+    ColorInput.prototype.checkTarget = function(target) {
       if (!this.isInputWithType(target, "color")) {
-        throw "ColorPicker's target should be a color input";
+        throw "ColorInput's target should be a color input";
       }
     };
-    ColorPicker.prototype.createDummy = function() {
-      return $("<span class='colorpicker'>               <span class='color'></span>           </span>");
+
+    ColorInput.prototype.createDummy = function() {
+      return $("<span class='colorinput'>               <span class='color'></span>           </span>");
     };
-    ColorPicker.prototype.updateDummy = function(value) {
+
+    ColorInput.prototype.updateDummy = function(value) {
       var b, colorPreview, g, h, r, s, textColor, v, _ref, _ref2;
       if (this.hasDummy) {
         colorPreview = this.dummy.children(".color");
@@ -2038,32 +2258,34 @@
         return colorPreview.attr("style", "background: " + value + "; color: " + textColor + ";");
       }
     };
-    ColorPicker.prototype.set_color = function(property, value) {
+
+    ColorInput.prototype.set_color = function(property, value) {
       var rgb;
-      if (!isSafeColor(value)) {
-        return this.get("color");
-      }
+      if (!isSafeColor(value)) return this.get("color");
       rgb = colorObjectToValue(value);
       this.set("value", "#" + rgb);
       return this.properties["color"] = value;
     };
-    ColorPicker.prototype.set_value = function(property, value) {
-      if (!isSafeValue(value)) {
-        return this.get("value");
-      }
+
+    ColorInput.prototype.set_value = function(property, value) {
+      if (!isSafeValue(value)) return this.get("value");
       this.properties["color"] = colorObjectFromValue(value);
       this.updateDummy(value);
-      return ColorPicker.__super__.set_value.call(this, property, value);
+      return ColorInput.__super__.set_value.call(this, property, value);
     };
-    ColorPicker.prototype.click = function(e) {
-      if (!this.cantInteract()) {
-        return this.dialogRequested.dispatch(this);
-      }
+
+    ColorInput.prototype.click = function(e) {
+      if (!this.cantInteract()) return this.dialogRequested.dispatch(this);
     };
-    return ColorPicker;
-  })();
-  SquarePicker = (function() {
-    __extends(SquarePicker, Widget);
+
+    return ColorInput;
+
+  })(Widget);
+
+  SquarePicker = (function(_super) {
+
+    __extends(SquarePicker, _super);
+
     function SquarePicker() {
       SquarePicker.__super__.constructor.call(this);
       this.createProperty("rangeX", [0, 1]);
@@ -2073,21 +2295,27 @@
       this.xLocked = false;
       this.yLocked = false;
     }
+
     SquarePicker.prototype.lockX = function() {
       return this.xLocked = true;
     };
+
     SquarePicker.prototype.unlockX = function() {
       return this.xLocked = false;
     };
+
     SquarePicker.prototype.lockY = function() {
       return this.yLocked = true;
     };
+
     SquarePicker.prototype.unlockY = function() {
       return this.yLocked = false;
     };
+
     SquarePicker.prototype.createDummy = function() {
       return $("<span class='gridpicker'>               <span class='cursor'></span>           </span>");
     };
+
     SquarePicker.prototype.updateDummy = function(x, y) {
       var ch, cursor, cw, h, left, rx, ry, top, w, xmax, xmin, ymax, ymin, _ref, _ref2;
       cursor = this.dummy.children(".cursor");
@@ -2104,18 +2332,17 @@
       cursor.css("left", "" + left + "px");
       return cursor.css("top", "" + top + "px");
     };
+
     SquarePicker.prototype.set_rangeX = function(property, value) {
-      if (!this.isValidRange(value)) {
-        return this.get(property);
-      }
+      if (!this.isValidRange(value)) return this.get(property);
       return value;
     };
+
     SquarePicker.prototype.set_rangeY = function(property, value) {
-      if (!this.isValidRange(value)) {
-        return this.get(property);
-      }
+      if (!this.isValidRange(value)) return this.get(property);
       return value;
     };
+
     SquarePicker.prototype.set_value = function(property, value) {
       var v, x, y;
       if (!((value != null) && typeof value === "object" && value.length === 2 && this.isValid(value[0], "rangeX") && this.isValid(value[1], "rangeY"))) {
@@ -2123,15 +2350,12 @@
       }
       v = this.get("value");
       x = value[0], y = value[1];
-      if (this.xLocked) {
-        x = v[0];
-      }
-      if (this.yLocked) {
-        y = v[1];
-      }
+      if (this.xLocked) x = v[0];
+      if (this.yLocked) y = v[1];
       this.updateDummy(x, y);
       return SquarePicker.__super__.set_value.call(this, property, [x, y]);
     };
+
     SquarePicker.prototype.handlePropertyChange = function(property, value) {
       var max, min, x, y, _ref, _ref2;
       SquarePicker.__super__.handlePropertyChange.call(this, property, value);
@@ -2156,40 +2380,40 @@
         return this.set("value", [x, y]);
       }
     };
+
     SquarePicker.prototype.isValid = function(value, range) {
       var max, min, _ref;
       _ref = this.get(range), min = _ref[0], max = _ref[1];
       return (value != null) && !isNaN(value) && (min <= value && value <= max);
     };
+
     SquarePicker.prototype.isValidRange = function(value) {
       var max, min;
-      if (value == null) {
-        return false;
-      }
+      if (value == null) return false;
       min = value[0], max = value[1];
       return (min != null) && (max != null) && !isNaN(min) && !isNaN(max) && min < max;
     };
+
     SquarePicker.prototype.mousedown = function(e) {
+      var _this = this;
       if (!this.cantInteract()) {
         this.dragging = true;
         this.drag(e);
-        $(document).bind("mouseup", this.documentMouseUpDelegate = __bind(function(e) {
-          return this.mouseup(e);
-        }, this));
-        $(document).bind("mousemove", this.documentMouseMoveDelegate = __bind(function(e) {
-          return this.mousemove(e);
-        }, this));
+        $(document).bind("mouseup", this.documentMouseUpDelegate = function(e) {
+          return _this.mouseup(e);
+        });
+        $(document).bind("mousemove", this.documentMouseMoveDelegate = function(e) {
+          return _this.mousemove(e);
+        });
       }
-      if (!this.get("disabled")) {
-        this.grabFocus();
-      }
+      if (!this.get("disabled")) this.grabFocus();
       return false;
     };
+
     SquarePicker.prototype.mousemove = function(e) {
-      if (this.dragging) {
-        return this.drag(e);
-      }
+      if (this.dragging) return this.drag(e);
     };
+
     SquarePicker.prototype.mouseup = function(e) {
       if (this.dragging) {
         this.drag(e);
@@ -2198,36 +2422,34 @@
         return $(document).unbind("mousemove", this.documentMouseMoveDelegate);
       }
     };
+
     SquarePicker.prototype.drag = function(e) {
       var h, vx, vy, w, x, xmax, xmin, y, ymax, ymin, _ref, _ref2;
       w = this.dummy.width();
       h = this.dummy.height();
       x = e.pageX - this.dummy.offset().left;
       y = e.pageY - this.dummy.offset().top;
-      if (x < 0) {
-        x = 0;
-      }
-      if (x > w) {
-        x = w;
-      }
-      if (y < 0) {
-        y = 0;
-      }
-      if (y > h) {
-        y = h;
-      }
+      if (x < 0) x = 0;
+      if (x > w) x = w;
+      if (y < 0) y = 0;
+      if (y > h) y = h;
       _ref = this.get("rangeX"), xmin = _ref[0], xmax = _ref[1];
       _ref2 = this.get("rangeY"), ymin = _ref2[0], ymax = _ref2[1];
       vx = xmin + (x / w) * xmax;
       vy = ymin + (y / h) * ymax;
       return this.set("value", [vx, vy]);
     };
+
     return SquarePicker;
-  })();
-  ColorPickerDialog = (function() {
-    __extends(ColorPickerDialog, Container);
-    function ColorPickerDialog() {
-      ColorPickerDialog.__super__.constructor.call(this);
+
+  })(Widget);
+
+  ColorPicker = (function(_super) {
+
+    __extends(ColorPicker, _super);
+
+    function ColorPicker() {
+      ColorPicker.__super__.constructor.call(this);
       this.model = {
         r: 0,
         g: 0,
@@ -2247,15 +2469,18 @@
       this.registerKeyDownCommand(keystroke(keys.enter), this.comfirmChangesOnEnter);
       this.registerKeyDownCommand(keystroke(keys.escape), this.abortChanges);
     }
-    ColorPickerDialog.prototype.createDummy = function() {
-      var dummy;
-      dummy = $("<span class='colorpickerdialog'>                      <span class='newColor'></span>                      <span class='oldColor'></span>                   </span>");
-      dummy.children(".oldColor").click(__bind(function() {
-        return this.set("value", this.originalValue);
-      }, this));
+
+    ColorPicker.prototype.createDummy = function() {
+      var dummy,
+        _this = this;
+      dummy = $("<span class='colorpicker'>                      <span class='newColor'></span>                      <span class='oldColor'></span>                   </span>");
+      dummy.children(".oldColor").click(function() {
+        return _this.set("value", _this.originalValue);
+      });
       return dummy;
     };
-    ColorPickerDialog.prototype.createDummyChildren = function() {
+
+    ColorPicker.prototype.createDummyChildren = function() {
       this.add(this.redInput = this.createInput("red", 3));
       this.add(this.redMode = this.createRadio("red"));
       this.add(this.greenInput = this.createInput("green", 3));
@@ -2274,35 +2499,39 @@
       this.rangePicker.lockX();
       return this.rangePicker.addClasses("vertical");
     };
-    ColorPickerDialog.prototype.createInput = function(cls, maxlength) {
-      var input;
+
+    ColorPicker.prototype.createInput = function(cls, maxlength) {
+      var input,
+        _this = this;
       input = new TextInput;
       input.addClasses(cls);
       input.set("maxlength", maxlength);
-      input.valueChanged.add(__bind(function(w, v) {
-        this.inputValueChanged(w, v, cls);
+      input.valueChanged.add(function(w, v) {
+        _this.inputValueChanged(w, v, cls);
         return true;
-      }, this));
+      });
       return input;
     };
-    ColorPickerDialog.prototype.createRadio = function(cls, checked) {
+
+    ColorPicker.prototype.createRadio = function(cls, checked) {
       var radio;
-      if (checked == null) {
-        checked = false;
-      }
+      if (checked == null) checked = false;
       radio = new Radio;
       radio.addClasses(cls);
       radio.set("checked", checked);
       this.modesGroup.add(radio);
       return radio;
     };
-    ColorPickerDialog.prototype.invalidate = function() {
+
+    ColorPicker.prototype.invalidate = function() {
+      var _this = this;
       this.update();
-      return setTimeout(__bind(function() {
-        return this.update();
-      }, this), 10);
+      return setTimeout(function() {
+        return _this.update();
+      }, 10);
     };
-    ColorPickerDialog.prototype.update = function() {
+
+    ColorPicker.prototype.update = function() {
       var b, g, h, r, rnd, s, v, value, _ref;
       rnd = Math.round;
       _ref = this.model, r = _ref.r, g = _ref.g, b = _ref.b, h = _ref.h, s = _ref.s, v = _ref.v;
@@ -2320,44 +2549,50 @@
       this.inputValueSetProgrammatically = false;
       return this.dummy.children(".newColor").attr("style", "background: #" + value + ";");
     };
-    ColorPickerDialog.prototype.updateInput = function(input, value) {
+
+    ColorPicker.prototype.updateInput = function(input, value) {
       return input.set("value", value);
     };
-    ColorPickerDialog.prototype.comfirmChangesOnEnter = function() {
+
+    ColorPicker.prototype.comfirmChangesOnEnter = function() {
       if (!(this.redInput.valueIsObsolete || this.greenInput.valueIsObsolete || this.blueInput.valueIsObsolete || this.hueInput.valueIsObsolete || this.saturationInput.valueIsObsolete || this.valueInput.valueIsObsolete || this.hexInput.valueIsObsolete)) {
         return this.comfirmChanges();
       }
     };
-    ColorPickerDialog.prototype.comfirmChanges = function() {
+
+    ColorPicker.prototype.comfirmChanges = function() {
       this.currentTarget.set("value", this.get("value"));
       return this.close();
     };
-    ColorPickerDialog.prototype.abortChanges = function() {
+
+    ColorPicker.prototype.abortChanges = function() {
       return this.close();
     };
-    ColorPickerDialog.prototype.close = function() {
+
+    ColorPicker.prototype.close = function() {
       this.dummy.hide();
       ($(document)).unbind("mouseup", this.documentDelegate);
       return this.currentTarget.grabFocus();
     };
-    ColorPickerDialog.prototype.set_mode = function(property, value) {
+
+    ColorPicker.prototype.set_mode = function(property, value) {
       var oldMode;
       oldMode = this.properties[property];
-      if (oldMode != null) {
-        oldMode.dispose();
-      }
+      if (oldMode != null) oldMode.dispose();
       if (value != null) {
         value.init(this);
         value.update(this.model);
       }
       return value;
     };
-    ColorPickerDialog.prototype.set_value = function(property, value) {
-      value = ColorPickerDialog.__super__.set_value.call(this, property, value);
+
+    ColorPicker.prototype.set_value = function(property, value) {
+      value = ColorPicker.__super__.set_value.call(this, property, value);
       this.fromHex(value);
       return value;
     };
-    ColorPickerDialog.prototype.fromHex = function(hex) {
+
+    ColorPicker.prototype.fromHex = function(hex) {
       var b, g, r, v, _ref;
       v = hex.indexOf("#") === -1 ? "#" + hex : hex;
       if (isSafeValue(v)) {
@@ -2365,7 +2600,8 @@
         return this.fromRGB(r, g, b);
       }
     };
-    ColorPickerDialog.prototype.fromRGB = function(r, g, b) {
+
+    ColorPicker.prototype.fromRGB = function(r, g, b) {
       var h, s, v, _ref;
       r = parseFloat(r);
       g = parseFloat(g);
@@ -2383,7 +2619,8 @@
       }
       return this.invalidate();
     };
-    ColorPickerDialog.prototype.fromHSV = function(h, s, v) {
+
+    ColorPicker.prototype.fromHSV = function(h, s, v) {
       var b, g, r, _ref;
       h = parseFloat(h);
       s = parseFloat(s);
@@ -2401,7 +2638,8 @@
       }
       return this.invalidate();
     };
-    ColorPickerDialog.prototype.modeChanged = function(widget, oldSel, newSel) {
+
+    ColorPicker.prototype.modeChanged = function(widget, oldSel, newSel) {
       switch (newSel) {
         case this.redMode:
           return this.set("mode", this.editModes[0]);
@@ -2417,7 +2655,8 @@
           return this.set("mode", this.editModes[5]);
       }
     };
-    ColorPickerDialog.prototype.inputValueChanged = function(widget, value, component) {
+
+    ColorPicker.prototype.inputValueChanged = function(widget, value, component) {
       var b, g, h, r, s, v, _ref;
       if (!this.inputValueSetProgrammatically) {
         _ref = this.model, r = _ref.r, g = _ref.g, b = _ref.b, h = _ref.h, s = _ref.s, v = _ref.v;
@@ -2439,18 +2678,21 @@
         }
       }
     };
-    ColorPickerDialog.prototype.dialogRequested = function(colorpicker) {
-      var value;
-      this.currentTarget = colorpicker;
+
+    ColorPicker.prototype.dialogRequested = function(colorinput) {
+      var value,
+        _this = this;
+      this.currentTarget = colorinput;
       this.originalValue = value = this.currentTarget.get("value");
       this.set("value", value);
-      ($(document)).bind("mouseup", this.documentDelegate = __bind(function(e) {
-        return this.mouseup(e);
-      }, this));
+      ($(document)).bind("mouseup", this.documentDelegate = function(e) {
+        return _this.mouseup(e);
+      });
       this.dummy.css("left", this.currentTarget.dummy.offset().left).css("top", this.currentTarget.dummy.offset().top + this.currentTarget.dummy.height()).css("position", "absolute").show().children(".oldColor").attr("style", "background: " + value + ";");
       return this.grabFocus();
     };
-    ColorPickerDialog.prototype.mouseup = function(e) {
+
+    ColorPicker.prototype.mouseup = function(e) {
       var h, w, x, y;
       w = this.dummy.width();
       h = this.dummy.height();
@@ -2460,20 +2702,27 @@
         return this.comfirmChanges();
       }
     };
-    return ColorPickerDialog;
-  })();
+
+    return ColorPicker;
+
+  })(Container);
+
   AbstractMode = (function() {
+
     function AbstractMode() {}
+
     AbstractMode.prototype.init = function(dialog) {
       this.dialog = dialog;
       return this.valuesSetProgrammatically = false;
     };
+
     AbstractMode.prototype.dispose = function() {
       this.dialog.rangePicker.valueChanged.remove(this.rangeChanged, this);
       this.dialog.squarePicker.valueChanged.remove(this.squareChanged, this);
       this.dialog.rangePicker.dummy.children(".layer").remove();
       return this.dialog.squarePicker.dummy.children(".layer").remove();
     };
+
     AbstractMode.prototype.initPickers = function(a, b, c, r, s) {
       this.dialog.squarePicker.set({
         rangeX: a,
@@ -2487,17 +2736,24 @@
       this.dialog.rangePicker.dummy.prepend($(r));
       return this.dialog.squarePicker.dummy.prepend($(s));
     };
+
     return AbstractMode;
+
   })();
-  HSVMode = (function() {
-    __extends(HSVMode, AbstractMode);
+
+  HSVMode = (function(_super) {
+
+    __extends(HSVMode, _super);
+
     function HSVMode() {
       HSVMode.__super__.constructor.apply(this, arguments);
     }
+
     HSVMode.prototype.init = function(dialog) {
       HSVMode.__super__.init.call(this, dialog);
       return this.initPickers([0, 100], [0, 100], [0, 360], "<span class='layer hue-vertical-ramp'></span>", "<span class='layer'>                        <span class='layer hue-color'></span>                        <span class='layer white-horizontal-ramp'></span>                        <span class='layer black-vertical-ramp'></span>                     </span>");
     };
+
     HSVMode.prototype.update = function(model) {
       var b, g, h, r, s, v, value, _ref;
       if (model != null) {
@@ -2511,11 +2767,13 @@
         return this.valuesSetProgrammatically = false;
       }
     };
+
     HSVMode.prototype.updateDialog = function(h, s, v) {
       this.valuesSetProgrammatically = true;
       this.dialog.fromHSV(360 - h, s, 100 - v);
       return this.valuesSetProgrammatically = false;
     };
+
     HSVMode.prototype.squareChanged = function(widget, value) {
       var h, s, v;
       if (!this.valuesSetProgrammatically) {
@@ -2524,6 +2782,7 @@
         return this.updateDialog(h, s, v);
       }
     };
+
     HSVMode.prototype.rangeChanged = function(widget, value) {
       var h, s, v, _ref;
       if (!this.valuesSetProgrammatically) {
@@ -2532,17 +2791,24 @@
         return this.updateDialog(h, s, v);
       }
     };
+
     return HSVMode;
-  })();
-  SHVMode = (function() {
-    __extends(SHVMode, AbstractMode);
+
+  })(AbstractMode);
+
+  SHVMode = (function(_super) {
+
+    __extends(SHVMode, _super);
+
     function SHVMode() {
       SHVMode.__super__.constructor.apply(this, arguments);
     }
+
     SHVMode.prototype.init = function(dialog) {
       SHVMode.__super__.init.call(this, dialog);
       return this.initPickers([0, 360], [0, 100], [1, 100], "<span class='layer black-white-vertical-ramp'></span>", "<span class='layer'>                        <span class='layer hue-horizontal-ramp'></span>                        <span class='layer white-plain'></span>                        <span class='layer black-vertical-ramp'></span>                      </span>");
     };
+
     SHVMode.prototype.update = function(model) {
       var h, opacity, s, v;
       h = model.h, s = model.s, v = model.v;
@@ -2553,11 +2819,13 @@
       this.valuesSetProgrammatically = false;
       return this.dialog.squarePicker.dummy.find(".white-plain").attr("style", "opacity: " + opacity + ";");
     };
+
     SHVMode.prototype.updateDialog = function(h, s, v) {
       this.valuesSetProgrammatically = true;
       this.dialog.fromHSV(360 - h, 100 - s, 100 - v);
       return this.valuesSetProgrammatically = false;
     };
+
     SHVMode.prototype.squareChanged = function(widget, value) {
       var h, s, v;
       if (!this.valuesSetProgrammatically) {
@@ -2566,6 +2834,7 @@
         return this.updateDialog(h, s, v);
       }
     };
+
     SHVMode.prototype.rangeChanged = function(widget, value) {
       var h, s, v, _ref;
       if (!this.valuesSetProgrammatically) {
@@ -2574,17 +2843,24 @@
         return this.updateDialog(h, s, v);
       }
     };
+
     return SHVMode;
-  })();
-  VHSMode = (function() {
-    __extends(VHSMode, AbstractMode);
+
+  })(AbstractMode);
+
+  VHSMode = (function(_super) {
+
+    __extends(VHSMode, _super);
+
     function VHSMode() {
       VHSMode.__super__.constructor.apply(this, arguments);
     }
+
     VHSMode.prototype.init = function(dialog) {
       VHSMode.__super__.init.call(this, dialog);
       return this.initPickers([0, 360], [0, 100], [1, 100], "<span class='layer black-white-vertical-ramp'></span>", "<span class='layer'>                        <span class='layer hue-horizontal-ramp'></span>                        <span class='layer white-vertical-ramp'></span>                        <span class='layer black-plain'></span>                      </span>");
     };
+
     VHSMode.prototype.update = function(model) {
       var h, opacity, s, v;
       h = model.h, s = model.s, v = model.v;
@@ -2595,11 +2871,13 @@
       this.valuesSetProgrammatically = false;
       return this.dialog.squarePicker.dummy.find(".black-plain").attr("style", "opacity: " + opacity + ";");
     };
+
     VHSMode.prototype.updateDialog = function(h, s, v) {
       this.valuesSetProgrammatically = true;
       this.dialog.fromHSV(360 - h, 100 - s, 100 - v);
       return this.valuesSetProgrammatically = false;
     };
+
     VHSMode.prototype.squareChanged = function(widget, value) {
       var h, s, v;
       if (!this.valuesSetProgrammatically) {
@@ -2608,6 +2886,7 @@
         return this.updateDialog(h, s, v);
       }
     };
+
     VHSMode.prototype.rangeChanged = function(widget, value) {
       var h, s, v, _ref;
       if (!this.valuesSetProgrammatically) {
@@ -2616,17 +2895,24 @@
         return this.updateDialog(h, s, v);
       }
     };
+
     return VHSMode;
-  })();
-  RGBMode = (function() {
-    __extends(RGBMode, AbstractMode);
+
+  })(AbstractMode);
+
+  RGBMode = (function(_super) {
+
+    __extends(RGBMode, _super);
+
     function RGBMode() {
       RGBMode.__super__.constructor.apply(this, arguments);
     }
+
     RGBMode.prototype.init = function(dialog) {
       RGBMode.__super__.init.call(this, dialog);
       return this.initPickers([0, 255], [0, 255], [0, 255], "<span class='layer black-red-vertical-ramp'></span>", "<span class='layer'>                        <span class='layer rgb-bottom'></span>                        <span class='layer rgb-up'></span>                      </span>");
     };
+
     RGBMode.prototype.update = function(model) {
       var b, g, opacity, r;
       r = model.r, g = model.g, b = model.b;
@@ -2637,11 +2923,13 @@
       this.valuesSetProgrammatically = false;
       return this.dialog.squarePicker.dummy.find(".rgb-up").attr("style", "opacity: " + opacity + ";");
     };
+
     RGBMode.prototype.updateDialog = function(r, g, b) {
       this.valuesSetProgrammatically = true;
       this.dialog.fromRGB(255 - r, 255 - g, b);
       return this.valuesSetProgrammatically = false;
     };
+
     RGBMode.prototype.squareChanged = function(widget, value) {
       var b, g, r;
       if (!this.valuesSetProgrammatically) {
@@ -2650,6 +2938,7 @@
         return this.updateDialog(r, g, b);
       }
     };
+
     RGBMode.prototype.rangeChanged = function(widget, value) {
       var b, g, r, _ref;
       if (!this.valuesSetProgrammatically) {
@@ -2658,17 +2947,24 @@
         return this.updateDialog(r, g, b);
       }
     };
+
     return RGBMode;
-  })();
-  GRBMode = (function() {
-    __extends(GRBMode, AbstractMode);
+
+  })(AbstractMode);
+
+  GRBMode = (function(_super) {
+
+    __extends(GRBMode, _super);
+
     function GRBMode() {
       GRBMode.__super__.constructor.apply(this, arguments);
     }
+
     GRBMode.prototype.init = function(dialog) {
       GRBMode.__super__.init.call(this, dialog);
       return this.initPickers([0, 255], [0, 255], [0, 255], "<span class='layer black-green-vertical-ramp'></span>", "<span class='layer'>                        <span class='layer grb-bottom'></span>                        <span class='layer grb-up'></span>                      </span>");
     };
+
     GRBMode.prototype.update = function(model) {
       var b, g, opacity, r;
       r = model.r, g = model.g, b = model.b;
@@ -2679,11 +2975,13 @@
       this.valuesSetProgrammatically = false;
       return this.dialog.squarePicker.dummy.find(".grb-up").attr("style", "opacity: " + opacity + ";");
     };
+
     GRBMode.prototype.updateDialog = function(r, g, b) {
       this.valuesSetProgrammatically = true;
       this.dialog.fromRGB(255 - r, 255 - g, b);
       return this.valuesSetProgrammatically = false;
     };
+
     GRBMode.prototype.squareChanged = function(widget, value) {
       var b, g, r;
       if (!this.valuesSetProgrammatically) {
@@ -2692,6 +2990,7 @@
         return this.updateDialog(r, g, b);
       }
     };
+
     GRBMode.prototype.rangeChanged = function(widget, value) {
       var b, g, r, _ref;
       if (!this.valuesSetProgrammatically) {
@@ -2700,17 +2999,24 @@
         return this.updateDialog(r, g, b);
       }
     };
+
     return GRBMode;
-  })();
-  BGRMode = (function() {
-    __extends(BGRMode, AbstractMode);
+
+  })(AbstractMode);
+
+  BGRMode = (function(_super) {
+
+    __extends(BGRMode, _super);
+
     function BGRMode() {
       BGRMode.__super__.constructor.apply(this, arguments);
     }
+
     BGRMode.prototype.init = function(dialog) {
       BGRMode.__super__.init.call(this, dialog);
       return this.initPickers([0, 255], [0, 255], [0, 255], "<span class='layer black-blue-vertical-ramp'></span>", "<span class='layer'>                        <span class='layer bgr-bottom'></span>                        <span class='layer bgr-up'></span>                      </span>");
     };
+
     BGRMode.prototype.update = function(model) {
       var b, g, opacity, r;
       r = model.r, g = model.g, b = model.b;
@@ -2721,11 +3027,13 @@
       this.valuesSetProgrammatically = false;
       return this.dialog.squarePicker.dummy.find(".bgr-up").attr("style", "opacity: " + opacity + ";");
     };
+
     BGRMode.prototype.updateDialog = function(r, g, b) {
       this.valuesSetProgrammatically = true;
       this.dialog.fromRGB(255 - r, g, 255 - b);
       return this.valuesSetProgrammatically = false;
     };
+
     BGRMode.prototype.squareChanged = function(widget, value) {
       var b, g, r;
       if (!this.valuesSetProgrammatically) {
@@ -2734,6 +3042,7 @@
         return this.updateDialog(r, g, b);
       }
     };
+
     BGRMode.prototype.rangeChanged = function(widget, value) {
       var b, g, r, _ref;
       if (!this.valuesSetProgrammatically) {
@@ -2742,18 +3051,23 @@
         return this.updateDialog(r, g, b);
       }
     };
+
     return BGRMode;
-  })();
-  ColorPicker.defaultListener = new ColorPickerDialog;
+
+  })(AbstractMode);
+
+  ColorInput.defaultListener = new ColorPicker;
+
   $(document).ready(function() {
-    return $("body").append(ColorPicker.defaultListener.dummy);
+    return $("body").append(ColorInput.defaultListener.dummy);
   });
+
   if (typeof window !== "undefined" && window !== null) {
     window.rgb2hsv = rgb2hsv;
     window.hsv2rgb = hsv2rgb;
-    window.ColorPicker = ColorPicker;
+    window.ColorInput = ColorInput;
     window.SquarePicker = SquarePicker;
-    window.ColorPickerDialog = ColorPickerDialog;
+    window.ColorPicker = ColorPicker;
     window.HSVMode = HSVMode;
     window.SHVMode = SHVMode;
     window.VHSMode = VHSMode;
@@ -2761,21 +3075,316 @@
     window.GRBMode = GRBMode;
     window.BGRMode = BGRMode;
   }
+
+  MILLISECONDS_IN_SECOND = 1000;
+
+  MILLISECONDS_IN_MINUTE = MILLISECONDS_IN_SECOND * 60;
+
+  MILLISECONDS_IN_HOUR = MILLISECONDS_IN_MINUTE * 60;
+
+  MILLISECONDS_IN_DAY = MILLISECONDS_IN_HOUR * 24;
+
+  MILLISECONDS_IN_WEEK = MILLISECONDS_IN_DAY * 7;
+
+  safeInt = function(value, offset) {
+    var n;
+    if (offset == null) offset = 0;
+    n = parseInt(value);
+    if (!isNaN(n)) {
+      return n + offset;
+    } else {
+      return offset;
+    }
+  };
+
+  fill = function(s, l) {
+    if (l == null) l = 2;
+    s = String(s);
+    while (s.length < l) {
+      s = "0" + s;
+    }
+    return s;
+  };
+
+  findFirstWeekFirstDay = function(year) {
+    var d, day;
+    d = new Date(year, 0, 1);
+    day = d.getDay();
+    if (day === 0) day = 7;
+    if (day > 3) {
+      return d = new Date(year, 0, 7 - day + 2);
+    } else {
+      return d = new Date(year, 0, 2 - day);
+    }
+  };
+
+  time2date = function(time) {
+    var d, hours, min, ms, sec, _ref, _ref2;
+    if (!(new TimeMode).isValidValue(time)) {
+      throw "time2date only accept valid RFC time";
+    }
+    _ref = time.split(":"), hours = _ref[0], min = _ref[1], sec = _ref[2];
+    _ref2 = sec != null ? sec.split(".") : [sec], sec = _ref2[0], ms = _ref2[1];
+    time = safeInt(hours, -1) * MILLISECONDS_IN_HOUR + safeInt(min) * MILLISECONDS_IN_MINUTE + safeInt(sec) * MILLISECONDS_IN_SECOND + safeInt(ms);
+    d = new Date(time);
+    return d;
+  };
+
+  date2time = function(date) {
+    var h, m, ms, s, time;
+    h = date.getHours();
+    m = date.getMinutes();
+    s = date.getSeconds();
+    ms = date.getMilliseconds();
+    time = "" + (fill(h)) + ":" + (fill(m)) + ":" + (fill(s));
+    if (ms !== 0) time += "." + ms;
+    return time;
+  };
+
+  week2date = function(string) {
+    var d, s, start, week, year, _ref;
+    if (!(new WeekMode).isValidValue(string)) {
+      throw "time2date only accept valid RFC weeks";
+    }
+    _ref = (function() {
+      var _i, _len, _ref, _results;
+      _ref = string.split("-W");
+      _results = [];
+      for (_i = 0, _len = _ref.length; _i < _len; _i++) {
+        s = _ref[_i];
+        _results.push(parseInt(s));
+      }
+      return _results;
+    })(), year = _ref[0], week = _ref[1];
+    start = findFirstWeekFirstDay(year);
+    return d = new Date(start.valueOf() + MILLISECONDS_IN_WEEK * (week - 1));
+  };
+
+  date2week = function(date) {
+    var dif, start, week;
+    start = findFirstWeekFirstDay(date.getFullYear());
+    dif = date.valueOf() - start.valueOf();
+    week = Math.floor((dif / MILLISECONDS_IN_WEEK) + 1);
+    return "" + (fill(date.getFullYear(), 4)) + "-W" + week;
+  };
+
+  TimeMode = (function() {
+
+    function TimeMode() {}
+
+    TimeMode.prototype.isValidValue = function(value) {
+      if (value == null) return false;
+      return /^[\d]{2}(:[\d]{2}(:[\d]{2}(.[\d]{1,4})?)?)?$/g.test(value);
+    };
+
+    TimeMode.prototype.dateFromString = function(string) {
+      return time2date(string);
+    };
+
+    TimeMode.prototype.dateToString = function(date) {
+      return date2time(date);
+    };
+
+    return TimeMode;
+
+  })();
+
+  DateMode = (function() {
+
+    function DateMode() {}
+
+    DateMode.prototype.isValidValue = function(value) {
+      if (value == null) return false;
+      return /^[\d]{4}-[\d]{2}-[\d]{2}$/g.test(value);
+    };
+
+    DateMode.prototype.dateFromString = function(string) {
+      var returnDate;
+      returnDate = new Date(string);
+      returnDate.setHours(0);
+      return returnDate;
+    };
+
+    DateMode.prototype.dateToString = function(date) {
+      return "" + (fill(date.getFullYear(), 4)) + "-" + (fill(date.getMonth() + 1)) + "-" + (fill(date.getDate()));
+    };
+
+    return DateMode;
+
+  })();
+
+  MonthMode = (function() {
+
+    function MonthMode() {}
+
+    MonthMode.prototype.isValidValue = function(value) {
+      if (value == null) return false;
+      return /^[\d]{4}-[\d]{2}$/g.test(value);
+    };
+
+    MonthMode.prototype.dateFromString = function(string) {
+      var returnDate;
+      returnDate = new Date(string);
+      returnDate.setHours(0);
+      return returnDate;
+    };
+
+    MonthMode.prototype.dateToString = function(date) {
+      return "" + (fill(date.getFullYear(), 4)) + "-" + (fill(date.getMonth() + 1));
+    };
+
+    return MonthMode;
+
+  })();
+
+  WeekMode = (function() {
+
+    function WeekMode() {}
+
+    WeekMode.prototype.isValidValue = function(value) {
+      if (value == null) return false;
+      return /^[\d]{4}-W[\d]{1,2}$/g.test(value);
+    };
+
+    WeekMode.prototype.dateFromString = function(string) {
+      return week2date(string);
+    };
+
+    WeekMode.prototype.dateToString = function(date) {
+      return date2week(date);
+    };
+
+    return WeekMode;
+
+  })();
+
+  DateTimeMode = (function() {
+
+    function DateTimeMode() {}
+
+    DateTimeMode.prototype.isValidValue = function(value) {
+      if (value == null) return false;
+      return /^[\d]{4}-[\d]{2}-[\d]{2}T[\d]{2}:[\d]{2}:[\d]{2}(.[\d]{1,4})?(Z)?$/g.test(value);
+    };
+
+    DateTimeMode.prototype.dateFromString = function(string) {
+      var date, ms, time, _ref;
+      _ref = string.split("T"), date = _ref[0], time = _ref[1];
+      if (__indexOf.call(time, "Z") >= 0) time = time.replace("Z", "");
+      date = new Date(date);
+      time = time2date(time);
+      ms = date.valueOf() + (time.valueOf() - MILLISECONDS_IN_HOUR);
+      return new Date(ms);
+    };
+
+    DateTimeMode.prototype.dateToString = function(date) {};
+
+    return DateTimeMode;
+
+  })();
+
+  DateInput = (function(_super) {
+
+    __extends(DateInput, _super);
+
+    DateInput.prototype.defaultMode = "datetime";
+
+    DateInput.prototype.modes = ["date", "month", "week", "time", "datetime", "datetime-local"];
+
+    DateInput.prototype.modesInstances = {
+      'date': new DateMode,
+      'month': new MonthMode,
+      'week': new WeekMode,
+      'time': new TimeMode,
+      'datetime': new DateTimeMode,
+      'datetime-local': new DateTimeMode
+    };
+
+    function DateInput(target, mode) {
+      var date, max, min;
+      if (mode == null) mode = this.defaultMode;
+      if (target instanceof Date) {
+        DateInput.__super__.constructor.call(this);
+        date = target;
+        if (__indexOf.call(this.modes, mode) < 0) mode = this.defaultMode;
+      } else {
+        DateInput.__super__.constructor.call(this, target);
+        if (this.hasTarget) mode = this.valueFromAttribute("type");
+        date = new Date;
+      }
+      this.currentMode = this.modesInstances[mode];
+      if (this.hasTarget) {
+        date = this.dateFromAttribute("value");
+        min = this.dateFromAttribute("min");
+        max = this.dateFromAttribute("max");
+      }
+      this.createProperty("date", date);
+      this.createProperty("mode", mode);
+      this.createProperty("min", min);
+      this.createProperty("max", max);
+      this.dateSetProgramatically = false;
+    }
+
+    DateInput.prototype.checkTarget = function(target) {
+      if (!this.isInputWithType.apply(this, [target].concat(this.modes))) {
+        throw "The DateTime target must be of type " + (this.modes.join(', '));
+      }
+    };
+
+    DateInput.prototype.dateFromAttribute = function(attr, mode) {
+      var value;
+      value = this.valueFromAttribute(attr);
+      if (!this.currentMode.isValidValue(value)) return new Date(0);
+      return this.currentMode.dateFromString(value);
+    };
+
+    DateInput.prototype.set_value = function(property, value) {
+      if (!this.currentMode.isValidValue(value)) return this.get("value");
+      DateInput.__super__.set_value.call(this, property, value);
+      this.dateSetProgramatically = true;
+      this.set("date", this.currentMode.dateFromString(value));
+      this.dateSetProgramatically = false;
+      return value;
+    };
+
+    DateInput.prototype.set_date = function(property, value) {
+      if (this.dateSetProgramatically) return value;
+      if (value == null) return this.get("date");
+      this.set("value", this.currentMode.dateToString(value));
+      return value;
+    };
+
+    return DateInput;
+
+  })(Widget);
+
+  if (typeof window !== "undefined" && window !== null) {
+    window.time2date = time2date;
+    window.date2time = date2time;
+    window.week2date = week2date;
+    window.date2week = date2week;
+    window.DateInput = DateInput;
+  }
+
   $.fn.extend({
     widgets: function() {
       return $.widgetPlugin.process($(this));
     }
   });
+
   WidgetPlugin = (function() {
+
     function WidgetPlugin() {
       this.processors = {};
     }
+
     WidgetPlugin.prototype.register = function(id, match, processor) {
       if (processor == null) {
         throw "The processor function can't be null in register";
       }
       return this.processors[id] = [match, processor];
     };
+
     WidgetPlugin.prototype.registerWidgetFor = function(id, match, widget) {
       if (widget == null) {
         throw "The widget class can't be null in registerWidgetFor";
@@ -2784,25 +3393,26 @@
         return new widget(target);
       });
     };
+
     WidgetPlugin.prototype.isRegistered = function(id) {
       return id in this.processors;
     };
+
     WidgetPlugin.prototype.process = function(queryset) {
-      return queryset.each(__bind(function(i, o) {
+      var _this = this;
+      return queryset.each(function(i, o) {
         var elementMatched, id, match, next, parent, processor, target, widget, _ref, _ref2, _results;
         target = $(o);
-        if (target.hasClass("widget-done")) {
-          return;
-        }
+        if (target.hasClass("widget-done")) return;
         next = target.next();
         parent = target.parent();
-        _ref = this.processors;
+        _ref = _this.processors;
         _results = [];
         for (id in _ref) {
           _ref2 = _ref[id], match = _ref2[0], processor = _ref2[1];
-          elementMatched = $.isFunction(match) ? match.call(this, o) : o.nodeName.toLowerCase() === match;
+          elementMatched = $.isFunction(match) ? match.call(_this, o) : o.nodeName.toLowerCase() === match;
           if (elementMatched) {
-            widget = processor.call(this, o);
+            widget = processor.call(_this, o);
             if (widget != null) {
               if (next.length > 0) {
                 next.before(widget.dummy);
@@ -2811,11 +3421,14 @@
               }
             }
             break;
+          } else {
+            _results.push(void 0);
           }
         }
         return _results;
-      }, this));
+      });
     };
+
     WidgetPlugin.prototype.isElement = function(o) {
       if (typeof HTMLElement === "object") {
         return o instanceof HTMLElement;
@@ -2823,15 +3436,18 @@
         return typeof o === "object" && o.nodeType === 1 && typeof o.nodeName === "string";
       }
     };
+
     WidgetPlugin.prototype.isTag = function(o, tag) {
       var _ref;
       return this.isElement(o) && (o != null ? (_ref = o.nodeName) != null ? _ref.toLowerCase() : void 0 : void 0) === tag;
     };
+
     WidgetPlugin.prototype.isInputWithType = function() {
       var o, types, _ref;
       o = arguments[0], types = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
       return this.isTag(o, "input") && (_ref = $(o).attr("type"), __indexOf.call(types, _ref) >= 0);
     };
+
     WidgetPlugin.prototype.inputWithType = function() {
       var types;
       types = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -2839,33 +3455,43 @@
         return this.isInputWithType.apply(this, [o].concat(types));
       };
     };
+
     return WidgetPlugin;
+
   })();
+
   $.widgetPlugin = new WidgetPlugin;
+
   $.widgetPlugin.registerWidgetFor("textarea", "textarea", TextArea);
+
   $.widgetPlugin.registerWidgetFor("select", "select", SingleSelect);
+
   $.widgetPlugin.registerWidgetFor("textinput", $.widgetPlugin.inputWithType("text", "password"), TextInput);
+
   $.widgetPlugin.registerWidgetFor("button", $.widgetPlugin.inputWithType("button", "reset", "submit"), Button);
+
   $.widgetPlugin.registerWidgetFor("range", $.widgetPlugin.inputWithType("range"), Slider);
+
   $.widgetPlugin.registerWidgetFor("number", $.widgetPlugin.inputWithType("number"), Stepper);
+
   $.widgetPlugin.registerWidgetFor("checkbox", $.widgetPlugin.inputWithType("checkbox"), CheckBox);
-  $.widgetPlugin.registerWidgetFor("color", $.widgetPlugin.inputWithType("color"), ColorPicker);
+
+  $.widgetPlugin.registerWidgetFor("color", $.widgetPlugin.inputWithType("color"), ColorInput);
+
   $.widgetPlugin.registerWidgetFor("file", $.widgetPlugin.inputWithType("file"), FilePicker);
+
   $.widgetPlugin.register("radio", $.widgetPlugin.inputWithType("radio"), function(o) {
     var group, groups, name, widget;
     widget = new Radio(o);
     name = widget.get("name");
     if (name != null) {
-      if ($.widgetPlugin.radiogroups == null) {
-        $.widgetPlugin.radiogroups = {};
-      }
+      if ($.widgetPlugin.radiogroups == null) $.widgetPlugin.radiogroups = {};
       groups = $.widgetPlugin.radiogroups;
-      if (groups[name] == null) {
-        groups[name] = new RadioGroup;
-      }
+      if (groups[name] == null) groups[name] = new RadioGroup;
       group = groups[name];
       group.add(widget);
     }
     return widget;
   });
+
 }).call(this);

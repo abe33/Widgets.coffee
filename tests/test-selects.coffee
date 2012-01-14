@@ -916,7 +916,7 @@ test "Empty SingleSelect should display a default label", ->
 
     assertThat select.dummy.find(".value").text(), equalTo "Empty" 
 
-test "Empty SingleSelect should display a default label", ->
+test "Empty SingleSelect should display a default placeholder", ->
 
     select = new SingleSelect
 
@@ -929,6 +929,12 @@ test "Empty SingleSelect should use the title attribute of the target as placeho
     select = new SingleSelect target
 
     assertThat select.dummy.find(".value").text(), equalTo "foo" 
+
+test "SingleSelect with the default model should display the default placeholder", ->
+
+    select = new SingleSelect
+
+    assertThat select.dummy.find(".value").text(), equalTo "Empty" 
 
 s = "<select>
         <option>List Item 1</option>

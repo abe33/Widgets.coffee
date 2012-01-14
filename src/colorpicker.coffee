@@ -1,12 +1,12 @@
 #### In this file
 # 
-# The `ColorPicker` widget relys on several functions and widgets
+# The `ColorInput` widget relys on several functions and widgets
 # that are also declared in this file, you can find below
 # the list of classes that are defined:
 # 
-# * [ColorPicker](#colorpicker)
+# * [ColorInput](#colorinput)
 # * [SquarePicker](#gridpicker)
-# * [ColorPickerDialog](#colorpickerdialog)
+# * [ColorPicker](#colorpicker)
 # * [AbstractMode](#AbstractMode)
 # * [HSVMode](#HSV)
 # * [SHVMode](#SHV)
@@ -175,10 +175,10 @@ isSafeRGB = ( r, g, b )->
 isSafeHSV = ( h, s, v )->
     ( isSafeHue h ) and ( isSafePercentage s ) and ( isSafePercentage v )
     
-# <a name='colorpicker'></a>
-## ColorPicker
+# <a name='colorinput'></a>
+## ColorInput
 
-# Here some live instances of the `ColorPicker` widget : 
+# Here some live instances of the `ColorInput` widget : 
 # <div id="livedemos"></div>
 # <link rel="stylesheet" href="../css/styles.css" media="screen">
 # <link rel="stylesheet" href="../css/widgets.css" media="screen">
@@ -189,9 +189,9 @@ isSafeHSV = ( h, s, v )->
 # <script type='text/javascript' src='../widgets.js'></script>
 #
 # <script type='text/javascript'>
-# var picker1 = new ColorPicker()
-# var picker2 = new ColorPicker()
-# var picker3 = new ColorPicker()
+# var picker1 = new ColorInput()
+# var picker2 = new ColorInput()
+# var picker3 = new ColorInput()
 # 
 # picker1.set( "value", "#cbdc1b" )
 # picker2.set( "value", "#66ff99" )
@@ -204,12 +204,12 @@ isSafeHSV = ( h, s, v )->
 # $("#livedemos").append( picker2.dummy )
 # $("#livedemos").append( picker3.dummy )
 # </script>
-class ColorPicker extends Widget
+class ColorInput extends Widget
 
     constructor:( target )->
         super target
 
-        #### ColorPicker signals
+        #### ColorInput signals
 
         # The `dialogRequested` signal is dispatched when the widget
         # is activated through a click or a keyboard input.
@@ -219,13 +219,13 @@ class ColorPicker extends Widget
         #
         # *Callback arguments*
         #
-        #  * `widget`    : The colorpicker that request a dialog.
+        #  * `widget`    : The colorinput that request a dialog.
         @dialogRequested = new Signal
                 
         # The initial value is retreived from the target if defined.
         value = @valueFromAttribute "value"
 
-        # A `ColorPicker` has always a valid color as value, the default is `#000000`.
+        # A `ColorInput` has always a valid color as value, the default is `#000000`.
         unless isSafeValue value
             value = "#000000"
         
@@ -234,7 +234,7 @@ class ColorPicker extends Widget
         # The color object is then created with the widget's value.
         @createProperty "color", colorObjectFromValue value
 
-        @dialogRequested.add ColorPicker.defaultListener.dialogRequested, ColorPicker.defaultListener
+        @dialogRequested.add ColorInput.defaultListener.dialogRequested, ColorInput.defaultListener
 
         @updateDummy value
 
@@ -249,22 +249,22 @@ class ColorPicker extends Widget
     
     #### Target management
 
-    # Color pickers only allow input with a `color` type
+    # Color inputs only allow input with a `color` type
     # as target.
     checkTarget:( target )->
         unless @isInputWithType target, "color"
-            throw "ColorPicker's target should be a color input"
+            throw "ColorInput's target should be a color input"
     
     #### Dummy management
     
-    # The `ColorPicker` dummy contains an additional `span` used
+    # The `ColorInput` dummy contains an additional `span` used
     # to display the current color of this widget.
     createDummy:->
-        $ "<span class='colorpicker'>
+        $ "<span class='colorinput'>
                <span class='color'></span>
            </span>"
     
-    # The `ColorPicker` widget automatically update the color preview
+    # The `ColorInput` widget automatically update the color preview
     # through the `style` attribute of the dummy.
     updateDummy:( value )->
         if @hasDummy 
@@ -331,7 +331,7 @@ class ColorPicker extends Widget
 # <a name="gridpicker"></a>
 ## SquarePicker
 
-# The `SquarePicker` widget is used in the `ColorPickerDialog`.
+# The `SquarePicker` widget is used in the `ColorPicker`.
 # It allow to manipulate value by dragging a cursor over a surface.
 # 
 # Here some live instances : 
@@ -568,22 +568,22 @@ class SquarePicker extends Widget
         
         @set "value", [ vx, vy ] 
         
-# <a name="colorpickerdialog"></a>
-## ColorPickerDialog
+# <a name="colorpicker"></a>
+## ColorPicker
 
-# The `ColorPickerDialog` class handle the manipulation
-# of the color for a given `ColorPicker` object.
+# The `ColorPicker` class handle the manipulation
+# of the color for a given `ColorInput` object.
 #
-# Here a live instance of the `ColorPickerDialog` widget : 
+# Here a live instance of the `ColorPicker` widget : 
 # <div id="livedemos3"></div>
 # <script type="text/javascript">
-# var dialog = new ColorPickerDialog();
+# var dialog = new ColorPicker();
 # dialog.set( "value", "#abcdef" );
 # dialog.addClasses("dummy");
 # 
 # $("#livedemos3").append( dialog.dummy );
 # </script>
-class ColorPickerDialog extends Container
+class ColorPicker extends Container
     constructor:->
         super()
         
@@ -598,7 +598,7 @@ class ColorPickerDialog extends Container
         @model = r:0, g:0, b:0, h:0, s:0, v:0
 
         # When interactions are done on the children of the
-        # `ColorPickerDialog` the model is updated and each
+        # `ColorPicker` the model is updated and each
         # child receive its new value. 
         # 
         # This property prevent
@@ -606,8 +606,8 @@ class ColorPickerDialog extends Container
         # updated by the dialog.
         @inputValueSetProgrammatically = false
 
-        # The `ColorPickerDialog` supports 6 modes for the 
-        # grid pickers configuration.
+        # The `ColorPicker` supports 6 modes for the 
+        # grid inputs configuration.
         #
         # Those modes are [HSV](#HSV), [SHV](#SHV), [VHS](#VHS), 
         # [RGB](#RGB), [GRB](#GRB), [BGR](#BGR).
@@ -632,7 +632,7 @@ class ColorPickerDialog extends Container
         @set "mode", @editModes[ 3 ]
         
 
-        # A `ColorPickerDialog` is hidden at creation.
+        # A `ColorPicker` is hidden at creation.
         @dummy.hide()
 
         # Using the `Enter` key while editing a color comfirm the edit
@@ -644,13 +644,13 @@ class ColorPickerDialog extends Container
     
     #### Dummy Management
 
-    # The dummy for a `ColorPickerDialog` contains many sub widgets that are created
+    # The dummy for a `ColorPicker` contains many sub widgets that are created
     # and added in the `createDummyChildren` method.
     #
     # Additionally, there's two `span` that serve to display the original color
     # in comparison next to the current color.
     createDummy:->
-        dummy = $ "<span class='colorpickerdialog'>
+        dummy = $ "<span class='colorpicker'>
                       <span class='newColor'></span>
                       <span class='oldColor'></span>
                    </span>"
@@ -704,7 +704,7 @@ class ColorPickerDialog extends Container
         input.addClasses cls
         input.set "maxlength", maxlength
 
-        # The `ColorPickerDialog` listen to all the children
+        # The `ColorPicker` listen to all the children
         # `TextInput`s. The class added to the input is passed
         # to the listener to differenciate each input. 
         input.valueChanged.add ( w, v )=>
@@ -804,18 +804,18 @@ class ColorPickerDialog extends Container
                @hexInput.valueIsObsolete
             @comfirmChanges()
     
-    # Comfirm the changes to the `ColorPicker`. The dialog is hidden
+    # Comfirm the changes to the `ColorInput`. The dialog is hidden
     # a the end of the call.
     comfirmChanges:->
         @currentTarget.set "value", @get "value"
         @close()
     
     # Aborts the changes made in the dialog. The dialog is hidden and the
-    # `ColorPicker` value is remained unchanged.
+    # `ColorInput` value is remained unchanged.
     abortChanges:->
         @close()
 
-    # Hides the dummy of this `ColorPickerDialog`.
+    # Hides the dummy of this `ColorPicker`.
     close:->
         @dummy.hide()
         ( $ document ).unbind "mouseup", @documentDelegate
@@ -912,27 +912,27 @@ class ColorPickerDialog extends Container
 
                 when "hex"        then @fromHex value
     
-    # When a user click on a `ColorPicker`, a `dialogRequested` signal is dispatched
-    # and the `ColorPickerDialog` that listen to it will catch it. 
+    # When a user click on a `ColorInput`, a `dialogRequested` signal is dispatched
+    # and the `ColorPicker` that listen to it will catch it. 
     # 
-    # The same `ColorPickerDialog` can work for many `ColorPicker`.
-    dialogRequested:( colorpicker )->
-        # We store the `ColorPicker` that requested the dialog.
-        @currentTarget = colorpicker
+    # The same `ColorPicker` can work for many `ColorInput`.
+    dialogRequested:( colorinput )->
+        # We store the `ColorInput` that requested the dialog.
+        @currentTarget = colorinput
 
         # The original value is stored for allow a later reset.
         @originalValue = value = @currentTarget.get "value"
 
-        # The dialog's value is set on the current `ColorPicker` value.
+        # The dialog's value is set on the current `ColorInput` value.
         @set "value", value
 
         # The dialog register itself to catch clicks done outside of it.
         # When it occurs the dialog will close itself and affect the value
-        # to the `ColorPicker` that have made the initial request.
+        # to the `ColorInput` that have made the initial request.
         ( $ document ).bind "mouseup", @documentDelegate = (e)=>
             @mouseup e
         
-        # The dummy is placed in below the `ColorPicker` that requested the dialog.
+        # The dummy is placed in below the `ColorInput` that requested the dialog.
         @dummy.css("left", @currentTarget.dummy.offset().left)
               .css("top", @currentTarget.dummy.offset().top + @currentTarget.dummy.height() )
               .css("position", "absolute")
@@ -954,7 +954,7 @@ class ColorPickerDialog extends Container
         x = e.pageX - @dummy.offset().left
         y = e.pageY - @dummy.offset().top
 
-        # Clicking outside the widget will comfirm the changes to the `ColorPicker`.
+        # Clicking outside the widget will comfirm the changes to the `ColorInput`.
         unless 0 <= x <= w and 0 <= y <= h then @comfirmChanges()
         
 ## Color manipulation modes
@@ -980,7 +980,7 @@ class AbstractMode
         @dialog.squarePicker.dummy.children(".layer").remove()
     
     # Initialize the setup for the two `SquarePicker` owns 
-    # by the `ColorPickerDialog`.
+    # by the `ColorPicker`.
     initPickers:( a, b, c, r, s )->
         # The `a`, `b` and `c` arguments are the three ranges for the
         # axis of the `SquarePicker`.
@@ -1003,7 +1003,7 @@ class AbstractMode
 #<a name="HSV"></a>
 #### HSV mode
 
-# The `HSVMode` setup the `ColorPickerDialog` such as the
+# The `HSVMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `hue` component and the square
 # picker edit the `saturation` and `value`.
 class HSVMode extends AbstractMode
@@ -1061,7 +1061,7 @@ class HSVMode extends AbstractMode
 #<a name="SHV"></a>
 #### SHV mode 
 
-# The `SHVMode` setup the `ColorPickerDialog` such as the
+# The `SHVMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `saturation` component and the square
 # picker edit the `hue` and `value`.
 class SHVMode extends AbstractMode
@@ -1115,7 +1115,7 @@ class SHVMode extends AbstractMode
 #<a name="VHS"></a>
 #### VHS mode 
 
-# The `VHSMode` setup the `ColorPickerDialog` such as the
+# The `VHSMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `value` component and the square
 # picker edit the `saturation` and `hue`.
 class VHSMode extends AbstractMode
@@ -1169,7 +1169,7 @@ class VHSMode extends AbstractMode
 #<a name="RGB"></a>
 #### RGB mode 
 
-# The `RGBMode` setup the `ColorPickerDialog` such as the
+# The `RGBMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `red` component and the square
 # picker edit the `green` and `blue`.
 class RGBMode extends AbstractMode
@@ -1222,7 +1222,7 @@ class RGBMode extends AbstractMode
 #<a name="GRB"></a>
 #### GRB mode 
 
-# The `RGBMode` setup the `ColorPickerDialog` such as the
+# The `RGBMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `green` component and the square
 # picker edit the `red` and `blue`.
 class GRBMode extends AbstractMode
@@ -1276,7 +1276,7 @@ class GRBMode extends AbstractMode
 #### BGR mode
 
 
-# The `RGBMode` setup the `ColorPickerDialog` such as the
+# The `RGBMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `blue` component and the square
 # picker edit the `green` and `red`. 
 class BGRMode extends AbstractMode
@@ -1327,21 +1327,21 @@ class BGRMode extends AbstractMode
             @updateDialog r, g, b
 
 
-# Setup a unique instance of `ColorPickerDialog` as the default listener
-# for `ColorPicker` instances.      
-ColorPicker.defaultListener = new ColorPickerDialog
+# Setup a unique instance of `ColorPicker` as the default listener
+# for `ColorInput` instances.      
+ColorInput.defaultListener = new ColorPicker
 
 $( document ).ready ->
-    $("body").append( ColorPicker.defaultListener.dummy )
+    $("body").append( ColorInput.defaultListener.dummy )
     
 # Address the access restriction due to the sandboxing when used
 # directly in a browser with the `text/coffeescript` mode. 
 if window? 
     window.rgb2hsv           = rgb2hsv
     window.hsv2rgb           = hsv2rgb
-    window.ColorPicker       = ColorPicker
+    window.ColorInput       = ColorInput
     window.SquarePicker      = SquarePicker
-    window.ColorPickerDialog = ColorPickerDialog
+    window.ColorPicker = ColorPicker
     window.HSVMode           = HSVMode
     window.SHVMode           = SHVMode
     window.VHSMode           = VHSMode

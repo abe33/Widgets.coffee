@@ -51,7 +51,7 @@ a {
     color: #f911b5;
     border: none; }
 
-.colorpickerdialog.dummy, .colorpickerdialog.dummy.focus {
+.colorpicker.dummy, .colorpicker.dummy.focus {
   display: inline-block !important; }
 
 .text.a, .text.b, .text.c {
