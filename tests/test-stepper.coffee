@@ -885,7 +885,7 @@ asyncTest "Moving the mouse back to the minus button should restart the decremen
 	, 100
 
 	setTimeout ->
-		assertThat stepper.get("value"), closeTo 6, 1 
+		assertThat stepper.get("value"), closeTo 6, 2
 
 		start()
 	, 200
@@ -918,7 +918,7 @@ asyncTest "Releasing the mouse on the plus button should stop the increment inte
 		start()
 	, 200
 
-asyncTest "Releasing the mouse outside of the minus button should stop the decrement interval", ->
+asyncTest "Releasing the mouse outside of the plus button should stop the increment interval", ->
 
 	stepper = new Stepper
 
@@ -935,7 +935,7 @@ asyncTest "Releasing the mouse outside of the minus button should stop the decre
 		start()
 	, 200
 
-asyncTest "Moving the mouse out of the minus button should stop the decrement interval", ->
+asyncTest "Moving the mouse out of the plus button should stop the increment interval", ->
 
 	stepper = new Stepper
 
@@ -951,7 +951,7 @@ asyncTest "Moving the mouse out of the minus button should stop the decrement in
 		start()
 	, 200
 
-asyncTest "Moving the mouse back to the minus button should restart the decrement interval", ->
+asyncTest "Moving the mouse back to the plus button should restart the increment interval", ->
 
 	stepper = new Stepper
 
@@ -963,7 +963,7 @@ asyncTest "Moving the mouse back to the minus button should restart the decremen
 	, 100
 
 	setTimeout ->
-		assertThat stepper.get("value"), closeTo 4, 1 
+		assertThat stepper.get("value"), closeTo 4, 2 
 
 		start()
 	, 200

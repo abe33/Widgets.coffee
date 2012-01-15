@@ -242,7 +242,7 @@ test "Input with type color should be replaced by a ColorInput", ->
 
     target.children().widgets()
 
-    assertThat target.children(".colorpicker").length, equalTo 1
+    assertThat target.children(".colorinput").length, equalTo 1
 
 test "Input with type file should be replaced by a FilePicker", ->
 
