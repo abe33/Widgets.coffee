@@ -56,6 +56,20 @@ test "CheckBox should handle the checked property as a state", ->
 	checkbox = new CheckBox
 
 	checkbox.set "checked", true
+	checkbox.set "required", true
+	checkbox.set "disabled", true
+	checkbox.set "readonly", true
+
+	assertThat checkbox.dummy.hasClass "checked"
+	assertThat checkbox.dummy.hasClass "required"
+	assertThat checkbox.dummy.hasClass "disabled"
+	assertThat checkbox.dummy.hasClass "readonly"
+
+test "All dummy's states provided by the parent class should be available as well on CheckBox", ->
+
+	checkbox = new CheckBox
+
+	checkbox.set "checked", true
 
 	assertThat checkbox.dummy.hasClass "checked"
 

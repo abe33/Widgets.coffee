@@ -65,6 +65,7 @@ class Widget
         @properties = 
             disabled : @booleanFromAttribute "disabled"
             readonly : @booleanFromAttribute "readonly"
+            required : @booleanFromAttribute "required"
             value    : @valueFromAttribute   "value"
             name     : @valueFromAttribute   "name"
             id       : null
@@ -73,7 +74,6 @@ class Widget
         @dummy = @createDummy()
         @hasDummy = @dummy?
         @hasFocus = false
-
 
         # Additional setup if a target have been specified
         if @hasTarget
@@ -84,7 +84,7 @@ class Widget
             # Bind target's change event to handle it internally.
             @jTarget.bind "change", (e)=>
                 @targetChange(e)
-            
+                        
             # Flag the target to prevent the jquery plugins to iterate over
             # the input target of the widget.
             @jTarget.addClass "widget-done"
@@ -94,7 +94,7 @@ class Widget
             # The `dummyStates` property stores the list of shared properties that
             # should be reflected as a class on the dummy. The order of the states
             # in the list are preserved in the dummy's class attribute.
-            @dummyStates = [ "disabled", "readonly" ]
+            @dummyStates = [ "disabled", "readonly", "required" ]
 
             # Enforce the ability of the dummy to receive focus if enabled.
             @setFocusable not @get "disabled"
@@ -102,8 +102,14 @@ class Widget
             # The original class of the dummy is stored for later use.
             @dummyClass = @dummy.attr "class"
             
-            # The style set on the target is copied on the dummy.
-            if @hasTarget then @dummy.attr "style", @jTarget.attr "style" 
+            if @hasTarget 
+                # The style set on the target is copied on the dummy.
+                @dummy.attr "style", @jTarget.attr "style" 
+                
+                # If the target had an `id` attribute, the widget's id
+                # will be derived from it such as `#{ original id }-widget`.
+                id = @jTarget.attr "id"
+                if id? and id isnt "" then @set "id", "#{ id }-widget"
             
             @registerToDummyEvents()
             @updateStates()
@@ -199,6 +205,9 @@ class Widget
         @booleanToAttribute property, value
     
     set_readonly:( property, value )->
+        @booleanToAttribute property, value
+
+    set_required:( property, value )->
         @booleanToAttribute property, value
 
     set_value:( property, value )->

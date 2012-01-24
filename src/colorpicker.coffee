@@ -40,54 +40,6 @@ hex2rgb = ( hex )->
 
     [ r, g, b ]
 
-# Converts a color defined in the `hsv` color space into
-# an array containing the color in the `rgb` color space.
-hsv2rgb = ( h, s, v )->
-    h = h / 360
-    s = s / 100
-    v = v / 100
-    rnd = Math.round
-
-    # Short circuit for when Saturation is `0`, all channels 
-    # will end up to `0` as well.
-    if s is 0 
-        return [ rnd v * 255, rnd v * 255, rnd v * 255 ]
-    else 
-
-        var_h = h * 6
-        var_i = Math.floor var_h 
-        var_1 = v * (1 - s)
-        var_2 = v * (1 - s * (var_h - var_i))
-        var_3 = v * (1 - s * (1 - (var_h - var_i)))
-
-        switch var_i
-            when 0
-                r = v       
-                g = var_3      
-                b = var_1
-            when 1
-                r = var_2    
-                g = v          
-                b = var_1
-            when 2
-                r = var_1    
-                g = v          
-                b = var_3
-            when 3
-                r = var_1    
-                g = var_2     
-                b = v
-            when 4
-                r = var_3
-                g   = var_1 
-                b = v
-            else 
-                r = v        
-                g = var_1      
-                b = var_2
-
-        return [ r * 255, g * 255, b * 255 ]
-
 # Converts a color in the `rgb` color space in an 
 # array with the color in the `hsv` color space.
 rgb2hsv = ( r, g, b )->
@@ -101,28 +53,104 @@ rgb2hsv = ( r, g, b )->
     maxVal = Math.max r, g, b
     delta = maxVal - minVal
 
+    # Value is always the maximal component's value.
     v = maxVal
 
-    if delta is 0 
+    # The color is a gray, there's no need to proceed further.
+    # Both saturation and hue equals to `0`.
+    if delta is 0
         h = 0
         s = 0
     else
-        s = delta / maxVal
-        del_R = (((maxVal - r) / 6) + (delta / 2)) / delta
-        del_G = (((maxVal - g) / 6) + (delta / 2)) / delta
-        del_B = (((maxVal - b) / 6) + (delta / 2)) / delta
+        # The lower the delta is in comparison with the value
+        # the higher the saturation will be. 
+        s = delta / v
+        deltaR = ( ( ( v - r ) / 6 ) + ( delta / 2 ) ) / delta
+        deltaG = ( ( ( v - g ) / 6 ) + ( delta / 2 ) ) / delta
+        deltaB = ( ( ( v - b ) / 6 ) + ( delta / 2 ) ) / delta
 
-        if r is maxVal 
-            h = del_B - del_G
-        else if g is maxVal 
-            h = (1 / 3) + del_R - del_B
-        else if b == maxVal 
-            h = (2 / 3) + del_G - del_R
+        # In a range from `0` to `1`, full red is at `0` and `1`,
+        # full green is at `1/3` and full blue at `2/3`.
+        #
+        # From the point in the range corresponding to the dominant
+        # component, the delta of the other channels are both added
+        # in order to move the hue around this point.
+        if r is v 
+            h = deltaB - deltaG
+        else if g is v 
+            h = ( 1 / 3 ) + deltaR - deltaB
+        else if b == v 
+            h = ( 2 / 3 ) + deltaG - deltaR
 
+        # Hue is then reduced to fit in the `0-1` range. 
         if h < 0 then h += 1
         if h > 1 then h -= 1
-
+    
+    # And, finally, hue, saturation and value are normalized
+    # to their corresponding range. 
     [ h * 360, s * 100, v * 100 ]
+
+# Converts a color defined in the `hsv` color space into
+# an array containing the color in the `rgb` color space.
+hsv2rgb = ( h, s, v )->
+    # Hue is reduced to the `0-6` range when both saturation
+    # and value are reduced to the `0-1`
+    h = h / 60
+    s = s / 100
+    v = v / 100
+    rnd = Math.round
+
+    # Short circuit when saturation is `0`, all other channels 
+    # will end up to `0` as well.
+    if s is 0 
+        return [ rnd v * 255, rnd v * 255, rnd v * 255 ]
+    else 
+        # By rounding the hue we obtain the dominant
+        # color such as : 
+        #
+        #  * 0 = Red  
+        #  * 1 = Yellow  
+        #  * 2 = Green  
+        #  * 3 = Cyan  
+        #  * 4 = Blue  
+        #  * 5 = Fuschia  
+        dominant = Math.floor h 
+        
+        comp1 = v * ( 1 - s)
+        comp2 = v * ( 1 - s * ( h - dominant ) )
+        comp3 = v * ( 1 - s * ( 1 - ( h - dominant ) ) )
+
+        # According to the dominant color we affect
+        # the values to each component.
+        switch dominant
+            when 0
+                r = v       
+                g = comp3      
+                b = comp1
+            when 1
+                r = comp2    
+                g = v          
+                b = comp1
+            when 2
+                r = comp1    
+                g = v          
+                b = comp3
+            when 3
+                r = comp1    
+                g = comp2     
+                b = v
+            when 4
+                r = comp3
+                g = comp1 
+                b = v
+            else 
+                r = v        
+                g = comp1      
+                b = comp2
+
+        # And each component is normalized to fit in the
+        # `0-255`.
+        return [ r * 255, g * 255, b * 255 ]
 
 # Converts a color in a string into an object with
 # the three channels values as integer between 0 and 255.
@@ -186,7 +214,7 @@ isSafeHSV = ( h, s, v )->
 # <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
 # <script type='text/javascript' src='../depends/jquery.mousewheel.js'></script>
 # <script type='text/javascript' src='../depends/signals.js'></script>
-# <script type='text/javascript' src='../widgets.js'></script>
+# <script type='text/javascript' src='../lib/widgets.js'></script>
 #
 # <script type='text/javascript'>
 # var picker1 = new ColorInput()
@@ -1339,9 +1367,9 @@ $( document ).ready ->
 if window? 
     window.rgb2hsv           = rgb2hsv
     window.hsv2rgb           = hsv2rgb
-    window.ColorInput       = ColorInput
+    window.ColorInput        = ColorInput
     window.SquarePicker      = SquarePicker
-    window.ColorPicker = ColorPicker
+    window.ColorPicker       = ColorPicker
     window.HSVMode           = HSVMode
     window.SHVMode           = SHVMode
     window.VHSMode           = VHSMode

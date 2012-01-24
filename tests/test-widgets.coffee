@@ -828,6 +828,17 @@ test "Setting a null id should remove the attribute from the dummy", ->
 	widget.set "id", null
 
 	assertThat widget.dummy.attr("id"), equalTo undefined
+
+test "When a widget's target have an id, the widget's dummy should have an id derived from it", ->
+	target = $("<input type='text' id='someid'></input>")[0]
+	class MockWidget extends Widget
+		createDummy:->
+			$ "<span class='foo'></span>"
+	
+	widget = new MockWidget target
+
+	assertThat widget.get("id"), equalTo "someid-widget"
+
 test "Widgets should mark their target with a specific class", ->
 
 	target = $("<input type='text'></input>")
@@ -835,11 +846,36 @@ test "Widgets should mark their target with a specific class", ->
 
 	assertThat target.hasClass "widget-done"
 
+test "Widget's should provide a required property mapped on the input attribute", ->
+	target = $("<input type='text' required></input>")[0]
 
+	widgetWithTarget = new Widget target
+	widgetWithoutTarget = new Widget
 
+	assertThat widgetWithTarget.get("required"), equalTo true
+	assertThat widgetWithoutTarget.get("required"), equalTo undefined
 
+test "Setting the readonly attribute should update the target", ->
 
+	target = $("<input type='text'></input>")[0]
 
+	widget = new Widget target
+
+	widget.set "required", true
+	assertThat widget.get("required"), equalTo true
+	assertThat widget.jTarget.attr("required"), equalTo "required"
+
+	widget.set "required", false
+	assertThat widget.get("required"), equalTo false
+	assertThat widget.jTarget.attr("required"), equalTo undefined
+
+test "The required state should be reflected on the dummy's class attribute", ->
+	target = $("<input type='text' required></input>")[0]
+	class MockWidget extends Widget
+		createDummy:->
+			$ "<span class='foo'></span>"
 	
+	widget = new MockWidget target
 
+	assertThat widget.dummy.hasClass "required"
 

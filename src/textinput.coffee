@@ -10,7 +10,7 @@
 # <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
 # <script type='text/javascript' src='../depends/jquery.mousewheel.js'></script>
 # <script type='text/javascript' src='../depends/signals.js'></script>
-# <script type='text/javascript' src='../widgets.js'></script>
+# <script type='text/javascript' src='../lib/widgets.js'></script>
 #
 # <script type='text/javascript'>
 # var input1 = new TextInput();

@@ -8,7 +8,7 @@
 # <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
 # <script type='text/javascript' src='../depends/jquery.mousewheel.js'></script>
 # <script type='text/javascript' src='../depends/signals.js'></script>
-# <script type='text/javascript' src='../widgets.js'></script>
+# <script type='text/javascript' src='../lib/widgets.js'></script>
 #
 # <script type='text/javascript'>
 # var checkbox1 = new CheckBox();
@@ -67,7 +67,7 @@ class CheckBox extends Widget
         @targetInitialChecked = @get "checked"
 
         # The `checked` property is mapped to a state on the dummy. 
-        @dummyStates = [ "checked", "disabled", "readonly" ]
+        @dummyStates = [ "checked", "disabled", "readonly", "required" ]
 
         #### Keyboard controls
 
