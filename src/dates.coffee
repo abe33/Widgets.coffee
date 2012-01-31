@@ -8,6 +8,18 @@
 
 # The `dates.coffee` file contains all the widgets that handles date and time
 # related inputs.
+# 
+# The supported dates and time modes and their corresponding widgets are :
+#
+# * [time](#time)              : [TimeInput](#TimeInput)
+# * [date](#date)              : [DateInput](#DateInput)
+# * [month](#month)            : [MonthInput](#MonthInput)
+# * [week](#week)              : [WeekInput](#WeekInput)
+# * [datetime](#datetime)      : [DateTimeInput](#DateTimeInput)
+# * [datetime-local](datetime) : [DateTimeInput](#DateTimeInput)
+
+
+#### Utilities
 
 # A group of *constants* for basic time and dates computations.
 MILLISECONDS_IN_SECOND = 1000
@@ -29,6 +41,97 @@ fill=( s, l = 2 )->
     s = String s
     s = "0#{s}" while s.length < l
     s
+
+#### Abstract
+#
+# Validation and conversion functions for each mode are available
+# as top level functions to allow them to be tested.
+
+#### AbstractDateInputWidget
+
+# All widgets that implements support for one of the html date and time inputs
+# extends the `AbstractDateInputWidget` class.
+class AbstractDateInputWidget extends Widget
+
+    valueToDate:( value )-> new Date
+    dateToValue:( date )-> ""
+    isValidValue:( value )-> false
+    supportedType:""
+
+    constructor:( target )->
+        min  = null
+        max  = null
+        step = 0
+
+        if target instanceof Date 
+            super()
+            date  = target
+            value = @dateToValue date
+        else
+            super target
+            if @hasTarget
+                value = @valueFromAttribute "value"
+                date  = @dateFromAttribute "value", new Date
+                min   = @dateFromAttribute "min"
+                max   = @dateFromAttribute "max"
+                step  = parseInt @valueFromAttribute "step"
+                if isNaN step then step = 0
+            else
+                date  = new Date
+                value = @dateToValue date
+                
+        @createProperty "date", date
+        @createProperty "min",  min
+        @createProperty "max",  max
+        @createProperty "step", step
+        @properties[ "value" ] = value
+
+        @dateSetProgrammatically = false
+
+    checkTarget:( target )->
+        unless @isInputWithType target, @supportedType
+            throw "TimeInput target must be an input with a #{ @supportedType } type"
+        
+    set_date:( property, value )->
+        if not value? or isNaN value.getDate() then return @get "date"
+         
+        if @dateSetProgrammatically then return value
+
+        value = @fitToRange value
+
+        @set "value", @dateToValue value
+        value
+    
+    set_value:( property, value )->
+        unless @isValidValue value then return @get "value"
+
+        date = @fitToRange @valueToDate value
+
+        @dateSetProgrammatically = true
+        @set "date", date
+        @dateSetProgrammatically = false
+
+        value = @dateToValue date
+        super property, value
+        value
+    
+    fitToRange:( date )->
+        min = @get "min"
+        max = @get "max"
+
+        if min? and date < min 
+            min
+        else if max? and date > max
+            max
+        else 
+            date
+
+    dateFromAttribute:( attr, def = null )->
+        value = @valueFromAttribute attr
+        if @isValidValue value then @valueToDate value else def
+
+# <a name='time'></a>
+## Time
 
 # Match if the passed-in string is a valid time string.
 # The following strings are considered as valid : 
@@ -76,6 +179,21 @@ timeToString=( date )->
     
     time
 
+# <a name='TimeInput'></a>
+#### TimeInput
+class TimeInput extends AbstractDateInputWidget
+    constructor:( target )->
+        @supportedType = "time"
+        @valueToDate = timeFromString
+        @dateToValue = timeToString
+        @isValidValue = isValidTime
+
+        super target
+
+
+# <a name='date'></a>
+## Date
+
 # A valid date is a string such as `2012-12-29`.
 isValidDate=( value )->
     unless value? then return false
@@ -95,7 +213,20 @@ dateFromString=( string )->
 
 dateToString=( date )->
     "#{ fill date.getFullYear(), 4 }-#{ fill ( date.getMonth() + 1 ) }-#{ fill date.getDate() }"
-    
+   
+# <a name='DateInput'></a>
+#### DateInput
+class DateInput extends AbstractDateInputWidget
+    constructor:( target )->
+        @supportedType = "date"
+        @valueToDate = dateFromString
+        @dateToValue = dateToString
+        @isValidValue = isValidDate
+
+        super target
+
+# <a name='month'></a>
+## Month 
 
 isValidMonth=( value )->
     unless value? then return false
@@ -114,6 +245,20 @@ monthFromString=( string )->
 monthToString=( date )->
     "#{ fill date.getFullYear(), 4 }-#{ fill ( date.getMonth() + 1 ) }"
 
+# <a name='MonthInput'></a>
+#### MonthInput
+class MonthInput extends AbstractDateInputWidget
+    constructor:( target )->
+        @supportedType = "month"
+        @valueToDate = monthFromString
+        @dateToValue = monthToString
+        @isValidValue = isValidMonth
+
+        super target
+
+# <a name='week'></a>
+## Week 
+
 isValidWeek=(value)->
     unless value? then return false
     (/// ^
@@ -126,37 +271,53 @@ isValidWeek=(value)->
 # that represent the first day of the corresponding week, even
 # if it's not in the same year.
 weekFromString=( string )->
-    [ year, week ] = ( parseInt(s) for s in string.split "-W" )
+    [ year, week ] = ( parseInt s for s in string.split "-W" )
 
-    d = getWeekDate year, week
-    # Hours may vary when constructing a `Date`.
-    # The returned date's hours are then reset to `0`.
-    d.setHours 0
-    d
+    getWeekDate year, week
 
 weekToString=( date )->
     start = findFirstWeekFirstDay date.getFullYear()
     dif   = date.valueOf() - start.valueOf()
-    week  = Math.floor ( dif / MILLISECONDS_IN_WEEK ) + 1
+    week  = Math.round ( dif / MILLISECONDS_IN_WEEK ) + 1
     "#{ fill date.getFullYear(), 4 }-W#{ fill week }"
 
 # Returns a `Date` that is the first day of the first week of the year.
 # In fact, the returned `Date` can represent a day that is not in `year`
 # as a year can start in the middle of a week. 
 findFirstWeekFirstDay=( year )->
-    d = new Date year, 0, 1
+    d = new Date year, 0, 1, 0
     day = d.getDay()
     
     if day is 0 then day = 7
 
     if day > 3 
-        new Date year, 0, 7 - day + 2
+        new Date year, 0, 7 - day + 2, 0
     else 
-        new Date year, 0, 2 - day
+        new Date year, 0, 2 - day, 0
     
 getWeekDate=( year, week )->
     start = findFirstWeekFirstDay year
-    new Date start.valueOf() + MILLISECONDS_IN_WEEK * ( week - 1 )
+    date = new Date start.valueOf() + MILLISECONDS_IN_WEEK * ( week - 1 )
+    date.setHours 0
+    date.setMinutes 0
+    date.setSeconds 0
+    date.setMilliseconds 0
+    date
+
+# <a name='WeekInput'></a>
+#### WeekInput
+class WeekInput extends AbstractDateInputWidget
+    constructor:( target )->
+        @supportedType = "week"
+        @valueToDate = weekFromString
+        @dateToValue = weekToString
+        @isValidValue = isValidWeek
+
+        super target
+
+
+# <a name='datetime'></a>
+## DateTime 
 
 isValidDateTime=(value)->
     unless value? then return false
@@ -173,25 +334,21 @@ isValidDateTime=(value)->
     $ ///g).test value
 
 datetimeFromString=( string )->
-    [ date, time ] = string.split "T"
-    if "Z" in time then time = time.replace "Z", ""
-
-    date = dateFromString date
-    time = timeFromString time
-
-    # The hour value may vary from 1 quite randomly
-    # when creating a `Date` with a date string.
-    # To ensure that the sum of `date` and `time` will
-    # not have one more hour than the passed-in string
-    # the hour of the date have to be reset to `1`. 
-    date.setHours 1
-
-    ms = date.valueOf() + time.valueOf()
-    
-    new Date ms
+    new Date string
 
 datetimeToString=( date )->
     "#{ dateToString date }T#{ timeToString date }"
+
+# <a name='DateTimeInput'></a>
+#### DateTimeInput
+class DateTimeInput extends AbstractDateInputWidget
+    constructor:( target )->
+        @supportedType = "datetime"
+        @valueToDate = datetimeFromString
+        @dateToValue = datetimeToString
+        @isValidValue = isValidDateTime
+
+        super target
 
 # Address the access restriction due to the sandboxing when used
 # directly in a browser with the `text/coffeescript` mode. 
@@ -215,3 +372,9 @@ if window?
     window.isValidDateTime = isValidDateTime
     window.datetimeToString = datetimeToString
     window.datetimeFromString = datetimeFromString
+
+    window.TimeInput = TimeInput
+    window.DateInput = DateInput
+    window.MonthInput = MonthInput
+    window.WeekInput = WeekInput
+    window.DateTimeInput = DateTimeInput

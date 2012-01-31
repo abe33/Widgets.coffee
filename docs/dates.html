@@ -8,168 +8,319 @@
 <script type='text/javascript' src='../depends/signals.js'></script>
 
 <script type='text/javascript' src='../lib/widgets.js'></script>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>The <code>dates.coffee</code> file contains all the widgets that handles date and time
-related inputs.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>A group of <em>constants</em> for basic time and dates computations.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">MILLISECONDS_IN_SECOND = </span><span class="mi">1000</span>
-<span class="nv">MILLISECONDS_IN_MINUTE = </span><span class="nx">MILLISECONDS_IN_SECOND</span> <span class="o">*</span> <span class="mi">60</span>
-<span class="nv">MILLISECONDS_IN_HOUR   = </span><span class="nx">MILLISECONDS_IN_MINUTE</span> <span class="o">*</span> <span class="mi">60</span>
-<span class="nv">MILLISECONDS_IN_DAY    = </span><span class="nx">MILLISECONDS_IN_HOUR</span> <span class="o">*</span> <span class="mi">24</span>
-<span class="nv">MILLISECONDS_IN_WEEK   = </span><span class="nx">MILLISECONDS_IN_DAY</span> <span class="o">*</span> <span class="mi">7</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Cast the <code>value</code> into an integer.
+related inputs.</p>
+
+<p>The supported dates and time modes and their corresponding widgets are :</p>
+
+<ul>
+<li><a href="#time">time</a>              : <a href="#TimeInput">TimeInput</a></li>
+<li><a href="#date">date</a>              : <a href="#DateInput">DateInput</a></li>
+<li><a href="#month">month</a>            : <a href="#MonthInput">MonthInput</a></li>
+<li><a href="#week">week</a>              : <a href="#WeekInput">WeekInput</a></li>
+<li><a href="#datetime">datetime</a>      : <a href="#DateTimeInput">DateTimeInput</a></li>
+<li><a href="datetime">datetime-local</a> : <a href="#DateTimeInput">DateTimeInput</a></li>
+</ul>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h3>Utilities</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>A group of <em>constants</em> for basic time and dates computations.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">MILLISECONDS_IN_SECOND </span><span class="o">=</span> <span class="mi">1000</span>
+<span class="nv">MILLISECONDS_IN_MINUTE </span><span class="o">=</span> <span class="nx">MILLISECONDS_IN_SECOND</span> <span class="o">*</span> <span class="mi">60</span>
+<span class="nv">MILLISECONDS_IN_HOUR   </span><span class="o">=</span> <span class="nx">MILLISECONDS_IN_MINUTE</span> <span class="o">*</span> <span class="mi">60</span>
+<span class="nv">MILLISECONDS_IN_DAY    </span><span class="o">=</span> <span class="nx">MILLISECONDS_IN_HOUR</span> <span class="o">*</span> <span class="mi">24</span>
+<span class="nv">MILLISECONDS_IN_WEEK   </span><span class="o">=</span> <span class="nx">MILLISECONDS_IN_DAY</span> <span class="o">*</span> <span class="mi">7</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Cast the <code>value</code> into an integer.
 In case the passed-in <code>value</code> cannot be casted in an 
-integer, the function return the value of <code>0</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">safeInt</span><span class="o">=</span><span class="nf">( value )-&gt;</span>
-    <span class="nv">n = </span><span class="nb">parseInt</span> <span class="nx">value</span>
-    <span class="nx">unless</span> <span class="nb">isNaN</span> <span class="nx">n</span> <span class="k">then</span> <span class="nx">n</span> <span class="k">else</span> <span class="mi">0</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Fills the string <code>s</code> with <code>0</code> until its length is
-equalt to the length <code>l</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">fill</span><span class="o">=</span><span class="nf">( s, l = 2 )-&gt;</span>
-    <span class="nv">s = </span><span class="nb">String</span> <span class="nx">s</span>
-    <span class="nv">s = </span><span class="s">&quot;0</span><span class="si">#{</span><span class="nx">s</span><span class="si">}</span><span class="s">&quot;</span> <span class="k">while</span> <span class="nx">s</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="nx">l</span>
-    <span class="nx">s</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Match if the passed-in string is a valid time string.
+integer, the function return the value of <code>0</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">safeInt</span><span class="o">=</span><span class="p">(</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="nv">n </span><span class="o">=</span> <span class="nb">parseInt</span> <span class="nx">value</span>
+    <span class="k">unless</span> <span class="nb">isNaN</span> <span class="nx">n</span> <span class="k">then</span> <span class="nx">n</span> <span class="k">else</span> <span class="mi">0</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Fills the string <code>s</code> with <code>0</code> until its length is
+equalt to the length <code>l</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">fill</span><span class="o">=</span><span class="p">(</span> <span class="nx">s</span><span class="p">,</span> <span class="nv">l </span><span class="o">=</span> <span class="mi">2</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="nv">s </span><span class="o">=</span> <span class="nb">String</span> <span class="nx">s</span>
+    <span class="nv">s </span><span class="o">=</span> <span class="s">&quot;0</span><span class="si">#{</span><span class="nx">s</span><span class="si">}</span><span class="s">&quot;</span> <span class="k">while</span> <span class="nx">s</span><span class="p">.</span><span class="nx">length</span> <span class="o">&lt;</span> <span class="nx">l</span>
+    <span class="nx">s</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <h3>Abstract</h3>
+
+<p>Validation and conversion functions for each mode are available
+as top level functions to allow them to be tested.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <h3>AbstractDateInputWidget</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>All widgets that implements support for one of the html date and time inputs
+extends the <code>AbstractDateInputWidget</code> class.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">AbstractDateInputWidget</span> <span class="k">extends</span> <span class="nx">Widget</span>
+
+    <span class="py">valueToDate</span><span class="o">:</span><span class="p">(</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span> <span class="k">new</span> <span class="nb">Date</span>
+    <span class="py">dateToValue</span><span class="o">:</span><span class="p">(</span> <span class="nx">date</span> <span class="p">)</span><span class="o">-&gt;</span> <span class="s">&quot;&quot;</span>
+    <span class="py">isValidValue</span><span class="o">:</span><span class="p">(</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span> <span class="kc">false</span>
+    <span class="py">supportedType</span><span class="o">:</span><span class="s">&quot;&quot;</span>
+
+    <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="nv">min  </span><span class="o">=</span> <span class="kc">null</span>
+        <span class="nv">max  </span><span class="o">=</span> <span class="kc">null</span>
+        <span class="nv">step </span><span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">if</span> <span class="nx">target</span> <span class="k">instanceof</span> <span class="nb">Date</span> 
+            <span class="k">super</span><span class="p">()</span>
+            <span class="nv">date  </span><span class="o">=</span> <span class="nx">target</span>
+            <span class="nv">value </span><span class="o">=</span> <span class="py">@dateToValue</span> <span class="nx">date</span>
+        <span class="k">else</span>
+            <span class="k">super</span> <span class="nx">target</span>
+            <span class="k">if</span> <span class="py">@hasTarget</span>
+                <span class="nv">value </span><span class="o">=</span> <span class="py">@valueFromAttribute</span> <span class="s">&quot;value&quot;</span>
+                <span class="nv">date  </span><span class="o">=</span> <span class="py">@dateFromAttribute</span> <span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span>
+                <span class="nv">min   </span><span class="o">=</span> <span class="py">@dateFromAttribute</span> <span class="s">&quot;min&quot;</span>
+                <span class="nv">max   </span><span class="o">=</span> <span class="py">@dateFromAttribute</span> <span class="s">&quot;max&quot;</span>
+                <span class="nv">step  </span><span class="o">=</span> <span class="nb">parseInt</span> <span class="py">@valueFromAttribute</span> <span class="s">&quot;step&quot;</span>
+                <span class="k">if</span> <span class="nb">isNaN</span> <span class="nx">step</span> <span class="k">then</span> <span class="nv">step </span><span class="o">=</span> <span class="mi">0</span>
+            <span class="k">else</span>
+                <span class="nv">date  </span><span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span>
+                <span class="nv">value </span><span class="o">=</span> <span class="py">@dateToValue</span> <span class="nx">date</span>
+                
+        <span class="py">@createProperty</span> <span class="s">&quot;date&quot;</span><span class="p">,</span> <span class="nx">date</span>
+        <span class="py">@createProperty</span> <span class="s">&quot;min&quot;</span><span class="p">,</span>  <span class="nx">min</span>
+        <span class="py">@createProperty</span> <span class="s">&quot;max&quot;</span><span class="p">,</span>  <span class="nx">max</span>
+        <span class="py">@createProperty</span> <span class="s">&quot;step&quot;</span><span class="p">,</span> <span class="nx">step</span>
+        <span class="py">@properties</span><span class="p">[</span> <span class="s">&quot;value&quot;</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span>
+
+        <span class="py">@dateSetProgrammatically</span> <span class="o">=</span> <span class="kc">false</span>
+
+    <span class="py">checkTarget</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="k">unless</span> <span class="py">@isInputWithType</span> <span class="nx">target</span><span class="p">,</span> <span class="py">@supportedType</span>
+            <span class="k">throw</span> <span class="s">&quot;TimeInput target must be an input with a </span><span class="si">#{</span> <span class="py">@supportedType</span> <span class="si">}</span><span class="s"> type&quot;</span>
+        
+    <span class="py">set_date</span><span class="o">:</span><span class="p">(</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="k">if</span> <span class="o">not</span> <span class="nx">value</span><span class="o">?</span> <span class="o">or</span> <span class="nb">isNaN</span> <span class="nx">value</span><span class="p">.</span><span class="nx">getDate</span><span class="p">()</span> <span class="k">then</span> <span class="k">return</span> <span class="py">@get</span> <span class="s">&quot;date&quot;</span>
+         
+        <span class="k">if</span> <span class="py">@dateSetProgrammatically</span> <span class="k">then</span> <span class="k">return</span> <span class="nx">value</span>
+
+        <span class="nv">value </span><span class="o">=</span> <span class="py">@fitToRange</span> <span class="nx">value</span>
+
+        <span class="py">@set</span> <span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="py">@dateToValue</span> <span class="nx">value</span>
+        <span class="nx">value</span>
+    
+    <span class="py">set_value</span><span class="o">:</span><span class="p">(</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="k">unless</span> <span class="py">@isValidValue</span> <span class="nx">value</span> <span class="k">then</span> <span class="k">return</span> <span class="py">@get</span> <span class="s">&quot;value&quot;</span>
+
+        <span class="nv">date </span><span class="o">=</span> <span class="py">@fitToRange</span> <span class="py">@valueToDate</span> <span class="nx">value</span>
+
+        <span class="py">@dateSetProgrammatically</span> <span class="o">=</span> <span class="kc">true</span>
+        <span class="py">@set</span> <span class="s">&quot;date&quot;</span><span class="p">,</span> <span class="nx">date</span>
+        <span class="py">@dateSetProgrammatically</span> <span class="o">=</span> <span class="kc">false</span>
+
+        <span class="nv">value </span><span class="o">=</span> <span class="py">@dateToValue</span> <span class="nx">date</span>
+        <span class="k">super</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span>
+        <span class="nx">value</span>
+    
+    <span class="py">fitToRange</span><span class="o">:</span><span class="p">(</span> <span class="nx">date</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="nv">min </span><span class="o">=</span> <span class="py">@get</span> <span class="s">&quot;min&quot;</span>
+        <span class="nv">max </span><span class="o">=</span> <span class="py">@get</span> <span class="s">&quot;max&quot;</span>
+
+        <span class="k">if</span> <span class="nx">min</span><span class="o">?</span> <span class="o">and</span> <span class="nx">date</span> <span class="o">&lt;</span> <span class="nx">min</span> 
+            <span class="nx">min</span>
+        <span class="k">else</span> <span class="k">if</span> <span class="nx">max</span><span class="o">?</span> <span class="o">and</span> <span class="nx">date</span> <span class="o">&gt;</span> <span class="nx">max</span>
+            <span class="nx">max</span>
+        <span class="k">else</span> 
+            <span class="nx">date</span>
+
+    <span class="py">dateFromAttribute</span><span class="o">:</span><span class="p">(</span> <span class="nx">attr</span><span class="p">,</span> <span class="nv">def </span><span class="o">=</span> <span class="kc">null</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="nv">value </span><span class="o">=</span> <span class="py">@valueFromAttribute</span> <span class="nx">attr</span>
+        <span class="k">if</span> <span class="py">@isValidValue</span> <span class="nx">value</span> <span class="k">then</span> <span class="py">@valueToDate</span> <span class="nx">value</span> <span class="k">else</span> <span class="nx">def</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p><a name='time'></a></p>
+
+<h1>Time</h1>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>Match if the passed-in string is a valid time string.
 The following strings are considered as valid : 
-<code>10</code>, <code>10:15</code>, <code>10:15:40</code> or <code>10:15:40.768</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">isValidTime</span><span class="o">=</span><span class="nf">( value )-&gt;</span>
-    <span class="nx">unless</span> <span class="nx">value</span><span class="o">?</span> <span class="k">then</span> <span class="k">return</span> <span class="kc">false</span>
-    <span class="p">(</span><span class="sr">///</span> <span class="sr">^</span>
-<span class="sr">        [\d]{2}                 </span><span class="c1"># Hours are required</span>
-        <span class="sr">(:[\d]{2}               </span><span class="c1"># Minutes are optional</span>
-            <span class="sr">(:[\d]{2}           </span><span class="c1"># Seconds as well</span>
-                <span class="sr">(.[\d]{1,4})?   </span><span class="c1"># Milliseconds too</span>
-            <span class="sr">)?                  </span><span class="c1"># End Seconds</span>
-        <span class="sr">)?                      </span><span class="c1"># End Minutes</span>
-    <span class="sr">$ ///g</span><span class="p">).</span><span class="nx">test</span> <span class="nx">value</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>Converts a time string into a <code>Date</code> object where the time properties, 
+<code>10</code>, <code>10:15</code>, <code>10:15:40</code> or <code>10:15:40.768</code></p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">isValidTime</span><span class="o">=</span><span class="p">(</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="k">unless</span> <span class="nx">value</span><span class="o">?</span> <span class="k">then</span> <span class="k">return</span> <span class="kc">false</span>
+    <span class="p">(</span><span class="sr">///</span> <span class="sro">^</span>
+        <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span>                 <span class="c1"># Hours are required</span>
+        <span class="sro">(</span><span class="sr">:</span><span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span>               <span class="c1"># Minutes are optional</span>
+            <span class="sro">(</span><span class="sr">:</span><span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span>           <span class="c1"># Seconds as well</span>
+                <span class="sro">(</span><span class="sr">.</span><span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">1,4</span><span class="sro">})?</span>   <span class="c1"># Milliseconds too</span>
+            <span class="sro">)?</span>                  <span class="c1"># End Seconds</span>
+        <span class="sro">)?</span>                      <span class="c1"># End Minutes</span>
+    <span class="sro">$</span> <span class="sr">///g</span><span class="p">).</span><span class="nx">test</span> <span class="nx">value</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>Converts a time string into a <code>Date</code> object where the time properties, 
 hours, minutes, seconds and milliseconds, are sets with the provided 
-datas or <code>0</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">timeFromString</span><span class="o">=</span><span class="nf">( string )-&gt;</span>
+datas or <code>0</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">timeFromString</span><span class="o">=</span><span class="p">(</span> <span class="nx">string</span> <span class="p">)</span><span class="o">-&gt;</span>
     <span class="p">[</span> <span class="nx">hours</span><span class="p">,</span> <span class="nx">min</span><span class="p">,</span> <span class="nx">sec</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">split</span> <span class="s">&quot;:&quot;</span>
-    <span class="p">[</span> <span class="nx">sec</span><span class="p">,</span> <span class="nx">ms</span> <span class="p">]</span> <span class="o">=</span> <span class="k">if</span> <span class="nx">sec</span><span class="o">?</span> <span class="k">then</span> <span class="nx">sec</span><span class="p">.</span><span class="nx">split</span> <span class="s">&quot;.&quot;</span> <span class="k">else</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">]</span> </pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>UTC dates start at 1:00 AM so we have to remove one hour.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">time = </span><span class="nx">safeInt</span><span class="p">(</span> <span class="nx">hours</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">*</span> <span class="nx">MILLISECONDS_IN_HOUR</span>   <span class="o">+</span>
+    <span class="p">[</span> <span class="nx">sec</span><span class="p">,</span> <span class="nx">ms</span> <span class="p">]</span> <span class="o">=</span> <span class="k">if</span> <span class="nx">sec</span><span class="o">?</span> <span class="k">then</span> <span class="nx">sec</span><span class="p">.</span><span class="nx">split</span> <span class="s">&quot;.&quot;</span> <span class="k">else</span> <span class="p">[</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span> <span class="p">]</span> </pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>UTC dates start at 1:00 AM so we have to remove one hour.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">time </span><span class="o">=</span> <span class="nx">safeInt</span><span class="p">(</span> <span class="nx">hours</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">*</span> <span class="nx">MILLISECONDS_IN_HOUR</span>   <span class="o">+</span>
            <span class="nx">safeInt</span><span class="p">(</span> <span class="nx">min</span> <span class="p">)</span>       <span class="o">*</span> <span class="nx">MILLISECONDS_IN_MINUTE</span> <span class="o">+</span>
            <span class="nx">safeInt</span><span class="p">(</span> <span class="nx">sec</span> <span class="p">)</span>       <span class="o">*</span> <span class="nx">MILLISECONDS_IN_SECOND</span> <span class="o">+</span>
            <span class="nx">safeInt</span><span class="p">(</span> <span class="nx">ms</span> <span class="p">)</span>
 
-    <span class="nv">d = </span><span class="k">new</span> <span class="nb">Date</span> <span class="nx">time</span>
-    <span class="nx">d</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Converts a <code>Date</code> object in a string such as <code>10:15:40</code>.
+    <span class="nv">d </span><span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span> <span class="nx">time</span>
+    <span class="nx">d</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>Converts a <code>Date</code> object in a string such as <code>10:15:40</code>.
 If the milliseconds count is different than <code>0</code> then the
-output will look as <code>10:15:40.768</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">timeToString</span><span class="o">=</span><span class="nf">( date )-&gt;</span>
-    <span class="nv">h  = </span><span class="nx">date</span><span class="p">.</span><span class="nx">getHours</span><span class="p">()</span>
-    <span class="nv">m  = </span><span class="nx">date</span><span class="p">.</span><span class="nx">getMinutes</span><span class="p">()</span>
-    <span class="nv">s  = </span><span class="nx">date</span><span class="p">.</span><span class="nx">getSeconds</span><span class="p">()</span>
-    <span class="nv">ms = </span><span class="nx">date</span><span class="p">.</span><span class="nx">getMilliseconds</span><span class="p">()</span>
+output will look as <code>10:15:40.768</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">timeToString</span><span class="o">=</span><span class="p">(</span> <span class="nx">date</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="nv">h  </span><span class="o">=</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getHours</span><span class="p">()</span>
+    <span class="nv">m  </span><span class="o">=</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getMinutes</span><span class="p">()</span>
+    <span class="nv">s  </span><span class="o">=</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getSeconds</span><span class="p">()</span>
+    <span class="nv">ms </span><span class="o">=</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getMilliseconds</span><span class="p">()</span>
 
-    <span class="nx">time</span> <span class="o">=</span><span class="s">&quot;</span><span class="si">#{</span> <span class="nx">fill</span> <span class="nx">h</span> <span class="si">}</span><span class="s">:</span><span class="si">#{</span> <span class="nx">fill</span> <span class="nx">m</span> <span class="si">}</span><span class="s">:</span><span class="si">#{</span> <span class="nx">fill</span> <span class="nx">s</span> <span class="si">}</span><span class="s">&quot;</span>
+    <span class="nv">time </span><span class="o">=</span><span class="s">&quot;</span><span class="si">#{</span> <span class="nx">fill</span> <span class="nx">h</span> <span class="si">}</span><span class="s">:</span><span class="si">#{</span> <span class="nx">fill</span> <span class="nx">m</span> <span class="si">}</span><span class="s">:</span><span class="si">#{</span> <span class="nx">fill</span> <span class="nx">s</span> <span class="si">}</span><span class="s">&quot;</span>
 
     <span class="k">if</span> <span class="nx">ms</span> <span class="o">isnt</span> <span class="mi">0</span> 
         <span class="nx">time</span> <span class="o">+=</span> <span class="s">&quot;.</span><span class="si">#{</span> <span class="nx">ms</span> <span class="si">}</span><span class="s">&quot;</span>
     
-    <span class="nx">time</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>A valid date is a string such as <code>2012-12-29</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">isValidDate</span><span class="o">=</span><span class="nf">( value )-&gt;</span>
-    <span class="nx">unless</span> <span class="nx">value</span><span class="o">?</span> <span class="k">then</span> <span class="k">return</span> <span class="kc">false</span>
-    <span class="p">(</span><span class="sr">///</span> <span class="sr">^</span>
-<span class="sr">        [\d]{4}-   </span><span class="c1"># Year</span>
-        <span class="sr">[\d]{2}-   </span><span class="c1"># Month</span>
-        <span class="sr">[\d]{2}    </span><span class="c1"># Day of the month</span>
-    <span class="sr">$ ///g</span><span class="p">).</span><span class="nx">test</span> <span class="nx">value</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>A valid date string can be passed directly to the <code>Date</code> constructor.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">dateFromString</span><span class="o">=</span><span class="nf">( string )-&gt;</span>
-    <span class="nv">d = </span><span class="k">new</span> <span class="nb">Date</span> <span class="nx">string</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>Hours may vary when constructing a <code>Date</code> from a date string.
+    <span class="nx">time</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p><a name='TimeInput'></a></p>
+
+<h3>TimeInput</h3>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">TimeInput</span> <span class="k">extends</span> <span class="nx">AbstractDateInputWidget</span>
+    <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="py">@supportedType</span> <span class="o">=</span> <span class="s">&quot;time&quot;</span>
+        <span class="py">@valueToDate</span> <span class="o">=</span> <span class="nx">timeFromString</span>
+        <span class="py">@dateToValue</span> <span class="o">=</span> <span class="nx">timeToString</span>
+        <span class="py">@isValidValue</span> <span class="o">=</span> <span class="nx">isValidTime</span>
+
+        <span class="k">super</span> <span class="nx">target</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p><a name='date'></a></p>
+
+<h1>Date</h1>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>A valid date is a string such as <code>2012-12-29</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">isValidDate</span><span class="o">=</span><span class="p">(</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="k">unless</span> <span class="nx">value</span><span class="o">?</span> <span class="k">then</span> <span class="k">return</span> <span class="kc">false</span>
+    <span class="p">(</span><span class="sr">///</span> <span class="sro">^</span>
+        <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">4</span><span class="sro">}</span><span class="sr">-   </span><span class="c1"># Year</span>
+        <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span><span class="sr">-   </span><span class="c1"># Month</span>
+        <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span>    <span class="c1"># Day of the month</span>
+    <span class="sro">$</span> <span class="sr">///g</span><span class="p">).</span><span class="nx">test</span> <span class="nx">value</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>A valid date string can be passed directly to the <code>Date</code> constructor.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">dateFromString</span><span class="o">=</span><span class="p">(</span> <span class="nx">string</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="nv">d </span><span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span> <span class="nx">string</span></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <p>Hours may vary when constructing a <code>Date</code> from a date string.
 The returned date's hours are then reset to <code>0</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">d</span><span class="p">.</span><span class="nx">setHours</span> <span class="mi">0</span>
     <span class="nx">d</span>
 
-<span class="nx">dateToString</span><span class="o">=</span><span class="nf">( date )-&gt;</span>
+<span class="nv">dateToString</span><span class="o">=</span><span class="p">(</span> <span class="nx">date</span> <span class="p">)</span><span class="o">-&gt;</span>
     <span class="s">&quot;</span><span class="si">#{</span> <span class="nx">fill</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">(),</span> <span class="mi">4</span> <span class="si">}</span><span class="s">-</span><span class="si">#{</span> <span class="nx">fill</span> <span class="p">(</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="si">}</span><span class="s">-</span><span class="si">#{</span> <span class="nx">fill</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getDate</span><span class="p">()</span> <span class="si">}</span><span class="s">&quot;</span>
-    
+   </pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <p><a name='DateInput'></a></p>
 
-<span class="nx">isValidMonth</span><span class="o">=</span><span class="nf">( value )-&gt;</span>
-    <span class="nx">unless</span> <span class="nx">value</span><span class="o">?</span> <span class="k">then</span> <span class="k">return</span> <span class="kc">false</span>
-    <span class="p">(</span><span class="sr">///</span> <span class="sr">^</span>
-<span class="sr">        [\d]{4}-   </span><span class="c1"># Year</span>
-        <span class="sr">[\d]{2}    </span><span class="c1"># Month</span>
-    <span class="sr">$ ///g</span><span class="p">).</span><span class="nx">test</span> <span class="nx">value</span>
+<h3>DateInput</h3>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">DateInput</span> <span class="k">extends</span> <span class="nx">AbstractDateInputWidget</span>
+    <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="py">@supportedType</span> <span class="o">=</span> <span class="s">&quot;date&quot;</span>
+        <span class="py">@valueToDate</span> <span class="o">=</span> <span class="nx">dateFromString</span>
+        <span class="py">@dateToValue</span> <span class="o">=</span> <span class="nx">dateToString</span>
+        <span class="py">@isValidValue</span> <span class="o">=</span> <span class="nx">isValidDate</span>
 
-<span class="nx">monthFromString</span><span class="o">=</span><span class="nf">( string )-&gt;</span>
-    <span class="nv">d = </span><span class="k">new</span> <span class="nb">Date</span> <span class="nx">string</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>Hours may vary when constructing a <code>Date</code>.
+        <span class="k">super</span> <span class="nx">target</span></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <p><a name='month'></a></p>
+
+<h1>Month</h1>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">isValidMonth</span><span class="o">=</span><span class="p">(</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="k">unless</span> <span class="nx">value</span><span class="o">?</span> <span class="k">then</span> <span class="k">return</span> <span class="kc">false</span>
+    <span class="p">(</span><span class="sr">///</span> <span class="sro">^</span>
+        <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">4</span><span class="sro">}</span><span class="sr">-   </span><span class="c1"># Year</span>
+        <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span>    <span class="c1"># Month</span>
+    <span class="sro">$</span> <span class="sr">///g</span><span class="p">).</span><span class="nx">test</span> <span class="nx">value</span>
+
+<span class="nv">monthFromString</span><span class="o">=</span><span class="p">(</span> <span class="nx">string</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="nv">d </span><span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span> <span class="nx">string</span></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <p>Hours may vary when constructing a <code>Date</code>.
 The returned date's hours are then reset to <code>0</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">d</span><span class="p">.</span><span class="nx">setHours</span> <span class="mi">0</span>
     <span class="nx">d</span>
 
-<span class="nx">monthToString</span><span class="o">=</span><span class="nf">( date )-&gt;</span>
-    <span class="s">&quot;</span><span class="si">#{</span> <span class="nx">fill</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">(),</span> <span class="mi">4</span> <span class="si">}</span><span class="s">-</span><span class="si">#{</span> <span class="nx">fill</span> <span class="p">(</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="si">}</span><span class="s">&quot;</span>
+<span class="nv">monthToString</span><span class="o">=</span><span class="p">(</span> <span class="nx">date</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="s">&quot;</span><span class="si">#{</span> <span class="nx">fill</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">(),</span> <span class="mi">4</span> <span class="si">}</span><span class="s">-</span><span class="si">#{</span> <span class="nx">fill</span> <span class="p">(</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getMonth</span><span class="p">()</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="si">}</span><span class="s">&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <p><a name='MonthInput'></a></p>
 
-<span class="nx">isValidWeek</span><span class="o">=</span><span class="nf">(value)-&gt;</span>
-    <span class="nx">unless</span> <span class="nx">value</span><span class="o">?</span> <span class="k">then</span> <span class="k">return</span> <span class="kc">false</span>
-    <span class="p">(</span><span class="sr">///</span> <span class="sr">^</span>
-<span class="sr">        [\d]{4}    </span><span class="c1"># Year</span>
+<h3>MonthInput</h3>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">MonthInput</span> <span class="k">extends</span> <span class="nx">AbstractDateInputWidget</span>
+    <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="py">@supportedType</span> <span class="o">=</span> <span class="s">&quot;month&quot;</span>
+        <span class="py">@valueToDate</span> <span class="o">=</span> <span class="nx">monthFromString</span>
+        <span class="py">@dateToValue</span> <span class="o">=</span> <span class="nx">monthToString</span>
+        <span class="py">@isValidValue</span> <span class="o">=</span> <span class="nx">isValidMonth</span>
+
+        <span class="k">super</span> <span class="nx">target</span></pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <p><a name='week'></a></p>
+
+<h1>Week</h1>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">isValidWeek</span><span class="o">=</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span><span class="o">-&gt;</span>
+    <span class="k">unless</span> <span class="nx">value</span><span class="o">?</span> <span class="k">then</span> <span class="k">return</span> <span class="kc">false</span>
+    <span class="p">(</span><span class="sr">///</span> <span class="sro">^</span>
+        <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">4</span><span class="sro">}</span>    <span class="c1"># Year</span>
         <span class="sr">-W         </span><span class="c1"># Week separator </span>
-        <span class="sr">[\d]{2}    </span><span class="c1"># Week number prefixed with W</span>
-    <span class="sr">$ ///g</span><span class="p">).</span><span class="nx">test</span> <span class="nx">value</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p>Converts a string such as <code>2011-W09</code> into a <code>Date</code> object
+        <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span>    <span class="c1"># Week number prefixed with W</span>
+    <span class="sro">$</span> <span class="sr">///g</span><span class="p">).</span><span class="nx">test</span> <span class="nx">value</span></pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <p>Converts a string such as <code>2011-W09</code> into a <code>Date</code> object
 that represent the first day of the corresponding week, even
-if it's not in the same year.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">weekFromString</span><span class="o">=</span><span class="nf">( string )-&gt;</span>
-    <span class="p">[</span> <span class="nx">year</span><span class="p">,</span> <span class="nx">week</span> <span class="p">]</span> <span class="o">=</span> <span class="p">(</span> <span class="nb">parseInt</span><span class="p">(</span><span class="nx">s</span><span class="p">)</span> <span class="k">for</span> <span class="nx">s</span> <span class="k">in</span> <span class="nx">string</span><span class="p">.</span><span class="nx">split</span> <span class="s">&quot;-W&quot;</span> <span class="p">)</span>
+if it's not in the same year.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">weekFromString</span><span class="o">=</span><span class="p">(</span> <span class="nx">string</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="p">[</span> <span class="nx">year</span><span class="p">,</span> <span class="nx">week</span> <span class="p">]</span> <span class="o">=</span> <span class="p">(</span> <span class="nb">parseInt</span> <span class="nx">s</span> <span class="k">for</span> <span class="nx">s</span> <span class="k">in</span> <span class="nx">string</span><span class="p">.</span><span class="nx">split</span> <span class="s">&quot;-W&quot;</span> <span class="p">)</span>
 
-    <span class="nv">d = </span><span class="nx">getWeekDate</span> <span class="nx">year</span><span class="p">,</span> <span class="nx">week</span></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>Hours may vary when constructing a <code>Date</code>.
-The returned date's hours are then reset to <code>0</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">d</span><span class="p">.</span><span class="nx">setHours</span> <span class="mi">0</span>
-    <span class="nx">d</span>
+    <span class="nx">getWeekDate</span> <span class="nx">year</span><span class="p">,</span> <span class="nx">week</span>
 
-<span class="nx">weekToString</span><span class="o">=</span><span class="nf">( date )-&gt;</span>
-    <span class="nv">start = </span><span class="nx">findFirstWeekFirstDay</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">()</span>
-    <span class="nv">dif   = </span><span class="nx">date</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()</span> <span class="o">-</span> <span class="nx">start</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()</span>
-    <span class="nv">week  = </span><span class="nb">Math</span><span class="p">.</span><span class="nx">floor</span> <span class="p">(</span> <span class="nx">dif</span> <span class="o">/</span> <span class="nx">MILLISECONDS_IN_WEEK</span> <span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
-    <span class="s">&quot;</span><span class="si">#{</span> <span class="nx">fill</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">(),</span> <span class="mi">4</span> <span class="si">}</span><span class="s">-W</span><span class="si">#{</span> <span class="nx">fill</span> <span class="nx">week</span> <span class="si">}</span><span class="s">&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-16">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-16">&#182;</a>               </div>               <p>Returns a <code>Date</code> that is the first day of the first week of the year.
+<span class="nv">weekToString</span><span class="o">=</span><span class="p">(</span> <span class="nx">date</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="nv">start </span><span class="o">=</span> <span class="nx">findFirstWeekFirstDay</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">()</span>
+    <span class="nv">dif   </span><span class="o">=</span> <span class="nx">date</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()</span> <span class="o">-</span> <span class="nx">start</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()</span>
+    <span class="nv">week  </span><span class="o">=</span> <span class="nb">Math</span><span class="p">.</span><span class="nx">round</span> <span class="p">(</span> <span class="nx">dif</span> <span class="o">/</span> <span class="nx">MILLISECONDS_IN_WEEK</span> <span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="s">&quot;</span><span class="si">#{</span> <span class="nx">fill</span> <span class="nx">date</span><span class="p">.</span><span class="nx">getFullYear</span><span class="p">(),</span> <span class="mi">4</span> <span class="si">}</span><span class="s">-W</span><span class="si">#{</span> <span class="nx">fill</span> <span class="nx">week</span> <span class="si">}</span><span class="s">&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-26">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-26">&#182;</a>               </div>               <p>Returns a <code>Date</code> that is the first day of the first week of the year.
 In fact, the returned <code>Date</code> can represent a day that is not in <code>year</code>
-as a year can start in the middle of a week. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">findFirstWeekFirstDay</span><span class="o">=</span><span class="nf">( year )-&gt;</span>
-    <span class="nv">d = </span><span class="k">new</span> <span class="nb">Date</span> <span class="nx">year</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span>
-    <span class="nv">day = </span><span class="nx">d</span><span class="p">.</span><span class="nx">getDay</span><span class="p">()</span>
+as a year can start in the middle of a week. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">findFirstWeekFirstDay</span><span class="o">=</span><span class="p">(</span> <span class="nx">year</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="nv">d </span><span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span> <span class="nx">year</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span>
+    <span class="nv">day </span><span class="o">=</span> <span class="nx">d</span><span class="p">.</span><span class="nx">getDay</span><span class="p">()</span>
     
-    <span class="k">if</span> <span class="nx">day</span> <span class="o">is</span> <span class="mi">0</span> <span class="k">then</span> <span class="nv">day = </span><span class="mi">7</span>
+    <span class="k">if</span> <span class="nx">day</span> <span class="o">is</span> <span class="mi">0</span> <span class="k">then</span> <span class="nv">day </span><span class="o">=</span> <span class="mi">7</span>
 
     <span class="k">if</span> <span class="nx">day</span> <span class="o">&gt;</span> <span class="mi">3</span> 
-        <span class="k">new</span> <span class="nb">Date</span> <span class="nx">year</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span> <span class="o">-</span> <span class="nx">day</span> <span class="o">+</span> <span class="mi">2</span>
+        <span class="k">new</span> <span class="nb">Date</span> <span class="nx">year</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">7</span> <span class="o">-</span> <span class="nx">day</span> <span class="o">+</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">0</span>
     <span class="k">else</span> 
-        <span class="k">new</span> <span class="nb">Date</span> <span class="nx">year</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">day</span>
+        <span class="k">new</span> <span class="nb">Date</span> <span class="nx">year</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">-</span> <span class="nx">day</span><span class="p">,</span> <span class="mi">0</span>
     
-<span class="nx">getWeekDate</span><span class="o">=</span><span class="nf">( year, week )-&gt;</span>
-    <span class="nv">start = </span><span class="nx">findFirstWeekFirstDay</span> <span class="nx">year</span>
-    <span class="k">new</span> <span class="nb">Date</span> <span class="nx">start</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()</span> <span class="o">+</span> <span class="nx">MILLISECONDS_IN_WEEK</span> <span class="o">*</span> <span class="p">(</span> <span class="nx">week</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
+<span class="nv">getWeekDate</span><span class="o">=</span><span class="p">(</span> <span class="nx">year</span><span class="p">,</span> <span class="nx">week</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="nv">start </span><span class="o">=</span> <span class="nx">findFirstWeekFirstDay</span> <span class="nx">year</span>
+    <span class="nv">date </span><span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span> <span class="nx">start</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()</span> <span class="o">+</span> <span class="nx">MILLISECONDS_IN_WEEK</span> <span class="o">*</span> <span class="p">(</span> <span class="nx">week</span> <span class="o">-</span> <span class="mi">1</span> <span class="p">)</span>
+    <span class="nx">date</span><span class="p">.</span><span class="nx">setHours</span> <span class="mi">0</span>
+    <span class="nx">date</span><span class="p">.</span><span class="nx">setMinutes</span> <span class="mi">0</span>
+    <span class="nx">date</span><span class="p">.</span><span class="nx">setSeconds</span> <span class="mi">0</span>
+    <span class="nx">date</span><span class="p">.</span><span class="nx">setMilliseconds</span> <span class="mi">0</span>
+    <span class="nx">date</span></pre></div>             </td>           </tr>                               <tr id="section-27">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-27">&#182;</a>               </div>               <p><a name='WeekInput'></a></p>
 
-<span class="nx">isValidDateTime</span><span class="o">=</span><span class="nf">(value)-&gt;</span>
-    <span class="nx">unless</span> <span class="nx">value</span><span class="o">?</span> <span class="k">then</span> <span class="k">return</span> <span class="kc">false</span>
-    <span class="p">(</span><span class="sr">///</span> <span class="sr">^</span>
-<span class="sr">        [\d]{4}-       </span><span class="c1"># Year</span>
-        <span class="sr">[\d]{2}-       </span><span class="c1"># Month</span>
-        <span class="sr">[\d]{2}        </span><span class="c1"># Day of the Month</span>
+<h3>WeekInput</h3>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">WeekInput</span> <span class="k">extends</span> <span class="nx">AbstractDateInputWidget</span>
+    <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="py">@supportedType</span> <span class="o">=</span> <span class="s">&quot;week&quot;</span>
+        <span class="py">@valueToDate</span> <span class="o">=</span> <span class="nx">weekFromString</span>
+        <span class="py">@dateToValue</span> <span class="o">=</span> <span class="nx">weekToString</span>
+        <span class="py">@isValidValue</span> <span class="o">=</span> <span class="nx">isValidWeek</span>
+
+        <span class="k">super</span> <span class="nx">target</span></pre></div>             </td>           </tr>                               <tr id="section-28">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-28">&#182;</a>               </div>               <p><a name='datetime'></a></p>
+
+<h1>DateTime</h1>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">isValidDateTime</span><span class="o">=</span><span class="p">(</span><span class="nx">value</span><span class="p">)</span><span class="o">-&gt;</span>
+    <span class="k">unless</span> <span class="nx">value</span><span class="o">?</span> <span class="k">then</span> <span class="k">return</span> <span class="kc">false</span>
+    <span class="p">(</span><span class="sr">///</span> <span class="sro">^</span>
+        <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">4</span><span class="sro">}</span><span class="sr">-       </span><span class="c1"># Year</span>
+        <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span><span class="sr">-       </span><span class="c1"># Month</span>
+        <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span>        <span class="c1"># Day of the Month</span>
         <span class="sr">T              </span><span class="c1"># Start time token</span>
-        <span class="sr">[\d]{2}:       </span><span class="c1"># Hours</span>
-        <span class="sr">[\d]{2}:       </span><span class="c1"># Minutes</span>
-        <span class="sr">[\d]{2}        </span><span class="c1"># Seconds</span>
-        <span class="sr">(.[\d]{1,4})?  </span><span class="c1"># Optionnal milliseconds</span>
-        <span class="sr">(Z)?           </span><span class="c1"># Optionnal terminator</span>
-    <span class="sr">$ ///g</span><span class="p">).</span><span class="nx">test</span> <span class="nx">value</span>
+        <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span><span class="sr">:       </span><span class="c1"># Hours</span>
+        <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span><span class="sr">:       </span><span class="c1"># Minutes</span>
+        <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span>        <span class="c1"># Seconds</span>
+        <span class="sro">(</span><span class="sr">.</span><span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">1,4</span><span class="sro">})?</span>  <span class="c1"># Optionnal milliseconds</span>
+        <span class="sro">(</span><span class="sr">Z</span><span class="sro">)?</span>           <span class="c1"># Optionnal terminator</span>
+    <span class="sro">$</span> <span class="sr">///g</span><span class="p">).</span><span class="nx">test</span> <span class="nx">value</span>
 
-<span class="nx">datetimeFromString</span><span class="o">=</span><span class="nf">( string )-&gt;</span>
+<span class="nv">datetimeFromString</span><span class="o">=</span><span class="p">(</span> <span class="nx">string</span> <span class="p">)</span><span class="o">-&gt;</span>
     <span class="p">[</span> <span class="nx">date</span><span class="p">,</span> <span class="nx">time</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">string</span><span class="p">.</span><span class="nx">split</span> <span class="s">&quot;T&quot;</span>
-    <span class="k">if</span> <span class="s">&quot;Z&quot;</span> <span class="k">in</span> <span class="nx">time</span> <span class="k">then</span> <span class="nv">time = </span><span class="nx">time</span><span class="p">.</span><span class="nx">replace</span> <span class="s">&quot;Z&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
+    <span class="k">if</span> <span class="s">&quot;Z&quot;</span> <span class="k">in</span> <span class="nx">time</span> <span class="k">then</span> <span class="nv">time </span><span class="o">=</span> <span class="nx">time</span><span class="p">.</span><span class="nx">replace</span> <span class="s">&quot;Z&quot;</span><span class="p">,</span> <span class="s">&quot;&quot;</span>
 
-    <span class="nv">date = </span><span class="nx">dateFromString</span> <span class="nx">date</span>
-    <span class="nv">time = </span><span class="nx">timeFromString</span> <span class="nx">time</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>The hour value may vary from 1 quite randomly
+    <span class="nv">date </span><span class="o">=</span> <span class="nx">dateFromString</span> <span class="nx">date</span>
+    <span class="nv">time </span><span class="o">=</span> <span class="nx">timeFromString</span> <span class="nx">time</span></pre></div>             </td>           </tr>                               <tr id="section-29">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-29">&#182;</a>               </div>               <p>The hour value may vary from 1 quite randomly
 when creating a <code>Date</code> with a date string.
 To ensure that the sum of <code>date</code> and <code>time</code> will
 not have one more hour than the passed-in string
-the hour of the date have to be reset to <code>1</code>. </p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">date</span><span class="p">.</span><span class="nx">setHours</span> <span class="mi">1</span>
+the hour of the date have to be reset to <code>1</code>. </p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">date</span><span class="p">.</span><span class="nx">setHours</span> <span class="mi">0</span>
 
-    <span class="nv">ms = </span><span class="nx">date</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()</span> <span class="o">+</span> <span class="nx">time</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()</span>
+    <span class="nv">ms </span><span class="o">=</span> <span class="nx">date</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()</span> <span class="o">+</span> <span class="nx">time</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()</span>
     
     <span class="k">new</span> <span class="nb">Date</span> <span class="nx">ms</span>
 
-<span class="nx">datetimeToString</span><span class="o">=</span><span class="nf">( date )-&gt;</span>
-    <span class="s">&quot;</span><span class="si">#{</span> <span class="nx">dateToString</span> <span class="nx">date</span> <span class="si">}</span><span class="s">T</span><span class="si">#{</span> <span class="nx">timeToString</span> <span class="nx">date</span> <span class="si">}</span><span class="s">&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <p>Address the access restriction due to the sandboxing when used
+
+<span class="nv">datetimeToString</span><span class="o">=</span><span class="p">(</span> <span class="nx">date</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="s">&quot;</span><span class="si">#{</span> <span class="nx">dateToString</span> <span class="nx">date</span> <span class="si">}</span><span class="s">T</span><span class="si">#{</span> <span class="nx">timeToString</span> <span class="nx">date</span> <span class="si">}</span><span class="s">&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-30">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-30">&#182;</a>               </div>               <p><a name='DateTimeInput'></a></p>
+
+<h3>DateTimeInput</h3>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">DateTimeInput</span> <span class="k">extends</span> <span class="nx">AbstractDateInputWidget</span>
+    <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="py">@supportedType</span> <span class="o">=</span> <span class="s">&quot;datetime&quot;</span>
+        <span class="py">@valueToDate</span> <span class="o">=</span> <span class="nx">datetimeFromString</span>
+        <span class="py">@dateToValue</span> <span class="o">=</span> <span class="nx">datetimeToString</span>
+        <span class="py">@isValidValue</span> <span class="o">=</span> <span class="nx">isValidDateTime</span>
+
+        <span class="k">super</span> <span class="nx">target</span></pre></div>             </td>           </tr>                               <tr id="section-31">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-31">&#182;</a>               </div>               <p>Address the access restriction due to the sandboxing when used
 directly in a browser with the <code>text/coffeescript</code> mode. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">if</span> <span class="nb">window</span><span class="o">?</span> 
-    <span class="nb">window</span><span class="p">.</span><span class="nv">isValidTime = </span><span class="nx">isValidTime</span>
-    <span class="nb">window</span><span class="p">.</span><span class="nv">timeToString = </span><span class="nx">timeToString</span>
-    <span class="nb">window</span><span class="p">.</span><span class="nv">timeFromString = </span><span class="nx">timeFromString</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">isValidTime </span><span class="o">=</span> <span class="nx">isValidTime</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">timeToString </span><span class="o">=</span> <span class="nx">timeToString</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">timeFromString </span><span class="o">=</span> <span class="nx">timeFromString</span>
 
-    <span class="nb">window</span><span class="p">.</span><span class="nv">isValidDate = </span><span class="nx">isValidDate</span>
-    <span class="nb">window</span><span class="p">.</span><span class="nv">dateToString = </span><span class="nx">dateToString</span>
-    <span class="nb">window</span><span class="p">.</span><span class="nv">dateFromString = </span><span class="nx">dateFromString</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">isValidDate </span><span class="o">=</span> <span class="nx">isValidDate</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">dateToString </span><span class="o">=</span> <span class="nx">dateToString</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">dateFromString </span><span class="o">=</span> <span class="nx">dateFromString</span>
 
-    <span class="nb">window</span><span class="p">.</span><span class="nv">isValidMonth = </span><span class="nx">isValidMonth</span>
-    <span class="nb">window</span><span class="p">.</span><span class="nv">monthToString = </span><span class="nx">monthToString</span>
-    <span class="nb">window</span><span class="p">.</span><span class="nv">monthFromString = </span><span class="nx">monthFromString</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">isValidMonth </span><span class="o">=</span> <span class="nx">isValidMonth</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">monthToString </span><span class="o">=</span> <span class="nx">monthToString</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">monthFromString </span><span class="o">=</span> <span class="nx">monthFromString</span>
 
-    <span class="nb">window</span><span class="p">.</span><span class="nv">isValidWeek = </span><span class="nx">isValidWeek</span>
-    <span class="nb">window</span><span class="p">.</span><span class="nv">weekToString = </span><span class="nx">weekToString</span>
-    <span class="nb">window</span><span class="p">.</span><span class="nv">weekFromString = </span><span class="nx">weekFromString</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">isValidWeek </span><span class="o">=</span> <span class="nx">isValidWeek</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">weekToString </span><span class="o">=</span> <span class="nx">weekToString</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">weekFromString </span><span class="o">=</span> <span class="nx">weekFromString</span>
 
-    <span class="nb">window</span><span class="p">.</span><span class="nv">isValidDateTime = </span><span class="nx">isValidDateTime</span>
-    <span class="nb">window</span><span class="p">.</span><span class="nv">datetimeToString = </span><span class="nx">datetimeToString</span>
-    <span class="nb">window</span><span class="p">.</span><span class="nv">datetimeFromString = </span><span class="nx">datetimeFromString</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">isValidDateTime </span><span class="o">=</span> <span class="nx">isValidDateTime</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">datetimeToString </span><span class="o">=</span> <span class="nx">datetimeToString</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">datetimeFromString </span><span class="o">=</span> <span class="nx">datetimeFromString</span>
+
+    <span class="nb">window</span><span class="p">.</span><span class="nv">TimeInput </span><span class="o">=</span> <span class="nx">TimeInput</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">DateInput </span><span class="o">=</span> <span class="nx">DateInput</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">MonthInput </span><span class="o">=</span> <span class="nx">MonthInput</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">WeekInput </span><span class="o">=</span> <span class="nx">WeekInput</span>
+    <span class="nb">window</span><span class="p">.</span><span class="nv">DateTimeInput </span><span class="o">=</span> <span class="nx">DateTimeInput</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

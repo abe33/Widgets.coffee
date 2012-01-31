@@ -204,8 +204,7 @@ class Slider extends NumericWidget
             valPos = ( knobPos + knobWidth / 2 ) - valWidth / 2 
             val.css "left", valPos
         else
-            val.css "left", "auto"
-    
+            val.css "left", "auto"    
 
 # Address the access restriction due to the sandboxing when used
 # directly in a browser with the `text/coffeescript` mode. 

@@ -167,7 +167,7 @@ colorObjectToValue = ( rgb )->
 #### Color Validations
 
 # Validates that the passed-in string is a valid hexadecimal color code. 
-isSafeValue = ( value )->
+isValidValue = ( value )->
     re = /// ^       # nothing allowed before
       \#             # starts with a diese
       [0-9a-fA-F]{6} # must have 6 chars in 0123456789abcdefABCDEF
@@ -176,32 +176,32 @@ isSafeValue = ( value )->
     re.test value
 
 # Validates that the passed-in argument is a valid number.
-isSafeNumber = ( value )->
+isValidNumber = ( value )->
     value? and not isNaN( value )
 
 # Validates that the passed-in argument is a valid hue.
-isSafeHue = (value)->
-    ( isSafeNumber value ) and 0 <= value <= 360
+isValidHue = (value)->
+    ( isValidNumber value ) and 0 <= value <= 360
 
 # Validates that the passed-in argument is a valid percentage.
-isSafePercentage = (value)->
-    ( isSafeNumber value ) and 0 <= value <= 100
+isValidPercentage = (value)->
+    ( isValidNumber value ) and 0 <= value <= 100
 
 # Validates that the passed-in argument is a valid channel value.
-isSafeChannel = ( value )->
-    ( isSafeNumber value ) and 0 <= value <= 255
+isValidChannel = ( value )->
+    ( isValidNumber value ) and 0 <= value <= 255
 
 # Validates that the passed-in color object is valid.
-isSafeColor = ( value )->
-    value? and ( isSafeChannel value.red ) and ( isSafeChannel value.green ) and ( isSafeChannel value.blue )
+isValidColor = ( value )->
+    value? and ( isValidChannel value.red ) and ( isValidChannel value.green ) and ( isValidChannel value.blue )
 
 # Validates that the passed-in red green and blue channels form a valid color.
-isSafeRGB = ( r, g, b )->
-    ( isSafeChannel r ) and ( isSafeChannel g ) and ( isSafeChannel b )
+isValidRGB = ( r, g, b )->
+    ( isValidChannel r ) and ( isValidChannel g ) and ( isValidChannel b )
 
 # Validates that the passed-in hue, saturation and value channels form a valid color.
-isSafeHSV = ( h, s, v )->
-    ( isSafeHue h ) and ( isSafePercentage s ) and ( isSafePercentage v )
+isValidHSV = ( h, s, v )->
+    ( isValidHue h ) and ( isValidPercentage s ) and ( isValidPercentage v )
     
 # <a name='colorinput'></a>
 ## ColorInput
@@ -254,7 +254,7 @@ class ColorInput extends Widget
         value = @valueFromAttribute "value"
 
         # A `ColorInput` has always a valid color as value, the default is `#000000`.
-        unless isSafeValue value
+        unless isValidValue value
             value = "#000000"
         
         @properties["value"] = value
@@ -325,7 +325,7 @@ class ColorInput extends Widget
 
         # If the passed-in object isn't valid the value 
         # is keep unchanged.
-        unless isSafeColor value
+        unless isValidColor value
             return @get "color"
 
         rgb = colorObjectToValue value
@@ -338,7 +338,7 @@ class ColorInput extends Widget
     set_value:( property, value )->
         # If the passed-in value isn't a valid color the 
         # widget's value is keep unchanged 
-        unless isSafeValue value
+        unless isValidValue value
             return @get "value"
         
         # The `color` object for this widget is updated according
@@ -878,7 +878,7 @@ class ColorPicker extends Container
 
         v = if hex.indexOf("#") is -1 then "##{hex}" else hex
 
-        if isSafeValue v
+        if isValidValue v
             { red:r, green:g, blue:b } = colorObjectFromValue v
             @fromRGB r, g, b
     
@@ -889,7 +889,7 @@ class ColorPicker extends Container
         g = parseFloat g
         b = parseFloat b
         
-        if isSafeRGB r, g, b
+        if isValidRGB r, g, b
             [ h, s, v ] = rgb2hsv r, g, b
             @model = r:r, g:g, b:b, h:h, s:s, v:v
         
@@ -902,7 +902,7 @@ class ColorPicker extends Container
         s = parseFloat s
         v = parseFloat v
         
-        if isSafeHSV h, s, v
+        if isValidHSV h, s, v
             [ r, g, b ] = hsv2rgb h, s, v
             @model = r:r, g:g, b:b, h:h, s:s, v:v
         

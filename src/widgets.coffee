@@ -354,22 +354,14 @@ class Widget
     # `input`, `textarea`, `select` and `a`. And since keyboard events
     # on DOM objects are only available when the object has the focus
     # you will lose the keyboard events as side effect.
-    mousedown:(e)->
-        true
-    mouseup:(e)->
-        true
-    mousemove:(e)->
-        true
-    mouseover:(e)->
-        true
-    mouseout:(e)->
-        true
-    mousewheel:(e,d)->
-        true
-    click:(e)->
-        true
-    dblclick:(e)->
-        true
+    mousedown :(e)-> true
+    mouseup   :(e)-> true
+    mousemove :(e)-> true
+    mouseover :(e)-> true
+    mouseout  :(e)-> true
+    mousewheel:(e,d)-> true
+    click     :(e)-> true
+    dblclick  :(e)-> true
     # Default behavior is to allow focus only if the widget is enabled.
     focus:(e)->
         @hasFocus = true
