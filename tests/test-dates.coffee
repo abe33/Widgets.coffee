@@ -1,151 +1,19 @@
-module "time utils tests"
+testGenericDateTimeFunctions=( opt )->
 
-test "isValidTime should return true", ->
-	assertThat isValidTime "10"
-	assertThat isValidTime "10:10"
-	assertThat isValidTime "10:10:15"
-	assertThat isValidTime "10:10:15.765"
+	test "#{ opt.validateFunctionName } should return true", ->
+		assertThat opt.validateFunction data for data in opt.validData
 
-test "isValidTime should return false", ->
-	assertThat not isValidTime ""
-	assertThat not isValidTime "foo"
-	assertThat not isValidTime "100:12:00"
-	assertThat not isValidTime "1:0:0"
-	assertThat not isValidTime "::"
-	assertThat not isValidTime null
+	test "#{ opt.validateFunctionName } should return false", ->
+		assertThat not opt.validateFunction data for data in opt.invalidData
 
-test "timeToString should return valid time string", ->
-
-	assertThat timeToString( new Date 1970, 0, 1, 10, 16, 52 ), equalTo "10:16:52"
-	assertThat timeToString( new Date 1970, 0, 1, 10, 16, 52, 756 ), equalTo "10:16:52.756"
-
-test "timeFromString should return valid dates", ->
-
-	assertThat timeFromString( "10" ), dateEquals new Date 1970, 0, 1, 10
-	assertThat timeFromString( "10:16" ), dateEquals new Date 1970, 0, 1, 10, 16
-	assertThat timeFromString( "10:16:52" ), dateEquals new Date 1970, 0, 1, 10, 16, 52
-	assertThat timeFromString( "10:16:52.756" ), dateEquals new Date 1970, 0, 1, 10, 16, 52, 756
-
-test "time chaining conversion should always result to the same value", ->
-
-	assertThat timeFromString( timeToString( timeFromString( "10:16:52" ) ) ), dateEquals timeFromString( "10:16:52" )
-
-module "date utils tests"
-
-test "isValidDate should return true", ->
-	assertThat isValidDate "2011-12-15"
-
-test "isValidDate should return false", ->
-	assertThat not isValidDate ""
-	assertThat not isValidDate "foo"
-	assertThat not isValidDate "200-12-20"
-	assertThat not isValidDate "2000-0-0"
-	assertThat not isValidDate "--"
-	assertThat not isValidDate null
-
-test "dateToString should return valid date string", ->
-
-	assertThat dateToString( new Date 1970, 0, 1 ), equalTo "1970-01-01"
-	assertThat dateToString( new Date 2011, 11, 12 ), equalTo "2011-12-12"
-
-test "dateFromString should return valid dates", ->
-
-	assertThat dateFromString( "2011-12-12" ), dateEquals new Date 2011, 11, 12
-	assertThat dateFromString( "1970-01-01" ), dateEquals new Date 1970, 0, 1
-
-test "date chaining conversion should always result to the same value", ->
-
-	assertThat dateFromString( dateToString( dateFromString( "2011-12-12" ) ) ), dateEquals dateFromString( "2011-12-12" )
-
-module "month utils tests"
-
-test "isValidMonth should return true", ->
-	assertThat isValidMonth "2011-12"
-
-test "isValidMonth should return false", ->
-	assertThat not isValidMonth ""
-	assertThat not isValidMonth "foo"
-	assertThat not isValidMonth "200-12-20"
-	assertThat not isValidMonth "2000-0"
-	assertThat not isValidMonth "--"
-	assertThat not isValidMonth null
-
-test "monthToString should return valid month string", ->
-
-	assertThat monthToString( new Date 1970, 0 ), equalTo "1970-01"
-	assertThat monthToString( new Date 2011, 11 ), equalTo "2011-12"
-
-test "monthFromString should return valid dates", ->
-
-	assertThat monthFromString( "2011-12" ), dateEquals new Date 2011, 11
-	assertThat monthFromString( "1970-01" ), dateEquals new Date 1970, 0
-
-test "month chaining conversion should always result to the same value", ->
-
-	assertThat monthFromString( monthToString( monthFromString( "2011-12" ) ) ), dateEquals monthFromString( "2011-12" )
-
-module "week utils tests"
-
-test "isValidWeek should return true", ->
-	assertThat isValidWeek "2011-W12"
-	assertThat isValidWeek "1970-W07"
-
-test "isValidWeek should return false", ->
-	assertThat not isValidWeek ""
-	assertThat not isValidWeek "foo"
-	assertThat not isValidWeek "200-W1"
-	assertThat not isValidWeek "20-W00"
-	assertThat not isValidWeek "-W"
-	assertThat not isValidWeek null
-
-test "weekToString should return valid week string", ->
-
-	assertThat weekToString( new Date 2012, 0, 2 ), equalTo "2012-W01"
-	assertThat weekToString( new Date 2011, 0, 3 ), equalTo "2011-W01"
-	assertThat weekToString( new Date 2011, 7, 25 ), equalTo "2011-W34"
-	assertThat weekToString( new Date 2010, 4, 11 ), equalTo "2010-W19"
-
-test "weekFromString should return valid dates", ->
-
-	assertThat weekFromString( "2012-W01" ), dateEquals new Date 2012, 0, 2
-	assertThat weekFromString( "2011-W01" ), dateEquals new Date 2011, 0, 3
-	assertThat weekFromString( "2011-W34" ), dateEquals new Date 2011, 7, 22
-	assertThat weekFromString( "2010-W19" ), dateEquals new Date 2010, 4, 10
-
-test "week chaining conversion should always result to the same value", ->
-
-	assertThat weekFromString( weekToString( weekFromString( "2011-W12" ) ) ), dateEquals weekFromString( "2011-W12" )
-
-module "datetime utils tests"
-
-test "isValidDateTime should return true", ->
-	assertThat isValidDateTime "2011-16-10T10:45:32"
-	assertThat isValidDateTime "2011-16-10T10:45:32.786"
-
-test "isValidDateTime should return false", ->
-	assertThat not isValidDateTime ""
-	assertThat not isValidDateTime "foo"
-	assertThat not isValidDateTime "2011-16-10"
-	assertThat not isValidDateTime "10:15:75"
-	assertThat not isValidDateTime "2011-16-10T"
-	assertThat not isValidDateTime "T10:15:75"
-	assertThat not isValidDateTime "-W"
-	assertThat not isValidDateTime null
-
-test "datetimeToString should return valid datetime string", ->
-	assertThat datetimeToString( new Date 2011, 0, 1, 0, 0, 0 ), equalTo "2011-01-01T00:00:00"
-	assertThat datetimeToString( new Date 2012, 2, 25, 16, 44, 37 ), equalTo "2012-03-25T16:44:37"
-	assertThat datetimeToString( new Date 2012, 2, 25, 16, 44, 37, 756 ), equalTo "2012-03-25T16:44:37.756"
-
-test "datetimeFromString should return valid dates", ->
-	assertThat datetimeFromString( "2011-01-01T00:00:00" ), dateEquals new Date 2011, 0, 1, 0, 0, 0
-	assertThat datetimeFromString( "2012-03-25T16:44:37" ), dateEquals new Date 2012, 2, 25, 16, 44, 37
-	assertThat datetimeFromString( "2012-03-25T16:44:37.756" ), dateEquals new Date 2012, 2, 25, 16, 44, 37, 756 
-
-test "datetime chaining conversion should always result to the same value", ->
-
-	assertThat datetimeFromString( datetimeToString( datetimeFromString( "2012-03-25T16:44:37" ) ) ), dateEquals datetimeFromString( "2012-03-25T16:44:37" )
-
+	test "#{ opt.toStringFunctionName } should return valid #{ opt.type } string", ->
+		assertThat( opt.toStringFunction( date ), equalTo string ) for [ date, string ] in opt.toStringData
+		
+	test "#{ opt.fromStringFunctionName } should return valid dates", ->
+		assertThat( opt.fromStringFunction( string ), dateEquals date ) for [ string, date ] in opt.fromStringData
+		
+	test "#{ opt.type } chaining conversion should always result to the same value", ->
+		assertThat opt.fromStringFunction( opt.toStringFunction( opt.fromStringFunction( opt.reverseData ) ) ), dateEquals opt.fromStringFunction( opt.reverseData)
 
 testGenericDateWidgetBehaviors=( opt )->
 
@@ -307,6 +175,119 @@ testGenericDateWidgetBehaviors=( opt )->
 
 		assertThat target.attr("value"), equalTo opt.setValue
 
+
+module "time utils tests"
+
+testGenericDateTimeFunctions
+	type:"time"
+	validateFunctionName:"isValidTime"
+	validateFunction:isValidTime
+	validData:[ "10", "10:10", "10:10:15", "10:10:15.765" ]
+	invalidData:[ "", "foo", "100:01:2", "2011-16-10T", "T10:15:75", "::", null ]
+
+	toStringFunctionName:"timeToString"
+	toStringFunction:timeToString
+	toStringData:[ [ new Date( 1970, 0, 1, 10, 16, 52 ),	  "10:16:52"	 ],
+				   [ new Date( 1970, 0, 1, 10, 16, 52, 756 ), "10:16:52.756" ] ]
+	
+	fromStringFunctionName:"timeFromString"
+	fromStringFunction:timeFromString
+	fromStringData:[ [ "10"		     , new Date 1970, 0, 1, 10			    ],
+				     [ "10:16"		 , new Date 1970, 0, 1, 10, 16 			],
+				     [ "10:16:52"	 , new Date 1970, 0, 1, 10, 16, 52 		],
+				     [ "10:16:52.756", new Date 1970, 0, 1, 10, 16, 52, 756 ] ]
+	
+	reverseData:"10:16:52"
+
+module "date utils tests"
+
+testGenericDateTimeFunctions
+	type:"date"
+	validateFunctionName:"isValidDate"
+	validateFunction:isValidDate
+	validData:[ "2011-12-15" ]
+	invalidData:[ "", "foo", "200-12-20", "2000-0-0", "--", null ]
+
+	toStringFunctionName:"dateToString"
+	toStringFunction:dateToString
+	toStringData:[ [ new Date( 1970, 0, 1 ),   "1970-01-01" ],
+				   [ new Date( 2011, 11, 12 ), "2011-12-12" ] ]
+	
+	fromStringFunctionName:"dateFromString"
+	fromStringFunction:dateFromString
+	fromStringData:[ [ "2011-12-12", new Date( 2011, 11, 12 ) ],
+				     [ "1970-01-01", new Date( 1970, 0, 1 )   ] ]
+	
+	reverseData:"2011-12-12"
+
+module "month utils tests"
+
+testGenericDateTimeFunctions
+	type:"month"
+	validateFunctionName:"isValidMonth"
+	validateFunction:isValidMonth
+	validData:[ "2011-12" ]
+	invalidData:[ "", "foo", "200-12-20", "2000-0", "--", null ]
+
+	toStringFunctionName:"monthToString"
+	toStringFunction:monthToString
+	toStringData:[ [ ( new Date 1970, 0 ),  "1970-01" ],
+				   [ ( new Date 2011, 11 ), "2011-12" ] ]
+	
+	fromStringFunctionName:"monthFromString"
+	fromStringFunction:monthFromString
+	fromStringData:[ [ "2011-12", new Date( 2011, 11 ) ],
+				     [ "1970-01", new Date( 1970, 0  ) ] ]
+	
+	reverseData:"2011-12"
+
+module "week utils tests"
+
+testGenericDateTimeFunctions
+	type:"week"
+	validateFunctionName:"isValidWeek"
+	validateFunction:isValidWeek
+	validData:[ "2011-W12", "1970-W07" ]
+	invalidData:[ "", "foo", "200-W1", "20-W00", "-W", null ]
+
+	toStringFunctionName:"weekToString"
+	toStringFunction:weekToString
+	toStringData:[ [ ( new Date 2012, 0, 2 ),  "2012-W01" ],
+				   [ ( new Date 2011, 0, 3 ),  "2011-W01" ], 
+				   [ ( new Date 2011, 7, 25 ), "2011-W34" ], 
+				   [ ( new Date 2010, 4, 11 ), "2010-W19" ] ]
+	
+	fromStringFunctionName:"weekFromString"
+	fromStringFunction:weekFromString
+	fromStringData:[ [ "2012-W01", new Date 2012, 0, 2  ],
+				     [ "2011-W01", new Date 2011, 0, 3  ],
+				     [ "2011-W34", new Date 2011, 7, 22 ],
+				     [ "2010-W19", new Date 2010, 4, 10 ] ]
+	
+	reverseData:"2011-W12"
+
+module "datetime utils tests"
+
+testGenericDateTimeFunctions
+	type:"datetime"
+	validateFunctionName:"isValidDateTime"
+	validateFunction:isValidDateTime
+	validData:[ "2011-16-10T10:45:32", "2011-16-10T10:45:32.786" ]
+	invalidData:[ "", "foo", "2011-16-10", "10:15:75", "2011-16-10T", "T10:15:75", "-W", null ]
+
+	toStringFunctionName:"datetimeToString"
+	toStringFunction:datetimeToString
+	toStringData:[ [ new Date( 2011, 0, 1, 0, 0, 0 ), 			"2011-01-01T00:00:00" 	  ],
+				   [ new Date( 2012, 2, 25, 16, 44, 37 ), 		"2012-03-25T16:44:37" 	  ],
+				   [ new Date( 2012, 2, 25, 16, 44, 37, 756 ),  "2012-03-25T16:44:37.756" ] ]
+	
+	fromStringFunctionName:"datetimeFromString"
+	fromStringFunction:datetimeFromString
+	fromStringData:[ [ "2011-01-01T00:00:00", 		new Date( 2011, 0, 1, 0, 0, 0 ) 	  	  ],
+				     [ "2012-03-25T16:44:37", 		new Date( 2012, 2, 25, 16, 44, 37 ) 	  ],
+				     [ "2012-03-25T16:44:37.756", 	new Date( 2012, 2, 25, 16, 44, 37, 756 ) ] ]
+	
+	reverseData:"2012-03-25T16:44:37"
 
 module "timeinput tests"
 testGenericDateWidgetBehaviors 
