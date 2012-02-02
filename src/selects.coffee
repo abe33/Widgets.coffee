@@ -443,7 +443,7 @@ class SingleSelect extends Widget
         
         # Returns the new value if legible, otherwise the
         # function returns the original value. 
-        if newValue? isnt null then newValue else oldValue 
+        if newValue? isnt null then @properties[ property ] = newValue else oldValue 
 
     #### Signal Listeners
 

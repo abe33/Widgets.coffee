@@ -332,7 +332,7 @@ class ColorInput extends Widget
 
         # The value is then changed.
         @set "value", "##{rgb}"
-        @properties["color"] = value
+        @properties[ property ] = value
     
     # Sets the value for this widget.
     set_value:( property, value )->
@@ -464,12 +464,12 @@ class SquarePicker extends Widget
     # Sets the value of the horizontal range.
     set_rangeX:( property, value )->
         unless @isValidRange value then return @get property
-        value
+        @properties[ property ] = value
     
     # Sets the value of the vertical range.
     set_rangeY:( property, value )->
         unless @isValidRange value then return @get property
-        value
+        @properties[ property ] = value
 
     # Sets the value for this widget. 
     # The value is an array containing the two values 
@@ -495,7 +495,7 @@ class SquarePicker extends Widget
         # Updates the dummy with the final values.
         @updateDummy x, y
         
-        super property, [x,y] 
+        super property, [ x, y ] 
 
     # The `handlePropertyChange` is overriden to catch
     # changes done on `rangeX` and `rangeY` in order
@@ -861,14 +861,15 @@ class ColorPicker extends Container
             value.init this
             value.update @model
 
-        value
+        @properties[ property ] = value
 
     # Changing the widget's value using the `value` setter
     # will feed the model with completely new datas from the passed-in color.
     set_value:( property, value )->
-        value = super property, value 
+        unless isValidValue value then return @get "value"
+
         @fromHex value
-        value
+        super property, value 
     
     #### Internal modification methods
     
