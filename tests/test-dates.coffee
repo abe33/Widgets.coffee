@@ -335,17 +335,40 @@ testGenericDateTimeFunctions
 	type:"datetime"
 	validateFunctionName:"isValidDateTime"
 	validateFunction:isValidDateTime
-	validData:[ "2011-10-10T10:45:32", "2011-10-10T10:45:32.786" ]
+	validData:[ "2011-10-10T10:45:32+01:00", "2011-10-10T10:45:32-02:00", "2011-10-10T10:45:32.786Z" ]
 	invalidData:[ "", "foo", "2011-10-10", "10:15:75", "2011-16-10T", "T10:15:75", "-W", null ]
 
 	toStringFunctionName:"datetimeToString"
 	toStringFunction:datetimeToString
+	toStringData:[ [ new Date( 2011, 0, 1, 0, 0, 0 ), 			"2011-01-01T00:00:00+01:00"     ],
+				   [ new Date( 2012, 2, 25, 16, 44, 37 ), 		"2012-03-25T16:44:37+02:00"     ],
+				   [ new Date( 2012, 2, 25, 16, 44, 37, 756 ),  "2012-03-25T16:44:37.756+02:00" ] ]
+	
+	fromStringFunctionName:"datetimeFromString"
+	fromStringFunction:datetimeFromString
+	fromStringData:[ [ "2011-01-01T00:00:00+01:00", 		new Date( 2011, 0, 1, 0, 0, 0 ) 	  	  ],
+				     [ "2012-03-25T16:44:37+02:00", 		new Date( 2012, 2, 25, 16, 44, 37 ) 	  ],
+				     [ "2012-03-25T16:44:37.756+02:00", 	new Date( 2012, 2, 25, 16, 44, 37, 756 )  ] ]
+	
+	reverseData:"2012-03-25T16:44:37+02:00"
+
+module "datetimelocal utils tests"
+
+testGenericDateTimeFunctions
+	type:"datetimeLocal"
+	validateFunctionName:"isValidDateTimeLocal"
+	validateFunction:isValidDateTimeLocal
+	validData:[ "2011-10-10T10:45:32", "2011-10-10T10:45:32.786" ]
+	invalidData:[ "", "foo", "2011-10-10", "10:15:75", "2011-16-10T", "T10:15:75", "-W", null ]
+
+	toStringFunctionName:"datetimeLocalToString"
+	toStringFunction:datetimeLocalToString
 	toStringData:[ [ new Date( 2011, 0, 1, 0, 0, 0 ), 			"2011-01-01T00:00:00" 	  ],
 				   [ new Date( 2012, 2, 25, 16, 44, 37 ), 		"2012-03-25T16:44:37" 	  ],
 				   [ new Date( 2012, 2, 25, 16, 44, 37, 756 ),  "2012-03-25T16:44:37.756" ] ]
 	
-	fromStringFunctionName:"datetimeFromString"
-	fromStringFunction:datetimeFromString
+	fromStringFunctionName:"datetimeLocalFromString"
+	fromStringFunction:datetimeLocalFromString
 	fromStringData:[ [ "2011-01-01T00:00:00", 		new Date( 2011, 0, 1, 0, 0, 0 ) 	  	  ],
 				     [ "2012-03-25T16:44:37", 		new Date( 2012, 2, 25, 16, 44, 37 ) 	  ],
 				     [ "2012-03-25T16:44:37.756", 	new Date( 2012, 2, 25, 16, 44, 37, 756 ) ] ]
@@ -480,6 +503,36 @@ testGenericDateWidgetBehaviors
 	type:"datetime"
 
 	defaultDate:new Date 2011, 5, 21, 16, 27, 53
+	defaultValue:"2011-06-21T16:27:53+02:00"
+
+	invalidDates:[ null, new Date "foo" ]
+	invalidValues:[ null, "foo", "122-50", "1-1-+6" ]
+
+	setDate:new Date 2011, 7, 15, 8, 35, 12
+	setValue:"2011-08-15T08:35:12+02:00"
+
+	minDate:new Date 2011, 0, 1, 0, 0, 0
+	minValue:"2011-01-01T00:00:00+01:00"
+
+	invalidMinDate:new Date 2010, 11, 31, 23, 59, 59
+	invalidMinValue:"2010-12-31T23:59:59+01:00"
+
+	maxDate:new Date 2011, 11, 31, 23, 59, 59
+	maxValue:"2011-12-31T23:59:59+01:00"
+
+	invalidMaxDate:new Date 2012, 0, 1, 0
+	invalidMaxValue:"2012-01-01T00:00:00+01:00"
+
+	stepValue:1800
+
+module "datetimelocalinput tests"
+
+testGenericDateWidgetBehaviors 
+	classname:"DateTimeLocalInput"
+	cls:DateTimeLocalInput
+	type:"datetime-local"
+
+	defaultDate:new Date 2011, 5, 21, 16, 27, 53
 	defaultValue:"2011-06-21T16:27:53"
 
 	invalidDates:[ null, new Date "foo" ]
@@ -501,3 +554,4 @@ testGenericDateWidgetBehaviors
 	invalidMaxValue:"2012-01-01T00:00:00"
 
 	stepValue:1800
+

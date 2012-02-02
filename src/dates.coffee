@@ -49,7 +49,7 @@ fill=( s, l = 2 )->
 #### AbstractDateInputWidget
 
 # All widgets that implements support for one of the html date and time inputs
-# extends the `AbstractDateInputWidget` class.
+# extends the `AbstractDateInputWidget` class. 
 class AbstractDateInputWidget extends Widget
 
     valueToDate:( value )-> new Date
@@ -118,7 +118,7 @@ class AbstractDateInputWidget extends Widget
         unless @isValidValue value then return @get "value"
 
         @dateSetProgrammatically = true
-        @set "date", @fitToRange @valueToDate value
+        @set "date", @valueToDate value
         @dateSetProgrammatically = false
 
         super property, @dateToValue @get "date"
@@ -347,14 +347,27 @@ isValidDateTime=( value )->
         [\d]{2}:       # Minutes
         [\d]{2}        # Seconds
         (.[\d]{1,4})?  # Optionnal milliseconds
-        (Z)?           # Optionnal terminator
+        (              # Mandatory terminator
+            Z|         # Either Z,
+            (\+|\-)+   # +XX:XX or -XX:XX
+            [\d]{2}:
+            [\d]{2}
+        )           
     $ ///g).test value
 
 datetimeFromString=( string )->
     new Date string
 
 datetimeToString=( date )->
-    "#{ dateToString date }T#{ timeToString date }"
+    offset = date.getTimezoneOffset()
+    sign = "-"
+    if offset < 0
+        sign = "+"
+        offset *= -1
+    
+    minutes = offset % 60
+    hours = ( offset - minutes ) / 60
+    "#{ dateToString date }T#{ timeToString date }#{ sign }#{ fill hours }:#{ fill minutes }"
 
 # <a name='DateTimeInput'></a>
 #### DateTimeInput
@@ -364,6 +377,39 @@ class DateTimeInput extends AbstractDateInputWidget
         @valueToDate = datetimeFromString
         @dateToValue = datetimeToString
         @isValidValue = isValidDateTime
+
+        super target
+    
+# <a name='datetime-local'></a>
+## DateTime Local
+
+isValidDateTimeLocal=( value )->
+    unless value? then return false
+    (/// ^
+        [\d]{4}-       # Year
+        [\d]{2}-       # Month
+        [\d]{2}        # Day of the Month
+        T              # Start time token
+        [\d]{2}:       # Hours
+        [\d]{2}:       # Minutes
+        [\d]{2}        # Seconds
+        (.[\d]{1,4})?  # Optionnal milliseconds
+    $ ///g).test value
+
+datetimeLocalFromString=( string )->
+    new Date string
+
+datetimeLocalToString=( date )->
+    "#{ dateToString date }T#{ timeToString date }"
+
+# <a name='DateTimeLocalInput'></a>
+#### DateTimeLocalInput
+class DateTimeLocalInput extends AbstractDateInputWidget
+    constructor:( target )->
+        @supportedType = "datetime-local"
+        @valueToDate = datetimeLocalFromString
+        @dateToValue = datetimeLocalToString
+        @isValidValue = isValidDateTimeLocal
 
         super target
 
@@ -390,8 +436,13 @@ if window?
     window.datetimeToString = datetimeToString
     window.datetimeFromString = datetimeFromString
 
+    window.isValidDateTimeLocal = isValidDateTimeLocal
+    window.datetimeLocalToString = datetimeLocalToString
+    window.datetimeLocalFromString = datetimeLocalFromString
+
     window.TimeInput = TimeInput
     window.DateInput = DateInput
     window.MonthInput = MonthInput
     window.WeekInput = WeekInput
     window.DateTimeInput = DateTimeInput
+    window.DateTimeLocalInput = DateTimeLocalInput
