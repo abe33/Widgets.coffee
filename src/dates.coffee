@@ -106,26 +106,22 @@ class AbstractDateInputWidget extends Widget
 
     set_date:( property, value )->
         if not value? or isNaN value.getDate() then return @get "date"
-         
-        if @dateSetProgrammatically then return value
 
-        value = @fitToRange value
+        @properties[ property ] = @fitToRange value 
 
-        @set "value", @dateToValue value
-        value
+        unless @dateSetProgrammatically
+            @set "value", @dateToValue @properties[ property ]
+        
+        @properties[ property ]
     
     set_value:( property, value )->
         unless @isValidValue value then return @get "value"
 
-        date = @fitToRange @valueToDate value
-
         @dateSetProgrammatically = true
-        @set "date", date
+        @set "date", @fitToRange @valueToDate value
         @dateSetProgrammatically = false
 
-        value = @dateToValue date
-        super property, value
-        value
+        super property, @dateToValue @get "date"
     
     set_min:( property, value )->
         @properties[ property ] = value

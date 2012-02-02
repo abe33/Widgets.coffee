@@ -289,7 +289,7 @@ class MenuList extends Widget
         value?.contentChanged.add @modelChanged, this
 
         @buildList value
-        value
+        @properties[ property ] = value
     
     #### Events Handler
 

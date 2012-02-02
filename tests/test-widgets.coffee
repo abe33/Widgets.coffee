@@ -721,7 +721,7 @@ test "Widget's custom properties should be overridable in children classes", ->
 			@createProperty "foo", "bar"
 		
 		set_foo:( property, value )->
-			value
+			@properties[ property ] = value
 
 	class MockWidgetB extends MockWidgetA
 		set_foo:( property, value )->

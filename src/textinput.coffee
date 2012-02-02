@@ -70,7 +70,7 @@ class TextInput extends Widget
             @jTarget.attr "maxlength", value
         else
             @jTarget.removeAttr "maxlength"
-        value  
+        @properties[ property ] = value  
     
     #### Events handling
     #

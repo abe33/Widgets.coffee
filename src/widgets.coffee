@@ -172,10 +172,10 @@ class Widget
     # of a property.
     handlePropertyChange:( property, value )->
         if property of @properties
-            @properties[ property ] = if "set_#{property}" of this
+            if "set_#{property}" of this
                 @[ "set_#{property}" ].call this, property, value
             else 
-                value
+                @properties[ property ] = value
 
         @updateStates()     
         @propertyChanged.dispatch this, property, value
@@ -202,34 +202,34 @@ class Widget
     set_disabled:( property, value )->
         # Disabled widget don't allow to receive focus.
         @setFocusable not value
-        @booleanToAttribute property, value
+        @properties[ property ] = @booleanToAttribute property, value
     
     set_readonly:( property, value )->
-        @booleanToAttribute property, value
+        @properties[ property ] = @booleanToAttribute property, value
 
     set_required:( property, value )->
-        @booleanToAttribute property, value
+        @properties[ property ] = @booleanToAttribute property, value
 
     set_value:( property, value )->
         # Read-only widgets don't allow to modify their values.
         if @get "readonly" 
-            @get property
+            return @get property
         else 
-            if value isnt @get "value"
+            if value isnt @get property
+                @properties[ property ] = value
                 @valueToAttribute property, value
                 @valueChanged.dispatch this, value
-            value
     
-    set_name:(property, value)->
-        @valueToAttribute property, value
+    set_name:( property, value )->
+        @properties[ property ] = @valueToAttribute property, value
     
-    set_id:(property, value)->
+    set_id:( property, value )->
         if value?
             @dummy.attr "id", value
         else 
             @dummy.removeAttr "id"
         
-        value
+        @properties[ property ] = value
     
     #### Target management
 

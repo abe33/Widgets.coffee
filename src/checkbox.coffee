@@ -89,10 +89,10 @@ class CheckBox extends Widget
 
     # Setting the `checked` property also affect the `value` property.
     set_checked:( property, value )->
+        @properties[ property ] = value
         @updateValue value, @get("values")
         @booleanToAttribute property, value
         @checkedChanged.dispatch this, value
-        value
     
     # Overrides the default behavior for the `value` setter. 
     # Changing the `value` also modify the `checked` attribute
@@ -101,11 +101,11 @@ class CheckBox extends Widget
         unless @valueSetProgrammatically then @set "checked", value is @get("values")[0]
         super property, value
     
-    # The `value` property is automatically updated when the `values`'s one
+    # The `value` property is automatically updated when the `values`
     # change.
     set_values:( property, value )->
-            @updateValue @get("checked"), value
-            value
+        @updateValue @get("checked"), value
+        @properties[ property ] = value
     
     #### Dummy management
 

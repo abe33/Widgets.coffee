@@ -124,6 +124,43 @@ class NumericWidget extends Widget
 
         super property, value
     
+    # The `min` property cannot be greater than the `max` property.
+    #
+    # The value is adjusted to the `min` bound if it drop below with
+    # the new `min` value.
+    set_min:( property, value )->
+        max = @get "max"
+        if value >= max
+            return @get "min"
+        else
+            step = @get "step"
+            @valueToAttribute property, value
+            @set "value", @cleanValue @get( "value"), value, max, step 
+            return @properties[ property ] = value
+    
+    # The `min` property cannot be lower than the `min` property.
+    #
+    # The value is adjusted to the `max` bound if it climb above with
+    # the new `max` value.  
+    set_max:( property, value )->
+        min = @get "min"
+        if value <= min
+            return @get "max"
+        else
+            step = @get "step"
+            @valueToAttribute property, value
+            @set "value", @cleanValue @get( "value"), min, value, step 
+            return @properties[ property ] = value
+    
+    # Changing the `step` property can alter the `value` property
+    # if the current value doesn't snap to the new step grid.
+    set_step:( property, value )->
+        min = @get "min"
+        max = @get "max"
+        @valueToAttribute property, value
+        @set "value", @cleanValue @get( "value"), min, max, value 
+        @properties[ property ] = value
+    
     #### Events handlers 
 
     # Using the mouse wheel, the value is either incremented
@@ -133,44 +170,6 @@ class NumericWidget extends Widget
             @set "value", @get("value") + delta * @get "step"
         false
     
-    #### Properties accessors
-    
-    # The `min` property cannot be greater than the `max` property.
-    #
-    # The value is adjusted to the `min` bound if it drop below with
-    # the new `min` value.
-    set_min:( property, value )->
-        max = @get "max"
-        if value >= max
-            @get "min"
-        else
-            step = @get "step"
-            @valueToAttribute property, value
-            @set "value", @cleanValue @get( "value"), value, max, step 
-            value
-    
-    # The `min` property cannot be lower than the `min` property.
-    #
-    # The value is adjusted to the `max` bound if it climb above with
-    # the new `max` value.  
-    set_max:( property, value )->
-        min = @get "min"
-        if value <= min
-            @get "max"
-        else
-            step = @get "step"
-            @valueToAttribute property, value
-            @set "value", @cleanValue @get( "value"), min, value, step 
-            value
-    
-    # Changing the `step` property can alter the `value` property
-    # if the current value doesn't snap to the new step grid.
-    set_step:( property, value )->
-        min = @get "min"
-        max = @get "max"
-        @valueToAttribute property, value
-        @set "value", @cleanValue @get( "value"), min, max, value 
-        value
 
 # Address the access restriction due to the sandboxing when used
 # directly in a browser with the `text/coffeescript` mode. 
