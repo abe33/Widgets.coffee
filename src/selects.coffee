@@ -393,11 +393,11 @@ class SingleSelect extends Widget
         newPath = path.concat()
         newPath[ step ]--
 
-        nextItem = @getItemAt newPath
+        previousItem = @getItemAt newPath
 
-        while not nextItem? or nextItem.menu?
-            if nextItem? 
-                if nextItem.menu? 
+        while not previousItem? or previousItem.menu?
+            if previousItem? 
+                if previousItem.menu? 
                     newPath.push 0
                     step++
                     newPath[ step ] = @getModelAt( newPath ).size() - 1
@@ -405,11 +405,11 @@ class SingleSelect extends Widget
                 step--
                 newPath.pop()
                 newPath[ step ]--
-                nextItem = @getItemAt newPath
+                previousItem = @getItemAt newPath
             else
                 newPath = [ @model.items.length - 1 ]
             
-            nextItem = @getItemAt newPath
+            previousItem = @getItemAt newPath
 
         newPath
             

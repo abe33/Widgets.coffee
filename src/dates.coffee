@@ -18,7 +18,6 @@
 # * [datetime](#datetime)      : [DateTimeInput](#DateTimeInput)
 # * [datetime-local](datetime) : [DateTimeInput](#DateTimeInput)
 
-
 #### Utilities
 
 # A group of *constants* for basic time and dates computations.
@@ -88,10 +87,23 @@ class AbstractDateInputWidget extends Widget
 
         @dateSetProgrammatically = false
 
+    #### Target Management
+
     checkTarget:( target )->
         unless @isInputWithType target, @supportedType
             throw "TimeInput target must be an input with a #{ @supportedType } type"
         
+    dateFromAttribute:( attr, def = null )->
+        value = @valueFromAttribute attr
+        if @isValidValue value then @valueToDate value else def
+    
+    #### Dummy Management
+
+    createDummy:->
+        $ "<span class='dateinput #{ @supportedType }'>#{ @supportedType }</span>"
+
+    #### Properties Accessors
+
     set_date:( property, value )->
         if not value? or isNaN value.getDate() then return @get "date"
          
@@ -115,6 +127,18 @@ class AbstractDateInputWidget extends Widget
         super property, value
         value
     
+    set_min:( property, value )->
+        @properties[ property ] = value
+        @set "date", @get "date"
+        value
+    
+    set_max:( property, value )->
+        @properties[ property ] = value
+        @set "date", @get "date"
+        value
+    
+    #### Utilities
+    
     fitToRange:( date )->
         min = @get "min"
         max = @get "max"
@@ -126,9 +150,6 @@ class AbstractDateInputWidget extends Widget
         else 
             date
 
-    dateFromAttribute:( attr, def = null )->
-        value = @valueFromAttribute attr
-        if @isValidValue value then @valueToDate value else def
 
 # <a name='time'></a>
 ## Time
@@ -259,7 +280,7 @@ class MonthInput extends AbstractDateInputWidget
 # <a name='week'></a>
 ## Week 
 
-isValidWeek=(value)->
+isValidWeek=( value )->
     unless value? then return false
     (/// ^
         [\d]{4}    # Year
@@ -319,7 +340,7 @@ class WeekInput extends AbstractDateInputWidget
 # <a name='datetime'></a>
 ## DateTime 
 
-isValidDateTime=(value)->
+isValidDateTime=( value )->
     unless value? then return false
     (/// ^
         [\d]{4}-       # Year

@@ -1,3 +1,5 @@
+# The basic tests for all the utils and widgets are done through the generic function below.
+
 testGenericDateTimeFunctions=( opt )->
 
 	test "#{ opt.validateFunctionName } should return true", ->
@@ -13,7 +15,8 @@ testGenericDateTimeFunctions=( opt )->
 		assertThat( opt.fromStringFunction( string ), dateEquals date ) for [ string, date ] in opt.fromStringData
 		
 	test "#{ opt.type } chaining conversion should always result to the same value", ->
-		assertThat opt.fromStringFunction( opt.toStringFunction( opt.fromStringFunction( opt.reverseData ) ) ), dateEquals opt.fromStringFunction( opt.reverseData)
+		assertThat opt.fromStringFunction( opt.toStringFunction( opt.fromStringFunction( opt.reverseData ) ) ), 
+				   dateEquals opt.fromStringFunction( opt.reverseData)
 
 testGenericDateWidgetBehaviors=( opt )->
 
@@ -42,7 +45,6 @@ testGenericDateWidgetBehaviors=( opt )->
 		input = new opt.cls d
 		
 		assertThat input.get( "date" ), dateEquals d
-
 
 	test "When passing a Date as first argument, the value should match the date", ->
 		d = opt.defaultDate
@@ -104,7 +106,11 @@ testGenericDateWidgetBehaviors=( opt )->
 		assertThat input.get("value"), equalTo opt.defaultValue
 
 	test "#{ opt.classname } should support the min, max and step attributes of the target", ->
-		target = $("<input type='#{ opt.type }' value='#{ opt.defaultValue }' min='#{ opt.minValue }' max='#{ opt.maxValue }' step='#{ opt.stepValue }'></input>")[0]
+		target = $("<input type='#{ opt.type }' 
+						   value='#{ opt.defaultValue }' 
+						   min='#{ opt.minValue }' 
+						   max='#{ opt.maxValue }' 
+						   step='#{ opt.stepValue }'></input>")[0]
 		input = new opt.cls target
 
 		assertThat input.get( "min" ), dateEquals opt.minDate
@@ -122,7 +128,10 @@ testGenericDateWidgetBehaviors=( opt )->
 		assertThat input.get( "step" ), strictlyEqualTo 0
 	
 	test "#{ opt.classname } should adjust values below the min attribute to fit in the range", ->
-		target = $("<input type='#{ opt.type }' value='#{ opt.defaultValue }' min='#{ opt.minValue }' max='#{ opt.maxValue }'></input>")[0]
+		target = $("<input type='#{ opt.type }' 
+						   value='#{ opt.defaultValue }' 
+						   min='#{ opt.minValue }'
+						   max='#{ opt.maxValue }'></input>")[0]
 		input = new opt.cls target
 
 		input.set "value", opt.invalidMinValue
@@ -131,7 +140,10 @@ testGenericDateWidgetBehaviors=( opt )->
 		assertThat input.get("date"), dateEquals opt.minDate
 	
 	test "#{ opt.classname } should adjust dates below the min attribute to fit in the range", ->
-		target = $("<input type='#{ opt.type }' value='#{ opt.defaultValue }' min='#{ opt.minValue }' max='#{ opt.maxValue }'></input>")[0]
+		target = $("<input type='#{ opt.type }' 
+						   value='#{ opt.defaultValue }' 
+						   min='#{ opt.minValue }' 
+						   max='#{ opt.maxValue }'></input>")[0]
 		input = new opt.cls target
 
 		input.set "date", opt.invalidMinDate
@@ -140,7 +152,10 @@ testGenericDateWidgetBehaviors=( opt )->
 		assertThat input.get("date"), dateEquals opt.minDate
 	
 	test "#{ opt.classname } should adjust values above the max attribute to fit in the range", ->
-		target = $("<input type='#{ opt.type }' value='#{ opt.defaultValue }' min='#{ opt.minValue }' max='#{ opt.maxValue }'></input>")[0]
+		target = $("<input type='#{ opt.type }' 
+						   value='#{ opt.defaultValue }' 
+						   min='#{ opt.minValue }' 
+						   max='#{ opt.maxValue }'></input>")[0]
 		input = new opt.cls target
 
 		input.set "value", opt.invalidMaxValue
@@ -149,7 +164,10 @@ testGenericDateWidgetBehaviors=( opt )->
 		assertThat input.get("date"), dateEquals opt.maxDate
 	
 	test "#{ opt.classname } should adjust dates above the max attribute to fit in the range", ->
-		target = $("<input type='#{ opt.type }' value='#{ opt.defaultValue }' min='#{ opt.minValue }' max='#{ opt.maxValue }'></input>")[0]
+		target = $("<input type='#{ opt.type }' 
+						   value='#{ opt.defaultValue }' 
+						   min='#{ opt.minValue }' 
+						   max='#{ opt.maxValue }'></input>")[0]
 		input = new opt.cls target
 
 		input.set "date", opt.invalidMaxDate
@@ -174,7 +192,52 @@ testGenericDateWidgetBehaviors=( opt )->
 		input.set "date", opt.setDate
 
 		assertThat target.attr("value"), equalTo opt.setValue
+	
+	test "Changing the min property should snap the current value if it drop below", ->
 
+		target = $("<input type='#{ opt.type }' 
+						   value='#{ opt.minValue }' 
+						   min='#{ opt.minValue }' 
+						   max='#{ opt.maxValue }'></input>")[0]
+		input = new opt.cls target
+
+		input.set "min", opt.setDate
+
+		assertThat input.get("value"), equalTo opt.setValue
+	
+	test "Changing the max property should snap the current value if it climb above", ->
+
+		target = $("<input type='#{ opt.type }' 
+						   value='#{ opt.maxValue }' 
+						   min='#{ opt.minValue }' 
+						   max='#{ opt.maxValue }'></input>")[0]
+		input = new opt.cls target
+
+		input.set "max", opt.setDate
+
+		assertThat input.get("value"), equalTo opt.setValue
+	
+	test "A #{ opt.classname } should provide a dummy", ->
+	
+		assertThat ( new opt.cls ).dummy, notNullValue() 
+	
+	test "A #{ opt.classname } dummy should have the type of the input as class", ->
+
+		assertThat ( new opt.cls new Date, "#{ opt.type }" ).dummy.hasClass "#{ opt.type }"
+	
+	input1 = new opt.cls new Date, opt.type 
+	input2 = new opt.cls new Date, opt.type
+	input3 = new opt.cls new Date, opt.type
+
+	input2.set "readonly", true
+	input3.set "disabled", true
+
+	$("#qunit-header").before $ "<h4>#{ opt.classname }</h4>"
+	$("#qunit-header").before input1.dummy
+	$("#qunit-header").before input2.dummy
+	$("#qunit-header").before input3.dummy
+			
+#### Here starts the concret tests
 
 module "time utils tests"
 
@@ -272,8 +335,8 @@ testGenericDateTimeFunctions
 	type:"datetime"
 	validateFunctionName:"isValidDateTime"
 	validateFunction:isValidDateTime
-	validData:[ "2011-16-10T10:45:32", "2011-16-10T10:45:32.786" ]
-	invalidData:[ "", "foo", "2011-16-10", "10:15:75", "2011-16-10T", "T10:15:75", "-W", null ]
+	validData:[ "2011-10-10T10:45:32", "2011-10-10T10:45:32.786" ]
+	invalidData:[ "", "foo", "2011-10-10", "10:15:75", "2011-16-10T", "T10:15:75", "-W", null ]
 
 	toStringFunctionName:"datetimeToString"
 	toStringFunction:datetimeToString
@@ -290,6 +353,7 @@ testGenericDateTimeFunctions
 	reverseData:"2012-03-25T16:44:37"
 
 module "timeinput tests"
+
 testGenericDateWidgetBehaviors 
 	classname:"TimeInput"
 	cls:TimeInput
@@ -317,7 +381,6 @@ testGenericDateWidgetBehaviors
 	invalidMaxValue:"23:35:47"
 
 	stepValue:1800
-
 	
 module "dateinput tests"
 

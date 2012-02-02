@@ -28,7 +28,8 @@ a {
   border-left: 2px solid #888; }
 #container td.code, #container th.code {
   border-left: 2px solid #888;
-  background-color: #073642;
+  background-color: #042029;
+  /*background-color:#073642;*/
   color: #93a1a1; }
   #container td.code .bp, #container th.code .bp {
     color: #999999; }
@@ -88,8 +89,7 @@ a {
   #container td.code .il, #container th.code .il {
     color: #009999; }
   #container td.code .kc, #container th.code .kc {
-    color: #b58900 !important;
-    font-weight: bold !important; }
+    color: #b58900 !important; }
   #container td.code .kd, #container th.code .kd {
     color: #268bd2 !important; }
   #container td.code .kp, #container th.code .kp {
