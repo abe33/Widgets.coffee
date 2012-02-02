@@ -168,8 +168,8 @@ class Widget
         else    
             @handlePropertyChange propertyOrObject, value
     
-    # The `handlePropertyChange` realize the concret modification
-    # of a property.
+    # The `handlePropertyChange` realize the concrete action
+    # of a changing a property.
     handlePropertyChange:( property, value )->
         if property of @properties
             if "set_#{property}" of this
@@ -185,8 +185,9 @@ class Widget
     #
     # Accessors functions are called with the current widget as scope. 
     #
-    # The setter accessor must return the final value for the property, and have
-    # to take care of the reflection of the changes on the target. 
+    # The setter accessor must affect the value to the property and then return the final
+    # value. If the target should change after the modification of the property, the setter
+    # should take care of the reflecting the changes on the target. 
     #
     # When creating a new property in a children class, define the accessors 
     # functions as methods in the class body to allow overrides in subclasses.
@@ -200,9 +201,9 @@ class Widget
     #
     # Setters accessors are prefixed with `set_` and getters's one with `get_`.
     set_disabled:( property, value )->
+        @properties[ property ] = @booleanToAttribute property, value
         # Disabled widget don't allow to receive focus.
         @setFocusable not value
-        @properties[ property ] = @booleanToAttribute property, value
     
     set_readonly:( property, value )->
         @properties[ property ] = @booleanToAttribute property, value
@@ -240,7 +241,9 @@ class Widget
     checkTarget:( target )->
         unless @isElement target
             throw "Widget's target should be a node"
-   
+    
+    # A function that verify that the passed-in argument
+    # is an HTML element.
     isElement:(o)->
         if typeof HTMLElement is "object" 
             o instanceof HTMLElement 
@@ -249,9 +252,13 @@ class Widget
             o.nodeType is 1 and 
             typeof o.nodeName is "string"
     
+    # A function that verify that the passed-in argument
+    # is a `tag` node. 
     isTag:( o, tag )->
         @isElement( o ) and o?.nodeName?.toLowerCase() is tag
     
+    # A function that verify that the passed-in object is
+    # an input node with a type contained in `types`.
     isInputWithType:( o, types... )->
         @isTag( o, "input" ) and $( o ).attr("type") in types
     
@@ -346,7 +353,7 @@ class Widget
     # are catched by the methods with the corresponding name in the widget class.
     supportedEvents:"mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick focus blur keyup keydown keypress"
 
-    # Override these placeholders to implement the concret events
+    # Override these placeholders to implement the concrete events
     # handlers of a widget class.
     #
     # **Note:** Be aware that, unfortunately, all browsers doesn't
