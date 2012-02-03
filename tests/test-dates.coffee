@@ -122,7 +122,7 @@ testGenericDateWidgetBehaviors=( opt )->
 		target = $("<input type='#{ opt.type }' value='foo' min='foo' max='foo' step='foo'></input>")[0]
 		input = new opt.cls target
 
-		assertThat input.get( "date" ), dateEquals new Date
+		assertThat not isNaN input.get( "date" ).getHours()
 		assertThat input.get( "min" ), nullValue()
 		assertThat input.get( "max" ), nullValue()
 		assertThat input.get( "step" ), strictlyEqualTo 0
@@ -404,6 +404,17 @@ testGenericDateWidgetBehaviors
 	invalidMaxValue:"23:35:47"
 
 	stepValue:1800
+
+test "A TimeInput dummy should contains an input that contains the value", ->
+
+	input = new TimeInput new Date 1970, 0, 1, 16, 32, 17, 565
+	
+	text = input.dummy.find("input")
+
+	assertThat text.length, equalTo 1
+	assertThat text.val(), equalTo "16:32"
+	assertThat text.hasClass "widget-done"
+
 	
 module "dateinput tests"
 

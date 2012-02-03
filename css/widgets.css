@@ -1,4 +1,4 @@
-.widget-common, .button, .text, .textarea, .checkbox, .radio, .slider, .stepper, .filepicker, .dateinput, .colorinput, .gridpicker, .colorpicker, .single-select, .menulist {
+.widget-common, .button, .text, .textarea, .checkbox, .radio, .slider, .stepper, .dateinput.time, .filepicker, .dateinput, .colorinput, .gridpicker, .colorpicker, .single-select, .menulist {
   display: inline-block;
   margin: 0px;
   margin: 4px 4px 0 0;
@@ -7,7 +7,7 @@
   font-size: 16px;
   vertical-align: bottom;
   color: fff; }
-  .widget-common.disabled, .disabled.button, .disabled.text, .disabled.textarea, .disabled.checkbox, .disabled.radio, .disabled.slider, .disabled.stepper, .disabled.filepicker, .disabled.dateinput, .disabled.colorinput, .disabled.gridpicker, .disabled.colorpicker, .disabled.single-select, .disabled.menulist, .widget-common.readonly, .readonly.button, .readonly.text, .readonly.textarea, .readonly.checkbox, .readonly.radio, .readonly.slider, .readonly.stepper, .readonly.filepicker, .readonly.dateinput, .readonly.colorinput, .readonly.gridpicker, .readonly.colorpicker, .readonly.single-select, .readonly.menulist {
+  .widget-common.disabled, .disabled.button, .disabled.text, .disabled.textarea, .disabled.checkbox, .disabled.radio, .disabled.slider, .disabled.stepper, .disabled.dateinput.time, .disabled.filepicker, .disabled.dateinput, .disabled.colorinput, .disabled.gridpicker, .disabled.colorpicker, .disabled.single-select, .disabled.menulist, .widget-common.readonly, .readonly.button, .readonly.text, .readonly.textarea, .readonly.checkbox, .readonly.radio, .readonly.slider, .readonly.stepper, .readonly.dateinput.time, .readonly.filepicker, .readonly.dateinput, .readonly.colorinput, .readonly.gridpicker, .readonly.colorpicker, .readonly.single-select, .readonly.menulist {
     opacity: 0.5;
     /* Standard: FF gt 1.5, Opera, Safari */
     filter: alpha(opacity=50);
@@ -18,11 +18,11 @@
     /* Safari 1.x */
     -moz-opacity: 0.5;
     /* FF lt 1.5, Netscape */ }
-  .widget-common:focus, .button:focus, .text:focus, .textarea:focus, .checkbox:focus, .radio:focus, .slider:focus, .stepper:focus, .filepicker:focus, .dateinput:focus, .colorinput:focus, .gridpicker:focus, .colorpicker:focus, .single-select:focus, .menulist:focus {
+  .widget-common:focus, .button:focus, .text:focus, .textarea:focus, .checkbox:focus, .radio:focus, .slider:focus, .stepper:focus, .dateinput.time:focus, .filepicker:focus, .dateinput:focus, .colorinput:focus, .gridpicker:focus, .colorpicker:focus, .single-select:focus, .menulist:focus {
     outline: none; }
-  .widget-common.focus, .focus.button, .focus.text, .focus.textarea, .focus.checkbox, .focus.radio, .focus.slider, .focus.stepper, .focus.filepicker, .focus.dateinput, .focus.colorinput, .focus.gridpicker, .focus.colorpicker, .focus.single-select, .focus.menulist {
+  .widget-common.focus, .focus.button, .focus.text, .focus.textarea, .focus.checkbox, .focus.radio, .focus.slider, .focus.stepper, .focus.dateinput.time, .focus.filepicker, .focus.dateinput, .focus.colorinput, .focus.gridpicker, .focus.colorpicker, .focus.single-select, .focus.menulist {
     outline: #ff0000 dotted 1px !important; }
-  .widget-common input, .button input, .text input, .textarea input, .checkbox input, .radio input, .slider input, .stepper input, .filepicker input, .dateinput input, .colorinput input, .gridpicker input, .colorpicker input, .single-select input, .menulist input {
+  .widget-common input, .button input, .text input, .textarea input, .checkbox input, .radio input, .slider input, .stepper input, .dateinput.time input, .filepicker input, .dateinput input, .colorinput input, .gridpicker input, .colorpicker input, .single-select input, .menulist input {
     outline: none !important;
     color: fff !important;
     margin: 0; }
@@ -220,7 +220,7 @@
       left: 50%;
       top: -9px; }
 
-.stepper {
+.stepper, .dateinput.time {
   background: #333333;
   border: 1px solid #222222;
   color: white;
@@ -230,11 +230,11 @@
   -moz-border-radius: 6px;
   -o-border-radius: 6px;
   border-radius: 6px; }
-  .stepper.disabled .up:hover:after, .stepper.disabled .down:hover:after, .stepper.readonly .up:hover:after, .stepper.readonly .down:hover:after {
+  .stepper.disabled .up:hover:after, .disabled.dateinput.time .up:hover:after, .stepper.disabled .down:hover:after, .disabled.dateinput.time .down:hover:after, .stepper.readonly .up:hover:after, .readonly.dateinput.time .up:hover:after, .stepper.readonly .down:hover:after, .readonly.dateinput.time .down:hover:after {
     color: #333; }
-  .stepper.disabled:hover:before, .stepper.disabled:hover:after, .stepper.readonly:hover:before, .stepper.readonly:hover:after {
+  .stepper.disabled:hover:before, .disabled.dateinput.time:hover:before, .stepper.disabled:hover:after, .disabled.dateinput.time:hover:after, .stepper.readonly:hover:before, .readonly.dateinput.time:hover:before, .stepper.readonly:hover:after, .readonly.dateinput.time:hover:after {
     display: none; }
-  .stepper:hover:before, .stepper:hover:after {
+  .stepper:hover:before, .dateinput.time:hover:before, .stepper:hover:after, .dateinput.time:hover:after {
     content: "";
     position: absolute;
     display: block;
@@ -244,21 +244,21 @@
     border-width: 5px;
     right: 36px;
     top: 50%; }
-  .stepper:hover:before {
+  .stepper:hover:before, .dateinput.time:hover:before {
     border-color: #555555 transparent transparent transparent;
     margin-top: 2px; }
-  .stepper:hover:after {
+  .stepper:hover:after, .dateinput.time:hover:after {
     border-color: transparent transparent #555555 transparent;
     margin-top: -12px; }
-  .stepper.focus .up, .stepper.focus .down {
+  .stepper.focus .up, .focus.dateinput.time .up, .stepper.focus .down, .focus.dateinput.time .down {
     background: #777777; }
-  .stepper.disabled {
+  .stepper.disabled, .disabled.dateinput.time {
     background: #333; }
-    .stepper.disabled .value {
+    .stepper.disabled .value, .disabled.dateinput.time .value {
       color: #999; }
-    .stepper.disabled .up, .stepper.disabled .down {
+    .stepper.disabled .up, .disabled.dateinput.time .up, .stepper.disabled .down, .disabled.dateinput.time .down {
       background: #666; }
-  .stepper .value {
+  .stepper .value, .dateinput.time .value {
     background: transparent;
     border: none;
     width: 100%;
@@ -266,7 +266,7 @@
     margin-top: -2px;
     margin-left: 2px;
     color: white; }
-  .stepper .up, .stepper .down {
+  .stepper .up, .dateinput.time .up, .stepper .down, .dateinput.time .down {
     position: absolute;
     width: 14px;
     height: 14px;
@@ -275,30 +275,30 @@
     background: #555555;
     border: 1px solid #222222;
     line-height: 18px; }
-    .stepper .up:after, .stepper .down:after {
+    .stepper .up:after, .dateinput.time .up:after, .stepper .down:after, .dateinput.time .down:after {
       color: #333;
       text-align: center;
       display: block;
       margin-top: -2px; }
-    .stepper .up:hover:after, .stepper .down:hover:after {
+    .stepper .up:hover:after, .dateinput.time .up:hover:after, .stepper .down:hover:after, .dateinput.time .down:hover:after {
       color: #fff; }
-  .stepper .up {
+  .stepper .up, .dateinput.time .up {
     right: 2px;
     -webkit-border-radius: 0 4px 4px 0;
     -moz-border-radius: 0 4px 4px 0;
     -o-border-radius: 0 4px 4px 0;
     border-radius: 0 4px 4px 0; }
-    .stepper .up:after {
+    .stepper .up:after, .dateinput.time .up:after {
       margin-left: -1px;
       content: "+"; }
-  .stepper .down {
+  .stepper .down, .dateinput.time .down {
     right: 18px;
     border-right: none;
     -webkit-border-radius: 4px 0 0 4px;
     -moz-border-radius: 4px 0 0 4px;
     -o-border-radius: 4px 0 0 4px;
     border-radius: 4px 0 0 4px; }
-    .stepper .down:after {
+    .stepper .down:after, .dateinput.time .down:after {
       content: "-"; }
 
 .filepicker {
@@ -364,10 +364,10 @@
   border: 1px solid #222222;
   width: 100px;
   color: white;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px; }
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  -o-border-radius: 6px;
+  border-radius: 6px; }
   .dateinput.disabled {
     color: #666; }
 

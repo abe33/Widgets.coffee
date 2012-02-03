@@ -192,7 +192,7 @@ with the new model data. </p>             </td>             <td class="code">   
         <span class="nx">value</span><span class="o">?</span><span class="p">.</span><span class="nx">contentChanged</span><span class="p">.</span><span class="nx">add</span> <span class="py">@modelChanged</span><span class="p">,</span> <span class="k">this</span>
 
         <span class="py">@buildList</span> <span class="nx">value</span>
-        <span class="nx">value</span>
+        <span class="py">@properties</span><span class="p">[</span> <span class="nx">property</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span>
     </pre></div>             </td>           </tr>                               <tr id="section-50">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-50">&#182;</a>               </div>               <h3>Events Handler</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-51">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-51">&#182;</a>               </div>               <p><code>mousedown</code> prevents the propagation of the event to the document.
 in that way, listening to the document <code>mousedown</code> allow to detect
 when the mouse is pressed outside of a <code>MenuList</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">mousedown</span><span class="o">:</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="o">-&gt;</span>

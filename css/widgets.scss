@@ -528,9 +528,12 @@ $widget-button-border:#444;
     border:1px solid $widget-border;
     width:100px;
     color:white;
-    @include borderradius(4px); 
+    @include borderradius(6px); 
     &.disabled {
         color:#666;
+    }
+    &.time {
+        @extend .stepper;
     }
 }
 

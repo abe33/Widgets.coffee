@@ -87,6 +87,8 @@ class AbstractDateInputWidget extends Widget
 
         @dateSetProgrammatically = false
 
+        @updateDummy()
+
     #### Target Management
 
     checkTarget:( target )->
@@ -100,7 +102,9 @@ class AbstractDateInputWidget extends Widget
     #### Dummy Management
 
     createDummy:->
-        $ "<span class='dateinput #{ @supportedType }'>#{ @supportedType }</span>"
+        $ "<span class='dateinput #{ @supportedType }'></span>"
+    
+    updateDummy:->
 
     #### Properties Accessors
 
@@ -206,6 +210,16 @@ class TimeInput extends AbstractDateInputWidget
         @isValidValue = isValidTime
 
         super target
+    
+    createDummy:->
+        dummy = super()
+        dummy.append $ "<input type='text' class='value widget-done'></input>
+                        <span class='down'></span>
+                        <span class='up'></span>"
+        dummy
+    
+    updateDummy:->
+        @dummy.find("input").val ( @get "value" ).split(":")[0..1].join(":")
 
 
 # <a name='date'></a>
