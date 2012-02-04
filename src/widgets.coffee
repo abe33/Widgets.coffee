@@ -2,7 +2,7 @@
 #
 # A Widget allow to work with or without a target `<input>` node, and provides
 # methods to reflect changes done on the widget onto its target. 
-class Widget
+class Widget extends Module
 
     # Pass a `<input>` node to the constructor to define the widget's target.
     # An error is raised if the passed-in node's name is not `input` or if
@@ -127,6 +127,8 @@ class Widget
         # in two different objects.
         @keyDownCommands = {}
         @keyUpCommands = {}
+
+        super()
 
     #### Shared Properties accessors
     # 
