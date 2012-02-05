@@ -13,13 +13,20 @@ class NumericWidget extends Widget
         #
         # The `min`, `max` and `step` attributes of the range or number inputs are handled
         # by the  `NumericWidget` class. Each of them is a number.
+        min  = parseFloat @valueFromAttribute "min"
+        max  = parseFloat @valueFromAttribute "max" 
+        step = parseFloat @valueFromAttribute "step"
+
+        if isNaN min  then min  = null
+        if isNaN max  then max  = null
+        if isNaN step then step = null
 
         # The `min` property represent the lower bound of the value's range.
-        @properties.min   = parseFloat @valueFromAttribute "min",  0
+        @properties.min   = min
         # The `max` property represent the upper bound of the value's range.
-        @properties.max   = parseFloat @valueFromAttribute "max",  100
+        @properties.max   = max
         # The `step` property represent the gap between legible values.
-        @properties.step  = parseFloat @valueFromAttribute "step", 1
+        @properties.step  = step
         # The `value` property is a number so the data from the target is parsed before affectation.
         @properties.value = parseFloat @valueFromAttribute "value",0
 
@@ -40,6 +47,9 @@ class NumericWidget extends Widget
         @set "value", @get("value") - @get("step")
     
     #### Dummy management
+
+    createDummy:->
+        $ "<span></span>"
 
     # Overrides this method to implement your own dummy
     # update routine. 
@@ -72,6 +82,7 @@ class NumericWidget extends Widget
         if value >= max
             return @get property
         else
+            value = @snapToStep value
             @properties[ property ] = value
             @valueToAttribute property, value
             @set "value", @fitToRange @get( "value"), value, max
@@ -86,6 +97,7 @@ class NumericWidget extends Widget
         if value <= min
             return @get property
         else
+            value = @snapToStep value
             @properties[ property ] = value
             @valueToAttribute property, value
             @set "value", @fitToRange @get( "value"), min, value

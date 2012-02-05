@@ -29,6 +29,8 @@ class Stepper extends NumericWidget
     constructor:(target)->
         super target
 
+        unless @get("step")? then @set "step", 1
+
         @updateDummy @get("value"), @get("min"), @get("max"), @get("step")
     
     #### Target management

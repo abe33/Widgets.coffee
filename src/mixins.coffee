@@ -54,8 +54,8 @@ RangeStepper=
     # The returned value should be safely affected to the `value` 
     # property.
     fitToRange:( value, min, max )->
-        if value < min then value = min 
-        else if value > max then value = max
+        if min? and value < min then value = min 
+        else if max? and value > max then value = max
         
         @snapToStep value
     
@@ -113,8 +113,9 @@ RangeStepper=
     # Using the mouse wheel, the value is either incremented
     # or decremented according to the event's delta.
     mousewheel:( event, delta, deltaX, deltaY )->
-        unless @get("readonly") or @get("disabled")
+        unless @cantInteract()
             if delta > 0 then @increment() else @decrement()
+        # `mousewheel` returns `false` to prevent the page to scroll.
         false
 
 if window?
