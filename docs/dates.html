@@ -1,4 +1,4 @@
-<!DOCTYPE html>  <html> <head>   <title>dates.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="button.html">                 button.coffee               </a>                                           <a class="source" href="checkbox.html">                 checkbox.coffee               </a>                                           <a class="source" href="colorpicker.html">                 colorpicker.coffee               </a>                                           <a class="source" href="container.html">                 container.coffee               </a>                                           <a class="source" href="dates.html">                 dates.coffee               </a>                                           <a class="source" href="filepicker.html">                 filepicker.coffee               </a>                                           <a class="source" href="jquery.html">                 jquery.coffee               </a>                                           <a class="source" href="keys.html">                 keys.coffee               </a>                                           <a class="source" href="menus.html">                 menus.coffee               </a>                                           <a class="source" href="numeric-widget.html">                 numeric-widget.coffee               </a>                                           <a class="source" href="radio.html">                 radio.coffee               </a>                                           <a class="source" href="radiogroup.html">                 radiogroup.coffee               </a>                                           <a class="source" href="selects.html">                 selects.coffee               </a>                                           <a class="source" href="slider.html">                 slider.coffee               </a>                                           <a class="source" href="stepper.html">                 stepper.coffee               </a>                                           <a class="source" href="textarea.html">                 textarea.coffee               </a>                                           <a class="source" href="textinput.html">                 textinput.coffee               </a>                                           <a class="source" href="widgets.html">                 widgets.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               dates.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p><link rel="stylesheet" href="../css/styles.css" media="screen">
+<!DOCTYPE html>  <html> <head>   <title>dates.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="button.html">                 button.coffee               </a>                                           <a class="source" href="checkbox.html">                 checkbox.coffee               </a>                                           <a class="source" href="colorpicker.html">                 colorpicker.coffee               </a>                                           <a class="source" href="container.html">                 container.coffee               </a>                                           <a class="source" href="dates.html">                 dates.coffee               </a>                                           <a class="source" href="filepicker.html">                 filepicker.coffee               </a>                                           <a class="source" href="jquery.html">                 jquery.coffee               </a>                                           <a class="source" href="keys.html">                 keys.coffee               </a>                                           <a class="source" href="menus.html">                 menus.coffee               </a>                                           <a class="source" href="mixins.html">                 mixins.coffee               </a>                                           <a class="source" href="module.html">                 module.coffee               </a>                                           <a class="source" href="numeric-widget.html">                 numeric-widget.coffee               </a>                                           <a class="source" href="radio.html">                 radio.coffee               </a>                                           <a class="source" href="radiogroup.html">                 radiogroup.coffee               </a>                                           <a class="source" href="selects.html">                 selects.coffee               </a>                                           <a class="source" href="slider.html">                 slider.coffee               </a>                                           <a class="source" href="stepper.html">                 stepper.coffee               </a>                                           <a class="source" href="textarea.html">                 textarea.coffee               </a>                                           <a class="source" href="textinput.html">                 textinput.coffee               </a>                                           <a class="source" href="widgets.html">                 widgets.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               dates.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p><link rel="stylesheet" href="../css/styles.css" media="screen">
 <link rel="stylesheet" href="../css/widgets.css" media="screen"></p>
 
 <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
@@ -13,12 +13,12 @@ related inputs.</p>
 <p>The supported dates and time modes and their corresponding widgets are :</p>
 
 <ul>
-<li><a href="#time">time</a>              : <a href="#TimeInput">TimeInput</a></li>
-<li><a href="#date">date</a>              : <a href="#DateInput">DateInput</a></li>
-<li><a href="#month">month</a>            : <a href="#MonthInput">MonthInput</a></li>
-<li><a href="#week">week</a>              : <a href="#WeekInput">WeekInput</a></li>
-<li><a href="#datetime">datetime</a>      : <a href="#DateTimeInput">DateTimeInput</a></li>
-<li><a href="datetime">datetime-local</a> : <a href="#DateTimeInput">DateTimeInput</a></li>
+<li><a href="#time">time</a>                    : <a href="#TimeInput">TimeInput</a></li>
+<li><a href="#date">date</a>                    : <a href="#DateInput">DateInput</a></li>
+<li><a href="#month">month</a>                  : <a href="#MonthInput">MonthInput</a></li>
+<li><a href="#week">week</a>                    : <a href="#WeekInput">WeekInput</a></li>
+<li><a href="#datetime">datetime</a>            : <a href="#DateTimeInput">DateTimeInput</a></li>
+<li><a href="#datetime-loca">datetime-local</a> : <a href="#DateTimeLocalInput">DateTimeLocalInput</a></li>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h3>Utilities</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>A group of <em>constants</em> for basic time and dates computations.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">MILLISECONDS_IN_SECOND </span><span class="o">=</span> <span class="mi">1000</span>
 <span class="nv">MILLISECONDS_IN_MINUTE </span><span class="o">=</span> <span class="nx">MILLISECONDS_IN_SECOND</span> <span class="o">*</span> <span class="mi">60</span>
 <span class="nv">MILLISECONDS_IN_HOUR   </span><span class="o">=</span> <span class="nx">MILLISECONDS_IN_MINUTE</span> <span class="o">*</span> <span class="mi">60</span>
@@ -36,6 +36,7 @@ equalt to the length <code>l</code>.</p>             </td>             <td class
 <p>Validation and conversion functions for each mode are available
 as top level functions to allow them to be tested.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <h3>AbstractDateInputWidget</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>All widgets that implements support for one of the html date and time inputs
 extends the <code>AbstractDateInputWidget</code> class. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">AbstractDateInputWidget</span> <span class="k">extends</span> <span class="nx">Widget</span>
+    <span class="py">@mixins</span> <span class="nx">RangeStepper</span>
 
     <span class="py">valueToDate</span><span class="o">:</span><span class="p">(</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span> <span class="k">new</span> <span class="nb">Date</span>
     <span class="py">dateToValue</span><span class="o">:</span><span class="p">(</span> <span class="nx">date</span> <span class="p">)</span><span class="o">-&gt;</span> <span class="s">&quot;&quot;</span>
@@ -45,30 +46,34 @@ extends the <code>AbstractDateInputWidget</code> class. </p>             </td>  
     <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span>
         <span class="nv">min  </span><span class="o">=</span> <span class="kc">null</span>
         <span class="nv">max  </span><span class="o">=</span> <span class="kc">null</span>
-        <span class="nv">step </span><span class="o">=</span> <span class="mi">0</span>
+        <span class="nv">step </span><span class="o">=</span> <span class="kc">null</span>
 
         <span class="k">if</span> <span class="nx">target</span> <span class="k">instanceof</span> <span class="nb">Date</span> 
             <span class="k">super</span><span class="p">()</span>
             <span class="nv">date  </span><span class="o">=</span> <span class="nx">target</span>
-            <span class="nv">value </span><span class="o">=</span> <span class="py">@dateToValue</span> <span class="nx">date</span>
         <span class="k">else</span>
             <span class="k">super</span> <span class="nx">target</span>
             <span class="k">if</span> <span class="py">@hasTarget</span>
-                <span class="nv">value </span><span class="o">=</span> <span class="py">@valueFromAttribute</span> <span class="s">&quot;value&quot;</span>
-                <span class="nv">date  </span><span class="o">=</span> <span class="py">@dateFromAttribute</span> <span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span>
-                <span class="nv">min   </span><span class="o">=</span> <span class="py">@dateFromAttribute</span> <span class="s">&quot;min&quot;</span>
-                <span class="nv">max   </span><span class="o">=</span> <span class="py">@dateFromAttribute</span> <span class="s">&quot;max&quot;</span>
                 <span class="nv">step  </span><span class="o">=</span> <span class="nb">parseInt</span> <span class="py">@valueFromAttribute</span> <span class="s">&quot;step&quot;</span>
-                <span class="k">if</span> <span class="nb">isNaN</span> <span class="nx">step</span> <span class="k">then</span> <span class="nv">step </span><span class="o">=</span> <span class="mi">0</span>
+                <span class="nv">date  </span><span class="o">=</span> <span class="py">@dateFromAttribute</span>  <span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span>
+                <span class="nv">min   </span><span class="o">=</span> <span class="py">@valueFromAttribute</span> <span class="s">&quot;min&quot;</span>
+                <span class="nv">max   </span><span class="o">=</span> <span class="py">@valueFromAttribute</span> <span class="s">&quot;max&quot;</span>
+
+                <span class="k">if</span> <span class="nb">isNaN</span> <span class="nx">step</span> <span class="k">then</span> <span class="nv">step </span><span class="o">=</span> <span class="kc">null</span>
+                <span class="k">unless</span> <span class="py">@isValidValue</span> <span class="nx">min</span> <span class="k">then</span> <span class="nv">min </span><span class="o">=</span> <span class="kc">null</span>
+                <span class="k">unless</span> <span class="py">@isValidValue</span> <span class="nx">max</span> <span class="k">then</span> <span class="nv">max </span><span class="o">=</span> <span class="kc">null</span>
             <span class="k">else</span>
                 <span class="nv">date  </span><span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span>
-                <span class="nv">value </span><span class="o">=</span> <span class="py">@dateToValue</span> <span class="nx">date</span>
+
+        <span class="nv">minDate </span><span class="o">=</span> <span class="k">if</span> <span class="nx">min</span><span class="o">?</span> <span class="k">then</span> <span class="py">@snapToStep</span> <span class="py">@valueToDate</span> <span class="nx">min</span>
+        <span class="nv">maxDate </span><span class="o">=</span> <span class="k">if</span> <span class="nx">max</span><span class="o">?</span> <span class="k">then</span> <span class="py">@snapToStep</span> <span class="py">@valueToDate</span> <span class="nx">max</span> 
                 
-        <span class="py">@createProperty</span> <span class="s">&quot;date&quot;</span><span class="p">,</span> <span class="nx">date</span>
-        <span class="py">@createProperty</span> <span class="s">&quot;min&quot;</span><span class="p">,</span>  <span class="nx">min</span>
-        <span class="py">@createProperty</span> <span class="s">&quot;max&quot;</span><span class="p">,</span>  <span class="nx">max</span>
-        <span class="py">@createProperty</span> <span class="s">&quot;step&quot;</span><span class="p">,</span> <span class="nx">step</span>
-        <span class="py">@properties</span><span class="p">[</span> <span class="s">&quot;value&quot;</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span>
+        <span class="py">@properties</span><span class="p">.</span><span class="nv">step  </span><span class="o">=</span> <span class="nx">step</span>
+        <span class="py">@properties</span><span class="p">.</span><span class="nv">min   </span><span class="o">=</span> <span class="k">if</span> <span class="nx">minDate</span><span class="o">?</span> <span class="k">then</span> <span class="py">@dateToValue</span> <span class="nx">minDate</span> <span class="k">else</span> <span class="kc">null</span>
+        <span class="py">@properties</span><span class="p">.</span><span class="nv">max   </span><span class="o">=</span> <span class="k">if</span> <span class="nx">maxDate</span><span class="o">?</span> <span class="k">then</span> <span class="py">@dateToValue</span> <span class="nx">maxDate</span> <span class="k">else</span> <span class="kc">null</span>
+
+        <span class="py">@properties</span><span class="p">.</span><span class="nv">date  </span><span class="o">=</span> <span class="py">@fitToRange</span> <span class="nx">date</span><span class="p">,</span> <span class="nx">minDate</span><span class="p">,</span> <span class="nx">maxDate</span>
+        <span class="py">@properties</span><span class="p">.</span><span class="nv">value </span><span class="o">=</span> <span class="py">@dateToValue</span> <span class="nx">date</span>
 
         <span class="py">@dateSetProgrammatically</span> <span class="o">=</span> <span class="kc">false</span>
 
@@ -79,48 +84,80 @@ extends the <code>AbstractDateInputWidget</code> class. </p>             </td>  
     <span class="py">dateFromAttribute</span><span class="o">:</span><span class="p">(</span> <span class="nx">attr</span><span class="p">,</span> <span class="nv">def </span><span class="o">=</span> <span class="kc">null</span> <span class="p">)</span><span class="o">-&gt;</span>
         <span class="nv">value </span><span class="o">=</span> <span class="py">@valueFromAttribute</span> <span class="nx">attr</span>
         <span class="k">if</span> <span class="py">@isValidValue</span> <span class="nx">value</span> <span class="k">then</span> <span class="py">@valueToDate</span> <span class="nx">value</span> <span class="k">else</span> <span class="nx">def</span>
-    </pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <h3>Dummy Management</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">createDummy</span><span class="o">:-&gt;</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <h3>Value Management</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">snapToStep</span><span class="o">:</span><span class="p">(</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="nv">ms </span><span class="o">=</span> <span class="nx">value</span><span class="p">.</span><span class="nx">valueOf</span><span class="p">()</span>
+        <span class="nv">step </span><span class="o">=</span> <span class="py">@get</span> <span class="s">&quot;step&quot;</span>
+        <span class="k">if</span> <span class="nx">step</span><span class="o">?</span>
+            <span class="k">new</span> <span class="nb">Date</span> <span class="nx">ms</span> <span class="o">-</span> <span class="p">(</span> <span class="nx">ms</span> <span class="o">%</span> <span class="p">(</span> <span class="nx">step</span> <span class="o">*</span> <span class="nx">MILLISECONDS_IN_SECOND</span> <span class="p">)</span> <span class="p">)</span>
+        <span class="k">else</span>
+            <span class="nx">value</span>
+
+    <span class="py">increment</span><span class="o">:</span><span class="p">()</span><span class="o">-&gt;</span>
+        <span class="nv">ms </span><span class="o">=</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;date&quot;</span><span class="p">).</span><span class="nx">valueOf</span><span class="p">()</span>
+        <span class="nv">step </span><span class="o">=</span> <span class="py">@get</span> <span class="s">&quot;step&quot;</span>
+        <span class="k">unless</span> <span class="nx">step</span><span class="o">?</span> <span class="k">then</span> <span class="nv">step </span><span class="o">=</span> <span class="mi">1</span>
+        
+        <span class="py">@set</span> <span class="s">&quot;date&quot;</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span> <span class="nx">ms</span> <span class="o">+</span> <span class="nx">step</span> <span class="o">*</span> <span class="nx">MILLISECONDS_IN_SECOND</span>
+        
+
+    <span class="py">decrement</span><span class="o">:</span><span class="p">()</span><span class="o">-&gt;</span>
+        <span class="nv">ms </span><span class="o">=</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;date&quot;</span><span class="p">).</span><span class="nx">valueOf</span><span class="p">()</span>
+        <span class="nv">step </span><span class="o">=</span> <span class="py">@get</span> <span class="s">&quot;step&quot;</span>
+        <span class="k">unless</span> <span class="nx">step</span><span class="o">?</span> <span class="k">then</span> <span class="nv">step </span><span class="o">=</span> <span class="mi">1</span>
+        
+        <span class="py">@set</span> <span class="s">&quot;date&quot;</span><span class="p">,</span> <span class="k">new</span> <span class="nb">Date</span> <span class="nx">ms</span> <span class="o">-</span> <span class="nx">step</span> <span class="o">*</span> <span class="nx">MILLISECONDS_IN_SECOND</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <h3>Dummy Management</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">createDummy</span><span class="o">:-&gt;</span>
         <span class="nx">$</span> <span class="s">&quot;&lt;span class=&#39;dateinput </span><span class="si">#{</span> <span class="py">@supportedType</span> <span class="si">}</span><span class="s">&#39;&gt;&lt;/span&gt;&quot;</span>
     
-    <span class="py">updateDummy</span><span class="o">:-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <h3>Properties Accessors</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">set_date</span><span class="o">:</span><span class="p">(</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="py">updateDummy</span><span class="o">:-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <h3>Properties Accessors</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">set_date</span><span class="o">:</span><span class="p">(</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
         <span class="k">if</span> <span class="o">not</span> <span class="nx">value</span><span class="o">?</span> <span class="o">or</span> <span class="nb">isNaN</span> <span class="nx">value</span><span class="p">.</span><span class="nx">getDate</span><span class="p">()</span> <span class="k">then</span> <span class="k">return</span> <span class="py">@get</span> <span class="s">&quot;date&quot;</span>
 
-        <span class="py">@properties</span><span class="p">[</span> <span class="nx">property</span> <span class="p">]</span> <span class="o">=</span> <span class="py">@fitToRange</span> <span class="nx">value</span> 
+        <span class="nv">min </span><span class="o">=</span> <span class="py">@get</span> <span class="s">&quot;min&quot;</span>
+        <span class="nv">max </span><span class="o">=</span> <span class="py">@get</span> <span class="s">&quot;max&quot;</span>
 
-        <span class="k">unless</span> <span class="py">@dateSetProgrammatically</span>
-            <span class="py">@set</span> <span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="py">@dateToValue</span> <span class="py">@properties</span><span class="p">[</span> <span class="nx">property</span> <span class="p">]</span>
+        <span class="k">if</span> <span class="nx">min</span><span class="o">?</span> <span class="k">then</span> <span class="nv">min </span><span class="o">=</span> <span class="py">@valueToDate</span> <span class="nx">min</span>
+        <span class="k">if</span> <span class="nx">max</span><span class="o">?</span> <span class="k">then</span> <span class="nv">max </span><span class="o">=</span> <span class="py">@valueToDate</span> <span class="nx">max</span>
+
+        <span class="py">@properties</span><span class="p">[</span> <span class="nx">property</span> <span class="p">]</span> <span class="o">=</span> <span class="py">@fitToRange</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">min</span><span class="p">,</span> <span class="nx">max</span>
+
+        <span class="k">unless</span> <span class="py">@dateSetProgrammatically</span> <span class="k">then</span> <span class="py">@set</span> <span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="py">@dateToValue</span> <span class="py">@properties</span><span class="p">[</span> <span class="nx">property</span> <span class="p">]</span>
         
         <span class="py">@properties</span><span class="p">[</span> <span class="nx">property</span> <span class="p">]</span>
     
     <span class="py">set_value</span><span class="o">:</span><span class="p">(</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
-        <span class="k">unless</span> <span class="py">@isValidValue</span> <span class="nx">value</span> <span class="k">then</span> <span class="k">return</span> <span class="py">@get</span> <span class="s">&quot;value&quot;</span>
+        <span class="k">unless</span> <span class="py">@isValidValue</span> <span class="nx">value</span> <span class="k">then</span> <span class="k">return</span> <span class="py">@get</span> <span class="nx">property</span>
 
         <span class="py">@dateSetProgrammatically</span> <span class="o">=</span> <span class="kc">true</span>
         <span class="py">@set</span> <span class="s">&quot;date&quot;</span><span class="p">,</span> <span class="py">@valueToDate</span> <span class="nx">value</span>
         <span class="py">@dateSetProgrammatically</span> <span class="o">=</span> <span class="kc">false</span>
 
         <span class="k">super</span> <span class="nx">property</span><span class="p">,</span> <span class="py">@dateToValue</span> <span class="py">@get</span> <span class="s">&quot;date&quot;</span>
+        <span class="py">@updateDummy</span><span class="p">()</span>
     
     <span class="py">set_min</span><span class="o">:</span><span class="p">(</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
-        <span class="py">@properties</span><span class="p">[</span> <span class="nx">property</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span>
+        <span class="k">unless</span> <span class="py">@isValidValue</span> <span class="nx">value</span> <span class="k">then</span> <span class="k">return</span> <span class="py">@get</span> <span class="nx">property</span>
+        <span class="k">if</span> <span class="nx">value</span> <span class="o">&gt;</span> <span class="py">@get</span> <span class="s">&quot;max&quot;</span> <span class="k">then</span> <span class="k">return</span> <span class="py">@get</span> <span class="nx">property</span>
+
+        <span class="py">@properties</span><span class="p">[</span> <span class="nx">property</span> <span class="p">]</span> <span class="o">=</span> <span class="py">@dateToValue</span> <span class="py">@snapToStep</span> <span class="py">@valueToDate</span> <span class="nx">value</span>
+        <span class="py">@valueToAttribute</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span>
         <span class="py">@set</span> <span class="s">&quot;date&quot;</span><span class="p">,</span> <span class="py">@get</span> <span class="s">&quot;date&quot;</span>
         <span class="nx">value</span>
     
     <span class="py">set_max</span><span class="o">:</span><span class="p">(</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
-        <span class="py">@properties</span><span class="p">[</span> <span class="nx">property</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span>
+        <span class="k">unless</span> <span class="py">@isValidValue</span> <span class="nx">value</span> <span class="k">then</span> <span class="k">return</span> <span class="py">@get</span> <span class="nx">property</span>
+        <span class="k">if</span> <span class="nx">value</span> <span class="o">&lt;</span> <span class="py">@get</span> <span class="s">&quot;min&quot;</span> <span class="k">then</span> <span class="k">return</span> <span class="py">@get</span> <span class="nx">property</span>
+
+        <span class="py">@properties</span><span class="p">[</span> <span class="nx">property</span> <span class="p">]</span> <span class="o">=</span> <span class="py">@dateToValue</span> <span class="py">@snapToStep</span> <span class="py">@valueToDate</span> <span class="nx">value</span>
+        <span class="py">@valueToAttribute</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span>
         <span class="py">@set</span> <span class="s">&quot;date&quot;</span><span class="p">,</span> <span class="py">@get</span> <span class="s">&quot;date&quot;</span>
         <span class="nx">value</span>
-    </pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <h3>Utilities</h3>             </td>             <td class="code">               <div class="highlight"><pre>    
-    <span class="py">fitToRange</span><span class="o">:</span><span class="p">(</span> <span class="nx">date</span> <span class="p">)</span><span class="o">-&gt;</span>
-        <span class="nv">min </span><span class="o">=</span> <span class="py">@get</span> <span class="s">&quot;min&quot;</span>
-        <span class="nv">max </span><span class="o">=</span> <span class="py">@get</span> <span class="s">&quot;max&quot;</span>
-
-        <span class="k">if</span> <span class="nx">min</span><span class="o">?</span> <span class="o">and</span> <span class="nx">date</span> <span class="o">&lt;</span> <span class="nx">min</span> 
-            <span class="nx">min</span>
-        <span class="k">else</span> <span class="k">if</span> <span class="nx">max</span><span class="o">?</span> <span class="o">and</span> <span class="nx">date</span> <span class="o">&gt;</span> <span class="nx">max</span>
-            <span class="nx">max</span>
-        <span class="k">else</span> 
-            <span class="nx">date</span></pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p><a name='time'></a></p>
+    
+    <span class="py">set_step</span><span class="o">:</span><span class="p">(</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="py">@properties</span><span class="p">[</span> <span class="nx">property</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span>
+        <span class="py">@valueToAttribute</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span>
+        <span class="py">@set</span> <span class="s">&quot;date&quot;</span><span class="p">,</span> <span class="py">@get</span> <span class="s">&quot;date&quot;</span>
+        <span class="nx">value</span>
+    </pre></div>             </td>           </tr>                               <tr id="section-14">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-14">&#182;</a>               </div>               <p><a name='time'></a></p>
 
 <h1>Time</h1>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-15">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-15">&#182;</a>               </div>               <p>Match if the passed-in string is a valid time string.
 The following strings are considered as valid : 
@@ -166,6 +203,8 @@ output will look as <code>10:15:40.768</code>.</p>             </td>            
         <span class="py">@isValidValue</span> <span class="o">=</span> <span class="nx">isValidTime</span>
 
         <span class="k">super</span> <span class="nx">target</span>
+
+        <span class="k">unless</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;step&quot;</span><span class="p">)</span><span class="o">?</span> <span class="k">then</span> <span class="py">@set</span> <span class="s">&quot;step&quot;</span><span class="p">,</span> <span class="mi">60</span>
     
     <span class="py">createDummy</span><span class="o">:-&gt;</span>
         <span class="nv">dummy </span><span class="o">=</span> <span class="k">super</span><span class="p">()</span>
@@ -175,7 +214,7 @@ output will look as <code>10:15:40.768</code>.</p>             </td>            
         <span class="nx">dummy</span>
     
     <span class="py">updateDummy</span><span class="o">:-&gt;</span>
-        <span class="py">@dummy</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;input&quot;</span><span class="p">).</span><span class="nx">val</span> <span class="p">(</span> <span class="py">@get</span> <span class="s">&quot;value&quot;</span> <span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">..</span><span class="mi">1</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <p><a name='date'></a></p>
+        <span class="py">@dummy</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;input&quot;</span><span class="p">).</span><span class="nx">val</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">).</span><span class="nx">split</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">..</span><span class="mi">1</span><span class="p">].</span><span class="nx">join</span><span class="p">(</span><span class="s">&quot;:&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-20">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-20">&#182;</a>               </div>               <p><a name='date'></a></p>
 
 <h1>Date</h1>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-21">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-21">&#182;</a>               </div>               <p>A valid date is a string such as <code>2012-12-29</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">isValidDate</span><span class="o">=</span><span class="p">(</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
     <span class="k">unless</span> <span class="nx">value</span><span class="o">?</span> <span class="k">then</span> <span class="k">return</span> <span class="kc">false</span>
@@ -316,7 +355,7 @@ as a year can start in the middle of a week. </p>             </td>             
         <span class="k">super</span> <span class="nx">target</span>
     </pre></div>             </td>           </tr>                               <tr id="section-34">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-34">&#182;</a>               </div>               <p><a name='datetime-local'></a></p>
 
-<h1>DateTime Local</h1>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">isValidDateTimeLocal</span><span class="o">=</span><span class="p">(</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
+<h1>DateTimeLocal</h1>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">isValidDateTimeLocal</span><span class="o">=</span><span class="p">(</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
     <span class="k">unless</span> <span class="nx">value</span><span class="o">?</span> <span class="k">then</span> <span class="k">return</span> <span class="kc">false</span>
     <span class="p">(</span><span class="sr">///</span> <span class="sro">^</span>
         <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">4</span><span class="sro">}</span><span class="sr">-       </span><span class="c1"># Year</span>

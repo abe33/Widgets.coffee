@@ -53,7 +53,11 @@ class Slider extends NumericWidget
         # centered with the knob.
         @valueCenteredOnKnob = true
 
-        if @hasDummy then @updateDummy @get("value"), @get("min"), @get("max")
+        unless @get("step")? then @properties.step = 1
+        unless @get("min")?  then @properties.min  = 0
+        unless @get("max")?  then @properties.max  = 100
+
+        @set "value", @get "value"
     
     #### Target management
 

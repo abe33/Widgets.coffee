@@ -2,7 +2,7 @@
 #
 # A Widget allow to work with or without a target `<input>` node, and provides
 # methods to reflect changes done on the widget onto its target. 
-class Widget
+class Widget extends Module
 
     # Pass a `<input>` node to the constructor to define the widget's target.
     # An error is raised if the passed-in node's name is not `input` or if
@@ -75,6 +75,20 @@ class Widget
         @hasDummy = @dummy?
         @hasFocus = false
 
+        # Since there's no way to know if an object is a descendant 
+        # of the Widget class, this property will act as a marker 
+        # for widget's instances.
+        @isWidget = true
+
+        # When added as child in a `Container` the `parent` property
+        # store a reference to the parent.
+        @parent = null
+    
+        # The commands for `keydown` and `keyup` events are stored
+        # in two different objects.
+        @keyDownCommands = {}
+        @keyUpCommands = {}
+
         # Additional setup if a target have been specified
         if @hasTarget
 
@@ -114,19 +128,7 @@ class Widget
             @registerToDummyEvents()
             @updateStates()
         
-        # Since there's no way to know if an object is a descendant 
-        # of the Widget class, this property will act as a marker 
-        # for widget's instances.
-        @isWidget = true
-
-        # When added as child in a `Container` the `parent` property
-        # store a reference to the parent.
-        @parent = null
-    
-        # The commands for `keydown` and `keyup` events are stored
-        # in two different objects.
-        @keyDownCommands = {}
-        @keyUpCommands = {}
+        super()
 
     #### Shared Properties accessors
     # 

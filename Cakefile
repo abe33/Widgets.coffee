@@ -2,6 +2,46 @@ fs            = require 'fs'
 {print}       = require 'util'
 {spawn, exec} = require 'child_process'
 
+testTmp = """
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Temporary tests</title>
+    <link rel="stylesheet" href="../css/styles.css" media="screen">
+    <link rel="stylesheet" href="../css/widgets.css" media="screen">
+
+    <link rel="stylesheet" href="../depends/qunit.css" media="screen">
+    <script type="text/javascript" src="../depends/qunit.js"></script>
+    
+    <script type="text/javascript" src="../depends/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript" src="../depends/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="../depends/hamcrest.min.js"></script>
+
+    <script type="text/javascript" src="../depends/signals.js"></script>
+    
+    <script type="text/javascript" src="./widgets.js"></script>
+    <script type="text/javascript" src="./test-widgets.js"></script>   
+    <style>
+        #qunit-tests .value {
+            font-weight:bold;
+        }
+        h4 {
+            margin-top:4px;
+            margin-bottom:4px;
+        }        
+    </style>
+</head>
+<body>
+    <h1 id="qunit-header">Temporary tests</h1>
+    <h2 id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+    <div id="qunit-fixture">test markup</div>
+</body>
+"""
+
 contents = [
     "keys",
     "mixins",
@@ -71,8 +111,13 @@ try
 catch e
     fs.mkdirSync ".tmp"
 
+try
+    fs.lstatSync ".tmp/test-tmp.html"
+catch e
+    fs.writeFileSync ".tmp/test-tmp.html", testTmp
+
 join = ( dir, contents, inFile, callback ) ->
-    files = ( "#{dir}/#{file}.coffee" for file in contents when file not in [ "mixins", "module", "test-helpers" ] )
+    files = ( "#{dir}/#{file}.coffee" for file in contents )
 
     options = ['--join', inFile, '--compile' ].concat files
 
@@ -92,7 +137,7 @@ testTask=(file)->
             join "tests", [ "test-helpers", "test-#{file}" ], test, ->
                 console.log "#{file} tests compiled"
 
-                o = spawn 'firefox', [ "test-tmp.html" ]
+                o = spawn 'firefox', [ ".tmp/test-tmp.html" ]
                 o.stdout.on 'data', (data) -> print data.toString()
                 o.stderr.on 'data', (data) -> print data.toString()
                 o.on 'exit', (status) -> callback?() if status is 0

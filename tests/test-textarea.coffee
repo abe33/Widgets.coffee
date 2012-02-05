@@ -32,21 +32,6 @@ test "The TextArea target should be added as a child of the dummy", ->
 
 	assertThat area.dummy.find("textarea").length, equalTo 1 
 
-test "The TextArea focus should be handled by the target", ->
-
-	focusPlacedOnTheTarget = false
-	
-	area = new TextArea
-
-	area.dummy.children("textarea").focus ->
-		focusPlacedOnTheTarget = true
-	
-	area.grabFocus()
-
-	assertThat focusPlacedOnTheTarget
-	assertThat area.dummy.attr("tabindex"), nullValue()
-	assertThat area.hasFocus
-
 test "Changing the value in the target should update the widget", ->
 
 	signalCalled = false
@@ -62,25 +47,6 @@ test "Changing the value in the target should update the widget", ->
 
 	assertThat textarea.get("value"), equalTo "hello" 
 
-test "Clicking on a textarea should give him the focus", ->
-
-	textarea = new TextArea
-
-	textarea.dummy.mouseup()
-
-	assertThat textarea.hasFocus
-
-test "Clicking on a disabled textarea shouldn't give him the focus", ->
-
-	textarea = new TextArea
-
-	textarea.set "disabled", true
-
-	textarea.dummy.mouseup()
-
-	assertThat not textarea.hasFocus
-
-
 test "TextArea should know when its content had changed and the change events isn't triggered already", ->
 
 	area = new TextArea
@@ -88,6 +54,15 @@ test "TextArea should know when its content had changed and the change events is
 	area.dummy.children("textarea").trigger "input"
 
 	assertThat area.valueIsObsolete
+
+opt = 
+	cls:TextArea
+	className:"TextArea"
+	focusChildSelector:"textarea"
+
+testFocusProvidedByChildMixinBegavior opt
+
+
 
 area1 = new TextArea
 area2 = new TextArea

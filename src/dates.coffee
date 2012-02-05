@@ -11,12 +11,12 @@
 # 
 # The supported dates and time modes and their corresponding widgets are :
 #
-# * [time](#time)              : [TimeInput](#TimeInput)
-# * [date](#date)              : [DateInput](#DateInput)
-# * [month](#month)            : [MonthInput](#MonthInput)
-# * [week](#week)              : [WeekInput](#WeekInput)
-# * [datetime](#datetime)      : [DateTimeInput](#DateTimeInput)
-# * [datetime-local](datetime) : [DateTimeInput](#DateTimeInput)
+# * [time](#time)                    : [TimeInput](#TimeInput)
+# * [date](#date)                    : [DateInput](#DateInput)
+# * [month](#month)                  : [MonthInput](#MonthInput)
+# * [week](#week)                    : [WeekInput](#WeekInput)
+# * [datetime](#datetime)            : [DateTimeInput](#DateTimeInput)
+# * [datetime-local](#datetime-loca) : [DateTimeLocalInput](#DateTimeLocalInput)
 
 #### Utilities
 
@@ -51,6 +51,7 @@ fill=( s, l = 2 )->
 # All widgets that implements support for one of the html date and time inputs
 # extends the `AbstractDateInputWidget` class. 
 class AbstractDateInputWidget extends Widget
+    @mixins RangeStepper
 
     valueToDate:( value )-> new Date
     dateToValue:( date )-> ""
@@ -60,30 +61,34 @@ class AbstractDateInputWidget extends Widget
     constructor:( target )->
         min  = null
         max  = null
-        step = 0
+        step = null
 
         if target instanceof Date 
             super()
             date  = target
-            value = @dateToValue date
         else
             super target
             if @hasTarget
-                value = @valueFromAttribute "value"
-                date  = @dateFromAttribute "value", new Date
-                min   = @dateFromAttribute "min"
-                max   = @dateFromAttribute "max"
                 step  = parseInt @valueFromAttribute "step"
-                if isNaN step then step = 0
+                date  = @dateFromAttribute  "value", new Date
+                min   = @valueFromAttribute "min"
+                max   = @valueFromAttribute "max"
+
+                if isNaN step then step = null
+                unless @isValidValue min then min = null
+                unless @isValidValue max then max = null
             else
                 date  = new Date
-                value = @dateToValue date
+
+        minDate = if min? then @snapToStep @valueToDate min
+        maxDate = if max? then @snapToStep @valueToDate max 
                 
-        @createProperty "date", date
-        @createProperty "min",  min
-        @createProperty "max",  max
-        @createProperty "step", step
-        @properties[ "value" ] = value
+        @properties.step  = step
+        @properties.min   = if minDate? then @dateToValue minDate else null
+        @properties.max   = if maxDate? then @dateToValue maxDate else null
+
+        @properties.date  = @fitToRange date, minDate, maxDate
+        @properties.value = @dateToValue date
 
         @dateSetProgrammatically = false
 
@@ -99,6 +104,31 @@ class AbstractDateInputWidget extends Widget
         value = @valueFromAttribute attr
         if @isValidValue value then @valueToDate value else def
     
+    #### Value Management
+
+    snapToStep:( value )->
+        ms = value.valueOf()
+        step = @get "step"
+        if step?
+            new Date ms - ( ms % ( step * MILLISECONDS_IN_SECOND ) )
+        else
+            value
+
+    increment:()->
+        ms = @get("date").valueOf()
+        step = @get "step"
+        unless step? then step = 1
+        
+        @set "date", new Date ms + step * MILLISECONDS_IN_SECOND
+        
+
+    decrement:()->
+        ms = @get("date").valueOf()
+        step = @get "step"
+        unless step? then step = 1
+        
+        @set "date", new Date ms - step * MILLISECONDS_IN_SECOND
+    
     #### Dummy Management
 
     createDummy:->
@@ -111,45 +141,52 @@ class AbstractDateInputWidget extends Widget
     set_date:( property, value )->
         if not value? or isNaN value.getDate() then return @get "date"
 
-        @properties[ property ] = @fitToRange value 
+        min = @get "min"
+        max = @get "max"
 
-        unless @dateSetProgrammatically
-            @set "value", @dateToValue @properties[ property ]
+        if min? then min = @valueToDate min
+        if max? then max = @valueToDate max
+
+        @properties[ property ] = @fitToRange value, min, max
+
+        unless @dateSetProgrammatically then @set "value", @dateToValue @properties[ property ]
         
         @properties[ property ]
     
     set_value:( property, value )->
-        unless @isValidValue value then return @get "value"
+        unless @isValidValue value then return @get property
 
         @dateSetProgrammatically = true
         @set "date", @valueToDate value
         @dateSetProgrammatically = false
 
         super property, @dateToValue @get "date"
+        @updateDummy()
     
     set_min:( property, value )->
-        @properties[ property ] = value
+        unless @isValidValue value then return @get property
+        if value > @get "max" then return @get property
+
+        @properties[ property ] = @dateToValue @snapToStep @valueToDate value
+        @valueToAttribute property, value
         @set "date", @get "date"
         value
     
     set_max:( property, value )->
-        @properties[ property ] = value
+        unless @isValidValue value then return @get property
+        if value < @get "min" then return @get property
+
+        @properties[ property ] = @dateToValue @snapToStep @valueToDate value
+        @valueToAttribute property, value
         @set "date", @get "date"
         value
     
-    #### Utilities
+    set_step:( property, value )->
+        @properties[ property ] = value
+        @valueToAttribute property, value
+        @set "date", @get "date"
+        value
     
-    fitToRange:( date )->
-        min = @get "min"
-        max = @get "max"
-
-        if min? and date < min 
-            min
-        else if max? and date > max
-            max
-        else 
-            date
-
 
 # <a name='time'></a>
 ## Time
@@ -210,6 +247,8 @@ class TimeInput extends AbstractDateInputWidget
         @isValidValue = isValidTime
 
         super target
+
+        unless @get("step")? then @set "step", 60
     
     createDummy:->
         dummy = super()
@@ -219,7 +258,7 @@ class TimeInput extends AbstractDateInputWidget
         dummy
     
     updateDummy:->
-        @dummy.find("input").val ( @get "value" ).split(":")[0..1].join(":")
+        @dummy.find("input").val @get("value").split(":")[0..1].join(":")
 
 
 # <a name='date'></a>
@@ -395,7 +434,7 @@ class DateTimeInput extends AbstractDateInputWidget
         super target
     
 # <a name='datetime-local'></a>
-## DateTime Local
+## DateTimeLocal
 
 isValidDateTimeLocal=( value )->
     unless value? then return false

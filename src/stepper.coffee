@@ -26,8 +26,13 @@
 # $("#livedemos").append( stepper3.dummy );
 # </script>
 class Stepper extends NumericWidget
+
+    @mixins FocusProvidedByChild
+
     constructor:(target)->
         super target
+
+        unless @get("step")? then @set "step", 1
 
         @updateDummy @get("value"), @get("min"), @get("max"), @get("step")
     
@@ -52,14 +57,9 @@ class Stepper extends NumericWidget
                 <span class='up'></span>
            </span>"
         
-        input = dummy.children("input")
+        @focusProvider = dummy.children("input")
         down = dummy.children(".down")
         up = dummy.children(".up")
-        
-        # Changing the value of the widget's input trigger
-        # the input validation function. 
-        input.bind "change", =>
-            @validateInput()
         
         # Pressing on the buttons starts an increment or decrement
         # interval according to the pressed button.
@@ -107,43 +107,18 @@ class Stepper extends NumericWidget
     # The states of the widget is reflected on the widget's input.
     updateStates:->
         super()
-        input = @dummy.children(".value")
-        if @get "readonly" then input.attr "readonly", "readonly" else input.removeAttr "readonly"
-        if @get "disabled" then input.attr "disabled", "disabled" else input.removeAttr "disabled"
+        if @get "readonly" then @focusProvider.attr "readonly", "readonly" else @focusProvider.removeAttr "readonly"
+        if @get "disabled" then @focusProvider.attr "disabled", "disabled" else @focusProvider.removeAttr "disabled"
     
     # The value of the widget is displayed within its input.
     updateDummy:( value, min, max, step )->
-        input = @dummy.children(".value")
-        input.attr "value", value
-
-    #### Events handling
-    #
-    # The stepper widget is a special case, as it don't receive 
-    # focus directly of its dummy.
-    # Instead, whenever the focus is given to the widget, 
-    # its the widget's input that will receive it.
-    
-    # In the same way, keyboard inputs are handled from the input
-    # and not from the dummy.
-    inputSupportedEvents:"focus blur keyup keydown keypress"
-
-    supportedEvents:"mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick"
-
-    # In this regards, the events registrations methods are overridden.
-    registerToDummyEvents:->
-        @dummy.children(".value").bind @inputSupportedEvents, (e)=>
-            @[e.type].apply this, arguments 
-        super()
-    
-    unregisterFromDummyEvents:->
-        @dummy.children(".value").unbind @inputSupportedEvents
-        super()
+        @focusProvider.val value
     
     # When the value of the input is changed, the new value go through
     # the validation function.
     validateInput:->
         # The input's value is parsed to a float.
-        value = parseFloat @dummy.children("input").attr("value")
+        value = parseFloat @focusProvider.attr("value")
 
         # And if the resulting value is a number, it's affected
         # to this widget's value.
@@ -152,20 +127,17 @@ class Stepper extends NumericWidget
         else
             @updateDummy @get("value"), @get("min"), @get("max"), @get("step")
     
-    #### Focus management
+    #### Events Handlers
 
-    # There's no need for the dummy to be able to receive the focus. So
-    # a `Stepper` dummy will never have the `tabindex` attribute set.
-    setFocusable:->
+    # Changes made to the input lead to an input validation.
+    change:( e )-> @validateInput()
 
-    # Grabbing the focus for this widget is giving the focus to its input.
-    grabFocus:->
-        @dummy.children(".value").focus()
-    
     # Releasing the mouse over the widget will force the focus on the 
     # input. That way, clicking on the increment and decrement button
     # will also give the focus to the widget.
     mouseup:->
+        if @get "disabled" then return true
+
         @grabFocus()    
 
         if @dragging 
@@ -177,6 +149,8 @@ class Stepper extends NumericWidget
     
     # The `Stepper` allow to drag the mouse vertically to change the value.
     mousedown:(e)->
+        if @cantInteract() then return true
+
         @dragging = true
         @pressedY = e.pageY
 
