@@ -6,6 +6,7 @@
 # The file contains the following definitions: 
 #
 # * [RangeStepper](RangeStepper)
+# * [FocusProvidedByChild](FocusProvidedByChild)
 
 # <a name="RangeStepper"></a>
 #### RangeStepper Mixin 
@@ -118,6 +119,58 @@ RangeStepper=
         # `mousewheel` returns `false` to prevent the page to scroll.
         false
 
+# <a name="FocusProvidedByChild"></a>
+#### FocusProvidedByChild Mixin 
+#
+# Allow a widget to handle the focus trough one of its child. 
+#
+# For instance, A widget that should allow the user to input
+# a value with the keyboard will contains a `text` input. 
+# In that case, the widget focus should be provided by the input
+# to have only focusable element (not both the widget and its input)
+# and to allow to write in the input as soon as the widget get 
+# the focus, whatever the means lead the widget to get the focus.
+FocusProvidedByChild=
+    # The constructor hook will register focus related events
+    # on the `focusProvider` child. The widget receiving the 
+    # mixin should ensure that the property is set before 
+    # the hook call.
+    constructorHook:->
+        @focusProvider.bind @focusRelatedEvents, (e)=>
+            @[e.type].apply this, arguments 
+
+    #### Focus management
+
+    # There's no need for the dummy to be able to receive the focus. So
+    # the dummy will never have the `tabindex` attribute set.
+    setFocusable:->
+
+    # Grabbing the focus for this widget is giving the focus to its child.
+    grabFocus:->
+        @focusProvider.focus()
+
+    #### Events handling
+
+    # Since focus related events will be provided by another object, 
+    # the events that the widget will receive from its dummy is reduced.
+    supportedEvents:"mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick"
+
+    # Since keyboard events can only be received from the element
+    # that have the focus, the widget will listen the keyboard events
+    # from the focus provider and not from the dummy. 
+    focusRelatedEvents:"focus blur keyup keydown keypress input change"
+
+    # Both unregister events from the dummy and from the focus provider.
+    unregisterFromDummyEvents:->
+        @focusProvider.unbind @focusRelatedEvents
+        super()
+    
+    # Releasing the mouse over the widget gives it the focus.
+    mouseup:(e)->
+        unless @get "disabled" then @grabFocus()
+        true
+
 if window?
     window.RangeStepper = RangeStepper
+    window.FocusProvidedByChild = FocusProvidedByChild
 

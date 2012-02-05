@@ -75,6 +75,20 @@ class Widget extends Module
         @hasDummy = @dummy?
         @hasFocus = false
 
+        # Since there's no way to know if an object is a descendant 
+        # of the Widget class, this property will act as a marker 
+        # for widget's instances.
+        @isWidget = true
+
+        # When added as child in a `Container` the `parent` property
+        # store a reference to the parent.
+        @parent = null
+    
+        # The commands for `keydown` and `keyup` events are stored
+        # in two different objects.
+        @keyDownCommands = {}
+        @keyUpCommands = {}
+
         # Additional setup if a target have been specified
         if @hasTarget
 
@@ -114,20 +128,6 @@ class Widget extends Module
             @registerToDummyEvents()
             @updateStates()
         
-        # Since there's no way to know if an object is a descendant 
-        # of the Widget class, this property will act as a marker 
-        # for widget's instances.
-        @isWidget = true
-
-        # When added as child in a `Container` the `parent` property
-        # store a reference to the parent.
-        @parent = null
-    
-        # The commands for `keydown` and `keyup` events are stored
-        # in two different objects.
-        @keyDownCommands = {}
-        @keyUpCommands = {}
-
         super()
 
     #### Shared Properties accessors

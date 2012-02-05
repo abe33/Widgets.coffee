@@ -22,6 +22,7 @@ opt=
 	cls:Stepper
 	className:"Stepper"
 	defaultTarget:"<input type='number' min='0' max='100' step='5' value='10'>"
+	focusChildSelector:"input"
 
 	initialValue:10
 	valueBelowRange:-10
@@ -46,6 +47,7 @@ opt=
 	undefinedMinValueMatcher:nullValue()
 	undefinedMaxValueMatcher:nullValue()
 	undefinedStepValueMatcher:equalTo 1
+
 	
 testRangeStepperMixinBehavior opt
 
@@ -84,38 +86,8 @@ a =
 testRangeStepperMixinKeyboardBehavior opt extends a 
 
 testRangeStepperMixinMouseWheelBehavior opt
-	
-test "Stepper shouldn't take focus, instead it should give it to its value input", ->
-	
-	focusPlacedOnTheInput = false
-	
-	stepper = new Stepper
-	stepper.dummy.children(".value").focus ->
-		focusPlacedOnTheInput = true
-	
-	stepper.grabFocus()
-
-	assertThat focusPlacedOnTheInput
-	assertThat stepper.dummy.attr("tabindex"), nullValue()
-	assertThat stepper.hasFocus
-
-test "Clicking on a stepper should give him the focus", ->
-
-	stepper = new Stepper
-
-	stepper.dummy.mouseup()
-
-	assertThat stepper.hasFocus
-
-test "Stepper's input should reflect the state of the widget", ->
-
-	stepper = new Stepper
-
-	stepper.set "readonly", true
-	stepper.set "disabled", true
-
-	assertThat stepper.dummy.children(".value").attr("readonly"), notNullValue()
-	assertThat stepper.dummy.children(".value").attr("disabled"), notNullValue()
+ 
+testFocusProvidedByChildMixinBegavior opt
 
 test "Stepper's input value should be the stepper value", ->
 

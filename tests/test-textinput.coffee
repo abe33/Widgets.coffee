@@ -38,19 +38,12 @@ test "A TextInput should have a dummy that contains the target", ->
 
 	assertThat input.dummy.children("input").length, equalTo 1
 
-test "A TextInput focus should be placed on the target", ->
-	focusPlacedOnTheInput = false
-	
-	input = new TextInput
+opt = 
+	cls:TextInput
+	className:"TextInput"
+	focusChildSelector:"input"
 
-	input.dummy.children("input").focus ->
-		focusPlacedOnTheInput = true
-	
-	input.grabFocus()
-
-	assertThat focusPlacedOnTheInput
-	assertThat input.dummy.attr("tabindex"), nullValue()
-	assertThat input.hasFocus
+testFocusProvidedByChildMixinBegavior opt
 
 test "Changing the value in the target should update the widget", ->
 
@@ -66,24 +59,6 @@ test "Changing the value in the target should update the widget", ->
 	input.dummy.children("input").change()
 
 	assertThat input.get("value"), equalTo "hello" 
-
-test "Clicking on a textinput should give him the focus", ->
-
-	input = new TextInput
-
-	input.dummy.mouseup()
-
-	assertThat input.hasFocus
-
-test "Clicking on a disabled textinput shouldn't give him the focus", ->
-
-	input = new TextInput
-
-	input.set "disabled", true
-
-	input.dummy.mouseup()
-
-	assertThat not input.hasFocus
 
 test "TextInput should support the maxlength attribute of an input text", ->
 

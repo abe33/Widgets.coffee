@@ -33,8 +33,7 @@ class Module
             # That function will be stored in a specific prototype 
             # property and then triggered at the end of the `Module`
             # constructor. 
-            unless @::constructorHooks then @::constructorHooks = []
-            if mixin.constructorHook? then @::constructorHooks.push mixin.constructorHook
+            if mixin.constructorHook? then @::constructorHooks = @::constructorHooks.concat mixin.constructorHook
         this
     
     # When `preventConstructorHooksInModule` is `true`, the `Module`
@@ -46,8 +45,9 @@ class Module
     # constructor to allow their subclasses to to do so.
     preventConstructorHooksInModule:false 
 
+    # 
     constructorHooks:[]
-    
+
     # The `Module` constructor behavior is to automatically 
     # triggers the constructor hooks.
     constructor:->

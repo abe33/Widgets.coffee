@@ -116,13 +116,13 @@ testGenericDateWidgetBehaviors=( opt )->
 		assertThat input.get( "step" ), opt.undefinedStepValueMatcher
 	
 	test "Changing the value should change the target value as well", ->
-
-		target = $("<input type='#{ opt.type }' value='#{ opt.defaultValue }'></input>")
+		
+		target = $ "<input type='#{ opt.type }' value='#{ opt.defaultValue }'></input>"
 		input = new opt.cls target[0]
 
 		input.set "value", opt.setValue
 
-		assertThat target.attr("value"), equalTo opt.setValue
+		assertThat target.val(), equalTo opt.setValue
 	
 	test "Changing the date should change the target value as well", ->
 
@@ -131,7 +131,7 @@ testGenericDateWidgetBehaviors=( opt )->
 
 		input.set "date", opt.setDate
 
-		assertThat target.attr("value"), equalTo opt.setValue
+		assertThat target.val(), equalTo opt.setValue
 		
 	test "A #{ opt.className } should provide a dummy", ->
 	

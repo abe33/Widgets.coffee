@@ -3,8 +3,10 @@
 # The `NumericWidget` class is a base class for number manipulation widget.
 # Both the `Slider` and `Stepper` classes extends the `NumericWidget` class.
 class NumericWidget extends Widget
-    @mixins RangeStepper
 
+    # Ranges management is provided by the `RangeStepper` mixin.
+    @mixins RangeStepper
+    
     constructor:(target)->
 
         super target

@@ -30,21 +30,19 @@
 # $("#livedemos").append( picker3.dummy );
 # </script>
 class FilePicker extends Widget
+
+    @mixins FocusProvidedByChild
+
     constructor:(target)->
 
         # The `target` is mandatory in the `FilePicker` constructor so a default
         # target is created when nothing is passed to the constructor. 
-        unless target? 
-            target = $("<input type='file'></input>")[0]
+        unless target? then target = $("<input type='file'></input>")[0]
 
         super target
 
         # The target is hidden when the widget is either readonly or disabled.
         if @cantInteract() then @hideTarget()
-
-        # Target's changes are binded to an internal callback.
-        @jTarget.bind "change", (e)=>
-            @targetChange e
 
     #### Target management
 
@@ -56,10 +54,10 @@ class FilePicker extends Widget
     # Display the target if defined.
     showTarget:->
         if @hasTarget then @jTarget.show()
-    
+
     # When the target changed the `value`'s text is then replaced with
     # the new value. 
-    targetChange:(e)->
+    change:(e)->
         @setValueLabel if @jTarget.val()? then @jTarget.val() else "Browse"
         @dummy.attr "title", @jTarget.val()
     
@@ -78,6 +76,7 @@ class FilePicker extends Widget
         # within the widget in order to cover the whole widget
         # and allow the click to take effect.
         dummy.append @jTarget
+        @focusProvider = @jTarget
 
         dummy
     
@@ -99,38 +98,6 @@ class FilePicker extends Widget
         if value then @hideTarget() else unless @get("disabled") then @showTarget()
         super property, value
    
-    #### Events handling
-    #
-    # The file picker widget is a special case, as it don't receive 
-    # focus directly of its dummy.
-    # Instead, whenever the focus is given to the widget, 
-    # its the widget's input that will receive it.
-    
-    # In the same way, keyboard inputs are handled from the input
-    # and not from the dummy.
-    inputSupportedEvents:"focus blur keyup keydown keypress"
-
-    supportedEvents:"mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick"
-
-    # In this regards, the events registrations methods are overridden.
-    registerToDummyEvents:->
-        @jTarget.bind @inputSupportedEvents, (e)=>
-            @[e.type].apply this, arguments 
-        super()
-    
-    unregisterFromDummyEvents:->
-        @jTarget.unbind @inputSupportedEvents
-        super()
-    
-    #### Focus management
-
-    # There's no need for the dummy to be able to receive the focus. So
-    # a `FilePicker` dummy will never have the `tabindex` attribute set.
-    setFocusable:->
-
-    # Grabbing the focus for this widget is giving the focus to its target.
-    grabFocus:->
-        @jTarget.focus()
     
 # Address the access restriction due to the sandboxing when used
 # directly in a browser with the `text/coffeescript` mode. 

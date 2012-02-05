@@ -437,9 +437,57 @@ testRangeStepperMixinMouseWheelBehavior=( opt )->
 
         assertThat widget.get("value"), strictlyEqualTo opt.initialValue
 
+# opt = 
+#   cls:Class
+#   className:"Class"
+#   focusChildSelector:".value"
+testFocusProvidedByChildMixinBegavior=( opt )->
+    test "#{ opt.className } shouldn't take focus, instead it should give it to its value input", ->
+        
+        focusPlacedOnTheInput = false
+        
+        widget = new opt.cls
+
+        widget.dummy.find( opt.focusChildSelector ).focus ->
+            focusPlacedOnTheInput = true
+        
+        widget.grabFocus()
+
+        assertThat focusPlacedOnTheInput
+        assertThat widget.dummy.attr("tabindex"), nullValue()
+        assertThat widget.hasFocus
+
+    test "Clicking on a #{ opt.className } should give him the focus", ->
+
+        widget = new opt.cls
+
+        widget.dummy.mouseup()
+
+        assertThat widget.hasFocus
+    
+    test "Clicking on a disabled #{ opt.className } shouldn't give him the focus", ->
+
+        widget = new opt.cls
+        widget.set "disabled", true
+        widget.dummy.mouseup()
+
+        assertThat not widget.hasFocus
+
+    test "#{ opt.className }'s input should reflect the state of the widget", ->
+
+        widget = new opt.cls
+
+        widget.set "readonly", true
+        widget.set "disabled", true
+
+        assertThat widget.dummy.find( opt.focusChildSelector ).attr("readonly"), notNullValue()
+        assertThat widget.dummy.find( opt.focusChildSelector ).attr("disabled"), notNullValue()
+
+
 
 if window?
     window.testRangeStepperMixinBehavior            = testRangeStepperMixinBehavior
     window.testRangeStepperMixinKeyboardBehavior    = testRangeStepperMixinKeyboardBehavior
     window.testRangeStepperMixinMouseWheelBehavior  = testRangeStepperMixinMouseWheelBehavior
     window.testRangeStepperMixinIntervalsRunning    = testRangeStepperMixinIntervalsRunning
+    window.testFocusProvidedByChildMixinBegavior    = testFocusProvidedByChildMixinBegavior
