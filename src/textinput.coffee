@@ -32,12 +32,14 @@
 # $("#livedemos").append( input3.dummy );
 # </script>
 class TextInput extends Widget
+
+    @mixins FocusProvidedByChild
+
     constructor:( target )->
 
         # The `target` is mandatory in the `TextInput` constructor so a default
         # target is created when nothing is passed to the constructor. 
-        unless target? 
-            target = $("<input type='text'></input>")[0]
+        unless target? then target = $("<input type='text'></input>")[0]
         
         super target
 
@@ -60,6 +62,8 @@ class TextInput extends Widget
         
         # The target of the widget is appended to the dummy. 
         dummy.append @jTarget
+        @focusProvider = @jTarget
+
         dummy
     
     #### Properties accessors
@@ -73,28 +77,7 @@ class TextInput extends Widget
         @properties[ property ] = value  
     
     #### Events handling
-    #
-    # The text input widget is a special case, as it don't receive 
-    # focus directly of its dummy.
-    # Instead, whenever the focus is given to the widget, 
-    # its the widget's input that will receive it.
     
-    # In the same way, keyboard inputs are handled from the input
-    # and not from the dummy.
-    inputSupportedEvents:"focus blur keyup keydown keypress input change"
-
-    supportedEvents:"mousedown mouseup mousemove mouseover mouseout mousewheel click dblclick"
-
-    # In this regards, the events registrations methods are overridden.
-    registerToDummyEvents:->
-        @jTarget.bind @inputSupportedEvents, (e)=>
-            @[e.type].apply this, arguments 
-        super()
-    
-    unregisterFromDummyEvents:->
-        @jTarget.unbind @inputSupportedEvents
-        super()
-
     # When the user types some text in the target, the widget's
     # value is marked as obsolete. 
     input:(e)->
@@ -112,24 +95,7 @@ class TextInput extends Widget
         @set "value", @valueFromAttribute "value"
         @valueIsObsolete = false
         false
-    
-    # Releasing the mouse over the widget gives it the focus.
-    mouseup:->
-        unless @get "disabled"
-            @grabFocus()
-        true
-    
-    #### Focus management
-
-    # There's no need for the dummy to be able to receive the focus. So
-    # a `TextInput` dummy will never have the `tabindex` attribute set.
-    setFocusable:->
-
-    # Grabbing the focus for this widget is giving the focus to its target.
-    grabFocus:->
-        @jTarget.focus()
-    
-    
+   
 # Address the access restriction due to the sandboxing when used
 # directly in a browser with the `text/coffeescript` mode. 
 if window? 

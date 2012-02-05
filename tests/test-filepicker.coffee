@@ -122,20 +122,12 @@ test "A change made to the target that end with an undefined value should empty 
 
 	assertThat picker.dummy.attr("title"), equalTo ""
 
-test "FilePicker shouldn't take focus, instead it should give it to its target input", ->
-	
-	focusPlacedOnTheInput = false
-	
-	picker = new FilePicker
+opt = 
+	cls:FilePicker
+	className:"FilePicker"
+	focusChildSelector:"input"
 
-	picker.dummy.children("input").focus ->
-		focusPlacedOnTheInput = true
-	
-	picker.grabFocus()
-
-	assertThat focusPlacedOnTheInput
-	assertThat picker.dummy.attr("tabindex"), nullValue()
-	assertThat picker.hasFocus
+testFocusProvidedByChildMixinBegavior opt 
 
 # Some real widget's instance to play with in the test runner.
 
