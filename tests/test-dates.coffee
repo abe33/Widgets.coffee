@@ -55,8 +55,11 @@ testGenericDateWidgetBehaviors=( opt )->
 	test "Creating a #{ opt.className } without argument should setup a default Date", ->
 		d = new Date
 		input = new opt.cls
+		d2 = input.get("date")
+		d.setMilliseconds 0
+		d2.setMilliseconds 0
 
-		assertThat input.get("value"), equalTo input.dateToValue input.snapToStep d
+		assertThat input.dateToValue(d2), equalTo input.dateToValue input.snapToStep d
 
 	test "A #{ opt.className } should set its date with the value of the target", ->
 

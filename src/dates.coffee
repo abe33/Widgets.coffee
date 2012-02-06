@@ -58,14 +58,14 @@ class AbstractDateInputWidget extends Widget
     isValidValue:( value )-> false
     supportedType:""
 
-    constructor:( target )->
+    constructor:( target, defaultStep = null )->
         min  = null
         max  = null
-        step = null
+        step = NaN
 
         if target instanceof Date 
             super()
-            date  = target
+            date = target
         else
             super target
             if @hasTarget
@@ -74,23 +74,26 @@ class AbstractDateInputWidget extends Widget
                 min   = @valueFromAttribute "min"
                 max   = @valueFromAttribute "max"
 
-                if isNaN step then step = null
                 unless @isValidValue min then min = null
                 unless @isValidValue max then max = null
             else
                 date  = new Date
-
-        minDate = if min? then @snapToStep @valueToDate min
-        maxDate = if max? then @snapToStep @valueToDate max 
+        
+        if min?
+            minDate = @snapToStep @valueToDate min
+            @properties.min = @dateToValue minDate
+        
+        if max?
+            maxDate = @snapToStep @valueToDate max 
+            @properties.max = @dateToValue maxDate
                 
-        @properties.step  = step
-        @properties.min   = if minDate? then @dateToValue minDate else null
-        @properties.max   = if maxDate? then @dateToValue maxDate else null
+        @properties.step  = if isNaN step then defaultStep else step
 
         @properties.date  = @fitToRange date, minDate, maxDate
         @properties.value = @dateToValue date
 
         @dateSetProgrammatically = false
+        @valueSetProgrammatically = false
 
         @updateDummy()
 
@@ -118,7 +121,7 @@ class AbstractDateInputWidget extends Widget
         ms = @get("date").valueOf()
         step = @get "step"
         unless step? then step = 1
-        
+
         @set "date", new Date ms + step * MILLISECONDS_IN_SECOND
         
 
@@ -149,18 +152,23 @@ class AbstractDateInputWidget extends Widget
 
         @properties[ property ] = @fitToRange value, min, max
 
-        unless @dateSetProgrammatically then @set "value", @dateToValue @properties[ property ]
+        unless @dateSetProgrammatically 
+            @valueSetProgrammatically = true
+            @set "value", @dateToValue @properties[ property ]
+            @valueSetProgrammatically = false
         
         @properties[ property ]
     
     set_value:( property, value )->
         unless @isValidValue value then return @get property
 
-        @dateSetProgrammatically = true
-        @set "date", @valueToDate value
-        @dateSetProgrammatically = false
+        unless @valueSetProgrammatically
+            @dateSetProgrammatically = true
+            @set "date", @valueToDate value
+            @dateSetProgrammatically = false
 
         super property, @dateToValue @get "date"
+        
         @updateDummy()
     
     set_min:( property, value )->
@@ -200,10 +208,10 @@ isValidTime=( value )->
         [\d]{2}                 # Hours are required
         (:[\d]{2}               # Minutes are optional
             (:[\d]{2}           # Seconds as well
-                (.[\d]{1,4})?   # Milliseconds too
+                (\.[\d]{1,4})?  # Milliseconds too
             )?                  # End Seconds
         )?                      # End Minutes
-    $ ///g).test value
+    $ ///).test value
 
 # Converts a time string into a `Date` object where the time properties, 
 # hours, minutes, seconds and milliseconds, are sets with the provided 
@@ -246,9 +254,7 @@ class TimeInput extends AbstractDateInputWidget
         @dateToValue = timeToString
         @isValidValue = isValidTime
 
-        super target
-
-        unless @get("step")? then @set "step", 60
+        super target, 60
     
     createDummy:->
         dummy = super()
@@ -271,7 +277,7 @@ isValidDate=( value )->
         [\d]{4}-   # Year
         [\d]{2}-   # Month
         [\d]{2}    # Day of the month
-    $ ///g).test value
+    $ ///).test value
 
 # A valid date string can be passed directly to the `Date` constructor.
 dateFromString=( string )->
@@ -303,7 +309,7 @@ isValidMonth=( value )->
     (/// ^
         [\d]{4}-   # Year
         [\d]{2}    # Month
-    $ ///g).test value
+    $ ///).test value
 
 monthFromString=( string )->
     d = new Date string
@@ -335,7 +341,7 @@ isValidWeek=( value )->
         [\d]{4}    # Year
         -W         # Week separator 
         [\d]{2}    # Week number prefixed with W
-    $ ///g).test value
+    $ ///).test value
 
 # Converts a string such as `2011-W09` into a `Date` object
 # that represent the first day of the corresponding week, even
@@ -399,14 +405,14 @@ isValidDateTime=( value )->
         [\d]{2}:       # Hours
         [\d]{2}:       # Minutes
         [\d]{2}        # Seconds
-        (.[\d]{1,4})?  # Optionnal milliseconds
+        (\.[\d]{1,4})? # Optionnal milliseconds
         (              # Mandatory terminator
             Z|         # Either Z,
             (\+|\-)+   # +XX:XX or -XX:XX
             [\d]{2}:
             [\d]{2}
         )           
-    $ ///g).test value
+    $ ///).test value
 
 datetimeFromString=( string )->
     new Date string
@@ -446,8 +452,8 @@ isValidDateTimeLocal=( value )->
         [\d]{2}:       # Hours
         [\d]{2}:       # Minutes
         [\d]{2}        # Seconds
-        (.[\d]{1,4})?  # Optionnal milliseconds
-    $ ///g).test value
+        (\.[\d]{1,4})? # Optionnal milliseconds
+    $ ///).test value
 
 datetimeLocalFromString=( string )->
     new Date string

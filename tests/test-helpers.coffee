@@ -1,3 +1,23 @@
+asyncPool=[]
+iter=0
+asyncPoolRunning = false
+asyncPooledTest=( name, test )->
+    asyncPool.push ->
+        asyncTest name, ->
+            test ->
+                start()
+                nextTest()
+    
+    unless asyncPoolRunning
+        nextTest()
+        asyncPoolRunning = true
+
+nextTest=->
+    if iter < asyncPool.length
+        asyncPool[ iter++ ].call()
+    else
+        asyncPoolRunning = false
+
 # opt = 
 #   cls:Class
 #   className:"Class"
@@ -154,7 +174,7 @@ testRangeStepperMixinBehavior=( opt )->
 #   className:"Class"
 #   defaultTarget:"<node>"
 testRangeStepperMixinIntervalsRunning=( opt )->
-    asyncTest "#{ opt.className } should provide a way to increment the value on an interval", ->
+    asyncPooledTest "#{ opt.className } should provide a way to increment the value on an interval", ( endAsync )->
 
         incrementCalled = false
         incrementCalledCount = 0
@@ -182,10 +202,12 @@ testRangeStepperMixinIntervalsRunning=( opt )->
             assertThat widget.intervalId is -1
             assertThat incrementCalledCount, equalTo incrementCalledCountAtStop
 
-            start()
+            endAsync()
+
+            clearInterval widget.intervalId
         , 300
 
-    asyncTest "#{ opt.className } should provide a way to decrement the value on an interval", ->
+    asyncPooledTest "#{ opt.className } should provide a way to decrement the value on an interval", ( endAsync )->
 
         decrementCalled = false
         decrementCalledCount = 0
@@ -211,10 +233,12 @@ testRangeStepperMixinIntervalsRunning=( opt )->
             assertThat widget.intervalId is -1
             assertThat decrementCalledCount, equalTo decrementCalledCountAtStop
 
-            start()
+            endAsync()
+
+            clearInterval widget.intervalId
         , 300
 
-    asyncTest "#{ opt.className } shouldn't start several interval when startIncrement is called many times", ->
+    asyncPooledTest "#{ opt.className } shouldn't start several interval when startIncrement is called many times", ( endAsync )->
 
         target = $ opt.defaultTarget
         widget = new opt.cls target[0]
@@ -231,10 +255,12 @@ testRangeStepperMixinIntervalsRunning=( opt )->
         setTimeout ->
             assertThat incrementCalledCount, lowerThanOrEqualTo 2
             widget.endIncrement()
-            start()
+            endAsync()
+
+            clearInterval widget.intervalId
         , 70
 
-    asyncTest "#{ opt.className } shouldn't start several interval when startDecrement is called many times", ->
+    asyncPooledTest "#{ opt.className } shouldn't start several interval when startDecrement is called many times", ( endAsync )->
 
         target = $ opt.defaultTarget
         widget = new opt.cls target[0]
@@ -249,8 +275,10 @@ testRangeStepperMixinIntervalsRunning=( opt )->
 
         setTimeout ->
             assertThat decrementCalledCount, lowerThanOrEqualTo 2
-            widget.endIncrement()
-            start()
+            widget.endDecrement()
+            endAsync()
+
+            clearInterval widget.intervalId
         , 100
     
 # opt=
@@ -262,7 +290,7 @@ testRangeStepperMixinIntervalsRunning=( opt )->
 #   valueMatcher:closeTo 2, 1
 #   initialValueMatcher:equalTo 10
 testRangeStepperMixinKeyboardBehavior=( opt )->
-    asyncTest "When the #{ opt.key } key is pressed the widget should #{ opt.action } the value", ->
+    asyncPooledTest "When the #{ opt.key } key is pressed the widget should #{ opt.action } the value", ( endAsync )->
 
         target = $ opt.defaultTarget
         widget = new opt.cls target[0]
@@ -277,10 +305,11 @@ testRangeStepperMixinKeyboardBehavior=( opt )->
         setTimeout ->
             assertThat widget.get("value"), opt.valueMatcher
 
-            start()
+            endAsync()
+            clearInterval widget.intervalId
         , 70
 
-    asyncTest "Receiving several keydown of the #{ opt.key } key shouldn't trigger several #{ opt.action }", ->
+    asyncPooledTest "Receiving several keydown of the #{ opt.key } key shouldn't trigger several #{ opt.action }", ( endAsync )->
 
         target = $ opt.defaultTarget
         widget = new opt.cls target[0]
@@ -301,10 +330,11 @@ testRangeStepperMixinKeyboardBehavior=( opt )->
         setTimeout ->
             assertThat widget.get("value"), opt.valueMatcher
 
-            start()
+            endAsync()
+            clearInterval widget.intervalId
         , 70
 
-    asyncTest "When the #{ opt.key } key is released the widget should stop #{ opt.action } the value", ->
+    asyncPooledTest "When the #{ opt.key } key is released the widget should stop #{ opt.action } the value", ( endAsync )->
 
         target = $ opt.defaultTarget
         widget = new opt.cls target[0]
@@ -326,10 +356,12 @@ testRangeStepperMixinKeyboardBehavior=( opt )->
         setTimeout ->
             assertThat widget.get("value"), opt.valueMatcher
 
-            start()
+            endAsync()
+            clearInterval widget.intervalId
         , 200
 
-    asyncTest "Stopping the #{ opt.action } on keyup should allow to start a new one", ->
+
+    asyncPooledTest "Stopping the #{ opt.action } on keyup should allow to start a new one", ( endAsync )->
 
         target = $ opt.defaultTarget
         widget = new opt.cls target[0]
@@ -349,10 +381,11 @@ testRangeStepperMixinKeyboardBehavior=( opt )->
         setTimeout ->
             assertThat widget.get("value"), opt.valueMatcher
 
-            start()
+            endAsync()
+            clearInterval widget.intervalId
         , 70
     
-    asyncTest "Trying to #{ opt.action } a readonly widget shouldn't work", ->
+    asyncPooledTest "Trying to #{ opt.action } a readonly widget shouldn't work", ( endAsync )->
 
         target = $ opt.defaultTarget
         widget = new opt.cls target[0]
@@ -371,10 +404,11 @@ testRangeStepperMixinKeyboardBehavior=( opt )->
         setTimeout ->
             assertThat widget.get("value"), opt.initialValueMatcher
 
-            start()
+            endAsync()
+            clearInterval widget.intervalId
         , 100
 
-    asyncTest "Trying to #{ opt.action } a disabled widget shouldn't work", ->
+    asyncPooledTest "Trying to #{ opt.action } a disabled widget shouldn't work", ( endAsync )->
 
         target = $ opt.defaultTarget
         widget = new opt.cls target[0]
@@ -393,7 +427,8 @@ testRangeStepperMixinKeyboardBehavior=( opt )->
         setTimeout ->
             assertThat widget.get("value"), opt.initialValueMatcher
 
-            start()
+            endAsync()
+            clearInterval widget.intervalId
         , 100
 
 

@@ -64,27 +64,6 @@ contents = [
     "dates",
     "jquery"
 ]
-
-dependencies=
-    keys            :[]
-    widgets         :[ "keys", "module", "mixins" ]
-    container       :[ "keys", "module", "mixins", "widgets" ]
-    button          :[ "keys", "module", "mixins", "widgets" ]
-    textinput       :[ "keys", "module", "mixins", "widgets" ]
-    textarea        :[ "keys", "module", "mixins", "widgets" ]
-    checkbox        :[ "keys", "module", "mixins", "widgets" ]
-    radio           :[ "keys", "module", "mixins", "widgets", "checkbox" ]
-    radiogroup      :[ "keys", "module", "mixins", "widgets", "checkbox", "radio" ]
-    'numeric-widget':[ "keys", "module", "mixins", "widgets" ]
-    slider          :[ "keys", "module", "mixins", "widgets", "numeric-widget" ]
-    stepper         :[ "keys", "module", "mixins", "widgets", "numeric-widget" ]
-    filepicker      :[ "keys", "module", "mixins", "widgets" ]
-    menus           :[ "keys", "module", "mixins", "widgets" ]
-    selects         :[ "keys", "module", "mixins", "widgets", "menus" ]
-    colorpicker     :[ "keys", "module", "mixins", "widgets", "textinput", "checkbox", "radio", "radiogroup" ]
-    dates           :[ "keys", "module", "mixins", "widgets" ]
-    jquery          :contents[ 0..-2 ]
-
 testContents =[
     "test-helpers",
     "test-keys",
@@ -106,6 +85,26 @@ testContents =[
     "test-dates",
     "test-jquery"
 ]
+dependencies=
+    'keys'            :[]
+    'widgets'         :[ "keys", "module", "mixins" ]
+    'container'       :[ "keys", "module", "mixins", "widgets" ]
+    'button'          :[ "keys", "module", "mixins", "widgets" ]
+    'textinput'       :[ "keys", "module", "mixins", "widgets" ]
+    'textarea'        :[ "keys", "module", "mixins", "widgets" ]
+    'checkbox'        :[ "keys", "module", "mixins", "widgets" ]
+    'radio'           :[ "keys", "module", "mixins", "widgets", "checkbox" ]
+    'radiogroup'      :[ "keys", "module", "mixins", "widgets", "checkbox", "radio" ]
+    'numeric-widget'  :[ "keys", "module", "mixins", "widgets" ]
+    'slider'          :[ "keys", "module", "mixins", "widgets", "numeric-widget" ]
+    'stepper'         :[ "keys", "module", "mixins", "widgets", "numeric-widget" ]
+    'filepicker'      :[ "keys", "module", "mixins", "widgets" ]
+    'menus'           :[ "keys", "module", "mixins", "widgets" ]
+    'selects'         :[ "keys", "module", "mixins", "widgets", "menus" ]
+    'colorpicker'     :[ "keys", "module", "mixins", "widgets", "textinput", "checkbox", "radio", "radiogroup" ]
+    'dates'           :[ "keys", "module", "mixins", "widgets" ]
+    'jquery'          :contents[ 0..-2 ]
+
 try
     fs.lstatSync ".tmp"
 catch e
@@ -143,22 +142,29 @@ testTask=(file)->
                 o.on 'exit', (status) -> callback?() if status is 0
 
 testTask file for file in contents 
+
+task 'test:all', 'Compiles and runs all the tests', ->
+    file = ".tmp/widgets.js"
+    join "src", contents, file, ->
+        console.log "all sources generated"
+
+        file = ".tmp/test-widgets.js"
+        join "tests", testContents, file, ->
+            console.log "all tests generated"
+
+            o = spawn 'firefox', [ ".tmp/test-tmp.html" ]
+            o.stdout.on 'data', (data) -> print data.toString()
+            o.stderr.on 'data', (data) -> print data.toString()
+            o.on 'exit', (status) -> callback?() if status is 0
             
-task 'build', "Compiles the sources, the tests, and the documentation", ->
+task 'build', "Compiles the sources and the documentation", ->
     invoke "build:lib"
-    invoke "build:tests"
     invoke "docs"
 
 task 'build:lib', 'Generate the whole lib file', ->
     file = "lib/widgets.js"
     join "src", contents, file, ->
         console.log "#{file} generated"
-
-task 'build:tests', 'Generate the whole tests file', ->
-    file = "lib/test-widgets.js"
-    join "tests", testContents, file, ->
-        console.log "#{file} generated"
-
 
 task 'docs', 'Generate annotated source code with Docco', ->
     files = ( "src/#{file}.coffee" for file in contents )
