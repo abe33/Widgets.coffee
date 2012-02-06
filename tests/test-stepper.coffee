@@ -1,326 +1,328 @@
-module "stepper tests"
+$( document ).ready ->
 
-test "Stepper should allow input with type number as target", ->
+	module "stepper tests"
 
-	target = $("<input type='number'></input>")[0]
-	stepper = new Stepper target
+	test "Stepper should allow input with type number as target", ->
 
-	assertThat stepper.target is target
-
-test "Stepper shouldn't allow input of a type different than range", ->
-
-	target = $("<input type='text'></input>")[0]
-	errorRaised = false
-	try
+		target = $("<input type='number'></input>")[0]
 		stepper = new Stepper target
-	catch e
-		errorRaised = true
-	
-	assertThat errorRaised
 
-opt= 
-	cls:Stepper
-	className:"Stepper"
-	defaultTarget:"<input type='number' min='0' max='100' step='5' value='10'>"
-	focusChildSelector:"input"
+		assertThat stepper.target is target
 
-	initialValue:10
-	valueBelowRange:-10
-	valueAboveRange:110
-	
-	minValue:0
-	setMinValue:50
-	invalidMinValue:110
+	test "Stepper shouldn't allow input of a type different than range", ->
 
-	maxValue:100
-	setMaxValue:5
-	invalidMaxValue:-10
+		target = $("<input type='text'></input>")[0]
+		errorRaised = false
+		try
+			stepper = new Stepper target
+		catch e
+			errorRaised = true
+		
+		assertThat errorRaised
 
-	stepValue:5
-	setStep:3
-	valueNotInStep:10
-	snappedValue:9
+	opt= 
+		cls:Stepper
+		className:"Stepper"
+		defaultTarget:"<input type='number' min='0' max='100' step='5' value='10'>"
+		focusChildSelector:"input"
 
-	singleIncrementValue:15
-	singleDecrementValue:5
+		initialValue:10
+		valueBelowRange:-10
+		valueAboveRange:110
+		
+		minValue:0
+		setMinValue:50
+		invalidMinValue:110
 
-	undefinedMinValueMatcher:nullValue()
-	undefinedMaxValueMatcher:nullValue()
-	undefinedStepValueMatcher:equalTo 1
+		maxValue:100
+		setMaxValue:5
+		invalidMaxValue:-10
 
-	
-testRangeStepperMixinBehavior opt
+		stepValue:5
+		setStep:3
+		valueNotInStep:10
+		snappedValue:9
 
-testRangeStepperMixinIntervalsRunning opt
+		singleIncrementValue:15
+		singleDecrementValue:5
 
-a =
-	key:"up"
-	action:"increment"
-	valueMatcher:closeTo 15, 1
-	initialValueMatcher:equalTo 10
+		undefinedMinValueMatcher:nullValue()
+		undefinedMaxValueMatcher:nullValue()
+		undefinedStepValueMatcher:equalTo 1
 
-testRangeStepperMixinKeyboardBehavior opt extends a
+		
+	testRangeStepperMixinBehavior opt
 
-a = 
-	key:"down"
-	action:"decrement"
-	valueMatcher:closeTo 5, 1
-	initialValueMatcher:equalTo 10
+	testRangeStepperMixinIntervalsRunning opt
 
-testRangeStepperMixinKeyboardBehavior opt extends a
+	a =
+		key:"up"
+		action:"increment"
+		valueMatcher:closeTo 15, 1
+		initialValueMatcher:equalTo 10
 
-a = 
-	key:"right"
-	action:"increment"
-	valueMatcher:closeTo 15, 1
-	initialValueMatcher:equalTo 10
+	testRangeStepperMixinKeyboardBehavior opt extends a
 
-testRangeStepperMixinKeyboardBehavior opt extends a 
+	a = 
+		key:"down"
+		action:"decrement"
+		valueMatcher:closeTo 5, 1
+		initialValueMatcher:equalTo 10
 
-a =
-	key:"left"
-	action:"decrement"
-	valueMatcher:closeTo 5, 1
-	initialValueMatcher:equalTo 10
+	testRangeStepperMixinKeyboardBehavior opt extends a
 
-testRangeStepperMixinKeyboardBehavior opt extends a 
+	a = 
+		key:"right"
+		action:"increment"
+		valueMatcher:closeTo 15, 1
+		initialValueMatcher:equalTo 10
 
-testRangeStepperMixinMouseWheelBehavior opt
- 
-testFocusProvidedByChildMixinBegavior opt
+	testRangeStepperMixinKeyboardBehavior opt extends a 
 
-test "Stepper's input value should be the stepper value", ->
+	a =
+		key:"left"
+		action:"decrement"
+		valueMatcher:closeTo 5, 1
+		initialValueMatcher:equalTo 10
 
-	stepper = new Stepper
+	testRangeStepperMixinKeyboardBehavior opt extends a 
 
-	assertThat stepper.dummy.children(".value").val(), equalTo "0"
+	testRangeStepperMixinMouseWheelBehavior opt
+	 
+	testFocusProvidedByChildMixinBegavior opt
 
-test "Stepper's input value should be the stepper value after a change", ->
+	test "Stepper's input value should be the stepper value", ->
 
-	stepper = new Stepper
-	stepper.set "value", 20
+		stepper = new Stepper
 
-	assertThat stepper.dummy.children(".value").val(), equalTo "20"
+		assertThat stepper.dummy.children(".value").val(), equalTo "0"
 
-test "When the value change in the stepper's input, the stepper should validate the new value", ->
+	test "Stepper's input value should be the stepper value after a change", ->
 
-	stepper = new Stepper
+		stepper = new Stepper
+		stepper.set "value", 20
 
-	stepper.dummy.children(".value").val("40")
-	stepper.dummy.children(".value").change()
+		assertThat stepper.dummy.children(".value").val(), equalTo "20"
 
-	assertThat stepper.get("value"), strictlyEqualTo 40
+	test "When the value change in the stepper's input, the stepper should validate the new value", ->
 
-test "When the value in the stepper's input is invalid, the stepper should turn it back to the valid value", ->
+		stepper = new Stepper
 
-	stepper = new Stepper
+		stepper.dummy.children(".value").val("40")
+		stepper.dummy.children(".value").change()
 
-	stepper.dummy.children(".value").val("abcd")
-	stepper.dummy.children(".value").change()
+		assertThat stepper.get("value"), strictlyEqualTo 40
 
-	assertThat stepper.dummy.children(".value").val(), strictlyEqualTo "0"
+	test "When the value in the stepper's input is invalid, the stepper should turn it back to the valid value", ->
 
-asyncTest "Pressing the mouse on the minus button should start a decrement interval", ->
+		stepper = new Stepper
 
-	stepper = new Stepper
+		stepper.dummy.children(".value").val("abcd")
+		stepper.dummy.children(".value").change()
 
-	stepper.set "value", 10
-	stepper.dummy.children(".down").mousedown()
+		assertThat stepper.dummy.children(".value").val(), strictlyEqualTo "0"
 
-	setTimeout ->
-		assertThat stepper.get("value"), closeTo 8, 1 
+	asyncTest "Pressing the mouse on the minus button should start a decrement interval", ->
 
-		start()
-	, 100
+		stepper = new Stepper
 
-asyncTest "Releasing the mouse on the minus button should stop the decrement interval", ->
+		stepper.set "value", 10
+		stepper.dummy.children(".down").mousedown()
 
-	stepper = new Stepper
+		setTimeout ->
+			assertThat stepper.get("value"), closeTo 8, 1 
 
-	stepper.set "value", 10
-	stepper.dummy.children(".down").mousedown()
+			start()
+		, 100
 
-	setTimeout ->
-		stepper.dummy.children(".down").mouseup()
-	, 100
+	asyncTest "Releasing the mouse on the minus button should stop the decrement interval", ->
 
-	setTimeout ->
-		assertThat stepper.get("value"), closeTo 8, 1 
+		stepper = new Stepper
 
-		start()
-	, 200
+		stepper.set "value", 10
+		stepper.dummy.children(".down").mousedown()
 
-asyncTest "Releasing the mouse outside of the minus button should stop the decrement interval", ->
+		setTimeout ->
+			stepper.dummy.children(".down").mouseup()
+		, 100
 
-	stepper = new Stepper
+		setTimeout ->
+			assertThat stepper.get("value"), closeTo 8, 1 
 
-	stepper.set "value", 10
-	stepper.dummy.children(".down").mousedown()
+			start()
+		, 200
 
-	setTimeout ->
-		$( document ).mouseup()
-	, 100
+	asyncTest "Releasing the mouse outside of the minus button should stop the decrement interval", ->
 
-	setTimeout ->
-		assertThat stepper.get("value"), closeTo 8, 1 
-		assertThat not stepper.mousePressed
+		stepper = new Stepper
 
-		start()
-	, 200
+		stepper.set "value", 10
+		stepper.dummy.children(".down").mousedown()
 
-asyncTest "Moving the mouse out of the minus button should stop the decrement interval", ->
+		setTimeout ->
+			$( document ).mouseup()
+		, 100
 
-	stepper = new Stepper
+		setTimeout ->
+			assertThat stepper.get("value"), closeTo 8, 1 
+			assertThat not stepper.mousePressed
 
-	stepper.set "value", 10
-	stepper.dummy.children(".down").mousedown()
+			start()
+		, 200
 
-	setTimeout ->
-		stepper.dummy.children(".down").mouseout()
-	, 100
+	asyncTest "Moving the mouse out of the minus button should stop the decrement interval", ->
 
-	setTimeout ->
-		assertThat stepper.get("value"), closeTo 8, 1 
+		stepper = new Stepper
 
-		start()
-	, 200
+		stepper.set "value", 10
+		stepper.dummy.children(".down").mousedown()
 
-asyncTest "Moving the mouse back to the minus button should restart the decrement interval", ->
+		setTimeout ->
+			stepper.dummy.children(".down").mouseout()
+		, 100
 
-	stepper = new Stepper
+		setTimeout ->
+			assertThat stepper.get("value"), closeTo 8, 1 
 
-	stepper.set "value", 10
-	stepper.dummy.children(".down").mousedown()
+			start()
+		, 200
 
-	setTimeout ->
-		stepper.dummy.children(".down").mouseout()
-		stepper.dummy.children(".down").mouseover()
-	, 100
+	asyncTest "Moving the mouse back to the minus button should restart the decrement interval", ->
 
-	setTimeout ->
-		assertThat stepper.get("value"), closeTo 6, 2
+		stepper = new Stepper
 
-		start()
-	, 200
+		stepper.set "value", 10
+		stepper.dummy.children(".down").mousedown()
 
-asyncTest "Pressing the mouse on the plus button should start a increment interval", ->
+		setTimeout ->
+			stepper.dummy.children(".down").mouseout()
+			stepper.dummy.children(".down").mouseover()
+		, 100
 
-	stepper = new Stepper
+		setTimeout ->
+			assertThat stepper.get("value"), closeTo 6, 2
 
-	stepper.dummy.children(".up").mousedown()
+			start()
+		, 200
 
-	setTimeout ->
-		assertThat stepper.get("value"), closeTo 2, 1 
+	asyncTest "Pressing the mouse on the plus button should start a increment interval", ->
 
-		start()
-	, 100
+		stepper = new Stepper
 
-asyncTest "Releasing the mouse on the plus button should stop the increment interval", ->
+		stepper.dummy.children(".up").mousedown()
 
-	stepper = new Stepper
+		setTimeout ->
+			assertThat stepper.get("value"), closeTo 2, 1 
 
-	stepper.dummy.children(".up").mousedown()
+			start()
+		, 100
 
-	setTimeout ->
-		stepper.dummy.children(".up").mouseup()
-	, 100
+	asyncTest "Releasing the mouse on the plus button should stop the increment interval", ->
 
-	setTimeout ->
-		assertThat stepper.get("value"), closeTo 2, 1 
+		stepper = new Stepper
 
-		start()
-	, 200
+		stepper.dummy.children(".up").mousedown()
 
-asyncTest "Releasing the mouse outside of the plus button should stop the increment interval", ->
+		setTimeout ->
+			stepper.dummy.children(".up").mouseup()
+		, 100
 
-	stepper = new Stepper
+		setTimeout ->
+			assertThat stepper.get("value"), closeTo 2, 1 
 
-	stepper.dummy.children(".up").mousedown()
+			start()
+		, 200
 
-	setTimeout ->
-		$( document ).mouseup()
-	, 100
+	asyncTest "Releasing the mouse outside of the plus button should stop the increment interval", ->
 
-	setTimeout ->
-		assertThat stepper.get("value"), closeTo 2, 1 
-		assertThat not stepper.mousePressed
+		stepper = new Stepper
 
-		start()
-	, 200
+		stepper.dummy.children(".up").mousedown()
 
-asyncTest "Moving the mouse out of the plus button should stop the increment interval", ->
+		setTimeout ->
+			$( document ).mouseup()
+		, 100
 
-	stepper = new Stepper
+		setTimeout ->
+			assertThat stepper.get("value"), closeTo 2, 1 
+			assertThat not stepper.mousePressed
 
-	stepper.dummy.children(".up").mousedown()
+			start()
+		, 200
 
-	setTimeout ->
-		stepper.dummy.children(".up").mouseout()
-	, 100
+	asyncTest "Moving the mouse out of the plus button should stop the increment interval", ->
 
-	setTimeout ->
-		assertThat stepper.get("value"), closeTo 2, 1 
+		stepper = new Stepper
 
-		start()
-	, 200
+		stepper.dummy.children(".up").mousedown()
 
-asyncTest "Moving the mouse back to the plus button should restart the increment interval", ->
+		setTimeout ->
+			stepper.dummy.children(".up").mouseout()
+		, 100
 
-	stepper = new Stepper
+		setTimeout ->
+			assertThat stepper.get("value"), closeTo 2, 1 
 
-	stepper.dummy.children(".up").mousedown()
+			start()
+		, 200
 
-	setTimeout ->
-		stepper.dummy.children(".up").mouseout()
-		stepper.dummy.children(".up").mouseover()
-	, 100
+	asyncTest "Moving the mouse back to the plus button should restart the increment interval", ->
 
-	setTimeout ->
-		assertThat stepper.get("value"), closeTo 4, 2 
+		stepper = new Stepper
 
-		start()
-	, 200
+		stepper.dummy.children(".up").mousedown()
 
-test "Pressing the mouse over the stepper and moving it to the up should increment the value until the mouse is released", ->
+		setTimeout ->
+			stepper.dummy.children(".up").mouseout()
+			stepper.dummy.children(".up").mouseover()
+		, 100
 
-	class MockStepper extends Stepper
-		mousedown:(e)->
-			e.pageY = 5
-			super e
+		setTimeout ->
+			assertThat stepper.get("value"), closeTo 4, 2 
 
-		mousemove:(e)->
-			e.pageY = 0
-			super e
+			start()
+		, 200
 
-	stepper = new MockStepper
+	test "Pressing the mouse over the stepper and moving it to the up should increment the value until the mouse is released", ->
 
-	stepper.dummy.mousedown()
-	$(document).mousemove()
-	$(document).mouseup()
+		class MockStepper extends Stepper
+			mousedown:(e)->
+				e.pageY = 5
+				super e
 
-	assertThat stepper.get("value"), closeTo 5, 1 
-	assertThat not stepper.dragging
+			mousemove:(e)->
+				e.pageY = 0
+				super e
 
+		stepper = new MockStepper
 
-# Some real instances to play with in the runner.
-target = $("<input type='number' value='10' min='0' max='50' step='1'></input>")
-stepper1 = new Stepper target[0]
-stepper2 = new Stepper
-stepper3 = new Stepper
+		stepper.dummy.mousedown()
+		$(document).mousemove()
+		$(document).mouseup()
 
-stepper1.valueCenteredOnKnob = true
-stepper2.valueCenteredOnKnob = true
-stepper3.valueCenteredOnKnob = true
+		assertThat stepper.get("value"), closeTo 5, 1 
+		assertThat not stepper.dragging
 
-stepper1.set "value", 12
-stepper2.set "value", 45
-stepper3.set "value", 78
 
-stepper2.set "readonly", true
-stepper3.set "disabled", true
+	# Some real instances to play with in the runner.
+	target = $("<input type='number' value='10' min='0' max='50' step='1'></input>")
+	stepper1 = new Stepper target[0]
+	stepper2 = new Stepper
+	stepper3 = new Stepper
 
-$("#qunit-header").before $ "<h4>Steppers</h4>"
-$("#qunit-header").before target
-$("#qunit-header").before stepper1.dummy
-$("#qunit-header").before stepper2.dummy
-$("#qunit-header").before stepper3.dummy
+	stepper1.valueCenteredOnKnob = true
+	stepper2.valueCenteredOnKnob = true
+	stepper3.valueCenteredOnKnob = true
+
+	stepper1.set "value", 12
+	stepper2.set "value", 45
+	stepper3.set "value", 78
+
+	stepper2.set "readonly", true
+	stepper3.set "disabled", true
+
+	$("#qunit-header").before $ "<h4>Steppers</h4>"
+	$("#qunit-header").before target
+	$("#qunit-header").before stepper1.dummy
+	$("#qunit-header").before stepper2.dummy
+	$("#qunit-header").before stepper3.dummy

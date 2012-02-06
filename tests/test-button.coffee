@@ -1,213 +1,215 @@
-module "button tests"
+$( document ).ready ->
 
-test "Buttons should allow to pass a button input as argument", ->
-	target = ( $ "<input type='button'></input>" )[0]
+	module "button tests"
 
-	button = new Button target
+	test "Buttons should allow to pass a button input as argument", ->
+		target = ( $ "<input type='button'></input>" )[0]
 
-	assertThat button.target is target
-
-test "Buttons should allow to pass a submit input as argument", ->
-	target = ( $ "<input type='submit'></input>" )[0]
-
-	button = new Button target
-
-	assertThat button.target is target
-
-test "Buttons should allow to pass a reset input as argument", ->
-	target = ( $ "<input type='reset'></input>" )[0]
-
-	button = new Button target
-
-	assertThat button.target is target
-
-test "Buttons shouldn't allow any other type of input as argument", ->
-	target = ( $ "<input type='text'></input>" )[0]
-
-	errorRaised = false
-
-	try
 		button = new Button target
-	catch e
-		errorRaised = true
 
-	assertThat errorRaised
+		assertThat button.target is target
 
-test "Buttons should also allow an action object as argument", ->
+	test "Buttons should allow to pass a submit input as argument", ->
+		target = ( $ "<input type='submit'></input>" )[0]
 
-	action = action:->
+		button = new Button target
 
-	button = new Button action
+		assertThat button.target is target
+
+	test "Buttons should allow to pass a reset input as argument", ->
+		target = ( $ "<input type='reset'></input>" )[0]
+
+		button = new Button target
+
+		assertThat button.target is target
+
+	test "Buttons shouldn't allow any other type of input as argument", ->
+		target = ( $ "<input type='text'></input>" )[0]
+
+		errorRaised = false
+
+		try
+			button = new Button target
+		catch e
+			errorRaised = true
+
+		assertThat errorRaised
+
+	test "Buttons should also allow an action object as argument", ->
+
+		action = action:->
+
+		button = new Button action
+			
+		assertThat button.get("action") is action
+
+	test "Buttons should accept both a target and an action as arguments", ->
+
+		target = ( $ "<input type='reset'></input>" )[0]
+		action = action:->
+
+		button = new Button target, action
+			
+		assertThat button.target is target
+		assertThat button.get("action") is action
+
+	test "Buttons content should be provided through the action object", ->
+
+		action = display:"label", action:-> 
+
+		button = new Button action
+
+		assertThat button.dummy.find(".content").text(), equalTo "label"
+
+	test "Buttons should trigger the action on a click", ->
+
+		actionTriggered = false
 		
-	assertThat button.get("action") is action
-
-test "Buttons should accept both a target and an action as arguments", ->
-
-	target = ( $ "<input type='reset'></input>" )[0]
-	action = action:->
-
-	button = new Button target, action
+		action = action:-> 
+			actionTriggered = true
 		
-	assertThat button.target is target
-	assertThat button.get("action") is action
+		button = new Button action
 
-test "Buttons content should be provided through the action object", ->
+		button.dummy.click()
 
-	action = display:"label", action:-> 
+		assertThat actionTriggered
 
-	button = new Button action
+	test "Buttons should trigger their target click on a click", ->
 
-	assertThat button.dummy.find(".content").text(), equalTo "label"
+		clickCalled = false
 
-test "Buttons should trigger the action on a click", ->
+		target = ( $ "<input type='reset'></input>" )
+		target.click ->
+			clickCalled = true
 
-	actionTriggered = false
-	
-	action = action:-> 
-		actionTriggered = true
-	
-	button = new Button action
+		button = new Button target[0]
 
-	button.dummy.click()
+		button.click()
 
-	assertThat actionTriggered
+		assertThat clickCalled
 
-test "Buttons should trigger their target click on a click", ->
+	test "Buttons should hide their target at creation", ->
 
-	clickCalled = false
+		target = ( $ "<input type='reset'></input>" )
 
-	target = ( $ "<input type='reset'></input>" )
-	target.click ->
-		clickCalled = true
+		button = new Button target[0]
 
-	button = new Button target[0]
+		assertThat target.attr("style"), contains "display: none"
 
-	button.click()
+	test "Readonly buttons should not trigger the action on a click", ->
 
-	assertThat clickCalled
+		actionTriggered = false
+		
+		action = action:-> 
+			actionTriggered = true
+		
+		button = new Button action
+		button.set "readonly", true
 
-test "Buttons should hide their target at creation", ->
+		button.dummy.click()
 
-	target = ( $ "<input type='reset'></input>" )
+		assertThat not actionTriggered
 
-	button = new Button target[0]
+	test "Disabled buttons should not trigger the action on a click", ->
 
-	assertThat target.attr("style"), contains "display: none"
+		actionTriggered = false
+		
+		action = action:-> 
+			actionTriggered = true
+		
+		button = new Button action
+		button.set "disabled", true
 
-test "Readonly buttons should not trigger the action on a click", ->
+		button.dummy.click()
 
-	actionTriggered = false
-	
-	action = action:-> 
-		actionTriggered = true
-	
-	button = new Button action
-	button.set "readonly", true
+		assertThat not actionTriggered
 
-	button.dummy.click()
+	test "Readonly buttons shouldn't trigger their target click on a click", ->
 
-	assertThat not actionTriggered
+		clickCalled = false
 
-test "Disabled buttons should not trigger the action on a click", ->
+		target = ( $ "<input type='reset'></input>" )
+		target.click ->
+			clickCalled = true
 
-	actionTriggered = false
-	
-	action = action:-> 
-		actionTriggered = true
-	
-	button = new Button action
-	button.set "disabled", true
+		button = new Button target[0]
+		button.set "readonly", true
 
-	button.dummy.click()
+		button.click()
 
-	assertThat not actionTriggered
+		assertThat not clickCalled
 
-test "Readonly buttons shouldn't trigger their target click on a click", ->
+	test "Disabled buttons shouldn't trigger their target click on a click", ->
 
-	clickCalled = false
+		clickCalled = false
 
-	target = ( $ "<input type='reset'></input>" )
-	target.click ->
-		clickCalled = true
+		target = ( $ "<input type='reset'></input>" )
+		target.click ->
+			clickCalled = true
 
-	button = new Button target[0]
-	button.set "readonly", true
+		button = new Button target[0]
+		button.set "disabled", true
 
-	button.click()
+		button.click()
 
-	assertThat not clickCalled
+		assertThat not clickCalled
 
-test "Disabled buttons shouldn't trigger their target click on a click", ->
+	test "Buttons should allow to use the space key instead of a click", ->
 
-	clickCalled = false
+		actionTriggered = false
+		
+		action = action:-> 
+			actionTriggered = true
+		
+		button = new Button action
 
-	target = ( $ "<input type='reset'></input>" )
-	target.click ->
-		clickCalled = true
+		button.keydown 
+			keyCode:keys.space
+			ctrlKey:false
+			shiftKey:false
+			altKey:false
 
-	button = new Button target[0]
-	button.set "disabled", true
+		assertThat actionTriggered
 
-	button.click()
+	test "Buttons should allow to use the enter key instead of a click", ->
 
-	assertThat not clickCalled
+		actionTriggered = false
+		
+		action = action:-> 
+			actionTriggered = true
+		
+		button = new Button action
 
-test "Buttons should allow to use the space key instead of a click", ->
+		button.keydown 
+			keyCode:keys.enter
+			ctrlKey:false
+			shiftKey:false
+			altKey:false
 
-	actionTriggered = false
-	
-	action = action:-> 
-		actionTriggered = true
-	
-	button = new Button action
+		assertThat actionTriggered
 
-	button.keydown 
-		keyCode:keys.space
-		ctrlKey:false
-		shiftKey:false
-		altKey:false
+	test "Changing the action of a button should update its content", ->
 
-	assertThat actionTriggered
+		button = new Button
 
-test "Buttons should allow to use the enter key instead of a click", ->
+		button.set "action", display: "label", action:->
 
-	actionTriggered = false
-	
-	action = action:-> 
-		actionTriggered = true
-	
-	button = new Button action
-
-	button.keydown 
-		keyCode:keys.enter
-		ctrlKey:false
-		shiftKey:false
-		altKey:false
-
-	assertThat actionTriggered
-
-test "Changing the action of a button should update its content", ->
-
-	button = new Button
-
-	button.set "action", display: "label", action:->
-
-	assertThat button.dummy.find(".content").text(), equalTo "label"
+		assertThat button.dummy.find(".content").text(), equalTo "label"
 
 
-button1 = new Button
-button2 = new Button
-button3 = new Button
+	button1 = new Button
+	button2 = new Button
+	button3 = new Button
 
-button1.set "value", "Button <span class='icon'></span>"
-button2.set "value", "Readonly"
-button3.set "value", "Disabled"
+	button1.set "value", "Button <span class='icon'></span>"
+	button2.set "value", "Readonly"
+	button3.set "value", "Disabled"
 
-button2.set "readonly", true
-button3.set "disabled", true
+	button2.set "readonly", true
+	button3.set "disabled", true
 
-$("#qunit-header").before $ "<h4>Button</h4>"
-$("#qunit-header").before button1.dummy
-$("#qunit-header").before button2.dummy
-$("#qunit-header").before button3.dummy
+	$("#qunit-header").before $ "<h4>Button</h4>"
+	$("#qunit-header").before button1.dummy
+	$("#qunit-header").before button2.dummy
+	$("#qunit-header").before button3.dummy
 

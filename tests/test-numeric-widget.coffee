@@ -1,115 +1,117 @@
-module "numeric-widget tests"
+$( document ).ready ->
 
-test "NumericWidget should allow input with type number as target", ->
+	module "numeric-widget tests"
 
-	target = $("<input type='number'></input>")[0]
-	widget = new NumericWidget target
+	test "NumericWidget should allow input with type number as target", ->
 
-	assertThat widget.target is target
+		target = $("<input type='number'></input>")[0]
+		widget = new NumericWidget target
 
-test "NumericWidget should allow input with type range as target", ->
+		assertThat widget.target is target
 
-	target = $("<input type='range'></input>")[0]
-	widget = new NumericWidget target
+	test "NumericWidget should allow input with type range as target", ->
 
-	assertThat widget.target is target
+		target = $("<input type='range'></input>")[0]
+		widget = new NumericWidget target
 
-test "NumericWidget should hide their target", ->
+		assertThat widget.target is target
 
-	target = $("<input type='range' value='10' min='0' max='50' step='1'></input>")
-	widget = new NumericWidget target[0]
+	test "NumericWidget should hide their target", ->
 
-	assertThat target.attr("style"), contains "display: none"
+		target = $("<input type='range' value='10' min='0' max='50' step='1'></input>")
+		widget = new NumericWidget target[0]
 
-test "Concret numeric widgets class should receive an updateDummy call when value change", ->
+		assertThat target.attr("style"), contains "display: none"
 
-	updateDummyCalled = false
+	test "Concret numeric widgets class should receive an updateDummy call when value change", ->
 
-	class MockNumericWidget extends NumericWidget
-		updateDummy:(value, min, max)->
-			updateDummyCalled = true
-	
-	widget = new MockNumericWidget
-	widget.set "value", 20
-	
-	assertThat updateDummyCalled
+		updateDummyCalled = false
 
-testRangeStepperMixinBehavior
-	cls:NumericWidget
-	className:"NumericWidget"
-	defaultTarget:"<input min='0' max='100' step='5' value='10'>"
+		class MockNumericWidget extends NumericWidget
+			updateDummy:(value, min, max)->
+				updateDummyCalled = true
+		
+		widget = new MockNumericWidget
+		widget.set "value", 20
+		
+		assertThat updateDummyCalled
 
-	initialValue:10
-	valueBelowRange:-10
-	valueAboveRange:110
-	
-	minValue:0
-	setMinValue:50
-	invalidMinValue:110
+	testRangeStepperMixinBehavior
+		cls:NumericWidget
+		className:"NumericWidget"
+		defaultTarget:"<input min='0' max='100' step='5' value='10'>"
 
-	maxValue:100
-	setMaxValue:5
-	invalidMaxValue:-10
+		initialValue:10
+		valueBelowRange:-10
+		valueAboveRange:110
+		
+		minValue:0
+		setMinValue:50
+		invalidMinValue:110
 
-	stepValue:5
-	setStep:3
-	valueNotInStep:10
-	snappedValue:9
+		maxValue:100
+		setMaxValue:5
+		invalidMaxValue:-10
 
-	singleIncrementValue:15
-	singleDecrementValue:5
+		stepValue:5
+		setStep:3
+		valueNotInStep:10
+		snappedValue:9
 
-	undefinedMinValueMatcher:nullValue()
-	undefinedMaxValueMatcher:nullValue()
-	undefinedStepValueMatcher:nullValue()
+		singleIncrementValue:15
+		singleDecrementValue:5
 
-testRangeStepperMixinIntervalsRunning
-	cls:NumericWidget
-	className:"NumericWidget"
-	defaultTarget:"<input min='0' max='100' step='5' value='10'>"
+		undefinedMinValueMatcher:nullValue()
+		undefinedMaxValueMatcher:nullValue()
+		undefinedStepValueMatcher:nullValue()
 
-testRangeStepperMixinKeyboardBehavior
-	cls:NumericWidget
-	className:"NumericWidget"
-	defaultTarget:"<input min='0' max='100' step='5' value='10'>"
-	key:"up"
-	action:"increment"
-	valueMatcher:closeTo 15, 1
-	initialValueMatcher:equalTo 10
+	testRangeStepperMixinIntervalsRunning
+		cls:NumericWidget
+		className:"NumericWidget"
+		defaultTarget:"<input min='0' max='100' step='5' value='10'>"
 
-testRangeStepperMixinKeyboardBehavior
-	cls:NumericWidget
-	className:"NumericWidget"
-	defaultTarget:"<input min='0' max='100' step='5' value='10'>"
-	key:"down"
-	action:"decrement"
-	valueMatcher:closeTo 5, 1
-	initialValueMatcher:equalTo 10
+	testRangeStepperMixinKeyboardBehavior
+		cls:NumericWidget
+		className:"NumericWidget"
+		defaultTarget:"<input min='0' max='100' step='5' value='10'>"
+		key:"up"
+		action:"increment"
+		valueMatcher:closeTo 15, 1
+		initialValueMatcher:equalTo 10
 
-testRangeStepperMixinKeyboardBehavior
-	cls:NumericWidget
-	className:"NumericWidget"
-	defaultTarget:"<input min='0' max='100' step='5' value='10'>"
-	key:"right"
-	action:"increment"
-	valueMatcher:closeTo 15, 1
-	initialValueMatcher:equalTo 10
+	testRangeStepperMixinKeyboardBehavior
+		cls:NumericWidget
+		className:"NumericWidget"
+		defaultTarget:"<input min='0' max='100' step='5' value='10'>"
+		key:"down"
+		action:"decrement"
+		valueMatcher:closeTo 5, 1
+		initialValueMatcher:equalTo 10
 
-testRangeStepperMixinKeyboardBehavior
-	cls:NumericWidget
-	className:"NumericWidget"
-	defaultTarget:"<input min='0' max='100' step='5' value='10'>"
-	key:"left"
-	action:"decrement"
-	valueMatcher:closeTo 5, 1
-	initialValueMatcher:equalTo 10
+	testRangeStepperMixinKeyboardBehavior
+		cls:NumericWidget
+		className:"NumericWidget"
+		defaultTarget:"<input min='0' max='100' step='5' value='10'>"
+		key:"right"
+		action:"increment"
+		valueMatcher:closeTo 15, 1
+		initialValueMatcher:equalTo 10
 
-testRangeStepperMixinMouseWheelBehavior
-	cls:NumericWidget
-	className:"NumericWidget"
-	defaultTarget:"<input min='0' max='100' step='5' value='10'>"
-	initialValue:10
-	singleIncrementValue:15
+	testRangeStepperMixinKeyboardBehavior
+		cls:NumericWidget
+		className:"NumericWidget"
+		defaultTarget:"<input min='0' max='100' step='5' value='10'>"
+		key:"left"
+		action:"decrement"
+		valueMatcher:closeTo 5, 1
+		initialValueMatcher:equalTo 10
+
+	testRangeStepperMixinMouseWheelBehavior
+		cls:NumericWidget
+		className:"NumericWidget"
+		defaultTarget:"<input min='0' max='100' step='5' value='10'>"
+		initialValue:10
+		singleIncrementValue:15
 	
 	
 

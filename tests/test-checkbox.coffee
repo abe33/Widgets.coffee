@@ -1,274 +1,276 @@
-module "checkbox tests"
+$( document ).ready ->
 
-test "CheckBox should allow input with a checkbox type",->
-	target = $("<input type='checkbox'></input>")[0]
-	
-	checkbox = new CheckBox target
-	
-	assertThat checkbox.target is target
+	module "checkbox tests"
 
-test "CheckBox should allow only input with a checkbox type",->
-	target = $("<input type='text'></input>")[0]
-	errorRaised = false
-
-	try 
+	test "CheckBox should allow input with a checkbox type",->
+		target = $("<input type='checkbox'></input>")[0]
+		
 		checkbox = new CheckBox target
-	catch e
-		errorRaised = true
-	
-	assertThat errorRaised
+		
+		assertThat checkbox.target is target
 
-test "CheckBox should reflect the checked state of the input", ->
-	target = $("<input type='checkbox' checked></input>")[0]
-	
-	checkbox = new CheckBox target
+	test "CheckBox should allow only input with a checkbox type",->
+		target = $("<input type='text'></input>")[0]
+		errorRaised = false
 
-	assertThat checkbox.get "checked"
+		try 
+			checkbox = new CheckBox target
+		catch e
+			errorRaised = true
+		
+		assertThat errorRaised
 
-test "CheckBox should apply change made to the checked property on the target", ->
-	target = $("<input type='checkbox' checked></input>")[0]
-	
-	checkbox = new CheckBox target
+	test "CheckBox should reflect the checked state of the input", ->
+		target = $("<input type='checkbox' checked></input>")[0]
+		
+		checkbox = new CheckBox target
 
-	checkbox.set "checked", false
+		assertThat checkbox.get "checked"
 
-	assertThat checkbox.get("checked"), equalTo false
+	test "CheckBox should apply change made to the checked property on the target", ->
+		target = $("<input type='checkbox' checked></input>")[0]
+		
+		checkbox = new CheckBox target
 
-test "CheckBox should be created without a target", ->
+		checkbox.set "checked", false
 
-	errorRaised = false
+		assertThat checkbox.get("checked"), equalTo false
 
-	try
+	test "CheckBox should be created without a target", ->
+
+		errorRaised = false
+
+		try
+			checkbox = new CheckBox
+		catch e
+			errorRaised = true
+		
+		assertThat not errorRaised
+
+	test "CheckBox should provide a dummy", ->
+
 		checkbox = new CheckBox
-	catch e
-		errorRaised = true
-	
-	assertThat not errorRaised
 
-test "CheckBox should provide a dummy", ->
+		assertThat checkbox.dummy, notNullValue()
 
-	checkbox = new CheckBox
+	test "CheckBox should handle the checked property as a state", ->
 
-	assertThat checkbox.dummy, notNullValue()
+		checkbox = new CheckBox
 
-test "CheckBox should handle the checked property as a state", ->
+		checkbox.set "checked", true
+		checkbox.set "required", true
+		checkbox.set "disabled", true
+		checkbox.set "readonly", true
 
-	checkbox = new CheckBox
+		assertThat checkbox.dummy.hasClass "checked"
+		assertThat checkbox.dummy.hasClass "required"
+		assertThat checkbox.dummy.hasClass "disabled"
+		assertThat checkbox.dummy.hasClass "readonly"
 
-	checkbox.set "checked", true
-	checkbox.set "required", true
-	checkbox.set "disabled", true
-	checkbox.set "readonly", true
+	test "All dummy's states provided by the parent class should be available as well on CheckBox", ->
 
-	assertThat checkbox.dummy.hasClass "checked"
-	assertThat checkbox.dummy.hasClass "required"
-	assertThat checkbox.dummy.hasClass "disabled"
-	assertThat checkbox.dummy.hasClass "readonly"
+		checkbox = new CheckBox
 
-test "All dummy's states provided by the parent class should be available as well on CheckBox", ->
+		checkbox.set "checked", true
 
-	checkbox = new CheckBox
+		assertThat checkbox.dummy.hasClass "checked"
 
-	checkbox.set "checked", true
+	test "CheckBox should hide its target on creation", ->
+		target = $("<input type='checkbox' checked></input>")
+		
+		checkbox = new CheckBox target[0]
 
-	assertThat checkbox.dummy.hasClass "checked"
+		assertThat target.attr("style"), contains "display: none"
 
-test "CheckBox should hide its target on creation", ->
-	target = $("<input type='checkbox' checked></input>")
-	
-	checkbox = new CheckBox target[0]
+	test "Clicking on a CheckBox should toggle its checked state", ->
 
-	assertThat target.attr("style"), contains "display: none"
+		checkbox = new CheckBox
 
-test "Clicking on a CheckBox should toggle its checked state", ->
+		assertThat checkbox.get("checked"), equalTo false
 
-	checkbox = new CheckBox
+		checkbox.click()
 
-	assertThat checkbox.get("checked"), equalTo false
+		assertThat checkbox.get("checked"), equalTo true
 
-	checkbox.click()
+		checkbox.click()
 
-	assertThat checkbox.get("checked"), equalTo true
+		assertThat checkbox.get("checked"), equalTo false
 
-	checkbox.click()
+	test "Clicking on a CheckBox shouldn't toggle its checked state when readonly", ->
 
-	assertThat checkbox.get("checked"), equalTo false
+		checkbox = new CheckBox
+		checkbox.set "readonly", true
 
-test "Clicking on a CheckBox shouldn't toggle its checked state when readonly", ->
+		assertThat checkbox.get("checked"), equalTo false
 
-	checkbox = new CheckBox
-	checkbox.set "readonly", true
+		checkbox.click()
 
-	assertThat checkbox.get("checked"), equalTo false
+		assertThat checkbox.get("checked"), equalTo false
 
-	checkbox.click()
+	test "Clicking on a CheckBox shouldn't toggle its checked state when disabled", ->
 
-	assertThat checkbox.get("checked"), equalTo false
+		checkbox = new CheckBox
+		checkbox.set "disabled", true
 
-test "Clicking on a CheckBox shouldn't toggle its checked state when disabled", ->
+		assertThat checkbox.get("checked"), equalTo false
 
-	checkbox = new CheckBox
-	checkbox.set "disabled", true
+		checkbox.click()
 
-	assertThat checkbox.get("checked"), equalTo false
+		assertThat checkbox.get("checked"), equalTo false
 
-	checkbox.click()
+	test "Clicking on a CheckBox should grab the focus", ->
 
-	assertThat checkbox.get("checked"), equalTo false
+		focusReveiced = false
 
-test "Clicking on a CheckBox should grab the focus", ->
+		class MockCheckBox extends CheckBox
+			focus:(e)->
+				focusReveiced = true
+		
+		checkbox = new MockCheckBox
 
-	focusReveiced = false
+		checkbox.click()
 
-	class MockCheckBox extends CheckBox
-		focus:(e)->
-			focusReveiced = true
-	
-	checkbox = new MockCheckBox
+		assertThat focusReveiced
 
-	checkbox.click()
+	test "Using enter should toggle the checkbox's checked state", ->
 
-	assertThat focusReveiced
+		checkbox = new CheckBox
 
-test "Using enter should toggle the checkbox's checked state", ->
+		checkbox.grabFocus()
 
-	checkbox = new CheckBox
+		checkbox.keyup
+			keyCode:keys.enter
+			ctrlKey:false
+			shiftKey:false
+			altKey:false
+		
+		assertThat checkbox.get "checked"
 
-	checkbox.grabFocus()
+	test "Using space should toggle the checkbox's checked state", ->
 
-	checkbox.keyup
-		keyCode:keys.enter
-		ctrlKey:false
-		shiftKey:false
-		altKey:false
-	
-	assertThat checkbox.get "checked"
+		checkbox = new CheckBox
 
-test "Using space should toggle the checkbox's checked state", ->
+		checkbox.grabFocus()
 
-	checkbox = new CheckBox
+		checkbox.keyup
+			keyCode:keys.space
+			ctrlKey:false
+			shiftKey:false
+			altKey:false
+		
+		assertThat checkbox.get "checked"
 
-	checkbox.grabFocus()
+	test "Using enter shouldn't toggle the checkbox's checked state when readonly", ->
 
-	checkbox.keyup
-		keyCode:keys.space
-		ctrlKey:false
-		shiftKey:false
-		altKey:false
-	
-	assertThat checkbox.get "checked"
+		checkbox = new CheckBox
 
-test "Using enter shouldn't toggle the checkbox's checked state when readonly", ->
+		checkbox.set "readonly", true
 
-	checkbox = new CheckBox
+		checkbox.grabFocus()
 
-	checkbox.set "readonly", true
+		checkbox.keyup
+			keyCode:keys.enter
+			ctrlKey:false
+			shiftKey:false
+			altKey:false
+		
+		assertThat not checkbox.get "checked"
 
-	checkbox.grabFocus()
+	test "Using space shouldn't toggle the checkbox's checked state when readonly", ->
 
-	checkbox.keyup
-		keyCode:keys.enter
-		ctrlKey:false
-		shiftKey:false
-		altKey:false
-	
-	assertThat not checkbox.get "checked"
+		checkbox = new CheckBox
 
-test "Using space shouldn't toggle the checkbox's checked state when readonly", ->
+		checkbox.set "readonly", true
 
-	checkbox = new CheckBox
+		checkbox.grabFocus()
 
-	checkbox.set "readonly", true
+		checkbox.keyup
+			keyCode:keys.space
+			ctrlKey:false
+			shiftKey:false
+			altKey:false
+		
+		assertThat not checkbox.get "checked"
 
-	checkbox.grabFocus()
+	test "CheckBox reset should operate on the checked state", ->
+		
+		checkbox = new CheckBox
+		
+		checkbox.set "checked", true
+		
+		checkbox.reset()
+		
+		assertThat not checkbox.get "checked"
 
-	checkbox.keyup
-		keyCode:keys.space
-		ctrlKey:false
-		shiftKey:false
-		altKey:false
-	
-	assertThat not checkbox.get "checked"
+	test "CheckBox should modify the value state synchronously with checked", ->
+		
+		checkbox = new CheckBox
+		checkbox.set "checked", true
 
-test "CheckBox reset should operate on the checked state", ->
-	
-	checkbox = new CheckBox
-	
-	checkbox.set "checked", true
-	
-	checkbox.reset()
-	
-	assertThat not checkbox.get "checked"
+		assertThat checkbox.get("value"), equalTo true
 
-test "CheckBox should modify the value state synchronously with checked", ->
-	
-	checkbox = new CheckBox
-	checkbox.set "checked", true
+	test "CheckBox should allow to specify a tuple of possible values", ->
 
-	assertThat checkbox.get("value"), equalTo true
+		checkbox = new CheckBox
 
-test "CheckBox should allow to specify a tuple of possible values", ->
+		checkbox.set "values", [ "on", "off" ]
+		assertThat checkbox.get("value"), equalTo "off"
 
-	checkbox = new CheckBox
+		checkbox.set "checked", true
 
-	checkbox.set "values", [ "on", "off" ]
-	assertThat checkbox.get("value"), equalTo "off"
+		assertThat checkbox.get("value"), equalTo "on"
 
-	checkbox.set "checked", true
+	test "Modifying the checkbox value should modify the checked state", ->
 
-	assertThat checkbox.get("value"), equalTo "on"
+		checkbox = new CheckBox
 
-test "Modifying the checkbox value should modify the checked state", ->
+		checkbox.set "value", true
 
-	checkbox = new CheckBox
+		assertThat checkbox.get "checked"
 
-	checkbox.set "value", true
+	test "Modifying the checkbox value should modify the checked state according to the values property", ->
 
-	assertThat checkbox.get "checked"
+		checkbox = new CheckBox
+		checkbox.set "values", [ "on", "off" ]
+		checkbox.set "value", "on"
 
-test "Modifying the checkbox value should modify the checked state according to the values property", ->
+		assertThat checkbox.get "checked"
 
-	checkbox = new CheckBox
-	checkbox.set "values", [ "on", "off" ]
-	checkbox.set "value", "on"
+	test "CheckBox should dispatch a checkedChanged signal", ->
 
-	assertThat checkbox.get "checked"
+		checkbox = new CheckBox
+		signalCalled = false
+		signalOrigin = null
+		signalValue = null
 
-test "CheckBox should dispatch a checkedChanged signal", ->
+		checkbox.checkedChanged.add ( widget, checked )->
+			signalCalled = true
+			signalOrigin = widget
+			signalValue = checked
+		
+		checkbox.set "checked", true
 
-	checkbox = new CheckBox
-	signalCalled = false
-	signalOrigin = null
-	signalValue = null
+		assertThat signalCalled
+		assertThat signalOrigin, equalTo checkbox
+		assertThat signalValue, equalTo true
 
-	checkbox.checkedChanged.add ( widget, checked )->
-		signalCalled = true
-		signalOrigin = widget
-		signalValue = checked
-	
-	checkbox.set "checked", true
 
-	assertThat signalCalled
-	assertThat signalOrigin, equalTo checkbox
-	assertThat signalValue, equalTo true
+	# Some real checkboxes placed at the top of the test runner.
+	# It allow to test the widget live in the test runner.
 
+	target = $("<input type='checkbox'></input>")
 
-# Some real checkboxes placed at the top of the test runner.
-# It allow to test the widget live in the test runner.
+	checkbox1 = new CheckBox target[0]
+	checkbox2 = new CheckBox
+	checkbox3 = new CheckBox
 
-target = $("<input type='checkbox'></input>")
+	checkbox1.set "checked", true
+	checkbox2.set "readonly", true
+	checkbox2.set "checked", true
+	checkbox3.set "disabled", true
 
-checkbox1 = new CheckBox target[0]
-checkbox2 = new CheckBox
-checkbox3 = new CheckBox
-
-checkbox1.set "checked", true
-checkbox2.set "readonly", true
-checkbox2.set "checked", true
-checkbox3.set "disabled", true
-
-$("#qunit-header").before $ "<h4>CheckBox</h4>"
-$("#qunit-header").before target
-$("#qunit-header").before checkbox1.dummy
-$("#qunit-header").before checkbox2.dummy
-$("#qunit-header").before checkbox3.dummy
+	$("#qunit-header").before $ "<h4>CheckBox</h4>"
+	$("#qunit-header").before target
+	$("#qunit-header").before checkbox1.dummy
+	$("#qunit-header").before checkbox2.dummy
+	$("#qunit-header").before checkbox3.dummy

@@ -1,290 +1,292 @@
-module "core tests"
+$( document ).ready ->
 
-test "The widget's plugin should be available through the $ object", ->
+    module "core tests"
 
-    assertThat $.widgetPlugin, notNullValue()
+    test "The widget's plugin should be available through the $ object", ->
 
-test "The widget's plugin should provide a way to register custom widgets handlers", ->
+        assertThat $.widgetPlugin, notNullValue()
 
-    plugin = $.widgetPlugin
-    id = "irrelevant id"
-    elementMatch = "irrelevant match"
-    elementProcessor = ->
+    test "The widget's plugin should provide a way to register custom widgets handlers", ->
 
-    plugin.register id, elementMatch, elementProcessor
+        plugin = $.widgetPlugin
+        id = "irrelevant id"
+        elementMatch = "irrelevant match"
+        elementProcessor = ->
 
-    assertThat plugin.isRegistered id
-
-test "When the widget's plugin function is executed, the processor registered with an element in a set should be triggered", ->
-
-    processorCalled = false
-    processorScope = null
-    processorTarget = null
-
-    plugin = $.widgetPlugin
-    id = "irrelevant id"
-    elementMatch = "span"
-
-    elementProcessor = ( target )->
-        processorCalled = true
-        processorScope = this
-        processorTarget = target
-
-    plugin.register id, elementMatch, elementProcessor
-
-    target = $("<span>")
-    target.widgets()
-
-    assertThat processorCalled
-    assertThat processorScope is plugin
-    assertThat processorTarget is target[0]
-
-test "Widget's plugin processors should also be able to use a function as element match", ->
-
-    processorCalled = false
-    processorScope = null
-    processorTarget = null
-
-    plugin = $.widgetPlugin
-    id = "irrelevant id"
-    elementMatch = ( o )->
-        o.nodeName.toLowerCase() is "span"
-
-    elementProcessor = ( target )->
-        processorCalled = true
-        processorScope = this
-        processorTarget = target
-
-    plugin.register id, elementMatch, elementProcessor
-
-    target = $("<span>")
-    target.widgets()
-
-    assertThat processorCalled
-    assertThat processorScope is plugin
-    assertThat processorTarget is target[0]
-
-test "When a processor returns a widget, the plugin should place it in the element parent", ->
-
-    class MockWidget extends Widget
-        createDummy:->
-            $ "<div></div>"
-
-    plugin = $.widgetPlugin
-    id = "irrelevant id"
-    elementMatch = "span"
-    elementProcessor = (o)->
-        new MockWidget
-    
-    plugin.register id, elementMatch, elementProcessor
-    
-    target = $("<p><span></span></p>")
-
-    target.children().widgets()
-
-    assertThat target.children("div").length, equalTo 1
-
-test "The widget plugin should prevent to register an invalid processor", ->
-    
-    errorRaised = false
-    plugin = $.widgetPlugin
-    id = "irrelevant id"
-    elementMatch = "span"
-    elementProcessor = null
-
-    try
         plugin.register id, elementMatch, elementProcessor
-    catch e
-        errorRaised = true
 
-    assertThat errorRaised
+        assertThat plugin.isRegistered id
 
-test "The widget plugin should provide a shortcut for widget that doesn't require extra setup", ->
-    
-    class MockWidget extends Widget
-        createDummy:->
-            $ "<div></div>"
-    
-    plugin = $.widgetPlugin
-    id = "irrelevant id"
-    elementMatch = "span"
+    test "When the widget's plugin function is executed, the processor registered with an element in a set should be triggered", ->
 
-    plugin.registerWidgetFor id, elementMatch, MockWidget
+        processorCalled = false
+        processorScope = null
+        processorTarget = null
 
-    target = $("<p><span></span></p>")
+        plugin = $.widgetPlugin
+        id = "irrelevant id"
+        elementMatch = "span"
 
-    target.children().widgets()
+        elementProcessor = ( target )->
+            processorCalled = true
+            processorScope = this
+            processorTarget = target
 
-    assertThat target.children("div").length, equalTo 1
+        plugin.register id, elementMatch, elementProcessor
 
-test "The widget plugin should prevent to register an invalid widget", ->
-    
-    errorRaised = false
-    plugin = $.widgetPlugin
-    id = "irrelevant id"
-    elementMatch = "span"
+        target = $("<span>")
+        target.widgets()
 
-    try
-        plugin.registerWidgetFor id, elementMatch, null
-    catch e
-        errorRaised = true
+        assertThat processorCalled
+        assertThat processorScope is plugin
+        assertThat processorTarget is target[0]
 
-    assertThat errorRaised
+    test "Widget's plugin processors should also be able to use a function as element match", ->
 
-test "When processed, an element should be flagged with a specific class", ->
+        processorCalled = false
+        processorScope = null
+        processorTarget = null
 
-    class MockWidget extends Widget
-        createDummy:->
-            $ "<div></div>"
-    
-    plugin = $.widgetPlugin
-    id = "irrelevant id"
-    elementMatch = "span"
+        plugin = $.widgetPlugin
+        id = "irrelevant id"
+        elementMatch = ( o )->
+            o.nodeName.toLowerCase() is "span"
 
-    plugin.registerWidgetFor id, elementMatch, MockWidget
+        elementProcessor = ( target )->
+            processorCalled = true
+            processorScope = this
+            processorTarget = target
 
-    target = $("<p><span></span></p>")
+        plugin.register id, elementMatch, elementProcessor
 
-    target.children().widgets()
+        target = $("<span>")
+        target.widgets()
 
-    assertThat target.children("span").hasClass "widget-done"
+        assertThat processorCalled
+        assertThat processorScope is plugin
+        assertThat processorTarget is target[0]
 
-test "The plugin process should prevent to process twice an element", ->
+    test "When a processor returns a widget, the plugin should place it in the element parent", ->
 
-    class MockWidget extends Widget
-        createDummy:->
-            $ "<div></div>"
+        class MockWidget extends Widget
+            createDummy:->
+                $ "<div></div>"
 
-    plugin = $.widgetPlugin
-    id = "irrelevant id"
-    elementMatch = "span"
-    
-    plugin.registerWidgetFor id, elementMatch, MockWidget
-    
-    target = $("<p><span></span></p>")
+        plugin = $.widgetPlugin
+        id = "irrelevant id"
+        elementMatch = "span"
+        elementProcessor = (o)->
+            new MockWidget
+        
+        plugin.register id, elementMatch, elementProcessor
+        
+        target = $("<p><span></span></p>")
 
-    target.children().widgets()
-    target.children().widgets()
+        target.children().widgets()
 
-    assertThat target.children("div").length, equalTo 1
+        assertThat target.children("div").length, equalTo 1
 
-    $("body").append target
+    test "The widget plugin should prevent to register an invalid processor", ->
+        
+        errorRaised = false
+        plugin = $.widgetPlugin
+        id = "irrelevant id"
+        elementMatch = "span"
+        elementProcessor = null
 
-module "core processors tests"
+        try
+            plugin.register id, elementMatch, elementProcessor
+        catch e
+            errorRaised = true
 
-test "Input with type text should be replaced by a TextInput", ->
+        assertThat errorRaised
 
-    target = $("<p><input type='text'></input></p>")
+    test "The widget plugin should provide a shortcut for widget that doesn't require extra setup", ->
+        
+        class MockWidget extends Widget
+            createDummy:->
+                $ "<div></div>"
+        
+        plugin = $.widgetPlugin
+        id = "irrelevant id"
+        elementMatch = "span"
 
-    target.children().widgets()
+        plugin.registerWidgetFor id, elementMatch, MockWidget
 
-    assertThat target.children(".text").length, equalTo 1
+        target = $("<p><span></span></p>")
 
-test "Input with type password should be replaced by a TextInput", ->
+        target.children().widgets()
 
-    target = $("<p><input type='password'></input></p>")
+        assertThat target.children("div").length, equalTo 1
 
-    target.children().widgets()
+    test "The widget plugin should prevent to register an invalid widget", ->
+        
+        errorRaised = false
+        plugin = $.widgetPlugin
+        id = "irrelevant id"
+        elementMatch = "span"
 
-    assertThat target.children(".text").length, equalTo 1
+        try
+            plugin.registerWidgetFor id, elementMatch, null
+        catch e
+            errorRaised = true
 
-test "Input with type button should be replaced by a Button", ->
+        assertThat errorRaised
 
-    target = $("<p><input type='button'></input></p>")
+    test "When processed, an element should be flagged with a specific class", ->
 
-    target.children().widgets()
+        class MockWidget extends Widget
+            createDummy:->
+                $ "<div></div>"
+        
+        plugin = $.widgetPlugin
+        id = "irrelevant id"
+        elementMatch = "span"
 
-    assertThat target.children(".button").length, equalTo 1
+        plugin.registerWidgetFor id, elementMatch, MockWidget
 
-test "Input with type reset should be replaced by a Button", ->
+        target = $("<p><span></span></p>")
 
-    target = $("<p><input type='reset'></input></p>")
+        target.children().widgets()
 
-    target.children().widgets()
+        assertThat target.children("span").hasClass "widget-done"
 
-    assertThat target.children(".button").length, equalTo 1
+    test "The plugin process should prevent to process twice an element", ->
 
-test "Input with type submit should be replaced by a Button", ->
+        class MockWidget extends Widget
+            createDummy:->
+                $ "<div></div>"
 
-    target = $("<p><input type='submit'></input></p>")
+        plugin = $.widgetPlugin
+        id = "irrelevant id"
+        elementMatch = "span"
+        
+        plugin.registerWidgetFor id, elementMatch, MockWidget
+        
+        target = $("<p><span></span></p>")
 
-    target.children().widgets()
+        target.children().widgets()
+        target.children().widgets()
 
-    assertThat target.children(".button").length, equalTo 1
+        assertThat target.children("div").length, equalTo 1
 
-test "Input with type range should be replaced by a Slider", ->
+        $("body").append target
 
-    target = $("<p><input type='range'></input></p>")
+    module "core processors tests"
 
-    target.children().widgets()
+    test "Input with type text should be replaced by a TextInput", ->
 
-    assertThat target.children(".slider").length, equalTo 1
+        target = $("<p><input type='text'></input></p>")
 
-test "Input with type number should be replaced by a Stepper", ->
+        target.children().widgets()
 
-    target = $("<p><input type='number'></input></p>")
+        assertThat target.children(".text").length, equalTo 1
 
-    target.children().widgets()
+    test "Input with type password should be replaced by a TextInput", ->
 
-    assertThat target.children(".stepper").length, equalTo 1
+        target = $("<p><input type='password'></input></p>")
 
-test "Input with type checkbox should be replaced by a CheckBox", ->
+        target.children().widgets()
 
-    target = $("<p><input type='checkbox'></input></p>")
+        assertThat target.children(".text").length, equalTo 1
 
-    target.children().widgets()
+    test "Input with type button should be replaced by a Button", ->
 
-    assertThat target.children(".checkbox").length, equalTo 1
+        target = $("<p><input type='button'></input></p>")
 
-test "Input with type color should be replaced by a ColorInput", ->
+        target.children().widgets()
 
-    target = $("<p><input type='color'></input></p>")
+        assertThat target.children(".button").length, equalTo 1
 
-    target.children().widgets()
+    test "Input with type reset should be replaced by a Button", ->
 
-    assertThat target.children(".colorinput").length, equalTo 1
+        target = $("<p><input type='reset'></input></p>")
 
-test "Input with type file should be replaced by a FilePicker", ->
+        target.children().widgets()
 
-    target = $("<p><input type='file'></input></p>")
+        assertThat target.children(".button").length, equalTo 1
 
-    target.children().widgets()
+    test "Input with type submit should be replaced by a Button", ->
 
-    assertThat target.children(".filepicker").length, equalTo 1
+        target = $("<p><input type='submit'></input></p>")
 
-test "Input with type radio should be replaced by a Radio", ->
+        target.children().widgets()
 
-    target = $("<p><input type='radio'></input></p>")
+        assertThat target.children(".button").length, equalTo 1
 
-    target.children().widgets()
+    test "Input with type range should be replaced by a Slider", ->
 
-    assertThat target.children(".radio").length, equalTo 1
+        target = $("<p><input type='range'></input></p>")
 
-test "Many inputs with type radio and the same name should be handled by a RadioGroup", ->
+        target.children().widgets()
 
-    plugin = $.widgetPlugin
+        assertThat target.children(".slider").length, equalTo 1
 
-    target = $ "<p>
-                    <input type='radio' name='foo'></input>
-                    <input type='radio' name='foo'></input>
-                </p>" 
+    test "Input with type number should be replaced by a Stepper", ->
 
-    target.children().widgets()
+        target = $("<p><input type='number'></input></p>")
 
-    assertThat plugin.radiogroups[ "foo" ], allOf notNullValue(), hasProperty "radios", arrayWithLength 2
+        target.children().widgets()
 
-test "textarea nodes should be replaced by a TextArea", ->
+        assertThat target.children(".stepper").length, equalTo 1
 
-    target = $("<p><textarea></textarea></p>")
+    test "Input with type checkbox should be replaced by a CheckBox", ->
 
-    target.children().widgets()
+        target = $("<p><input type='checkbox'></input></p>")
 
-    assertThat target.children(".textarea").length, equalTo 1
+        target.children().widgets()
 
-test "select nodes should be replaced by a SingleSelect", ->
+        assertThat target.children(".checkbox").length, equalTo 1
 
-    target = $("<p><select></select></p>")
+    test "Input with type color should be replaced by a ColorInput", ->
 
-    target.children().widgets()
+        target = $("<p><input type='color'></input></p>")
 
-    assertThat target.children(".single-select").length, equalTo 1
+        target.children().widgets()
+
+        assertThat target.children(".colorinput").length, equalTo 1
+
+    test "Input with type file should be replaced by a FilePicker", ->
+
+        target = $("<p><input type='file'></input></p>")
+
+        target.children().widgets()
+
+        assertThat target.children(".filepicker").length, equalTo 1
+
+    test "Input with type radio should be replaced by a Radio", ->
+
+        target = $("<p><input type='radio'></input></p>")
+
+        target.children().widgets()
+
+        assertThat target.children(".radio").length, equalTo 1
+
+    test "Many inputs with type radio and the same name should be handled by a RadioGroup", ->
+
+        plugin = $.widgetPlugin
+
+        target = $ "<p>
+                        <input type='radio' name='foo'></input>
+                        <input type='radio' name='foo'></input>
+                    </p>" 
+
+        target.children().widgets()
+
+        assertThat plugin.radiogroups[ "foo" ], allOf notNullValue(), hasProperty "radios", arrayWithLength 2
+
+    test "textarea nodes should be replaced by a TextArea", ->
+
+        target = $("<p><textarea></textarea></p>")
+
+        target.children().widgets()
+
+        assertThat target.children(".textarea").length, equalTo 1
+
+    test "select nodes should be replaced by a SingleSelect", ->
+
+        target = $("<p><select></select></p>")
+
+        target.children().widgets()
+
+        assertThat target.children(".single-select").length, equalTo 1

@@ -7,33 +7,24 @@ testTmp = """
 <html>
 <head>
     <meta charset="UTF-8" />
-    <title>Temporary tests</title>
+    <title>Widgets Tests</title>
     <link rel="stylesheet" href="../css/styles.css" media="screen">
     <link rel="stylesheet" href="../css/widgets.css" media="screen">
-
     <link rel="stylesheet" href="../depends/qunit.css" media="screen">
     <script type="text/javascript" src="../depends/qunit.js"></script>
-    
     <script type="text/javascript" src="../depends/jquery-1.6.1.min.js"></script>
     <script type="text/javascript" src="../depends/jquery.mousewheel.js"></script>
     <script type="text/javascript" src="../depends/hamcrest.min.js"></script>
-
     <script type="text/javascript" src="../depends/signals.js"></script>
-    
     <script type="text/javascript" src="./widgets.js"></script>
     <script type="text/javascript" src="./test-widgets.js"></script>   
     <style>
-        #qunit-tests .value {
-            font-weight:bold;
-        }
-        h4 {
-            margin-top:4px;
-            margin-bottom:4px;
-        }        
+        #qunit-tests .value { font-weight:bold; }
+        h4 {  margin-top:4px; margin-bottom:4px; }        
     </style>
 </head>
 <body>
-    <h1 id="qunit-header">Temporary tests</h1>
+    <h1 id="qunit-header">Widgets Tests</h1>
     <h2 id="qunit-banner"></h2>
     <div id="qunit-testrunner-toolbar"></div>
     <h2 id="qunit-userAgent"></h2>
@@ -41,8 +32,7 @@ testTmp = """
     <div id="qunit-fixture">test markup</div>
 </body>
 """
-
-contents = [
+allFiles = [
     "keys",
     "mixins",
     "module",
@@ -60,50 +50,66 @@ contents = [
     "filepicker",
     "menus",
     "selects",
-    "colorpicker",
     "dates",
+    "colorpicker",
     "jquery"
 ]
-testContents =[
-    "test-helpers",
-    "test-keys",
-    "test-widgets",
-    "test-container",
-    "test-button",
-    "test-textinput",
-    "test-textarea",
-    "test-checkbox",
-    "test-radio",
-    "test-radiogroup",
-    "test-numeric-widget",
-    "test-slider",
-    "test-stepper",
-    "test-filepicker",
-    "test-menus",
-    "test-selects",
-    "test-colorpicker",
-    "test-dates",
-    "test-jquery"
-]
-dependencies=
-    'keys'            :[]
-    'widgets'         :[ "keys", "module", "mixins" ]
-    'container'       :[ "keys", "module", "mixins", "widgets" ]
-    'button'          :[ "keys", "module", "mixins", "widgets" ]
-    'textinput'       :[ "keys", "module", "mixins", "widgets" ]
-    'textarea'        :[ "keys", "module", "mixins", "widgets" ]
-    'checkbox'        :[ "keys", "module", "mixins", "widgets" ]
-    'radio'           :[ "keys", "module", "mixins", "widgets", "checkbox" ]
-    'radiogroup'      :[ "keys", "module", "mixins", "widgets", "checkbox", "radio" ]
-    'numeric-widget'  :[ "keys", "module", "mixins", "widgets" ]
-    'slider'          :[ "keys", "module", "mixins", "widgets", "numeric-widget" ]
-    'stepper'         :[ "keys", "module", "mixins", "widgets", "numeric-widget" ]
-    'filepicker'      :[ "keys", "module", "mixins", "widgets" ]
-    'menus'           :[ "keys", "module", "mixins", "widgets" ]
-    'selects'         :[ "keys", "module", "mixins", "widgets", "menus" ]
-    'colorpicker'     :[ "keys", "module", "mixins", "widgets", "textinput", "checkbox", "radio", "radiogroup" ]
-    'dates'           :[ "keys", "module", "mixins", "widgets" ]
-    'jquery'          :contents[ 0..-2 ]
+allTestsDependencies = [ "test-helpers" ]
+compilationUnits=
+    'keys':
+        depends:[]
+        test:"test-keys"
+    'widgets':
+        depends:[ "keys", "module", "mixins" ]
+        test:"test-widgets"
+    'container':
+        depends:[ "keys", "module", "mixins", "widgets" ]
+        test:"test-container"
+    'button':
+        depends:[ "keys", "module", "mixins", "widgets" ]
+        test:"test-button"
+    'textinput':
+        depends:[ "keys", "module", "mixins", "widgets" ]
+        test:"test-textinput"
+    'textarea':
+        depends:[ "keys", "module", "mixins", "widgets" ]
+        test:"test-textarea"
+    'checkbox':
+        depends:[ "keys", "module", "mixins", "widgets" ]
+        test:"test-checkbox"
+    'radio':
+        depends:[ "keys", "module", "mixins", "widgets", "checkbox" ]
+        test:"test-radio"
+    'radiogroup':
+        depends:[ "keys", "module", "mixins", "widgets", "checkbox", "radio" ]
+        test:"test-radiogroup"
+    'numeric-widget':
+        depends:[ "keys", "module", "mixins", "widgets" ]
+        test:"test-numeric-widget"
+    'slider':
+        depends:[ "keys", "module", "mixins", "widgets", "numeric-widget" ]
+        test:"test-slider"
+    'stepper':
+        depends:[ "keys", "module", "mixins", "widgets", "numeric-widget" ]
+        test:"test-stepper"
+    'filepicker':
+        depends:[ "keys", "module", "mixins", "widgets" ]
+        test:"test-filepicker"
+    'menus':
+        depends:[ "keys", "module", "mixins", "widgets" ]
+        test:"test-menus"
+    'selects':
+        depends:[ "keys", "module", "mixins", "widgets", "menus" ]
+        test:"test-selects"
+    'dates':
+        depends:[ "keys", "module", "mixins", "widgets" ]
+        test:"test-dates"
+    'colorpicker':
+        depends:[ "keys", "module", "mixins", "widgets", "textinput", "checkbox", "radio", "radiogroup" ]
+        test:"test-colorpicker"
+    'jquery':
+        depends:allFiles[0..-2]
+        test:"test-jquery"
 
 try
     fs.lstatSync ".tmp"
@@ -126,14 +132,14 @@ join = ( dir, contents, inFile, callback ) ->
     coffee.on 'exit', (status) -> callback?() if status is 0
 
 testTask=(file)->
-    task "test:#{file}", "Run tests for the #{file} file", ->
+    task "test:#{file}", "Compiles and runs tests for the #{file} file", ->
         src = ".tmp/widgets.js"
         test = ".tmp/test-widgets.js"
 
-        join "src", dependencies[ file ].concat( file ), src, ->
+        join "src", compilationUnits[ file ].depends.concat( file ), src, ->
             console.log "#{file} sources compiled"
         
-            join "tests", [ "test-helpers", "test-#{file}" ], test, ->
+            join "tests", allTestsDependencies.concat( compilationUnits[ file ].test ), test, ->
                 console.log "#{file} tests compiled"
 
                 o = spawn 'firefox', [ ".tmp/test-tmp.html" ]
@@ -141,15 +147,15 @@ testTask=(file)->
                 o.stderr.on 'data', (data) -> print data.toString()
                 o.on 'exit', (status) -> callback?() if status is 0
 
-testTask file for file in contents 
+testTask file for file of compilationUnits 
 
 task 'test:all', 'Compiles and runs all the tests', ->
     file = ".tmp/widgets.js"
-    join "src", contents, file, ->
+    join "src", allFiles, file, ->
         console.log "all sources generated"
-
+        allTests = ( compilationUnits[ file ].test for file of compilationUnits )
         file = ".tmp/test-widgets.js"
-        join "tests", testContents, file, ->
+        join "tests", allTestsDependencies.concat( allTests ), file, ->
             console.log "all tests generated"
 
             o = spawn 'firefox', [ ".tmp/test-tmp.html" ]
@@ -157,17 +163,17 @@ task 'test:all', 'Compiles and runs all the tests', ->
             o.stderr.on 'data', (data) -> print data.toString()
             o.on 'exit', (status) -> callback?() if status is 0
             
-task 'build', "Compiles the sources and the documentation", ->
+task 'build', "Compiles the javascript sources and generates the documentation", ->
     invoke "build:lib"
     invoke "docs"
 
-task 'build:lib', 'Generate the whole lib file', ->
+task 'build:lib', 'Compiles the javascript sources', ->
     file = "lib/widgets.js"
-    join "src", contents, file, ->
+    join "src", allFiles, file, ->
         console.log "#{file} generated"
 
 task 'docs', 'Generate annotated source code with Docco', ->
-    files = ( "src/#{file}.coffee" for file in contents )
+    files = ( "src/#{file}.coffee" for file in allFiles )
     docco = spawn 'docco', files
     docco.stdout.on 'data', (data) -> print data.toString()
     docco.stderr.on 'data', (data) -> print data.toString()
