@@ -26,6 +26,13 @@ testGenericDateWidgetBehaviors=( opt )->
 		input = new opt.cls target
 
 		assertThat input.target is target
+	
+	test "A #{ opt.className } should hide its target after creation", ->
+
+		target = $("<input type='#{ opt.type }'></input>")[0]
+		input = new opt.cls target
+
+		assertThat input.jTarget.attr("style"), contains "display: none"
 		
 	test "A #{ opt.className } shouldn't allow an input with a type different than #{ opt.type } as target", ->
 
@@ -55,7 +62,7 @@ testGenericDateWidgetBehaviors=( opt )->
 	test "Creating a #{ opt.className } without argument should setup a default Date", ->
 		d = new Date
 		input = new opt.cls
-		d2 = input.get("date")
+		d2 = input.get "date"
 		d.setMilliseconds 0
 		d2.setMilliseconds 0
 
@@ -150,7 +157,7 @@ testGenericDateWidgetBehaviors=( opt )->
 							max='#{ opt.maxValue }'
 							step='#{ opt.stepValue }'></input>"
 	
-	testRangeStepperMixinBehavior
+	testValueInRangeMixinBehavior
 		cls:opt.cls
 		className:opt.className
 		defaultTarget:defaultTarget
@@ -179,12 +186,12 @@ testGenericDateWidgetBehaviors=( opt )->
 		undefinedMaxValueMatcher:opt.undefinedMaxValueMatcher
 		undefinedStepValueMatcher:opt.undefinedStepValueMatcher
 
-	testRangeStepperMixinIntervalsRunning
+	testValueInRangeMixinIntervalsRunning
 		cls:opt.cls
 		className:opt.className
 		defaultTarget:defaultTarget
 
-	testRangeStepperMixinKeyboardBehavior
+	testValueInRangeMixinKeyboardBehavior
 		cls:opt.cls
 		className:opt.className
 		defaultTarget:defaultTarget
@@ -193,7 +200,7 @@ testGenericDateWidgetBehaviors=( opt )->
 		valueMatcher:opt.singleIncrementValue
 		initialValueMatcher:equalTo opt.defaultValue
 
-	testRangeStepperMixinKeyboardBehavior
+	testValueInRangeMixinKeyboardBehavior
 		cls:opt.cls
 		className:opt.className
 		defaultTarget:defaultTarget
@@ -202,7 +209,7 @@ testGenericDateWidgetBehaviors=( opt )->
 		valueMatcher:opt.singleDecrementValue
 		initialValueMatcher:equalTo opt.defaultValue
 
-	testRangeStepperMixinKeyboardBehavior
+	testValueInRangeMixinKeyboardBehavior
 		cls:opt.cls
 		className:opt.className
 		defaultTarget:defaultTarget
@@ -211,7 +218,7 @@ testGenericDateWidgetBehaviors=( opt )->
 		valueMatcher:opt.singleIncrementValue
 		initialValueMatcher:equalTo opt.defaultValue
 
-	testRangeStepperMixinKeyboardBehavior
+	testValueInRangeMixinKeyboardBehavior
 		cls:opt.cls
 		className:opt.className
 		defaultTarget:defaultTarget
@@ -220,7 +227,7 @@ testGenericDateWidgetBehaviors=( opt )->
 		valueMatcher:opt.singleDecrementValue
 		initialValueMatcher:equalTo opt.defaultValue
 
-	testRangeStepperMixinMouseWheelBehavior
+	testValueInRangeMixinMouseWheelBehavior
 		cls:opt.cls
 		className:opt.className
 		defaultTarget:defaultTarget
@@ -388,14 +395,14 @@ $( document ).ready ->
 		cls:TimeInput
 		type:"time"
 
-		defaultDate:new Date 1970, 0, 1, 11, 56, 0
-		defaultValue:"11:56:00"
+		defaultDate:new Date 1970, 0, 1, 11, 30, 0
+		defaultValue:"11:30:00"
 
 		invalidDates:[ null, new Date "foo" ]
 		invalidValues:[ null, "foo", "100:00:00", "1:22:2" ]
 
-		setDate:new Date 1970, 0, 1, 16, 32, 00
-		setValue:"16:32:00"
+		setDate:new Date 1970, 0, 1, 16, 30, 00
+		setValue:"16:30:00"
 
 		minDate:new Date 1970, 0, 1, 10, 0, 0
 		minValue:"10:00:00"
@@ -419,6 +426,10 @@ $( document ).ready ->
 		undefinedMaxValueMatcher:nullValue()
 		undefinedStepValueMatcher:equalTo 60
 
+	testFocusProvidedByChildMixinBegavior 
+		className:"TimeInput"
+		cls:TimeInput
+		focusChildSelector:"input"
 
 	test "A TimeInput dummy should contains an input that contains the value", ->
 
@@ -438,6 +449,157 @@ $( document ).ready ->
 		text = input.dummy.find("input")
 		
 		assertThat text.val(), equalTo "05:45"
+	
+	test "When the value change in the TimeInput's input, the TimeInput should validate the new value", ->
+		input = new TimeInput
+
+		input.dummy.children(".value").val("10:40")
+		input.dummy.children(".value").change()
+
+		assertThat input.get("value"), equalTo "10:40:00"
+
+	test "When the value in the TimeInput's input is invalid, the TimeInput should turn it back to the valid value", ->
+
+		d = timeFromString "11:20"
+		input = new TimeInput d
+
+		input.dummy.children(".value").val("abcd")
+		input.dummy.children(".value").change()
+
+		assertThat input.get("value"), equalTo "11:20:00"
+		assertThat input.dummy.children(".value").val(), equalTo "11:20"
+
+	test "Pressing the mouse on the minus button should start a decrement interval", ->
+		d = timeFromString "11:20"
+		input = new TimeInput d
+
+		input.dummy.children(".down").mousedown()
+
+		assertThat input.intervalId isnt -1
+		
+		input.endIncrement()
+
+	test "Releasing the mouse on the minus button should stop the decrement interval", ->
+
+		input = new TimeInput
+
+		input.dummy.children(".down").mousedown()
+		input.dummy.children(".down").mouseup()
+
+		assertThat input.intervalId is -1
+		
+		input.endIncrement()
+
+	test "Releasing the mouse outside of the minus button should stop the decrement interval", ->
+		d = timeFromString "11:20"
+		input = new TimeInput d
+
+		input.dummy.children(".down").mousedown()
+
+		$( document ).mouseup()
+		assertThat not input.mousePressed
+		assertThat input.intervalId is -1
+		
+		input.endIncrement()
+
+	test "Moving the mouse out of the minus button should stop the decrement interval", ->
+		d = timeFromString "11:20"
+		input = new TimeInput d
+
+		input.dummy.children(".down").mousedown()
+		input.dummy.children(".down").mouseout()
+	
+		assertThat input.intervalId is -1
+		
+		input.endIncrement()
+
+	test "Moving the mouse back to the minus button should restart the decrement interval", ->
+		d = timeFromString "11:20"
+		input = new TimeInput d
+
+		input.dummy.children(".down").mousedown()
+		input.dummy.children(".down").mouseout()
+		input.dummy.children(".down").mouseover()
+
+		assertThat input.intervalId isnt -1
+		
+		input.endIncrement()
+
+	test "Pressing the mouse on the plus button should start a increment interval", ->
+		d = timeFromString "11:20"
+		input = new TimeInput d
+
+		input.dummy.children(".up").mousedown()
+
+		assertThat input.intervalId isnt -1
+		
+		input.endIncrement()
+
+	test "Releasing the mouse on the plus button should stop the increment interval", ->
+		d = timeFromString "11:20"
+		input = new TimeInput d
+
+		input.dummy.children(".up").mousedown()
+		input.dummy.children(".up").mouseup()
+
+		assertThat input.intervalId is -1
+		
+		input.endIncrement()
+
+	test "Releasing the mouse outside of the plus button should stop the increment interval", ->
+		d = timeFromString "11:20"
+		input = new TimeInput d
+
+		input.dummy.children(".up").mousedown()
+		$( document ).mouseup()
+
+		assertThat input.intervalId is -1
+		
+		input.endIncrement()
+
+	test "Moving the mouse out of the plus button should stop the increment interval", ->
+		d = timeFromString "11:20"
+		input = new TimeInput d
+
+		input.dummy.children(".up").mousedown()
+		input.dummy.children(".up").mouseout()
+
+		assertThat input.intervalId is -1
+		
+		input.endIncrement()
+
+	test "Moving the mouse back to the plus button should restart the increment interval", ->
+		d = timeFromString "11:20"
+		input = new TimeInput d
+
+		input.dummy.children(".up").mousedown()
+		input.dummy.children(".up").mouseout()
+		input.dummy.children(".up").mouseover()
+
+		assertThat input.intervalId isnt -1
+		
+		input.endIncrement()
+
+	test "Pressing the mouse over the input and moving it to the up should increment the value until the mouse is released", ->
+
+		class MockTimeInput extends TimeInput
+			mousedown:(e)->
+				e.pageY = 5
+				super e
+
+			mousemove:(e)->
+				e.pageY = 0
+				super e
+		
+		d = timeFromString "11:20"
+		input = new MockTimeInput d
+
+		input.dummy.mousedown()
+		$(document).mousemove()
+		$(document).mouseup()
+
+		assertThat input.get("value"), equalTo "11:25:00" 
+		assertThat not input.dragging
 		
 	module "dateinput tests"
 
@@ -558,22 +720,22 @@ $( document ).ready ->
 		cls:DateTimeInput
 		type:"datetime"
 
-		defaultDate:new Date 2011, 5, 21, 16, 27, 53
-		defaultValue:"2011-06-21T16:27:53+02:00"
+		defaultDate:new Date 2011, 5, 21, 16, 30, 00
+		defaultValue:"2011-06-21T16:30:00+02:00"
 
 		invalidDates:[ null, new Date "foo" ]
 		invalidValues:[ null, "foo", "122-50", "1-1-+6" ]
 
-		setDate:new Date 2011, 7, 15, 8, 35, 12
-		setValue:"2011-08-15T08:35:12+02:00"
+		setDate:new Date 2011, 7, 15, 8, 30, 00
+		setValue:"2011-08-15T08:30:00+02:00"
 
 		minDate:new Date 2011, 0, 1, 0, 0, 0
 		minValue:"2011-01-01T00:00:00+01:00"
-		valueBelowRange:"2010-12-31T23:59:59+01:00"
-		invalidMinValue:"2013-05-03T23:59:59+01:00"
+		valueBelowRange:"2010-12-31T23:30:00+01:00"
+		invalidMinValue:"2013-05-03T23:30:00+01:00"
 
-		maxDate:new Date 2011, 11, 31, 23, 59, 59
-		maxValue:"2011-12-31T23:00:00+01:00"
+		maxDate:new Date 2011, 11, 31, 23, 30, 00
+		maxValue:"2011-12-31T23:30:00+01:00"
 		valueAboveRange:"2013-05-03T00:00:00+01:00"
 		invalidMaxValue:"2010-01-01T00:00:00+01:00"
 
@@ -581,8 +743,8 @@ $( document ).ready ->
 		setStep:3600
 		valueNotInStep:"2011-08-15T08:35:12+02:00"
 		snappedValue:"2011-08-15T08:00:00+02:00"
-		singleIncrementValue:"2011-06-21T16:30:00+02:00"
-		singleDecrementValue:"2011-06-21T15:30:00+02:00"
+		singleIncrementValue:"2011-06-21T17:00:00+02:00"
+		singleDecrementValue:"2011-06-21T16:00:00+02:00"
 
 		undefinedMinValueMatcher:nullValue()
 		undefinedMaxValueMatcher:nullValue()
@@ -595,21 +757,21 @@ $( document ).ready ->
 		cls:DateTimeLocalInput
 		type:"datetime-local"
 
-		defaultDate:new Date 2011, 5, 21, 16, 27, 53
-		defaultValue:"2011-06-21T16:27:53"
+		defaultDate:new Date 2011, 5, 21, 16, 30, 00
+		defaultValue:"2011-06-21T16:30:00"
 
 		invalidDates:[ null, new Date "foo" ]
 		invalidValues:[ null, "foo", "122-50", "1-1-+6" ]
 
-		setDate:new Date 2011, 7, 15, 8, 35, 12
-		setValue:"2011-08-15T08:35:12"
+		setDate:new Date 2011, 7, 15, 8, 30, 00
+		setValue:"2011-08-15T08:30:00"
 
 		minDate:new Date 2011, 0, 1, 0, 0, 0
 		minValue:"2011-01-01T00:00:00"
-		valueBelowRange:"2010-12-31T23:59:59"
-		invalidMinValue:"2013-05-16T23:59:59"
+		valueBelowRange:"2010-12-31T23:30:00"
+		invalidMinValue:"2013-05-16T23:30:00"
 
-		maxDate:new Date 2011, 11, 31, 23, 59, 59
+		maxDate:new Date 2011, 11, 31, 23, 30, 00
 		maxValue:"2011-12-31T23:00:00"
 		valueAboveRange:"2013-05-01T00:00:00"
 		invalidMaxValue:"2010-01-07T00:00:00"
@@ -618,8 +780,8 @@ $( document ).ready ->
 		setStep:3600
 		valueNotInStep:"2011-08-15T08:35:12"
 		snappedValue:"2011-08-15T08:00:00"
-		singleIncrementValue:"2011-06-21T16:30:00"
-		singleDecrementValue:"2011-06-21T15:30:00"
+		singleIncrementValue:"2011-06-21T17:00:00"
+		singleDecrementValue:"2011-06-21T16:00:00"
 
 		undefinedMinValueMatcher:nullValue()
 		undefinedMaxValueMatcher:nullValue()

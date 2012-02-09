@@ -20,7 +20,7 @@
 
 #### Utilities
 
-# A group of *constants* for basic time and dates computations.
+# A group of *"constants"* for basic time and dates computations.
 MILLISECONDS_IN_SECOND = 1000
 MILLISECONDS_IN_MINUTE = MILLISECONDS_IN_SECOND * 60
 MILLISECONDS_IN_HOUR   = MILLISECONDS_IN_MINUTE * 60
@@ -35,7 +35,7 @@ safeInt=( value )->
     unless isNaN n then n else 0
 
 # Fills the string `s` with `0` until its length is
-# equalt to the length `l`.
+# equal to the length `l`.
 fill=( s, l = 2 )->
     s = String s
     s = "0#{s}" while s.length < l
@@ -44,157 +44,248 @@ fill=( s, l = 2 )->
 #### Abstract
 #
 # Validation and conversion functions for each mode are available
-# as top level functions to allow them to be tested.
+# as top level functions to allow them to be tested and then 
+# used in tests to validates widgets outputs.
 
 #### AbstractDateInputWidget
 
 # All widgets that implements support for one of the html date and time inputs
 # extends the `AbstractDateInputWidget` class. 
+#
+# The date widgets provides an additional `date` property, accessible through
+# a property accessor, that allow to manipulate the widget's value using a `Date`
+# instance.
 class AbstractDateInputWidget extends Widget
-    @mixins RangeStepper
+    # Date and time widgets can operate in a range. Their prototype is then
+    # decorated with the `ValueInRange` mixin.
+    @mixins ValueInRange
 
-    valueToDate:( value )-> new Date
-    dateToValue:( date )-> ""
-    isValidValue:( value )-> false
+    # Concretes classes must defines these properties before calling
+    # the super constructor. The three functions handles the validation 
+    # and the conversion of value in `Date` objects when the `supportedType`
+    # property define the value of the `type` attribute that a target must
+    # have to be a valid target for the concrete widget.
+    valueToDate  :( value )-> new Date
+    dateToValue  :( date )-> ""
+    isValidValue :( value )-> false
     supportedType:""
 
+    # The target can be either an `input` node with one of the date
+    # types or a `Date` object.  
+    #
+    # The constructor supports an additional `defaultStep` argument
+    # that will be used if the `step` property is not a number
+    # before the validation of the value. 
     constructor:( target, defaultStep = null )->
         min  = null
         max  = null
         step = NaN
 
+        # When the target is a date, we don't need to do much
+        # operation.
         if target instanceof Date 
             super()
             date = target
+        # On the other hand, when the target is an input,
+        # the datas contained in the node will be used to
+        # setup the widget.
         else
             super target
             if @hasTarget
-                step  = parseInt @valueFromAttribute "step"
                 date  = @dateFromAttribute  "value", new Date
                 min   = @valueFromAttribute "min"
                 max   = @valueFromAttribute "max"
-
+                step  = parseInt @valueFromAttribute "step"
+                
+                # If invalid values are passed in the `min`
+                # or `max` attribute, that attribute is set
+                # to `null` and this extremity of the range
+                # will not be used.
                 unless @isValidValue min then min = null
                 unless @isValidValue max then max = null
             else
                 date  = new Date
         
+        # Step is step before any other operation. As `min`
+        # `max` and `value` must respect that step.
+        @properties.step  = if isNaN step then defaultStep else step
+
+        # If a valid `min` bounds is defined, the value is snapped
+        # according to the `step` property before being its affectation.
         if min?
             minDate = @snapToStep @valueToDate min
             @properties.min = @dateToValue minDate
-        
+        # If a valid `max` bounds is defined, the value is snapped
+        # according to the `step` property before being its affectation.
         if max?
             maxDate = @snapToStep @valueToDate max 
             @properties.max = @dateToValue maxDate
                 
-        @properties.step  = if isNaN step then defaultStep else step
-
+        # The value of the widget is then adjusted itself to the step
+        # and range defined previously.
         @properties.date  = @fitToRange date, minDate, maxDate
         @properties.value = @dateToValue date
 
+        # To avoid infinite loops and unnecessary conversion, locks
+        # are defined for the `date` and `value` setters. 
         @dateSetProgrammatically = false
         @valueSetProgrammatically = false
 
         @updateDummy()
+        @hideTarget()
 
     #### Target Management
 
+    # Target must be an input with a type equal to the widget `supportedType`.
     checkTarget:( target )->
         unless @isInputWithType target, @supportedType
             throw "TimeInput target must be an input with a #{ @supportedType } type"
-        
-    dateFromAttribute:( attr, def = null )->
+    
+    # Gets a `Date` object from the value of a target's attribute.
+    # If the target's value doesn't validate the `defaultValue` 
+    # is returned instead.
+    dateFromAttribute:( attr, defaultValue = null )->
         value = @valueFromAttribute attr
-        if @isValidValue value then @valueToDate value else def
+        if @isValidValue value then @valueToDate value else defaultValue
     
     #### Value Management
 
+    # Overrides of the `ValueInRange` mixin method to support date value.
     snapToStep:( value )->
-        ms = value.valueOf()
+        # A `Date` is rounded using its primitive value.
+        ms = value.getTime()
         step = @get "step"
         if step?
-            new Date ms - ( ms % ( step * MILLISECONDS_IN_SECOND ) )
-        else
-            value
+            value.setTime ms - ( ms % ( step * MILLISECONDS_IN_SECOND ) )
 
+        value
+    
+    # Overrides of the `ValueInRange` mixin method to support date value.
     increment:()->
-        ms = @get("date").valueOf()
+        d    = @get "date"
         step = @get "step"
-        unless step? then step = 1
-
-        @set "date", new Date ms + step * MILLISECONDS_IN_SECOND
+        ms   = d.valueOf()
+        d.setTime ms + step * MILLISECONDS_IN_SECOND
+        @set "date", d 
         
-
+    # Overrides of the `ValueInRange` mixin method to support date value.
     decrement:()->
-        ms = @get("date").valueOf()
+        d    = @get "date"
         step = @get "step"
-        unless step? then step = 1
-        
-        @set "date", new Date ms - step * MILLISECONDS_IN_SECOND
+        ms   = d.valueOf()
+        d.setTime ms - step * MILLISECONDS_IN_SECOND
+        @set "date", d 
     
     #### Dummy Management
 
+    # The base dummy for date widgets is a span with a `datetime`
+    # class completed with the type of the widget.
     createDummy:->
         $ "<span class='dateinput #{ @supportedType }'></span>"
     
+    # Placeholder for the dummy update.
     updateDummy:->
 
     #### Properties Accessors
 
+    # Sets the value of the widget with a `Date` instance. 
+    # Only valid dates are allowed. Invalid dates are easily
+    # identifiable as all their getters will return `NaN`.
     set_date:( property, value )->
         if not value? or isNaN value.getDate() then return @get "date"
 
         min = @get "min"
         max = @get "max"
-
+        # The `min` and `max` properties being stored as string, 
+        # they are converted to a date before being used.
         if min? then min = @valueToDate min
         if max? then max = @valueToDate max
 
+        # The passed-in value is then adjusted to the widget's range.
         @properties[ property ] = @fitToRange value, min, max
 
+        # The lock prevent a call to the `date` setter to call
+        # back the `value` setter when `date` was called within
+        # the `value` setter.
         unless @dateSetProgrammatically 
             @valueSetProgrammatically = true
             @set "value", @dateToValue @properties[ property ]
             @valueSetProgrammatically = false
         
+        # The dummy is updated before returning the final value.
+        @updateDummy()
         @properties[ property ]
     
+    # Sets the value of the widget. Only valid values are allowed, 
+    # they are validated with the `isValidValue` function defined
+    # for the widget.
     set_value:( property, value )->
         unless @isValidValue value then return @get property
 
+        # The lock prevent a call to the `value` setter to call
+        # back the `date` setter when `value` was called within
+        # the `date` setter.
         unless @valueSetProgrammatically
             @dateSetProgrammatically = true
             @set "date", @valueToDate value
             @dateSetProgrammatically = false
 
         super property, @dateToValue @get "date"
-        
+
+        # The dummy is updated before returning the final value.
         @updateDummy()
-    
+        @properties[ property ]
+        
+    # Sets the `min` property of the widget.
+    #
+    # The `min` property is constrained by the same rules as the
+    # widget's value. Meaning that it should returns true when
+    # passed in `isValidValue` and then it will be snapped to the
+    # widget's step. 
     set_min:( property, value )->
         unless @isValidValue value then return @get property
+
+        # The `min` property can't be greater that the `max` property.
         if value > @get "max" then return @get property
 
         @properties[ property ] = @dateToValue @snapToStep @valueToDate value
         @valueToAttribute property, value
+        # When affected, the current `date` of the widget is
+        # adjusted to the new range by calling the `date` setter. 
         @set "date", @get "date"
         value
     
+    # Sets the `max` property of the widget.
+    #
+    # The `max` property is constrained by the same rules as the
+    # widget's value. Meaning that it should returns true when
+    # passed in `isValidValue` and then it will be snapped to the
+    # widget's step. 
     set_max:( property, value )->
         unless @isValidValue value then return @get property
+        
+        # The `max` property can't be greater that the `min` property.
         if value < @get "min" then return @get property
 
         @properties[ property ] = @dateToValue @snapToStep @valueToDate value
+        # When affected, the current `date` of the widget is
+        # adjusted to the new range by calling the `date` setter. 
         @valueToAttribute property, value
         @set "date", @get "date"
         value
     
+    # Sets the `step` property of the widget.
     set_step:( property, value )->
+
+        # A `null` or `NaN` step will disable the value snapping.
+        # `NaN` value end up to `null`.
+        if isNaN value then value = null
         @properties[ property ] = value
         @valueToAttribute property, value
+        # When affected, the current `date` of the widget is
+        # adjusted to the new step by calling the `date` setter. 
         @set "date", @get "date"
         value
-    
 
 # <a name='time'></a>
 ## Time
@@ -248,6 +339,9 @@ timeToString=( date )->
 # <a name='TimeInput'></a>
 #### TimeInput
 class TimeInput extends AbstractDateInputWidget
+
+    @mixins FocusProvidedByChild
+
     constructor:( target )->
         @supportedType = "time"
         @valueToDate = timeFromString
@@ -258,13 +352,107 @@ class TimeInput extends AbstractDateInputWidget
     
     createDummy:->
         dummy = super()
-        dummy.append $ "<input type='text' class='value widget-done'></input>
+        dummy.append $ """<input type='text' class='value widget-done'></input>
                         <span class='down'></span>
-                        <span class='up'></span>"
+                        <span class='up'></span>"""
+        @focusProvider = dummy.find "input"
+        down = dummy.find(".down")
+        up = dummy.find(".up")
+        
+        # Pressing on the buttons starts an increment or decrement
+        # interval according to the pressed button.
+        buttonsMousedown = (e)=>
+            e.stopImmediatePropagation()
+
+            @mousePressed = true
+
+            # The function that start and end the interval
+            # are stored locally according to the pressed button.
+            switch e.target
+                when down[0]
+                    startFunction = @startDecrement
+                    endFunction   = @endDecrement
+                when up[0]
+                    startFunction = @startIncrement
+                    endFunction   = @endIncrement
+            
+            # Initiate the interval.
+            startFunction.call this
+            # And register a callback to stop the interval on `mouseup`.
+            $(document).bind "mouseup", @documentDelegate = (e)=>
+                @mousePressed = false
+                endFunction.call this
+                $(document).unbind "mouseup", @documentDelegate
+        
+        down.bind "mousedown", buttonsMousedown
+        up.bind "mousedown", buttonsMousedown
+        
+        # When the mouse go out of the button while 
+        # an interval is runnung, the interval is stopped.
+        down.bind "mouseout", =>
+            if @incrementInterval isnt -1 then @endDecrement()
+        up.bind "mouseout", =>
+            if @incrementInterval isnt -1 then @endIncrement()
+
+        # Until the mouse came back over the button.
+        down.bind "mouseover", =>
+            if @mousePressed then @startDecrement()
+        up.bind "mouseover", =>
+            if @mousePressed then @startIncrement()
+
         dummy
     
     updateDummy:->
         @dummy.find("input").val @get("value").split(":")[0..1].join(":")
+    
+    # The states of the widget is reflected on the widget's input.
+    updateStates:->
+        super()
+        if @get "readonly" then @focusProvider.attr "readonly", "readonly" else @focusProvider.removeAttr "readonly"
+        if @get "disabled" then @focusProvider.attr "disabled", "disabled" else @focusProvider.removeAttr "disabled"
+    
+    change:(e)->
+        value = @focusProvider.val()
+        if @isValidValue value then @set "value", value else @updateDummy()
+    
+    input:(e)->
+
+    # Releasing the mouse over the widget will force the focus on the 
+    # input. That way, clicking on the increment and decrement button
+    # will also give the focus to the widget.
+    mouseup:->
+        if @get "disabled" then return true
+
+        @grabFocus()    
+
+        if @dragging 
+            $(document).unbind "mousemove", @documentMouseMoveDelegate
+            $(document).unbind "mouseup",   @documentMouseUpDelegate 
+            @dragging = false
+        
+        true
+    
+    # The `TimeInput` allow to drag the mouse vertically to change the value.
+    mousedown:(e)->
+        if @cantInteract() then return true
+
+        @dragging = true
+        @pressedY = e.pageY
+
+        $(document).bind "mousemove", @documentMouseMoveDelegate = (e)=> @mousemove e
+        $(document).bind "mouseup",   @documentMouseUpDelegate   = (e)=> @mouseup e
+    
+    # The value is changed on the basis that a move of 1 pixel change the value
+    # of the amount of `step`.
+    mousemove:(e)->
+        if @dragging
+            y = e.pageY
+            dif = @pressedY - y
+            ms = @get("date").valueOf()
+            step = @get "step"
+
+            @set "date", new Date ms + dif * step * MILLISECONDS_IN_SECOND
+            @pressedY = y
 
 
 # <a name='date'></a>
@@ -441,22 +629,40 @@ class DateTimeInput extends AbstractDateInputWidget
     
 # <a name='datetime-local'></a>
 ## DateTimeLocal
+validationRegexp= -> 
+    /// ^
+        ([\d]{4})-     # Year
+        ([\d]{2})-     # Month
+        ([\d]{2})      # Day of the Month
+        T              # Start time token
+        ([\d]{2}):     # Hours
+        ([\d]{2}):     # Minutes
+        ([\d]{2})      # Seconds
+        (\.[\d]{1,3})? # Optionnal milliseconds
+    $ ///
 
 isValidDateTimeLocal=( value )->
     unless value? then return false
-    (/// ^
-        [\d]{4}-       # Year
-        [\d]{2}-       # Month
-        [\d]{2}        # Day of the Month
-        T              # Start time token
-        [\d]{2}:       # Hours
-        [\d]{2}:       # Minutes
-        [\d]{2}        # Seconds
-        (\.[\d]{1,4})? # Optionnal milliseconds
-    $ ///).test value
+    validationRegexp().test value
 
 datetimeLocalFromString=( string )->
-    new Date string
+    # Passing the date string directly in the constructor is valid, however the behavior
+    # in chrome and firefox are quite different, chrome consider that the passed-in date has
+    # an offset of `0`and the convert it to the current local offset when firefox consider
+    # the datestring as in the current local offset. In consequences, The date will differ between
+    # the two browsers of the amount of the current local offset.
+    #
+    # The `Date` will be created by parsing the string with the validation regex and pass
+    # each value as an argument in the `Date` constructor.
+    [ match, year, month, day, hours, minutes, seconds, milliseconds ] = validationRegexp().exec string
+    pI = parseInt
+    new Date pI( year    , 10 ), 
+             pI( month   , 10 ) - 1, 
+             pI( day     , 10 ), 
+             pI( hours   , 10 ), 
+             pI( minutes , 10 ), 
+             pI( seconds , 10 )
+             if milliseconds? then pI milliseconds.replace(".", ""), 10 else 0
 
 datetimeLocalToString=( date )->
     "#{ dateToString date }T#{ timeToString date }"

@@ -149,6 +149,7 @@ $.widgetPlugin.registerWidgetFor "number",      $.widgetPlugin.inputWithType("nu
 $.widgetPlugin.registerWidgetFor "checkbox",    $.widgetPlugin.inputWithType("checkbox"),                   CheckBox
 $.widgetPlugin.registerWidgetFor "color",       $.widgetPlugin.inputWithType("color"),                      ColorInput
 $.widgetPlugin.registerWidgetFor "file",        $.widgetPlugin.inputWithType("file"),                       FilePicker
+$.widgetPlugin.registerWidgetFor "time",        $.widgetPlugin.inputWithType("time"),                       TimeInput
 
 # The radio input are a special case since each radio that have the same name 
 # are part of a group.

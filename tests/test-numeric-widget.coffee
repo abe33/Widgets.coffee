@@ -36,7 +36,7 @@ $( document ).ready ->
 		
 		assertThat updateDummyCalled
 
-	testRangeStepperMixinBehavior
+	testValueInRangeMixinBehavior
 		cls:NumericWidget
 		className:"NumericWidget"
 		defaultTarget:"<input min='0' max='100' step='5' value='10'>"
@@ -65,12 +65,12 @@ $( document ).ready ->
 		undefinedMaxValueMatcher:nullValue()
 		undefinedStepValueMatcher:nullValue()
 
-	testRangeStepperMixinIntervalsRunning
+	testValueInRangeMixinIntervalsRunning
 		cls:NumericWidget
 		className:"NumericWidget"
 		defaultTarget:"<input min='0' max='100' step='5' value='10'>"
 
-	testRangeStepperMixinKeyboardBehavior
+	testValueInRangeMixinKeyboardBehavior
 		cls:NumericWidget
 		className:"NumericWidget"
 		defaultTarget:"<input min='0' max='100' step='5' value='10'>"
@@ -79,7 +79,7 @@ $( document ).ready ->
 		valueMatcher:closeTo 15, 1
 		initialValueMatcher:equalTo 10
 
-	testRangeStepperMixinKeyboardBehavior
+	testValueInRangeMixinKeyboardBehavior
 		cls:NumericWidget
 		className:"NumericWidget"
 		defaultTarget:"<input min='0' max='100' step='5' value='10'>"
@@ -88,7 +88,7 @@ $( document ).ready ->
 		valueMatcher:closeTo 5, 1
 		initialValueMatcher:equalTo 10
 
-	testRangeStepperMixinKeyboardBehavior
+	testValueInRangeMixinKeyboardBehavior
 		cls:NumericWidget
 		className:"NumericWidget"
 		defaultTarget:"<input min='0' max='100' step='5' value='10'>"
@@ -97,7 +97,7 @@ $( document ).ready ->
 		valueMatcher:closeTo 15, 1
 		initialValueMatcher:equalTo 10
 
-	testRangeStepperMixinKeyboardBehavior
+	testValueInRangeMixinKeyboardBehavior
 		cls:NumericWidget
 		className:"NumericWidget"
 		defaultTarget:"<input min='0' max='100' step='5' value='10'>"
@@ -106,7 +106,7 @@ $( document ).ready ->
 		valueMatcher:closeTo 5, 1
 		initialValueMatcher:equalTo 10
 
-	testRangeStepperMixinMouseWheelBehavior
+	testValueInRangeMixinMouseWheelBehavior
 		cls:NumericWidget
 		className:"NumericWidget"
 		defaultTarget:"<input min='0' max='100' step='5' value='10'>"

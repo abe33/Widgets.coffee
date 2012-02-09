@@ -4,8 +4,8 @@
 # Both the `Slider` and `Stepper` classes extends the `NumericWidget` class.
 class NumericWidget extends Widget
 
-    # Ranges management is provided by the `RangeStepper` mixin.
-    @mixins RangeStepper
+    # Ranges management is provided by the `ValueInRange` mixin.
+    @mixins ValueInRange
     
     constructor:(target)->
 
@@ -38,7 +38,8 @@ class NumericWidget extends Widget
     #### Value manipulation
 
     snapToStep:( value )->
-        value - ( value % @get "step" )
+        step = @get "step"
+        if step? then value - ( value % step ) else value
     
     # Increment the value of the amount of the `step` property. 
     increment:->
@@ -108,6 +109,7 @@ class NumericWidget extends Widget
     # Changing the `step` property can alter the `value` property
     # if the current value doesn't snap to the new step grid.
     set_step:( property, value )->
+        if isNaN value then value = null
         min = @get "min"
         max = @get "max"
         @valueToAttribute property, value

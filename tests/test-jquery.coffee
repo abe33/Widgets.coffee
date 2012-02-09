@@ -1,6 +1,6 @@
 $( document ).ready ->
 
-    module "core tests"
+    module "jquery tests"
 
     test "The widget's plugin should be available through the $ object", ->
 
@@ -172,7 +172,7 @@ $( document ).ready ->
 
         $("body").append target
 
-    module "core processors tests"
+    module "jquery processors tests"
 
     test "Input with type text should be replaced by a TextInput", ->
 
@@ -261,6 +261,14 @@ $( document ).ready ->
         target.children().widgets()
 
         assertThat target.children(".radio").length, equalTo 1
+    
+    test "Input with type time should be replaced by a TimeInput", ->
+
+        target = $("<p><input type='time'></input></p>")
+
+        target.children().widgets()
+
+        assertThat target.find(".time").length, equalTo 1
 
     test "Many inputs with type radio and the same name should be handled by a RadioGroup", ->
 

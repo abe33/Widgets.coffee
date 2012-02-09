@@ -51,9 +51,9 @@ $( document ).ready ->
 		undefinedStepValueMatcher:equalTo 1
 
 		
-	testRangeStepperMixinBehavior opt
+	testValueInRangeMixinBehavior opt
 
-	testRangeStepperMixinIntervalsRunning opt
+	testValueInRangeMixinIntervalsRunning opt
 
 	a =
 		key:"up"
@@ -61,7 +61,7 @@ $( document ).ready ->
 		valueMatcher:closeTo 15, 1
 		initialValueMatcher:equalTo 10
 
-	testRangeStepperMixinKeyboardBehavior opt extends a
+	testValueInRangeMixinKeyboardBehavior opt extends a
 
 	a = 
 		key:"down"
@@ -69,7 +69,7 @@ $( document ).ready ->
 		valueMatcher:closeTo 5, 1
 		initialValueMatcher:equalTo 10
 
-	testRangeStepperMixinKeyboardBehavior opt extends a
+	testValueInRangeMixinKeyboardBehavior opt extends a
 
 	a = 
 		key:"right"
@@ -77,7 +77,7 @@ $( document ).ready ->
 		valueMatcher:closeTo 15, 1
 		initialValueMatcher:equalTo 10
 
-	testRangeStepperMixinKeyboardBehavior opt extends a 
+	testValueInRangeMixinKeyboardBehavior opt extends a 
 
 	a =
 		key:"left"
@@ -85,9 +85,9 @@ $( document ).ready ->
 		valueMatcher:closeTo 5, 1
 		initialValueMatcher:equalTo 10
 
-	testRangeStepperMixinKeyboardBehavior opt extends a 
+	testValueInRangeMixinKeyboardBehavior opt extends a 
 
-	testRangeStepperMixinMouseWheelBehavior opt
+	testValueInRangeMixinMouseWheelBehavior opt
 	 
 	testFocusProvidedByChildMixinBegavior opt
 

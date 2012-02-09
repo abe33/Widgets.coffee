@@ -22,7 +22,7 @@ class Module
     #
     #         # rest of the class definition... 
     # 
-    @mixins: ( mixins... ) ->
+    @mixins:( mixins... )->
         for mixin in mixins
             # Every member of the mixin is added to the current class
             # prototype, unless the member is a constructor hook. 

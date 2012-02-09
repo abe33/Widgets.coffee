@@ -16,7 +16,7 @@
 #   snappedValue:9
 #   singleIncrementValue:15
 #   singleDecrementValue:5
-testRangeStepperMixinBehavior=( opt )->
+testValueInRangeMixinBehavior=( opt )->
     test "#{ opt.className } value shouldn't be set on a value outside of the range", ->
         target = $ opt.defaultTarget        
         widget = new opt.cls target[0]
@@ -84,6 +84,24 @@ testRangeStepperMixinBehavior=( opt )->
         widget.set "step", opt.setStep
 
         assertThat widget.get("value"), strictlyEqualTo opt.snappedValue
+    
+    test "Changing widget's step property to null should stop correcting the value", ->
+        target = $ opt.defaultTarget
+        widget = new opt.cls target[0]
+
+        widget.set "step", null
+        widget.set "value", opt.valueNotInStep
+
+        assertThat widget.get("value"), strictlyEqualTo opt.valueNotInStep
+
+    test "Changing widget's step property to NaN should stop correcting the value", ->
+        target = $ opt.defaultTarget
+        widget = new opt.cls target[0]
+
+        widget.set "step", NaN
+        widget.set "value", opt.valueNotInStep
+
+        assertThat widget.get("value"), strictlyEqualTo opt.valueNotInStep    
 
     test "Setting a min value greater than the max value shouldn't be allowed", ->
         target = $ opt.defaultTarget
@@ -153,7 +171,7 @@ testRangeStepperMixinBehavior=( opt )->
 #   cls:Class
 #   className:"Class"
 #   defaultTarget:"<node>"
-testRangeStepperMixinIntervalsRunning=( opt )->
+testValueInRangeMixinIntervalsRunning=( opt )->
     asyncTest "#{ opt.className } should provide a way to increment the value on an interval", ->
 
         incrementCalled = false
@@ -269,7 +287,7 @@ testRangeStepperMixinIntervalsRunning=( opt )->
 #   action:"increment"
 #   valueMatcher:closeTo 2, 1
 #   initialValueMatcher:equalTo 10
-testRangeStepperMixinKeyboardBehavior=( opt )->
+testValueInRangeMixinKeyboardBehavior=( opt )->
     asyncTest "When the #{ opt.key } key is pressed the widget should #{ opt.action } the value", ->
 
         target = $ opt.defaultTarget
@@ -418,7 +436,7 @@ testRangeStepperMixinKeyboardBehavior=( opt )->
 #   defaultTarget:"<node>"
 #   initialValue:10
 #   setValue:15
-testRangeStepperMixinMouseWheelBehavior=( opt )->
+testValueInRangeMixinMouseWheelBehavior=( opt )->
 
     class MockStepper extends opt.cls
         mousewheel:( e, d )->
@@ -501,8 +519,8 @@ testFocusProvidedByChildMixinBegavior=( opt )->
 
 
 if window?
-    window.testRangeStepperMixinBehavior            = testRangeStepperMixinBehavior
-    window.testRangeStepperMixinKeyboardBehavior    = testRangeStepperMixinKeyboardBehavior
-    window.testRangeStepperMixinMouseWheelBehavior  = testRangeStepperMixinMouseWheelBehavior
-    window.testRangeStepperMixinIntervalsRunning    = testRangeStepperMixinIntervalsRunning
+    window.testValueInRangeMixinBehavior            = testValueInRangeMixinBehavior
+    window.testValueInRangeMixinKeyboardBehavior    = testValueInRangeMixinKeyboardBehavior
+    window.testValueInRangeMixinMouseWheelBehavior  = testValueInRangeMixinMouseWheelBehavior
+    window.testValueInRangeMixinIntervalsRunning    = testValueInRangeMixinIntervalsRunning
     window.testFocusProvidedByChildMixinBegavior    = testFocusProvidedByChildMixinBegavior

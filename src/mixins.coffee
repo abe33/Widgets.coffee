@@ -5,21 +5,21 @@
 #
 # The file contains the following definitions: 
 #
-# * [RangeStepper](RangeStepper)
+# * [ValueInRange](ValueInRange)
 # * [FocusProvidedByChild](FocusProvidedByChild)
 
-# <a name="RangeStepper"></a>
-#### RangeStepper Mixin 
+# <a name="ValueInRange"></a>
+#### ValueInRange Mixin 
 #
-# RangeStepper provides a coherent behavior accross the widgets
-# whose value can operate in range through the `min`, `max` and
-# `step` attributes of their respective targets.
+# ValueInRange provides a coherent behavior accross the widgets
+# which value can be constrained in a range through the `min`, 
+# `max` and `step` attributes of their respective targets.
 #
-# The `RangeStepper` mixins doesn't provides any setters for the
+# The `ValueInRange` mixin doesn't provides any setters for the
 # `min`, `max` and `step` properties. The class that receive the
 # mixin should define them to ensure bounds validity and value 
 # collision. 
-RangeStepper=
+ValueInRange=
     # The constructor hook initialize the shared properties and 
     # creates the keyboard bindings for trigger increment and
     # decrement intervals.
@@ -127,7 +127,7 @@ RangeStepper=
 # For instance, A widget that should allow the user to input
 # a value with the keyboard will contains a `text` input. 
 # In that case, the widget focus should be provided by the input
-# to have only focusable element (not both the widget and its input)
+# to have only one focusable element (not both the widget and its input)
 # and to allow to write in the input as soon as the widget get 
 # the focus, whatever the means lead the widget to get the focus.
 FocusProvidedByChild=
@@ -148,7 +148,7 @@ FocusProvidedByChild=
     # Grabbing the focus for this widget is giving the focus to its child.
     grabFocus:->
         @focusProvider.focus()
-
+    
     #### Events handling
 
     # Since focus related events will be provided by another object, 
@@ -171,6 +171,6 @@ FocusProvidedByChild=
         true
 
 if window?
-    window.RangeStepper = RangeStepper
+    window.ValueInRange = ValueInRange
     window.FocusProvidedByChild = FocusProvidedByChild
 
