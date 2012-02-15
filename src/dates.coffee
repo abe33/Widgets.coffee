@@ -721,36 +721,33 @@ class DateTimeLocalInput extends AbstractDateInputWidget
 
         super target
 
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.isValidTime = isValidTime
-    window.timeToString = timeToString
-    window.timeFromString = timeFromString
+@isValidTime = isValidTime
+@timeToString = timeToString
+@timeFromString = timeFromString
 
-    window.isValidDate = isValidDate
-    window.dateToString = dateToString
-    window.dateFromString = dateFromString
+@isValidDate = isValidDate
+@dateToString = dateToString
+@dateFromString = dateFromString
 
-    window.isValidMonth = isValidMonth
-    window.monthToString = monthToString
-    window.monthFromString = monthFromString
+@isValidMonth = isValidMonth
+@monthToString = monthToString
+@monthFromString = monthFromString
 
-    window.isValidWeek = isValidWeek
-    window.weekToString = weekToString
-    window.weekFromString = weekFromString
+@isValidWeek = isValidWeek
+@weekToString = weekToString
+@weekFromString = weekFromString
 
-    window.isValidDateTime = isValidDateTime
-    window.datetimeToString = datetimeToString
-    window.datetimeFromString = datetimeFromString
+@isValidDateTime = isValidDateTime
+@datetimeToString = datetimeToString
+@datetimeFromString = datetimeFromString
 
-    window.isValidDateTimeLocal = isValidDateTimeLocal
-    window.datetimeLocalToString = datetimeLocalToString
-    window.datetimeLocalFromString = datetimeLocalFromString
+@isValidDateTimeLocal = isValidDateTimeLocal
+@datetimeLocalToString = datetimeLocalToString
+@datetimeLocalFromString = datetimeLocalFromString
 
-    window.TimeInput = TimeInput
-    window.DateInput = DateInput
-    window.MonthInput = MonthInput
-    window.WeekInput = WeekInput
-    window.DateTimeInput = DateTimeInput
-    window.DateTimeLocalInput = DateTimeLocalInput
+@TimeInput = TimeInput
+@DateInput = DateInput
+@MonthInput = MonthInput
+@WeekInput = WeekInput
+@DateTimeInput = DateTimeInput
+@DateTimeLocalInput = DateTimeLocalInput

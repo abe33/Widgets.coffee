@@ -43,8 +43,4 @@ class Radio extends CheckBox
     toggle:->
         unless @get "checked" then super() 
     
-
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.Radio = Radio
+@Radio = Radio

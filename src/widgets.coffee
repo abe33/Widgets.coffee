@@ -524,7 +524,4 @@ class Widget extends Module
             if value then @jTarget.attr property, property else @jTarget.removeAttr property
         value
 
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.Widget = Widget
+@Widget = Widget

@@ -210,7 +210,4 @@ class Slider extends NumericWidget
         else
             val.css "left", "auto"    
 
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.Slider = Slider
+@Slider = Slider

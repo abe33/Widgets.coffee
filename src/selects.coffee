@@ -497,7 +497,4 @@ class SingleSelect extends Widget
     documentMouseDown:( e )->
         @closeMenu()
 
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.SingleSelect = SingleSelect
+@SingleSelect = SingleSelect

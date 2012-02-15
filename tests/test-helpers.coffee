@@ -516,11 +516,8 @@ testFocusProvidedByChildMixinBegavior=( opt )->
         assertThat widget.dummy.find( opt.focusChildSelector ).attr("readonly"), notNullValue()
         assertThat widget.dummy.find( opt.focusChildSelector ).attr("disabled"), notNullValue()
 
-
-
-if window?
-    window.testValueInRangeMixinBehavior            = testValueInRangeMixinBehavior
-    window.testValueInRangeMixinKeyboardBehavior    = testValueInRangeMixinKeyboardBehavior
-    window.testValueInRangeMixinMouseWheelBehavior  = testValueInRangeMixinMouseWheelBehavior
-    window.testValueInRangeMixinIntervalsRunning    = testValueInRangeMixinIntervalsRunning
-    window.testFocusProvidedByChildMixinBegavior    = testFocusProvidedByChildMixinBegavior
+@testValueInRangeMixinBehavior           = testValueInRangeMixinBehavior
+@testValueInRangeMixinKeyboardBehavior   = testValueInRangeMixinKeyboardBehavior
+@testValueInRangeMixinMouseWheelBehavior = testValueInRangeMixinMouseWheelBehavior
+@testValueInRangeMixinIntervalsRunning   = testValueInRangeMixinIntervalsRunning
+@testFocusProvidedByChildMixinBegavior   = testFocusProvidedByChildMixinBegavior

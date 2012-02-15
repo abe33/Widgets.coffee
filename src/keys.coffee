@@ -191,8 +191,5 @@ keys =
     close_bracket   :221
     single_quote    :222 
 
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.keystroke = keystroke
-    window.keys  = keys
+@keystroke = keystroke
+@keys  = keys

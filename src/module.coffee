@@ -59,5 +59,4 @@ class Module
     triggerConstructorHooks:->
         hook.call @ for hook in @constructorHooks
 
-if window?
-    window.Module = Module
+@Module = Module
