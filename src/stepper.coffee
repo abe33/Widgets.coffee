@@ -167,8 +167,4 @@ class Stepper extends NumericWidget
             @pressedY = y
 
 
-
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.Stepper = Stepper
+@Stepper = Stepper

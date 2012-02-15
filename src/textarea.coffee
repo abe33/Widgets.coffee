@@ -77,7 +77,4 @@ class TextArea extends Widget
         @valueIsObsolete = false
         true
     
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.TextArea = TextArea
+@TextArea = TextArea

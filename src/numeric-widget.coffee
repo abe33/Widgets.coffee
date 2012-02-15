@@ -117,7 +117,4 @@ class NumericWidget extends Widget
         @set "value", @fitToRange @get( "value"), min, max
         return value    
 
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.NumericWidget = NumericWidget
+@NumericWidget = NumericWidget

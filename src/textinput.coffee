@@ -96,7 +96,4 @@ class TextInput extends Widget
         @valueIsObsolete = false
         false
    
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.TextInput = TextInput
+@TextInput = TextInput

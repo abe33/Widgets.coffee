@@ -150,7 +150,4 @@ class CheckBox extends Widget
         unless @get "disabled"  
             @grabFocus()
 
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.CheckBox = CheckBox
+@CheckBox = CheckBox

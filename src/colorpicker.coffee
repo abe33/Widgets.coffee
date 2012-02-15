@@ -1363,17 +1363,14 @@ ColorInput.defaultListener = new ColorPicker
 $( document ).ready ->
     ColorInput.defaultListener.attach "body"
     
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.rgb2hsv           = rgb2hsv
-    window.hsv2rgb           = hsv2rgb
-    window.ColorInput        = ColorInput
-    window.SquarePicker      = SquarePicker
-    window.ColorPicker       = ColorPicker
-    window.HSVMode           = HSVMode
-    window.SHVMode           = SHVMode
-    window.VHSMode           = VHSMode
-    window.RGBMode           = RGBMode
-    window.GRBMode           = GRBMode
-    window.BGRMode           = BGRMode
+@rgb2hsv           = rgb2hsv
+@hsv2rgb           = hsv2rgb
+@ColorInput        = ColorInput
+@SquarePicker      = SquarePicker
+@ColorPicker       = ColorPicker
+@HSVMode           = HSVMode
+@SHVMode           = SHVMode
+@VHSMode           = VHSMode
+@RGBMode           = RGBMode
+@GRBMode           = GRBMode
+@BGRMode           = BGRMode

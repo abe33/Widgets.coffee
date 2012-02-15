@@ -130,7 +130,4 @@ class RadioGroup
             else if radio is @selectedRadio
                 @selectedRadio = null
 
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.RadioGroup = RadioGroup
+@RadioGroup = RadioGroup

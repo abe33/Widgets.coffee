@@ -170,7 +170,6 @@ FocusProvidedByChild=
         unless @get "disabled" then @grabFocus()
         true
 
-if window?
-    window.ValueInRange = ValueInRange
-    window.FocusProvidedByChild = FocusProvidedByChild
+@ValueInRange = ValueInRange
+@FocusProvidedByChild = FocusProvidedByChild
 

@@ -127,7 +127,4 @@ class Button extends Widget
         if action? then action.action()
         if @hasTarget then @jTarget.click()
     
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.Button = Button
+@Button = Button

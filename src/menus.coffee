@@ -381,8 +381,5 @@ class MenuList extends Widget
             @dummy.blur()
             @parentList?.grabFocus()
 
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.MenuModel = MenuModel
-    window.MenuList = MenuList
+@MenuModel = MenuModel
+@MenuList = MenuList

@@ -49,10 +49,6 @@ class Container extends Widget
     focus:(e)->
         if e.target is @dummy[0]
             super e
-    
 
-# Address the access restriction due to the sandboxing when used
-# directly in a browser with the `text/coffeescript` mode. 
-if window? 
-    window.Container = Container 
+@Container = Container 
 
