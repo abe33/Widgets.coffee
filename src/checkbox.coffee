@@ -19,9 +19,9 @@
 # checkbox2.set( "checked", true );
 # checkbox3.set( "disabled", true );
 # 
-# $("#livedemos").append( checkbox1.dummy );
-# $("#livedemos").append( checkbox2.dummy );
-# $("#livedemos").append( checkbox3.dummy );
+# checkbox1.attach("#livedemos");
+# checkbox2.attach("#livedemos");
+# checkbox3.attach("#livedemos");
 # </script>
 class CheckBox extends Widget
 

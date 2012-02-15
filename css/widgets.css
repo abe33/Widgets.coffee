@@ -807,3 +807,6 @@
       margin-top: -4px;
       right: 2px;
       top: 50%; }
+  .menulist.cropped {
+    overflow-x: hidden;
+    overflow-y: auto; }

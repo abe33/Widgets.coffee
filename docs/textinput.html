@@ -29,9 +29,9 @@ input3.set( "value", "disabled" );
 input2.set( "readonly", true );
 input3.set( "disabled", true );
 
-$("#livedemos").append( input1.dummy );
-$("#livedemos").append( input2.dummy );
-$("#livedemos").append( input3.dummy );
+input1.attach("#livedemos");
+input2.attach("#livedemos");
+input3.attach("#livedemos");
 </script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">TextInput</span> <span class="k">extends</span> <span class="nx">Widget</span>
 
     <span class="py">@mixins</span> <span class="nx">FocusProvidedByChild</span>

@@ -41,6 +41,23 @@ class Widget extends Module
         #  * `widget`    : The widget that was modified.
         #  * `state`     : The new state of the dummy.
         @stateChanged    = new Signal
+    
+        # The `attached` signal is dispatched when the widget
+        # is added to the DOM with the `attach` method.
+        #
+        # *Callback arguments*
+        #
+        #  * `widget`    : The widget that was modified.
+        @attached        = new Signal
+        
+        # The `detached` signal is dispatched when the widget
+        # is removed from the DOM with the `detach` method.
+        #
+        # *Callback arguments*
+        #
+        #  * `widget`    : The widget that was modified.
+        @detached        = new Signal
+
 
         #### Widget's target related properties.
         
@@ -163,7 +180,7 @@ class Widget extends Module
     #     widget.set
     #         name:"someName"
     #         value:"someValue"
-    set:( propertyOrObject, value=null )->
+    set:( propertyOrObject, value = null )->
         if typeof propertyOrObject is "object"  
             for k, v of propertyOrObject
                 @handlePropertyChange k, v
@@ -207,12 +224,16 @@ class Widget extends Module
         # Disabled widget don't allow to receive focus.
         @setFocusable not value
     
+    # Read-only widgets don't allow their `value` to be changed.
     set_readonly:( property, value )->
         @properties[ property ] = @booleanToAttribute property, value
 
+    # Required widgets prevents a form to be submitted if it don't validate.
     set_required:( property, value )->
         @properties[ property ] = @booleanToAttribute property, value
 
+    # Sets the value of both the widget and its target if the widget
+    # allow it.  
     set_value:( property, value )->
         # Read-only widgets don't allow to modify their values.
         if @get "readonly" 
@@ -223,9 +244,13 @@ class Widget extends Module
                 @valueToAttribute property, value
                 @valueChanged.dispatch this, value
     
+    # Sets the name of the target.
     set_name:( property, value )->
         @properties[ property ] = @valueToAttribute property, value
     
+    # The `id` setter operate only on the dummy, and not on the target.
+    # It preserve the uniqueness of ids of the form inputs (given that
+    # they are originally unique). 
     set_id:( property, value )->
         if value?
             @dummy.attr "id", value
@@ -246,7 +271,7 @@ class Widget extends Module
     
     # A function that verify that the passed-in argument
     # is an HTML element.
-    isElement:(o)->
+    isElement:( o )->
         if typeof HTMLElement is "object" 
             o instanceof HTMLElement 
         else
@@ -274,7 +299,7 @@ class Widget extends Module
         @set "value", @targetInitialValue
 
     # A placeholder for the target's change event.
-    targetChange:(e)->
+    targetChange:( e )->
     
     #### Dummy management
 
@@ -339,12 +364,37 @@ class Widget extends Module
         
         @dummyClass = output.join " "
         @updateStates()
-
+    
+    # Append the widget's dummy to the passed-in target.
+    # The `target` can be either a string or a `jQuery` object.
+    attach:( target )->
+        @handleDOMInsertion target, "append"
+    
+    # Insert the widget's dummy before the passed-in `target`.
+    before:( target )->
+        @handleDOMInsertion target, "before"
+    
+    # Insert the widget's dummy after the passed-in `target`.
+    after:( target )->
+        @handleDOMInsertion target, "after"
+    
+    # Handles the insertion of the widget's dummy in the DOM.
+    handleDOMInsertion:( target, action )->
+       if target?
+            target = $ target if typeof target is "string"
+            target[ action ] @dummy
+            @attached.dispatch this 
+    
+    # Detach the widget's dummy from the DOM.
+    detach:->
+        @dummy.detach()
+        @detached.dispatch this
+    
     #### Dummy Events Handling 
 
     # Register this widget to the events of its dummy. 
     registerToDummyEvents:->
-        @dummy.bind @supportedEvents, (e)=>
+        @dummy.bind @supportedEvents, ( e )=>
             @[e.type].apply this, arguments 
     
     # Unregister all the events from the dummy.
@@ -363,30 +413,35 @@ class Widget extends Module
     # `input`, `textarea`, `select` and `a`. And since keyboard events
     # on DOM objects are only available when the object has the focus
     # you will lose the keyboard events as side effect.
-    mousedown :(e)-> true
-    mouseup   :(e)-> true
-    mousemove :(e)-> true
-    mouseover :(e)-> true
-    mouseout  :(e)-> true
-    mousewheel:(e,d)-> true
-    click     :(e)-> true
-    dblclick  :(e)-> true
+    mousedown :-> true
+    mouseup   :-> true
+    mousemove :-> true
+    mouseover :-> true
+    mouseout  :-> true
+    mousewheel:-> true
+    click     :-> true
+    dblclick  :-> true
+
     # Default behavior is to allow focus only if the widget is enabled.
-    focus:(e)->
-        @hasFocus = true
+    focus:( e )->
+        @hasFocus = true if not @get "disabled"
         @updateStates()
         not @get "disabled"
-    blur:(e)->
+    
+    blur:( e )->
         @hasFocus = false
         @updateStates()
         true
+    
     # Trigger the command registered with the `keydown` event if any.
-    keydown:(e)->
+    keydown:( e )->
         @triggerKeyDownCommand e
+
     # Trigger the command registered with the `keyup` event if any.
-    keyup:(e)->
+    keyup:( e )->
         @triggerKeyUpCommand e
-    keypress:(e)->
+    
+    keypress:( e )->
         true    
     
     #### Focus management
@@ -452,7 +507,7 @@ class Widget extends Module
     #### Useful methods to deal with reflection between widget's properties and target's attributes
 
     # Uses theses methods to retreive or copy data from the target's attributes. 
-    valueFromAttribute:( property, defaultValue=undefined )->
+    valueFromAttribute:( property, defaultValue = undefined )->
         if @hasTarget then @jTarget.attr property else defaultValue
         
     valueToAttribute:( property, value )->
@@ -461,10 +516,10 @@ class Widget extends Module
     
     # The following two methods handle the special case of attributes 
     # for which only presence is meaningful.
-    booleanFromAttribute:( property, defaultValue=undefined )->
+    booleanFromAttribute:( property, defaultValue = undefined )->
         if @hasTarget then @jTarget.attr( property ) isnt undefined else defaultValue
 
-    booleanToAttribute:( property,value )->
+    booleanToAttribute:( property, value )->
         if @hasTarget
             if value then @jTarget.attr property, property else @jTarget.removeAttr property
         value

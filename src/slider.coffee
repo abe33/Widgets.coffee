@@ -31,9 +31,9 @@
 # slider2.set( "checked", true );
 # slider3.set( "disabled", true );
 # 
-# $("#livedemos").append( slider1.dummy );
-# $("#livedemos").append( slider2.dummy );
-# $("#livedemos").append( slider3.dummy );
+# slider1.attach("#livedemos");
+# slider2.attach("#livedemos");
+# slider3.attach("#livedemos");
 # </script>
 class Slider extends NumericWidget
     constructor:( target )->

@@ -23,9 +23,9 @@
 # area2.set( "readonly", true );
 # area3.set( "disabled", true );
 # 
-# $("#livedemos").append( area1.dummy );
-# $("#livedemos").append( area2.dummy );
-# $("#livedemos").append( area3.dummy );
+# area1.attach("#livedemos");
+# area2.attach("#livedemos");
+# area3.attach("#livedemos");
 # </script>
 class TextArea extends Widget
 

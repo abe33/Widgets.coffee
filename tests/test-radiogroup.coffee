@@ -217,6 +217,6 @@ $( document ).ready ->
 	group = new RadioGroup radio1, radio2, radio3
 
 	$("#qunit-header").before $ "<h4>RadioGroup</h4>"
-	$("#qunit-header").before radio1.dummy
-	$("#qunit-header").before radio2.dummy
-	$("#qunit-header").before radio3.dummy
+	radio1.before "#qunit-header"
+	radio2.before "#qunit-header"
+	radio3.before "#qunit-header"

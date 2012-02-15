@@ -21,9 +21,9 @@
 # radio3.set( "checked", true );
 # radio3.set( "disabled", true );
 # 
-# $("#livedemos").append( radio1.dummy );
-# $("#livedemos").append( radio2.dummy );
-# $("#livedemos").append( radio3.dummy );
+# radio1.attach("#livedemos");
+# radio2.attach("#livedemos");
+# radio3.attach("#livedemos");
 # </script>
 class RadioGroup
 

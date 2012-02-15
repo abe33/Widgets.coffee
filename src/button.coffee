@@ -17,9 +17,9 @@
 # button2.set( "readonly", true );
 # button3.set( "disabled", true );
 # 
-# $("#livedemos").append( button1.dummy );
-# $("#livedemos").append( button2.dummy );
-# $("#livedemos").append( button3.dummy );
+# button1.attach("#livedemos");
+# button2.attach("#livedemos");
+# button3.attach("#livedemos");
 # </script>
 class Button extends Widget
 

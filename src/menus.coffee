@@ -36,7 +36,6 @@
 #     item = display:"Item Label"
 #     menu = display:"Nested Menu", menu:new MenuModel item
 #
-# In that case they are *menu items*.
 class MenuModel 
     # The constructor can receive any number of items as arguments.
     constructor:( items... )->
@@ -123,15 +122,26 @@ class MenuModel
 # list2.addClasses ( "dummy" );
 # list3.addClasses ( "dummy" );
 # 
-# $("#livedemos-menus").before ( list1.dummy );
-# $("#livedemos-menus").before ( list2.dummy );
-# $("#livedemos-menus").before ( list3.dummy );
+# list1.attach("#livedemos-menus");
+# list2.attach("#livedemos-menus");
+# list3.attach("#livedemos-menus");
 # </script>
 class MenuList extends Widget
+
     # The `MenuList` class constructor takes a `MenuModel`
     # instance as argument. 
     constructor:( model = new MenuModel )->
         super()
+
+         # The `cropChanged` signal is dispatched when the dummy's crop
+        # is changed trough a change made to the size or the content
+        # of the widget.
+        #
+        # *Callback arguments*
+        #
+        #  * `widget`     : The widget that has changed.
+        #  * `cropped`    : Is the widget's dummy cropped ?
+        @cropChanged = new Signal
 
         # Initially, no item is selected in the list.
         @selectedIndex = -1
@@ -139,6 +149,8 @@ class MenuList extends Widget
         # The model is stored in its own property.
         @createProperty "model"
         @set "model", model      
+        
+        @createProperty "size"
 
         # A `MenuList` keep reference to both its parent
         # and its child list.
@@ -164,6 +176,9 @@ class MenuList extends Widget
         # Pressing the `left` key when the current list has a parent list
         # will move back the focus to the parent.
         @registerKeyDownCommand keystroke( keys.left ),  @moveSelectionLeft 
+
+        @attached.add @updateSize, this
+        @detached.add @updateSize, this
      
     #### Selection Management
         
@@ -209,6 +224,25 @@ class MenuList extends Widget
     # with the class `menulist`.
     createDummy:->
         $ "<ul class='menulist'></ul>"
+
+    updateSize:->
+        itemHeight = @dummy.children().first()[0]?.offsetHeight
+        size = @get("model").size()
+        maxSize = @get "size"
+        if maxSize?    and 
+           itemHeight? and 
+           maxSize > 0 and 
+           size > maxSize
+            @dummy.height itemHeight * maxSize
+            unless @dummy.hasClass "cropped"
+                @addClasses "cropped" 
+                @cropChanged.dispatch this, true
+        else
+            @dummy.css "height", ""
+            if @dummy.hasClass "cropped"
+                @removeClasses "cropped"
+                @cropChanged.dispatch this, false
+
     
     # Creates the list items of the dummy.
     buildList:( model )->
@@ -241,7 +275,7 @@ class MenuList extends Widget
     # If the `MenuList` has a child list the child list is closed as well.
     close:->
         @dummy.blur()
-        @dummy.detach()
+        @detach()
         @childList?.close()
     
     # Returns the list item at `index` in the dummy.
@@ -290,6 +324,11 @@ class MenuList extends Widget
 
         @buildList value
         @properties[ property ] = value
+
+    set_size:( property, value )->
+        @properties[ property ] = value
+        @updateSize()
+        value
     
     #### Events Handler
 
@@ -305,6 +344,7 @@ class MenuList extends Widget
     modelChanged:( model )->
         @clearList()
         @buildList model
+        @updateSize()
     
     #### Keyboard Commands
 

@@ -24,9 +24,9 @@ radio2.set( "readonly", true );
 radio2.set( "checked", true );
 radio3.set( "disabled", true );
 
-$("#livedemos").append( radio1.dummy );
-$("#livedemos").append( radio2.dummy );
-$("#livedemos").append( radio3.dummy );
+radio1.attach("#livedemos");
+radio2.attach("#livedemos");
+radio3.attach("#livedemos");
 </script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">Radio</span> <span class="k">extends</span> <span class="nx">CheckBox</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>The target for a <code>Radio</code> must be an input with the type <code>radio</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">checkTarget</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span>
         <span class="k">unless</span> <span class="py">@isInputWithType</span> <span class="nx">target</span><span class="p">,</span> <span class="s">&quot;radio&quot;</span>
             <span class="k">throw</span> <span class="s">&quot;Radio target must be an input with a radio type&quot;</span>  

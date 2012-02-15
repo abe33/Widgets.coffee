@@ -154,9 +154,9 @@ picker3.set( "value", "#6699ff" )
 picker2.set( "readonly", true )
 picker3.set( "disabled", true )
 
-$("#livedemos").append( picker1.dummy )
-$("#livedemos").append( picker2.dummy )
-$("#livedemos").append( picker3.dummy )
+picker1.attach("#livedemos")
+picker2.attach("#livedemos")
+picker3.attach("#livedemos")
 </script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">ColorInput</span> <span class="k">extends</span> <span class="nx">Widget</span>
 
     <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span>
@@ -254,10 +254,10 @@ gpicker4.set( "value", [.7,.2] )
 gpicker3.set( "readonly", true )
 gpicker4.set( "disabled", true )
 
-$("#livedemos2").append( gpicker1.dummy )
-$("#livedemos2").append( gpicker2.dummy )
-$("#livedemos2").append( gpicker3.dummy )
-$("#livedemos2").append( gpicker4.dummy )
+gpicker1.attach("#livedemos2")
+gpicker2.attach("#livedemos2")
+gpicker3.attach("#livedemos2")
+gpicker4.attach("#livedemos2")
 </script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">SquarePicker</span> <span class="k">extends</span> <span class="nx">Widget</span>
     <span class="py">constructor</span><span class="o">:-&gt;</span>
         <span class="k">super</span><span class="p">()</span>
@@ -401,7 +401,7 @@ var dialog = new ColorPicker();
 dialog.set( "value", "#abcdef" );
 dialog.addClasses("dummy");
 
-$("#livedemos3").append( dialog.dummy );
+dialog.attach("#livedemos3");
 </script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">ColorPicker</span> <span class="k">extends</span> <span class="nx">Container</span>
     <span class="py">constructor</span><span class="o">:-&gt;</span>
         <span class="k">super</span><span class="p">()</span>
@@ -952,7 +952,7 @@ picker edit the <code>green</code> and <code>red</code>. </p>             </td> 
 for <code>ColorInput</code> instances.      </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">ColorInput.defaultListener </span><span class="o">=</span> <span class="k">new</span> <span class="nx">ColorPicker</span>
 
 <span class="nx">$</span><span class="p">(</span> <span class="nb">document</span> <span class="p">).</span><span class="nx">ready</span> <span class="o">-&gt;</span>
-    <span class="nx">$</span><span class="p">(</span><span class="s">&quot;body&quot;</span><span class="p">).</span><span class="nx">append</span><span class="p">(</span> <span class="nx">ColorInput</span><span class="p">.</span><span class="nx">defaultListener</span><span class="p">.</span><span class="nx">dummy</span> <span class="p">)</span>
+    <span class="nx">ColorInput</span><span class="p">.</span><span class="nx">defaultListener</span><span class="p">.</span><span class="nx">attach</span> <span class="s">&quot;body&quot;</span>
     </pre></div>             </td>           </tr>                               <tr id="section-177">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-177">&#182;</a>               </div>               <p>Address the access restriction due to the sandboxing when used
 directly in a browser with the <code>text/coffeescript</code> mode. </p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">if</span> <span class="nb">window</span><span class="o">?</span> 
     <span class="nb">window</span><span class="p">.</span><span class="nv">rgb2hsv           </span><span class="o">=</span> <span class="nx">rgb2hsv</span>

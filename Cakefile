@@ -2,58 +2,12 @@ fs            = require 'fs'
 {print}       = require 'util'
 {spawn, exec} = require 'child_process'
 
-testTmp = """
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8" />
-    <title>Widgets Tests</title>
-    <link rel="stylesheet" href="../css/styles.css" media="screen">
-    <link rel="stylesheet" href="../css/widgets.css" media="screen">
-    <link rel="stylesheet" href="../depends/qunit.css" media="screen">
-    <script type="text/javascript" src="../depends/qunit.js"></script>
-    <script type="text/javascript" src="../depends/jquery-1.6.1.min.js"></script>
-    <script type="text/javascript" src="../depends/jquery.mousewheel.js"></script>
-    <script type="text/javascript" src="../depends/hamcrest.min.js"></script>
-    <script type="text/javascript" src="../depends/signals.js"></script>
-    <script type="text/javascript" src="./widgets.js"></script>
-    <script type="text/javascript" src="./test-widgets.js"></script>   
-    <style>
-        #qunit-tests .value { font-weight:bold; }
-        h4 {  margin-top:4px; margin-bottom:4px; }        
-    </style>
-</head>
-<body>
-    <h1 id="qunit-header">Widgets Tests</h1>
-    <h2 id="qunit-banner"></h2>
-    <div id="qunit-testrunner-toolbar"></div>
-    <h2 id="qunit-userAgent"></h2>
-    <ol id="qunit-tests"></ol>
-    <div id="qunit-fixture">test markup</div>
-</body>
-"""
 allFiles = [
-    "keys",
-    "mixins",
-    "module",
-    "widgets",
-    "container",
-    "button",
-    "textinput",
-    "textarea",
-    "checkbox",
-    "radio",
-    "radiogroup",
-    "numeric-widget",
-    "slider",
-    "stepper",
-    "filepicker",
-    "menus",
-    "selects",
-    "dates",
-    "colorpicker",
-    "jquery"
-]
+    "keys",       "mixins",         "module",   "widgets",     "container", 
+    "button",     "textinput",      "textarea", "checkbox",    "radio",
+    "radiogroup", "numeric-widget", "slider",   "stepper",     "filepicker", 
+    "menus",      "selects",        "dates",    "colorpicker", "jquery"     ]
+
 allTestsDependencies = [ "test-helpers" ]
 compilationUnits=
     'keys':
@@ -110,16 +64,6 @@ compilationUnits=
     'jquery':
         depends:allFiles[0..-2]
         test:"test-jquery"
-
-try
-    fs.lstatSync ".tmp"
-catch e
-    fs.mkdirSync ".tmp"
-
-try
-    fs.lstatSync ".tmp/test-tmp.html"
-catch e
-    fs.writeFileSync ".tmp/test-tmp.html", testTmp
 
 join = ( dir, contents, inFile, callback ) ->
     files = ( "#{dir}/#{file}.coffee" for file in contents )
@@ -178,3 +122,44 @@ task 'docs', 'Generate annotated source code with Docco', ->
     docco.stdout.on 'data', (data) -> print data.toString()
     docco.stderr.on 'data', (data) -> print data.toString()
     docco.on 'exit', (status) -> callback?() if status is 0
+
+testTmp = """
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>Widgets Tests</title>
+    <link rel="stylesheet" href="../css/styles.css" media="screen">
+    <link rel="stylesheet" href="../css/widgets.css" media="screen">
+    <link rel="stylesheet" href="../depends/qunit.css" media="screen">
+    <script type="text/javascript" src="../depends/qunit.js"></script>
+    <script type="text/javascript" src="../depends/jquery-1.6.1.min.js"></script>
+    <script type="text/javascript" src="../depends/jquery.mousewheel.js"></script>
+    <script type="text/javascript" src="../depends/hamcrest.min.js"></script>
+    <script type="text/javascript" src="../depends/signals.js"></script>
+    <script type="text/javascript" src="./widgets.js"></script>
+    <script type="text/javascript" src="./test-widgets.js"></script>   
+    <style>
+        #qunit-tests .value { font-weight:bold; }
+        h4 {  margin-top:4px; margin-bottom:4px; }        
+    </style>
+</head>
+<body>
+    <h1 id="qunit-header">Widgets Tests</h1>
+    <h2 id="qunit-banner"></h2>
+    <div id="qunit-testrunner-toolbar"></div>
+    <h2 id="qunit-userAgent"></h2>
+    <ol id="qunit-tests"></ol>
+    <div id="qunit-fixture">test markup</div>
+</body>
+"""
+
+try
+    fs.lstatSync ".tmp"
+catch e
+    fs.mkdirSync ".tmp"
+
+try
+    fs.lstatSync ".tmp/test-tmp.html"
+catch e
+    fs.writeFileSync ".tmp/test-tmp.html", testTmp

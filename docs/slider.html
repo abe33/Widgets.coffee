@@ -33,9 +33,9 @@ slider2.set( "readonly", true );
 slider2.set( "checked", true );
 slider3.set( "disabled", true );
 
-$("#livedemos").append( slider1.dummy );
-$("#livedemos").append( slider2.dummy );
-$("#livedemos").append( slider3.dummy );
+slider1.attach("#livedemos");
+slider2.attach("#livedemos");
+slider3.attach("#livedemos");
 </script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">Slider</span> <span class="k">extends</span> <span class="nx">NumericWidget</span>
     <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span>
         <span class="k">super</span> <span class="nx">target</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>Dragging properties</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>The <code>draggingKnob</code> property is a boolean that indicates

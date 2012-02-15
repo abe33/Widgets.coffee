@@ -277,9 +277,9 @@ $( document ).ready ->
     input3.set "disabled", true
 
     $("#qunit-header").before $ "<h4>ColorInput</h4>"
-    $("#qunit-header").before input1.dummy
-    $("#qunit-header").before input2.dummy
-    $("#qunit-header").before input3.dummy
+    input1.before "#qunit-header"
+    input2.before "#qunit-header"
+    input3.before "#qunit-header"
 
 
     # SquarePicker
@@ -610,10 +610,10 @@ $( document ).ready ->
     sinput4.set "disabled", true
 
     $("#qunit-header").before $ "<h4>SquarePicker</h4>"
-    $("#qunit-header").before sinput1.dummy
-    $("#qunit-header").before sinput2.dummy
-    $("#qunit-header").before sinput3.dummy
-    $("#qunit-header").before sinput4.dummy
+    sinput1.before "#qunit-header"
+    sinput2.before "#qunit-header"
+    sinput3.before "#qunit-header"
+    sinput4.before "#qunit-header"
 
 
 
@@ -1268,7 +1268,7 @@ $( document ).ready ->
     dialog.addClasses "dummy"
 
     $("#qunit-header").before $ "<h4>ColorPicker</h4>"
-    $("#qunit-header").before dialog.dummy
+    dialog.before "#qunit-header"
 
     module "hsv mode tests"
 

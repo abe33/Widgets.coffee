@@ -983,4 +983,8 @@ $widget-button-border:#444;
             top:50%;
         }
     }
+    &.cropped {
+        overflow-x:hidden;
+        overflow-y:auto;
+    }
 }

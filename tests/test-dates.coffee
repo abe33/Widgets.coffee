@@ -242,9 +242,9 @@ testGenericDateWidgetBehaviors=( opt )->
 	input3.set "disabled", true
 
 	$("#qunit-header").before $ "<h4>#{ opt.className }</h4>"
-	$("#qunit-header").before input1.dummy
-	$("#qunit-header").before input2.dummy
-	$("#qunit-header").before input3.dummy
+	input1.before "#qunit-header"
+	input2.before "#qunit-header"
+	input3.before "#qunit-header"
 			
 #### Here starts the concret tests
 

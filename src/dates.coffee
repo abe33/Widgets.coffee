@@ -338,24 +338,59 @@ timeToString=( date )->
 
 # <a name='TimeInput'></a>
 #### TimeInput
-class TimeInput extends AbstractDateInputWidget
 
+# The `TimeInput` handles the form input of type `time`.
+# 
+# Here some live instances :
+# <div id="timeinput-demos"></div>
+#
+# <script type='text/javascript'>
+# var f = function(){ console.log( "button clicked" ) };
+# var input1 = new TimeInput();
+# var input2 = new TimeInput();
+# var input3 = new TimeInput();
+# 
+# input2.set( "readonly", true );
+# input3.set( "disabled", true );
+# 
+# input1.attach("#timeinput-demos");
+# input2.attach("#timeinput-demos");
+# input3.attach("#timeinput-demos");
+# </script>
+
+class TimeInput extends AbstractDateInputWidget
+    # The `TimeWidget` is displayed as a stepper
+    # with a text input that allow to input directly
+    # a time. In that case the focus is provided 
+    # by the text input.
     @mixins FocusProvidedByChild
 
+    # Setup the concrete function for validation and conversion
+    # of the `AbstractDateInputWidget` class.
     constructor:( target )->
         @supportedType = "time"
         @valueToDate = timeFromString
         @dateToValue = timeToString
         @isValidValue = isValidTime
 
+        # The default `step` for a time input is one minute.
         super target, 60
     
+    #### Dummy management
+
+    # The dummy of a `TimeInput` is the same as the `Stepper`'s' one, 
+    # one text input, and two additional buttons to increment or 
+    # decrement the value.
     createDummy:->
         dummy = super()
         dummy.append $ """<input type='text' class='value widget-done'></input>
                         <span class='down'></span>
                         <span class='up'></span>"""
+        
+        # The focus isValidValue provided by the text input.
         @focusProvider = dummy.find "input"
+
+        # Gets references to the buttons for setup.
         down = dummy.find(".down")
         up = dummy.find(".up")
         
@@ -402,6 +437,9 @@ class TimeInput extends AbstractDateInputWidget
 
         dummy
     
+    # The displayed value for a `TimeInput` is the time in the
+    # format `hh:mm`, neither the seconds nor the milliseconds
+    # are displayed.
     updateDummy:->
         @dummy.find("input").val @get("value").split(":")[0..1].join(":")
     
@@ -411,9 +449,14 @@ class TimeInput extends AbstractDateInputWidget
         if @get "readonly" then @focusProvider.attr "readonly", "readonly" else @focusProvider.removeAttr "readonly"
         if @get "disabled" then @focusProvider.attr "disabled", "disabled" else @focusProvider.removeAttr "disabled"
     
+    #### Events handlers
+
+    # Catch changes made to the text input content, validates it, and
+    # affect it as the new value if validated.
     change:(e)->
         value = @focusProvider.val()
         if @isValidValue value then @set "value", value else @updateDummy()
+    
     
     input:(e)->
 

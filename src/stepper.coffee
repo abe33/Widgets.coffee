@@ -21,9 +21,9 @@
 # stepper2.set( "checked", true );
 # stepper3.set( "disabled", true );
 # 
-# $("#livedemos").append( stepper1.dummy );
-# $("#livedemos").append( stepper2.dummy );
-# $("#livedemos").append( stepper3.dummy );
+# stepper1.attach("#livedemos");
+# stepper2.attach("#livedemos");
+# stepper3.attach("#livedemos");
 # </script>
 class Stepper extends NumericWidget
 

@@ -209,7 +209,7 @@ $( document ).ready ->
 	button3.set "disabled", true
 
 	$("#qunit-header").before $ "<h4>Button</h4>"
-	$("#qunit-header").before button1.dummy
-	$("#qunit-header").before button2.dummy
-	$("#qunit-header").before button3.dummy
+	button1.before "#qunit-header"
+	button2.before "#qunit-header"
+	button3.before "#qunit-header"
 

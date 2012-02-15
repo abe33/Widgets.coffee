@@ -185,6 +185,6 @@ $( document ).ready ->
 
 	$("#qunit-header").before $ "<h4>Sliders</h4>"
 	$("#qunit-header").before target
-	$("#qunit-header").before slider1.dummy
-	$("#qunit-header").before slider2.dummy
-	$("#qunit-header").before slider3.dummy
+	slider1.before "#qunit-header"
+	slider2.before "#qunit-header"
+	slider3.before "#qunit-header"

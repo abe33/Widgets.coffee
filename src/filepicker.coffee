@@ -25,9 +25,9 @@
 # picker2.set( "checked", true );
 # picker3.set( "disabled", true );
 # 
-# $("#livedemos").append( picker1.dummy );
-# $("#livedemos").append( picker2.dummy );
-# $("#livedemos").append( picker3.dummy );
+# picker1.attach("#livedemos");
+# picker2.attach("#livedemos");
+# picker3.attach("#livedemos");
 # </script>
 class FilePicker extends Widget
 

@@ -19,9 +19,9 @@ var button3 = new Button({ display:"Disabled", action:f });
 button2.set( "readonly", true );
 button3.set( "disabled", true );
 
-$("#livedemos").append( button1.dummy );
-$("#livedemos").append( button2.dummy );
-$("#livedemos").append( button3.dummy );
+button1.attach("#livedemos");
+button2.attach("#livedemos");
+button3.attach("#livedemos");
 </script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">Button</span> <span class="k">extends</span> <span class="nx">Widget</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>The <code>Button</code> constructor can be called both with an target input:</p>
 
 <pre><code>button = new Button target

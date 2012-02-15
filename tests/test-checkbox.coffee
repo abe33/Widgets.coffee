@@ -271,6 +271,6 @@ $( document ).ready ->
 
 	$("#qunit-header").before $ "<h4>CheckBox</h4>"
 	$("#qunit-header").before target
-	$("#qunit-header").before checkbox1.dummy
-	$("#qunit-header").before checkbox2.dummy
-	$("#qunit-header").before checkbox3.dummy
+	checkbox1.before "#qunit-header"
+	checkbox2.before "#qunit-header"
+	checkbox3.before "#qunit-header"

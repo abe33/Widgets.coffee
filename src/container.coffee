@@ -21,7 +21,7 @@ class Container extends Widget
 
             # When a child widget is added to a `container`, its dummy is appended
             # to the container's dummy.
-            @dummy.append child.dummy
+            child.attach @dummy
 
             # Widgets can acces their parent through the `parent` property.
             child.parent = this
@@ -34,7 +34,7 @@ class Container extends Widget
             @children.splice @children.indexOf( child ), 1
 
             # The child's dummy is then detached from the container's dummy.
-            child.dummy.detach()
+            child.detach()
 
 
             # The children no longer hold a reference to its previous

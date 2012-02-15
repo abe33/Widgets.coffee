@@ -128,6 +128,159 @@ $( document ).ready ->
         assertThat list.dummy.children("li").length, equalTo 3
         assertThat list.dummy.children("li").first().text(), equalTo "display1"
         assertThat list.dummy.children("li").last().text(), equalTo "display3"
+    
+    test "MenuList provides a size property", ->
+
+        item1 = display:"display1"
+        item2 = display:"display2"
+        item3 = display:"display3"
+
+        model = new MenuModel item1, item2, item3
+        list = new MenuList model
+
+        list.set "size", 4
+
+        assertThat list.get("size"), strictlyEqualTo 4 
+    
+    test "MenuList should set the height of the list according to its size when size isn't null and the model's size is bigger", ->
+        
+        item1 = display:"display1"
+        item2 = display:"display2"
+        item3 = display:"display3"
+        item4 = display:"display4"
+        item5 = display:"display5"
+        item6 = display:"display6"
+
+        model = new MenuModel item1, item2, item3, item4, item5, item6
+        list = new MenuList model
+        list.set "size", 4
+        
+        list.attach "body"
+
+        height = list.dummy.children().first()[0].offsetHeight * 4
+
+        assertThat list.dummy.attr("style"), contains "height: #{height}px"
+
+        list.detach()
+    
+    test "Setting null as size should reset the dummy", ->
+        
+        item1 = display:"display1"
+        item2 = display:"display2"
+        item3 = display:"display3"
+        item4 = display:"display4"
+        item5 = display:"display5"
+        item6 = display:"display6"
+
+        model = new MenuModel item1, item2, item3, item4, item5, item6
+        list = new MenuList model
+        list.set "size", 4
+        
+        list.attach "body"
+
+        list.set "size", null
+
+        assertThat list.dummy.attr("style"), hamcrest.not contains "height"
+
+        list.detach()
+
+    test "MenuList should add a specific class to the dummy when items are hidden", ->
+
+        item1 = display:"display1"
+        item2 = display:"display2"
+        item3 = display:"display3"
+        item4 = display:"display4"
+        item5 = display:"display5"
+        item6 = display:"display6"
+
+        model = new MenuModel item1, item2, item3, item4, item5, item6
+        list = new MenuList model
+        list.set "size", 4
+        
+        list.attach "body"
+
+        assertThat list.dummy.hasClass "cropped"
+
+        list.detach()
+    
+    test "Changes made to the cropped state should dispatch a cropChanged signal", ->
+
+        item1 = display:"display1"
+        item2 = display:"display2"
+        item3 = display:"display3"
+        item4 = display:"display4"
+        item5 = display:"display5"
+        item6 = display:"display6"
+
+        signalCalled = false
+        signalSource = null
+        signalValue = null
+
+        model = new MenuModel item1, item2, item3, item4, item5, item6
+        list = new MenuList model
+
+        list.cropChanged.add ( source, crop )->
+            signalCalled = true
+            signalSource = source
+            signalValue = crop
+
+        list.set "size", 4
+        
+        list.attach "body"
+
+        assertThat signalCalled
+        assertThat signalSource is list
+        assertThat signalValue is true        
+
+        signalCalled = false
+        signalSource = null
+        signalValue = null
+
+        list.set "size", null
+
+        assertThat signalCalled
+        assertThat signalSource is list
+        assertThat signalValue is false 
+
+        list.detach()
+    
+    test "Setting a size greater that the model content should not crop the list", ->
+
+        item1 = display:"display1"
+        item2 = display:"display2"
+        item3 = display:"display3"
+
+        model = new MenuModel item1, item2, item3
+        list = new MenuList model
+        list.set "size", 4
+        
+        list.attach "body"
+
+        assertThat not list.dummy.hasClass "cropped"
+
+        list.detach()
+    
+    test "Altering the model of a list with a given size should affect its crop", ->
+
+        item1 = display:"display1"
+        item2 = display:"display2"
+        item3 = display:"display3"
+
+        model = new MenuModel item1, item2, item3
+        list = new MenuList model
+        list.set "size", 4
+        
+        list.attach "body"
+
+        model.add item4, item5, item6
+
+        assertThat list.dummy.hasClass "cropped"
+        
+        model.remove item4, item5, item6
+
+        assertThat not list.dummy.hasClass "cropped"
+        
+        list.detach()
 
     test "MenuList should null the selection if the passed-in index is out of bounds", ->
 
@@ -536,7 +689,7 @@ $( document ).ready ->
         model = new MenuModel item1, item2
         list = new MenuList model
 
-        $("body").append list.dummy
+        list.attach "body"
 
         left = list.dummy.offset().left + list.dummy.width()
         top = list.dummy.children("li").last().offset().top
@@ -547,8 +700,8 @@ $( document ).ready ->
         assertThat list.childList.dummy.attr("style"), contains "left: #{left}px;"
         assertThat list.childList.dummy.attr("style"), contains "top: #{top}px;"
 
-        list.dummy.detach()
-        list.childList.dummy.detach()
+        list.detach()
+        list.childList.detach()
 
     test "Passing the mouse over a basic item when a child list is displayed should close the child list", ->
 
@@ -562,7 +715,7 @@ $( document ).ready ->
         model = new MenuModel item1, item2
         list = new MenuList model
 
-        $("body").append list.dummy
+        list.attach "body"
 
         left = list.dummy.offset().left + list.dummy.width()
         top = list.dummy.children("li").last().offset().top
@@ -572,7 +725,7 @@ $( document ).ready ->
 
         assertThat list.childList.dummy.parent().length, equalTo 0
 
-        list.dummy.detach()
+        list.detach()
 
     test "Closing a child list should make it lose the focus", ->
         item1 = display:"display1", menu:new MenuModel( display:"display3" )
@@ -580,7 +733,7 @@ $( document ).ready ->
         model = new MenuModel item1, item2
         list = new MenuList model
         
-        $("body").append list.dummy
+        list.attach "body"
 
         list.dummy.children("li").first().mouseover()
         list.childList.grabFocus()
@@ -590,7 +743,7 @@ $( document ).ready ->
         assertThat not list.childList.hasFocus
         assertThat list.hasFocus
 
-        list.dummy.detach()
+        list.detach()
 
     test "Closing a child list should also close the descendant list", ->
         item1 = display:"display1", menu:new MenuModel( display:"display3", menu:new MenuModel( display:"display4" ) )
@@ -598,7 +751,7 @@ $( document ).ready ->
         model = new MenuModel item1, item2
         list = new MenuList model
         
-        $("body").append list.dummy
+        list.attach "body"
 
         list.dummy.children("li").first().mouseover()
         list.childList.dummy.children("li").first().mouseover()
@@ -607,7 +760,7 @@ $( document ).ready ->
 
         assertThat list.childList.childList.dummy.parent().length, equalTo 0
 
-        list.dummy.detach()
+        list.detach()
 
     test "A childlist should have a reference to its parent", ->
 
@@ -616,14 +769,14 @@ $( document ).ready ->
         model = new MenuModel item1, item2
         list = new MenuList model
         
-        $("body").append list.dummy
+        list.attach "body"
 
         list.dummy.children("li").first().mouseover()
 
         assertThat list.childList.parentList is list
         
-        list.dummy.detach()
-        list.childList.dummy.detach()
+        list.detach()
+        list.childList.detach()
 
     test "A menu should stop the propagation of the mousedown event", ->
         
@@ -656,7 +809,7 @@ $( document ).ready ->
         model = new MenuModel item1, item2
         list = new MenuList model
         
-        $("body").append list.dummy
+        list.attach "body"
 
         list.dummy.children("li").first().mouseover()
         list.childList.dummy.children("li").first().mouseover()
@@ -664,8 +817,8 @@ $( document ).ready ->
 
         assertThat not list.childList.hasFocus
 
-        list.dummy.detach()
-        list.childList.dummy.detach()
+        list.detach()
+        list.childList.detach()
 
     test "Coming back from a child list to a menu item that also have a submenu should change the child List", ->
 
@@ -674,7 +827,7 @@ $( document ).ready ->
         model = new MenuModel item1, item2
         list = new MenuList model
         
-        $("body").append list.dummy
+        list.attach "body"
 
         list.dummy.children("li").first().mouseover()
         list.childList.dummy.children("li").first().mouseover()
@@ -683,8 +836,8 @@ $( document ).ready ->
         assertThat not list.childList.hasFocus
         assertThat list.childList.get("model") is item2.menu
 
-        list.dummy.detach()
-        list.childList.dummy.detach()
+        list.detach()
+        list.childList.detach()
 
     test "Pressing the right key when the selection is on a sub menu should move the focus to the child list", ->
 
@@ -735,14 +888,20 @@ $( document ).ready ->
     item6 = display:"display6", menu:new MenuModel
     item7 = display:"display7", action:-> console.log "item 7 clicked"
     item8 = display:"display8", action:-> console.log "item 8 clicked"
+    item9 = display:"display9", action:-> console.log "item 9 clicked"
+    item10 = display:"display10", action:-> console.log "item 10 clicked"
+    item11 = display:"display11", action:-> console.log "item 11 clicked"
+    item12 = display:"display12", action:-> console.log "item 12 clicked"
 
     item3.menu.add item4, item5, item6
     item6.menu.add item7, item8
 
-    model = new MenuModel item1, item2, item3
+    model = new MenuModel item1, item2, item3, item9, item10, item11, item12
     list1 = new MenuList model
     list2 = new MenuList model
     list3 = new MenuList model
+
+    list1.set "size", 4
 
     list2.set "readonly", true
     list3.set "disabled", true
@@ -752,6 +911,6 @@ $( document ).ready ->
     list3.addClasses "dummy"
 
     $("#qunit-header").before $ "<h4>MenuList</h4>"
-    $("#qunit-header").before list1.dummy
-    $("#qunit-header").before list2.dummy
-    $("#qunit-header").before list3.dummy
+    list1.before "#qunit-header"
+    list2.before "#qunit-header"
+    list3.before "#qunit-header"

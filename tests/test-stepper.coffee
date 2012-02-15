@@ -323,6 +323,6 @@ $( document ).ready ->
 
 	$("#qunit-header").before $ "<h4>Steppers</h4>"
 	$("#qunit-header").before target
-	$("#qunit-header").before stepper1.dummy
-	$("#qunit-header").before stepper2.dummy
-	$("#qunit-header").before stepper3.dummy
+	stepper1.before "#qunit-header"
+	stepper2.before "#qunit-header"
+	stepper3.before "#qunit-header"

@@ -25,9 +25,9 @@ area3.set( "value", "disabled" );
 area2.set( "readonly", true );
 area3.set( "disabled", true );
 
-$("#livedemos").append( area1.dummy );
-$("#livedemos").append( area2.dummy );
-$("#livedemos").append( area3.dummy );
+area1.attach("#livedemos");
+area2.attach("#livedemos");
+area3.attach("#livedemos");
 </script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">TextArea</span> <span class="k">extends</span> <span class="nx">Widget</span>
 
     <span class="py">@mixins</span> <span class="nx">FocusProvidedByChild</span>

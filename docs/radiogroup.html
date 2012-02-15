@@ -23,9 +23,9 @@ var group = new RadioGroup( radio1, radio2, radio3 );
 radio3.set( "checked", true );
 radio3.set( "disabled", true );
 
-$("#livedemos").append( radio1.dummy );
-$("#livedemos").append( radio2.dummy );
-$("#livedemos").append( radio3.dummy );
+radio1.attach("#livedemos");
+radio2.attach("#livedemos");
+radio3.attach("#livedemos");
 </script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">RadioGroup</span>
 
     <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="nx">radios</span><span class="p">...</span> <span class="p">)</span><span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>RadioGroup signals</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>The <code>selectionChanged</code> signal is dispatched when the selection

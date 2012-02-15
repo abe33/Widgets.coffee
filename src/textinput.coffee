@@ -27,9 +27,9 @@
 # input2.set( "readonly", true );
 # input3.set( "disabled", true );
 # 
-# $("#livedemos").append( input1.dummy );
-# $("#livedemos").append( input2.dummy );
-# $("#livedemos").append( input3.dummy );
+# input1.attach("#livedemos");
+# input2.attach("#livedemos");
+# input3.attach("#livedemos");
 # </script>
 class TextInput extends Widget
 

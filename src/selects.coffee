@@ -34,18 +34,24 @@
 # select2.set("readonly", true);
 # select3.set("disabled", true);
 # 
-# $("#livedemos-select").before(select1.dummy);
-# $("#livedemos-select").before(select2.dummy);
-# $("#livedemos-select").before(select3.dummy);
+# select1.attach("#livedemos-select");
+# select2.attach("#livedemos-select");
+# select3.attach("#livedemos-select");
 # </script>
 class SingleSelect extends Widget
     # A `SingleSelect` accept a `select` node as target.
     constructor:( target )->
         super target
 
+        @createProperty "size"
+
         # When a target is provided, the model for the `SingleSelect` object
         # is builded from the data of the target.
         if @hasTarget
+
+            size = parseInt @valueFromAttribute "size"
+            @properties.size = size unless isNaN size
+
             @model = @buildModel new MenuModel, @jTarget.children()
             
             # And the value is searched in the target structure to
@@ -95,83 +101,6 @@ class SingleSelect extends Widget
         if not @isTag( target, "select" ) or $( target ).attr("multiple")?
             throw "A SingleSelect only allow select nodes as target" 
     
-    # Removes all the `option` nodes in the target.
-    clearOptions:->
-        @jTarget.children().remove() 
-    
-    # Build the content of the target based on the current model's data.
-    buildOptions:( model = @model, target = @jTarget )->
-
-        for act in model.items
-            if act.menu?
-                group = $ "<optgroup label='#{act.display}'></optgroup>"
-                target.append group
-                @buildOptions act.menu, group
-            else 
-                unless act.action? then act.action = => @set "value", act.value
-                target.append $ "<option value='#{act.value}'>#{act.display}</option>"
-
-    # Updates the state of the target accordingly with 
-    # the current selection of the widget.
-    updateOptionSelection:()->
-        @getOptionAt( @selectedPath )?.attr "selected", "selected"
-    
-    # Returns the label to use for a given `option` or `optgroup` node.
-    # If provided the `label` attribute will have the priority. If not
-    # the node content will be used instead.  
-    getOptionLabel:( option )->
-        unless option? then return null
-        if option.attr "label" then option.attr "label" else option.text()  
-    
-    # Returns the value to use for a given `option` node.
-    # If provided the `value` attribute will have the priority. If not
-    # the node content will be used instead.  
-    getOptionValue:( option )->
-        unless option? then return null
-        if option.attr "value" then option.attr "value" else option.text() 
-    
-    # Returns the `option` or `optgroup` node at the specified `path`.
-    # If the `path` argument is `null` or if the path lead to a dead end 
-    # the function returns `null`
-    getOptionAt:( path )-> 
-        if path is null then return null
-
-        option = null
-        if @hasTarget 
-            children = @jTarget.children()
-            for step in path
-                option = children[ step ]
-                if option?.nodeName
-                    children = $(option).children()
-        
-        if option? then $ option else null
-    
-    #### Dummy Management
-
-    # The dummy for a `SingleSelect` is a span with the class `single-select`
-    # and an internal span with the class `value`.
-    createDummy:->
-        $ "<span class='single-select'>
-               <span class='value'></span>
-           </span>"
-
-    # The dummy's `value` span will receive the content of the
-    # `display` property of the current selected item.
-    updateDummy:->
-        # Assuming the selection path is valid.
-        unless @selectedPath is null
-            display = @getItemAt( @selectedPath )?.display
-        else
-            # Otherwise the display will either be the `title` attribute
-            # of the target, if defined, or the string `Empty`.
-            display = if @hasTarget and @jTarget.attr("title") then @jTarget.attr("title") else "Empty"
-        
-        # After removing the old value, the `display` value is passed
-        # as the content for the new `value` span. That's imply that 
-        # the display for an item could contains any valid HTML code. 
-        @dummy.find(".value").remove()
-        @dummy.append $ "<span class='value'>#{display}</span>"
-    
     #### Model Management
 
     # The `buildModel` automtically construct a `MenuModel` 
@@ -192,20 +121,19 @@ class SingleSelect extends Widget
                 # Sub-models are represented by an object that
                 # have a `menu` property that contains a `MenuModel`
                 # instance.
-                model.add {
-                    display:@getOptionLabel( option ), 
+                model.add
+                    display: @getOptionLabel option 
                     # Nodes traversing is done recursively.
-                    menu:@buildModel( new MenuModel, option.children() )
-                }
+                    menu   : @buildModel new MenuModel, option.children()
             else
                 # Model's items are represented by an object that
                 # have both a `value` and an `action` property.
                 value = @getOptionValue( option )
-                model.add {
-                    display:@getOptionLabel( option ), 
-                    value:value,
-                    action:=> @set "value", value
-                }
+                model.add
+                    display: @getOptionLabel option  
+                    value  : value
+                    action : => @set "value", value
+                
         model
         
     # Returns the item at `path` in the model.
@@ -271,59 +199,60 @@ class SingleSelect extends Widget
                 model = item.menu
         
         model
-    
-    #### Menu Management
-    
-    # Creates a `MenuList` instance for this `SingleSelect`.
-    # The same model is shared between a `SingleSelect` and
-    # its `MenuList`.
-    buildMenu:->
-        @menuList = new MenuList @model
-    
-    # Opens the `MenuList` for this instance.
-    openMenu:->
-        unless @cantInteract()
-            # Pressing the mouse on the document when the `MenuList` is
-            # opened will close the menu.
-            ( $ document ).bind "mousedown", @documentDelegate = (e)=>
-                @documentMouseDown e
-            
-            # The `MenuList` dummy is placed right after the `SingleSelect`
-            # in the DOM.
-            @dummy.after @menuList.dummy
 
-            # The `MenuList` is displayed right below the `SingleSelect`
-            # on screen.
-            left = @dummy.offset().left
-            top = @dummy.offset().top + @dummy.height()
-            @menuList.dummy.attr "style", "left: #{left}px; top: #{top}px;"
+    #### Options Management
 
-            # The focus is then placed on the `MenuList`.
-            @menuList.grabFocus()
-
-            # When opening the `MenuList`, the selection path is highlighted.
-            # If the selection is contained in a sub-model, the sub-menus will
-            # be opened as well. 
-            unless @selectedPath is null 
-                list = @menuList
-                for step in @selectedPath
-                    list.select step
-                    if list.childList
-                        list = list.childList
+    # Removes all the `option` nodes in the target.
+    clearOptions:->
+        @jTarget.children().remove() 
     
-    # Closes the `MenuList` for this instance.
-    closeMenu:->
-        @menuList.close()
-        # When the `MenuList` is closed, the `SingleSelect` 
-        # recover the focus.
-        @grabFocus()
+    # Build the content of the target based on the current model's data.
+    buildOptions:( model = @model, target = @jTarget )->
 
-        $( document ).unbind "mousedown", @documentDelegate
+        for act in model.items
+            if act.menu?
+                group = $ "<optgroup label='#{act.display}'></optgroup>"
+                target.append group
+                @buildOptions act.menu, group
+            else 
+                unless act.action? then act.action = => @set "value", act.value
+                target.append $ "<option value='#{act.value}'>#{act.display}</option>"
+
+    # Updates the state of the target accordingly with 
+    # the current selection of the widget.
+    updateOptionSelection:()->
+        @getOptionAt( @selectedPath )?.attr "selected", "selected"
     
-    # Returns `true` is the `MenuList` is currently present in the DOM.
-    isMenuVisible:->
-        @menuList.dummy.parent().length is 1
-         
+    # Returns the label to use for a given `option` or `optgroup` node.
+    # If provided the `label` attribute will have the priority. If not
+    # the node content will be used instead.  
+    getOptionLabel:( option )->
+        unless option? then return null
+        if option.attr "label" then option.attr "label" else option.text()  
+    
+    # Returns the value to use for a given `option` node.
+    # If provided the `value` attribute will have the priority. If not
+    # the node content will be used instead.  
+    getOptionValue:( option )->
+        unless option? then return null
+        if option.attr "value" then option.attr "value" else option.text() 
+    
+    # Returns the `option` or `optgroup` node at the specified `path`.
+    # If the `path` argument is `null` or if the path lead to a dead end 
+    # the function returns `null`
+    getOptionAt:( path )-> 
+        if path is null then return null
+
+        option = null
+        if @hasTarget 
+            children = @jTarget.children()
+            for step in path
+                option = children[ step ]
+                if option?.nodeName
+                    children = $(option).children()
+        
+        if option? then $ option else null
+    
     #### Selection Management
     
     # Moves the selection cursor to the up.
@@ -412,7 +341,85 @@ class SingleSelect extends Widget
             previousItem = @getItemAt newPath
 
         newPath
+
+    #### Dummy Management
+
+    # The dummy for a `SingleSelect` is a span with the class `single-select`
+    # and an internal span with the class `value`.
+    createDummy:->
+        $ "<span class='single-select'>
+               <span class='value'></span>
+           </span>"
+
+    # The dummy's `value` span will receive the content of the
+    # `display` property of the current selected item.
+    updateDummy:->
+        # Assuming the selection path is valid.
+        unless @selectedPath is null
+            display = @getItemAt( @selectedPath )?.display
+        else
+            # Otherwise the display will either be the `title` attribute
+            # of the target, if defined, or the string `Empty`.
+            display = if @hasTarget and @jTarget.attr("title") then @jTarget.attr("title") else "Empty"
+        
+        # After removing the old value, the `display` value is passed
+        # as the content for the new `value` span. That's imply that 
+        # the display for an item could contains any valid HTML code. 
+        @dummy.find(".value").remove()
+        @dummy.append $ "<span class='value'>#{display}</span>"
+    
+    #### Menu Management
+    
+    # Creates a `MenuList` instance for this `SingleSelect`.
+    # The same model is shared between a `SingleSelect` and
+    # its `MenuList`.
+    buildMenu:->
+        @menuList = new MenuList @model
+    
+    # Opens the `MenuList` for this instance.
+    openMenu:->
+        unless @cantInteract()
+            # Pressing the mouse on the document when the `MenuList` is
+            # opened will close the menu.
+            ( $ document ).bind "mousedown", @documentDelegate = (e)=>
+                @documentMouseDown e
             
+            # The `MenuList` dummy is placed right after the `SingleSelect`
+            # in the DOM.
+            @dummy.after @menuList.dummy
+
+            # The `MenuList` is displayed right below the `SingleSelect`
+            # on screen.
+            left = @dummy.offset().left
+            top = @dummy.offset().top + @dummy.height()
+            @menuList.dummy.attr "style", "left: #{left}px; top: #{top}px;"
+
+            # The focus is then placed on the `MenuList`.
+            @menuList.grabFocus()
+
+            # When opening the `MenuList`, the selection path is highlighted.
+            # If the selection is contained in a sub-model, the sub-menus will
+            # be opened as well. 
+            unless @selectedPath is null 
+                list = @menuList
+                for step in @selectedPath
+                    list.select step
+                    if list.childList
+                        list = list.childList
+    
+    # Closes the `MenuList` for this instance.
+    closeMenu:->
+        @menuList.close()
+        # When the `MenuList` is closed, the `SingleSelect` 
+        # recover the focus.
+        @grabFocus()
+
+        $( document ).unbind "mousedown", @documentDelegate
+    
+    # Returns `true` is the `MenuList` is currently present in the DOM.
+    isMenuVisible:->
+        @menuList.dummy.parent().length is 1
+                     
     #### Properties Accessors    
 
     # The only legible values for a `SingleSelect`

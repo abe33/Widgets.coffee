@@ -228,9 +228,9 @@ isValidHSV = ( h, s, v )->
 # picker2.set( "readonly", true )
 # picker3.set( "disabled", true )
 # 
-# $("#livedemos").append( picker1.dummy )
-# $("#livedemos").append( picker2.dummy )
-# $("#livedemos").append( picker3.dummy )
+# picker1.attach("#livedemos")
+# picker2.attach("#livedemos")
+# picker3.attach("#livedemos")
 # </script>
 class ColorInput extends Widget
 
@@ -386,10 +386,10 @@ class ColorInput extends Widget
 # gpicker3.set( "readonly", true )
 # gpicker4.set( "disabled", true )
 # 
-# $("#livedemos2").append( gpicker1.dummy )
-# $("#livedemos2").append( gpicker2.dummy )
-# $("#livedemos2").append( gpicker3.dummy )
-# $("#livedemos2").append( gpicker4.dummy )
+# gpicker1.attach("#livedemos2")
+# gpicker2.attach("#livedemos2")
+# gpicker3.attach("#livedemos2")
+# gpicker4.attach("#livedemos2")
 # </script>
 class SquarePicker extends Widget
     constructor:->
@@ -609,7 +609,7 @@ class SquarePicker extends Widget
 # dialog.set( "value", "#abcdef" );
 # dialog.addClasses("dummy");
 # 
-# $("#livedemos3").append( dialog.dummy );
+# dialog.attach("#livedemos3");
 # </script>
 class ColorPicker extends Container
     constructor:->
@@ -1361,7 +1361,7 @@ class BGRMode extends AbstractMode
 ColorInput.defaultListener = new ColorPicker
 
 $( document ).ready ->
-    $("body").append( ColorInput.defaultListener.dummy )
+    ColorInput.defaultListener.attach "body"
     
 # Address the access restriction due to the sandboxing when used
 # directly in a browser with the `text/coffeescript` mode. 

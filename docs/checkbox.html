@@ -21,9 +21,9 @@ checkbox2.set( "readonly", true );
 checkbox2.set( "checked", true );
 checkbox3.set( "disabled", true );
 
-$("#livedemos").append( checkbox1.dummy );
-$("#livedemos").append( checkbox2.dummy );
-$("#livedemos").append( checkbox3.dummy );
+checkbox1.attach("#livedemos");
+checkbox2.attach("#livedemos");
+checkbox3.attach("#livedemos");
 </script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">CheckBox</span> <span class="k">extends</span> <span class="nx">Widget</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Defines the types that is allowed for a checkbox's <code>target</code>. </p>
 
 <p><code>CheckBox</code> and its descendants are dedicated to work with 

@@ -459,7 +459,6 @@ $( document ).ready ->
 
 		assertThat not widget.dummy.hasClass "focus"
 
-
 	test "Widgets should preserve the initial class value of the dummy", ->
 
 		class MockWidget extends Widget
@@ -700,6 +699,7 @@ $( document ).ready ->
 		widget.set "disabled", true
 
 		assertThat widget.focus(), equalTo false
+		assertThat widget.hasFocus, equalTo false
 		assertThat widget.dummy.attr("tabindex"), nullValue()
 
 	test "Widget's properties getters and setters should be overridable in children classes", ->
@@ -880,4 +880,163 @@ $( document ).ready ->
 		widget = new MockWidget target
 
 		assertThat widget.dummy.hasClass "required"
+	
+	test "Widget should provide an attach method to place an object in the DOM", ->
+
+		class MockWidget extends Widget
+			createDummy:->
+				$ "<span class='foo'></span>"
+		
+		widget = new MockWidget
+		widget.attach $ "body" 
+
+		assertThat $(".foo").length, greaterThan 0
+
+		widget.detach()
+	
+	test "Widget.attach should accept a selector string as argument", ->
+
+		class MockWidget extends Widget
+			createDummy:->
+				$ "<span class='foo'></span>"
+		
+		widget = new MockWidget
+		widget.attach "body" 
+
+		assertThat $(".foo").length, greaterThan 0
+
+		widget.detach()
+	
+	test "Widget should provide a attached signal dispatched on a call to attach", ->
+
+		class MockWidget extends Widget
+			createDummy:->
+				$ "<span class='foo'></span>"
+		
+		signalCalled = false
+		signalSource = null
+
+		widget = new MockWidget
+		widget.attached.add ( source )->
+			signalCalled = true
+			signalSource = source 
+
+		widget.attach "body"
+		
+		assertThat signalCalled
+		assertThat signalSource is widget 
+		
+		widget.detach()
+	
+	test "Widget should provide a detach method", ->
+
+		class MockWidget extends Widget
+			createDummy:->
+				$ "<span class='foo'></span>"
+		
+		widget = new MockWidget
+		widget.attach "body" 
+		widget.detach()
+
+		assertThat $(".foo").length, equalTo 0
+
+	test "Widget should provide a before method", ->
+
+		class MockWidget extends Widget
+			createDummy:->
+				$ "<span class='foo'></span>"
+		
+		widget1 = new MockWidget
+		widget2 = new MockWidget
+		widget1.attach "body"
+		widget2.before ".foo"
+
+		assertThat $(".foo").length, equalTo 2
+
+		widget1.detach()
+		widget2.detach()
+	
+	test "Widget should provide a attached signal dispatched on a call to before", ->
+
+		class MockWidget extends Widget
+			createDummy:->
+				$ "<span class='foo'></span>"
+		
+		signalCalled = false
+		signalSource = null
+
+		widget1 = new MockWidget
+		widget2 = new MockWidget
+		widget1.attach "body"
+		widget2.attached.add ( source )->
+			signalCalled = true
+			signalSource = source 
+
+		widget2.before ".foo"
+		
+		assertThat signalCalled
+		assertThat signalSource is widget2 
+		
+		widget1.detach()
+		widget2.detach()
+	
+	test "Widget should provide a after method", ->
+
+		class MockWidget extends Widget
+			createDummy:->
+				$ "<span class='foo'></span>"
+		
+		widget1 = new MockWidget
+		widget2 = new MockWidget
+		widget1.attach "body"
+		widget2.after ".foo"
+
+		assertThat $(".foo").length, equalTo 2
+
+		widget1.detach()
+		widget2.detach()
+	
+	test "Widget should provide a attached signal dispatched on a call to after", ->
+
+		class MockWidget extends Widget
+			createDummy:->
+				$ "<span class='foo'></span>"
+		
+		signalCalled = false
+		signalSource = null
+
+		widget1 = new MockWidget
+		widget2 = new MockWidget
+		widget1.attach "body"
+		widget2.attached.add ( source )->
+			signalCalled = true
+			signalSource = source 
+
+		widget2.after ".foo"
+		
+		assertThat signalCalled
+		assertThat signalSource is widget2 
+		
+		widget1.detach()
+		widget2.detach()
+
+	test "Widget should provide a detached signal dispatched on a call to detach", ->
+
+		class MockWidget extends Widget
+			createDummy:->
+				$ "<span class='foo'></span>"
+		
+		signalCalled = false
+		signalSource = null
+
+		widget = new MockWidget
+		widget.detached.add ( source )->
+			signalCalled = true
+			signalSource = source 
+
+		widget.attach "body" 
+		widget.detach()
+		
+		assertThat signalCalled
+		assertThat signalSource is widget 
 

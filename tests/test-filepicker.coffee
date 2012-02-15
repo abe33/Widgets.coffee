@@ -141,6 +141,6 @@ $( document ).ready ->
 	picker3.set "disabled", true
 
 	$("#qunit-header").before $ "<h4>File Pickers</h4>"
-	$("#qunit-header").before picker1.dummy
-	$("#qunit-header").before picker2.dummy
-	$("#qunit-header").before picker3.dummy
+	picker1.before "#qunit-header"
+	picker2.before "#qunit-header"
+	picker3.before "#qunit-header"

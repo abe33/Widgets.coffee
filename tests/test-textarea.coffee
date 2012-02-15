@@ -78,6 +78,6 @@ $( document ).ready ->
 	area3.set "disabled", true
 
 	$("#qunit-header").before $ "<h4>TextArea</h4>"
-	$("#qunit-header").before area1.dummy
-	$("#qunit-header").before area2.dummy
-	$("#qunit-header").before area3.dummy
+	area1.before "#qunit-header"
+	area2.before "#qunit-header"
+	area3.before "#qunit-header"

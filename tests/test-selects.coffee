@@ -116,7 +116,18 @@ $( document ).ready ->
         select.model.items[0].action()
 
         assertThat select.get("value"), equalTo "foo"
+    
+        
+    test "SingleSelect should support the size attribute of the target", ->
 
+        target = $ "<select size='2'>
+                        <option>foo</option>
+                        <option selected>bar</option>
+                     </select>"
+        select = new SingleSelect target[0]
+
+        assertThat select.get("size"), strictlyEqualTo 2
+    
     test "Changes made to the widget should be reflected on the target", ->
         
         target = $( "<select>
@@ -235,13 +246,13 @@ $( document ).ready ->
                      </select>" )
         select = new SingleSelect target[0]
 
-        $( "body" ).append select.dummy
+        select.attach "body"
 
         select.dummy.mousedown()
         assertThat select.menuList.dummy.parent().length, equalTo 1
 
-        select.dummy.detach()
-        select.menuList.dummy.detach()
+        select.detach()
+        select.menuList.detach()
 
     test "Pressing the mouse on a SingleSelect should select the value in the menuList", ->
 
@@ -251,13 +262,13 @@ $( document ).ready ->
                      </select>" )
         select = new SingleSelect target[0]
 
-        $( "body" ).append select.dummy
+        select.attach "body"
 
         select.dummy.mousedown()
         assertThat select.menuList.selectedIndex, equalTo 1
 
-        select.dummy.detach()
-        select.menuList.dummy.detach()
+        select.detach()
+        select.menuList.detach()
 
     test "Pressing the mouse on a SingleSelect that have its menu list displayed should detach its menuList", ->
 
@@ -267,14 +278,14 @@ $( document ).ready ->
                      </select>" )
         select = new SingleSelect target[0]
 
-        $( "body" ).append select.dummy
+        select.attach "body"
 
         select.dummy.mousedown()
         select.dummy.mousedown()
 
         assertThat select.menuList.dummy.parent().length, equalTo 0
 
-        select.dummy.detach()
+        select.detach()
 
     test "When displayed, the menulist should be placed below the select", ->
 
@@ -284,7 +295,7 @@ $( document ).ready ->
                      </select>" )
         select = new SingleSelect target[0]
 
-        $( "body" ).append select.dummy
+        select.attach "body"
 
         top = select.dummy.height() + select.dummy.offset().top
         left = select.dummy.offset().left
@@ -295,8 +306,8 @@ $( document ).ready ->
         assertThat select.menuList.dummy.attr("style"), contains "left: #{left}px"
         assertThat select.menuList.dummy.attr("style"), contains "top: #{top}px"
 
-        select.dummy.detach()
-        select.menuList.dummy.detach()
+        select.detach()
+        select.menuList.detach()
 
     test "When displayed, clicking on a list item should hide the menu list", ->
 
@@ -306,14 +317,14 @@ $( document ).ready ->
                      </select>" )
         select = new SingleSelect target[0]
 
-        $( "body" ).append select.dummy
+        select.attach "body"
         
         select.dummy.mousedown()
         select.menuList.dummy.children().last().mouseup()
 
         assertThat select.menuList.dummy.parent().length, equalTo 0
 
-        select.dummy.detach()
+        select.detach()
 
     test "Pressing the mouse on the select dummy should prevent the default behavior",->
 
@@ -335,13 +346,13 @@ $( document ).ready ->
         select = new SingleSelect target[0]
         select.set "readonly", true
 
-        $( "body" ).append select.dummy
+        select.attach "body"
         
         select.dummy.mousedown()
 
         assertThat select.menuList.dummy.parent().length, equalTo 0
 
-        select.dummy.detach()
+        select.detach()
 
     test "Pressing the mouse on a SingleSelect should give the focus to the menu list", ->
 
@@ -351,14 +362,14 @@ $( document ).ready ->
                      </select>" )
         select = new SingleSelect target[0]
 
-        $( "body" ).append select.dummy
+        select.attach "body"
 
         select.dummy.mousedown()
 
         assertThat select.menuList.hasFocus
 
-        select.dummy.detach()
-        select.menuList.dummy.detach()
+        select.detach()
+        select.menuList.detach()
 
     test "Pressing the mouse to hide the menu list should give the focus back to the select", ->
 
@@ -368,7 +379,7 @@ $( document ).ready ->
                      </select>" )
         select = new SingleSelect target[0]
 
-        $( "body" ).append select.dummy
+        select.attach "body"
 
         select.dummy.mousedown()
         select.dummy.mousedown()
@@ -376,8 +387,8 @@ $( document ).ready ->
         assertThat not select.menuList.hasFocus
         assertThat select.hasFocus
 
-        select.dummy.detach()
-        select.menuList.dummy.detach()
+        select.detach()
+        select.menuList.detach()
 
     test "When displayed, clicking on a list item should give the focus back to the select", ->
 
@@ -387,7 +398,7 @@ $( document ).ready ->
                      </select>" )
         select = new SingleSelect target[0]
 
-        $( "body" ).append select.dummy
+        select.attach "body"
         
         select.dummy.mousedown()
         select.menuList.dummy.children().last().mouseup()
@@ -395,7 +406,7 @@ $( document ).ready ->
         assertThat not select.menuList.hasFocus
         assertThat select.hasFocus
 
-        select.dummy.detach()
+        select.detach()
 
     test "A SingleSelect should allow html content in items display", ->
         
@@ -421,7 +432,7 @@ $( document ).ready ->
         
         select = new MockSingleSelect target[0]
 
-        $( "body" ).append select.dummy
+        select.attach "body"
         
         select.dummy.mousedown()
 
@@ -429,7 +440,7 @@ $( document ).ready ->
 
         assertThat select.menuList.dummy.parent().length, equalTo 0
         
-        select.dummy.detach()
+        select.detach()
 
     test "Pressing the enter key when the select has the focus should open the menu", ->
 
@@ -439,7 +450,7 @@ $( document ).ready ->
                      </select>" )
         select = new SingleSelect target[0]
 
-        $( "body" ).append select.dummy
+        select.attach "body"
 
         select.keydown
             keyCode:keys.enter
@@ -449,8 +460,8 @@ $( document ).ready ->
         
         assertThat select.menuList.dummy.parent().length, equalTo 1
 
-        select.dummy.detach()
-        select.menuList.dummy.detach()
+        select.detach()
+        select.menuList.detach()
 
     test "Pressing the space key when the select has the focus should open the menu", ->
 
@@ -460,7 +471,7 @@ $( document ).ready ->
                      </select>" )
         select = new SingleSelect target[0]
 
-        $( "body" ).append select.dummy
+        select.attach "body"
 
         select.keydown
             keyCode:keys.space
@@ -470,8 +481,8 @@ $( document ).ready ->
         
         assertThat select.menuList.dummy.parent().length, equalTo 1
 
-        select.dummy.detach()
-        select.menuList.dummy.detach()
+        select.detach()
+        select.menuList.detach()
 
     test "Pressing the space key when the select is readonly shouldn't open the menu", ->
 
@@ -482,7 +493,7 @@ $( document ).ready ->
         select = new SingleSelect target[0]
         select.set "readonly", true
 
-        $( "body" ).append select.dummy
+        select.attach "body"
 
         select.keydown
             keyCode:keys.space
@@ -492,7 +503,7 @@ $( document ).ready ->
         
         assertThat select.menuList.dummy.parent().length, equalTo 0
 
-        select.dummy.detach()
+        select.detach()
 
     test "Pressing the up key should move the selection cursor to the up", ->
 
@@ -828,7 +839,7 @@ $( document ).ready ->
                      </select>" )
         select = new SingleSelect target[0]
 
-        $("body").append select.dummy
+        select.attach "body"
 
         select.dummy.mousedown()
         select.menuList.dummy.children("li").last().mouseover()
@@ -837,7 +848,7 @@ $( document ).ready ->
         assertThat select.get("value"), equalTo "rab"
         assertThat select.dummy.find(".value").text(), equalTo "rab"
 
-        select.dummy.detach()
+        select.detach()
 
     test "Pressing the mouse outside of the select list but on a child list shouldn't close the dialog before mouseup", ->
         
@@ -851,7 +862,7 @@ $( document ).ready ->
         
         select = new SingleSelect target[0]
 
-        $( "body" ).append select.dummy
+        select.attach "body"
         
         select.dummy.mousedown()
         select.menuList.dummy.children("li").last().mouseover()
@@ -860,9 +871,9 @@ $( document ).ready ->
         assertThat select.menuList.dummy.parent().length, equalTo 1
         assertThat select.menuList.childList.dummy.parent().length, equalTo 1
         
-        select.dummy.detach()
-        select.menuList.dummy.detach()
-        select.menuList.childList.dummy.detach()
+        select.detach()
+        select.menuList.detach()
+        select.menuList.childList.detach()
 
     test "Pressing the mouse on a SingleSelect should select the value in the menuList even when there're optgroups", ->
 
@@ -875,7 +886,7 @@ $( document ).ready ->
                      </select>" )
         select = new SingleSelect target[0]
 
-        $( "body" ).append select.dummy
+        select.attach "body"
 
         select.dummy.mousedown()
         select.menuList.dummy.children("li").last().mouseover()
@@ -888,9 +899,9 @@ $( document ).ready ->
         assertThat select.menuList.selectedIndex, equalTo 1
         assertThat select.menuList.childList.selectedIndex, equalTo 1
 
-        select.dummy.detach() 
-        select.menuList.dummy.detach()
-        select.menuList.childList.dummy.detach()
+        select.detach() 
+        select.menuList.detach()
+        select.menuList.childList.detach()
 
     test "The value for a select that only have optgroup and no selected item should be the default value of the select", ->
         
@@ -938,6 +949,7 @@ $( document ).ready ->
 
         assertThat select.dummy.find(".value").text(), equalTo "Empty" 
 
+
     s = "<select>
             <option>List Item 1</option>
             <option selected>List Item 2</option>
@@ -963,6 +975,6 @@ $( document ).ready ->
     select3.set "disabled", true
 
     $("#qunit-header").before $ "<h4>SingleSelect</h4>"
-    $("#qunit-header").before select1.dummy
-    $("#qunit-header").before select2.dummy
-    $("#qunit-header").before select3.dummy
+    select1.before "#qunit-header"
+    select2.before "#qunit-header"
+    select3.before "#qunit-header"
