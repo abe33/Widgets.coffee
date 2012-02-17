@@ -2,21 +2,22 @@
 # <link rel="stylesheet" href="../css/widgets.css" media="screen">
 #
 # <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
-# <script type='text/javascript' src='../depends/jquery.mousewheel.js'></script>
+# <script type='text/javascript'
+#         src='../depends/jquery.mousewheel.js'></script>
 # <script type='text/javascript' src='../depends/signals.js'></script>
 # <script type='text/javascript' src='../lib/widgets.js'></script>
 
 # The `dates.coffee` file contains all the widgets that handles date and time
 # related inputs.
-# 
+#
 # The supported dates and time modes and their corresponding widgets are :
 #
-# * [time](#time)                    : [TimeInput](#TimeInput)
-# * [date](#date)                    : [DateInput](#DateInput)
-# * [month](#month)                  : [MonthInput](#MonthInput)
-# * [week](#week)                    : [WeekInput](#WeekInput)
-# * [datetime](#datetime)            : [DateTimeInput](#DateTimeInput)
-# * [datetime-local](#datetime-loca) : [DateTimeLocalInput](#DateTimeLocalInput)
+# * [time](#time)                   :[TimeInput](#TimeInput)
+# * [date](#date)                   :[DateInput](#DateInput)
+# * [month](#month)                 :[MonthInput](#MonthInput)
+# * [week](#week)                   :[WeekInput](#WeekInput)
+# * [datetime](#datetime)           :[DateTimeInput](#DateTimeInput)
+# * [datetime-local](#datetime-loca):[DateTimeLocalInput](#DateTimeLocalInput)
 
 #### Utilities
 
@@ -28,7 +29,7 @@ MILLISECONDS_IN_DAY    = MILLISECONDS_IN_HOUR * 24
 MILLISECONDS_IN_WEEK   = MILLISECONDS_IN_DAY * 7
 
 # Cast the `value` into an integer.
-# In case the passed-in `value` cannot be casted in an 
+# In case the passed-in `value` cannot be casted in an
 # integer, the function return the value of `0`
 safeInt=( value )->
     n = parseInt value
@@ -44,24 +45,24 @@ fill=( s, l = 2 )->
 #### Abstract
 #
 # Validation and conversion functions for each mode are available
-# as top level functions to allow them to be tested and then 
+# as top level functions to allow them to be tested and then
 # used in tests to validates widgets outputs.
 
 #### AbstractDateInputWidget
 
-# All widgets that implements support for one of the html date and time inputs
-# extends the `AbstractDateInputWidget` class. 
+# All widgets that implements support for one of the html
+# date and time inputs extends the `AbstractDateInputWidget` class.
 #
-# The date widgets provides an additional `date` property, accessible through
-# a property accessor, that allow to manipulate the widget's value using a `Date`
-# instance.
+# The date widgets provides an additional `date` property,
+# accessible through a property accessor, that allow to manipulate
+# the widget's value using a `Date` instance.
 class AbstractDateInputWidget extends Widget
     # Date and time widgets can operate in a range. Their prototype is then
     # decorated with the `ValueInRange` mixin.
     @mixins ValueInRange
 
     # Concretes classes must defines these properties before calling
-    # the super constructor. The three functions handles the validation 
+    # the super constructor. The three functions handles the validation
     # and the conversion of value in `Date` objects when the `supportedType`
     # property define the value of the `type` attribute that a target must
     # have to be a valid target for the concrete widget.
@@ -71,11 +72,11 @@ class AbstractDateInputWidget extends Widget
     supportedType:""
 
     # The target can be either an `input` node with one of the date
-    # types or a `Date` object.  
+    # types or a `Date` object.
     #
     # The constructor supports an additional `defaultStep` argument
     # that will be used if the `step` property is not a number
-    # before the validation of the value. 
+    # before the validation of the value.
     constructor:( target, defaultStep = null )->
         min  = null
         max  = null
@@ -83,7 +84,7 @@ class AbstractDateInputWidget extends Widget
 
         # When the target is a date, we don't need to do much
         # operation.
-        if target instanceof Date 
+        if target instanceof Date
             super()
             date = target
         # On the other hand, when the target is an input,
@@ -96,7 +97,7 @@ class AbstractDateInputWidget extends Widget
                 min   = @valueFromAttribute "min"
                 max   = @valueFromAttribute "max"
                 step  = parseInt @valueFromAttribute "step"
-                
+
                 # If invalid values are passed in the `min`
                 # or `max` attribute, that attribute is set
                 # to `null` and this extremity of the range
@@ -105,7 +106,7 @@ class AbstractDateInputWidget extends Widget
                 unless @isValidValue max then max = null
             else
                 date  = new Date
-        
+
         # Step is step before any other operation. As `min`
         # `max` and `value` must respect that step.
         @properties.step  = if isNaN step then defaultStep else step
@@ -118,16 +119,16 @@ class AbstractDateInputWidget extends Widget
         # If a valid `max` bounds is defined, the value is snapped
         # according to the `step` property before being its affectation.
         if max?
-            maxDate = @snapToStep @valueToDate max 
+            maxDate = @snapToStep @valueToDate max
             @properties.max = @dateToValue maxDate
-                
+
         # The value of the widget is then adjusted itself to the step
         # and range defined previously.
         @properties.date  = @fitToRange date, minDate, maxDate
         @properties.value = @dateToValue date
 
         # To avoid infinite loops and unnecessary conversion, locks
-        # are defined for the `date` and `value` setters. 
+        # are defined for the `date` and `value` setters.
         @dateSetProgrammatically = false
         @valueSetProgrammatically = false
 
@@ -139,15 +140,16 @@ class AbstractDateInputWidget extends Widget
     # Target must be an input with a type equal to the widget `supportedType`.
     checkTarget:( target )->
         unless @isInputWithType target, @supportedType
-            throw "TimeInput target must be an input with a #{ @supportedType } type"
-    
+            throw new Error """TimeInput target must be an input
+                               with a #{ @supportedType } type"""
+
     # Gets a `Date` object from the value of a target's attribute.
-    # If the target's value doesn't validate the `defaultValue` 
+    # If the target's value doesn't validate the `defaultValue`
     # is returned instead.
     dateFromAttribute:( attr, defaultValue = null )->
         value = @valueFromAttribute attr
         if @isValidValue value then @valueToDate value else defaultValue
-    
+
     #### Value Management
 
     # Overrides of the `ValueInRange` mixin method to support date value.
@@ -159,36 +161,36 @@ class AbstractDateInputWidget extends Widget
             value.setTime ms - ( ms % ( step * MILLISECONDS_IN_SECOND ) )
 
         value
-    
+
     # Overrides of the `ValueInRange` mixin method to support date value.
     increment:()->
         d    = @get "date"
         step = @get "step"
         ms   = d.valueOf()
         d.setTime ms + step * MILLISECONDS_IN_SECOND
-        @set "date", d 
-        
+        @set "date", d
+
     # Overrides of the `ValueInRange` mixin method to support date value.
     decrement:()->
         d    = @get "date"
         step = @get "step"
         ms   = d.valueOf()
         d.setTime ms - step * MILLISECONDS_IN_SECOND
-        @set "date", d 
-    
+        @set "date", d
+
     #### Dummy Management
 
     # The base dummy for date widgets is a span with a `datetime`
     # class completed with the type of the widget.
     createDummy:->
         $ "<span class='dateinput #{ @supportedType }'></span>"
-    
+
     # Placeholder for the dummy update.
     updateDummy:->
 
     #### Properties Accessors
 
-    # Sets the value of the widget with a `Date` instance. 
+    # Sets the value of the widget with a `Date` instance.
     # Only valid dates are allowed. Invalid dates are easily
     # identifiable as all their getters will return `NaN`.
     set_date:( property, value )->
@@ -196,7 +198,7 @@ class AbstractDateInputWidget extends Widget
 
         min = @get "min"
         max = @get "max"
-        # The `min` and `max` properties being stored as string, 
+        # The `min` and `max` properties being stored as string,
         # they are converted to a date before being used.
         if min? then min = @valueToDate min
         if max? then max = @valueToDate max
@@ -207,16 +209,16 @@ class AbstractDateInputWidget extends Widget
         # The lock prevent a call to the `date` setter to call
         # back the `value` setter when `date` was called within
         # the `value` setter.
-        unless @dateSetProgrammatically 
+        unless @dateSetProgrammatically
             @valueSetProgrammatically = true
             @set "value", @dateToValue @properties[ property ]
             @valueSetProgrammatically = false
-        
+
         # The dummy is updated before returning the final value.
         @updateDummy()
         @properties[ property ]
-    
-    # Sets the value of the widget. Only valid values are allowed, 
+
+    # Sets the value of the widget. Only valid values are allowed,
     # they are validated with the `isValidValue` function defined
     # for the widget.
     set_value:( property, value )->
@@ -235,13 +237,13 @@ class AbstractDateInputWidget extends Widget
         # The dummy is updated before returning the final value.
         @updateDummy()
         @properties[ property ]
-        
+
     # Sets the `min` property of the widget.
     #
     # The `min` property is constrained by the same rules as the
     # widget's value. Meaning that it should returns true when
     # passed in `isValidValue` and then it will be snapped to the
-    # widget's step. 
+    # widget's step.
     set_min:( property, value )->
         unless @isValidValue value then return @get property
 
@@ -251,29 +253,29 @@ class AbstractDateInputWidget extends Widget
         @properties[ property ] = @dateToValue @snapToStep @valueToDate value
         @valueToAttribute property, value
         # When affected, the current `date` of the widget is
-        # adjusted to the new range by calling the `date` setter. 
+        # adjusted to the new range by calling the `date` setter.
         @set "date", @get "date"
         value
-    
+
     # Sets the `max` property of the widget.
     #
     # The `max` property is constrained by the same rules as the
     # widget's value. Meaning that it should returns true when
     # passed in `isValidValue` and then it will be snapped to the
-    # widget's step. 
+    # widget's step.
     set_max:( property, value )->
         unless @isValidValue value then return @get property
-        
+
         # The `max` property can't be greater that the `min` property.
         if value < @get "min" then return @get property
 
         @properties[ property ] = @dateToValue @snapToStep @valueToDate value
         # When affected, the current `date` of the widget is
-        # adjusted to the new range by calling the `date` setter. 
+        # adjusted to the new range by calling the `date` setter.
         @valueToAttribute property, value
         @set "date", @get "date"
         value
-    
+
     # Sets the `step` property of the widget.
     set_step:( property, value )->
 
@@ -283,7 +285,7 @@ class AbstractDateInputWidget extends Widget
         @properties[ property ] = value
         @valueToAttribute property, value
         # When affected, the current `date` of the widget is
-        # adjusted to the new step by calling the `date` setter. 
+        # adjusted to the new step by calling the `date` setter.
         @set "date", @get "date"
         value
 
@@ -291,7 +293,7 @@ class AbstractDateInputWidget extends Widget
 ## Time
 
 # Match if the passed-in string is a valid time string.
-# The following strings are considered as valid : 
+# The following strings are considered as valid :
 # `10`, `10:15`, `10:15:40` or `10:15:40.768`
 isValidTime=( value )->
     unless value? then return false
@@ -304,12 +306,12 @@ isValidTime=( value )->
         )?                      # End Minutes
     $ ///).test value
 
-# Converts a time string into a `Date` object where the time properties, 
-# hours, minutes, seconds and milliseconds, are sets with the provided 
+# Converts a time string into a `Date` object where the time properties,
+# hours, minutes, seconds and milliseconds, are sets with the provided
 # datas or `0`.
 timeFromString=( string )->
     [ hours, min, sec ] = string.split ":"
-    [ sec, ms ] = if sec? then sec.split "." else [ 0, 0 ] 
+    [ sec, ms ] = if sec? then sec.split "." else [ 0, 0 ]
 
     # UTC dates start at 1:00 AM so we have to remove one hour.
     time = safeInt( hours - 1 ) * MILLISECONDS_IN_HOUR   +
@@ -331,16 +333,16 @@ timeToString=( date )->
 
     time ="#{ fill h }:#{ fill m }:#{ fill s }"
 
-    if ms isnt 0 
+    if ms isnt 0
         time += ".#{ ms }"
-    
+
     time
 
 # <a name='TimeInput'></a>
 #### TimeInput
 
 # The `TimeInput` handles the form input of type `time`.
-# 
+#
 # Here some live instances :
 # <div id="timeinput-demos"></div>
 #
@@ -349,10 +351,10 @@ timeToString=( date )->
 # var input1 = new TimeInput();
 # var input2 = new TimeInput();
 # var input3 = new TimeInput();
-# 
+#
 # input2.set( "readonly", true );
 # input3.set( "disabled", true );
-# 
+#
 # input1.attach("#timeinput-demos");
 # input2.attach("#timeinput-demos");
 # input3.attach("#timeinput-demos");
@@ -361,7 +363,7 @@ timeToString=( date )->
 class TimeInput extends AbstractDateInputWidget
     # The `TimeWidget` is displayed as a stepper
     # with a text input that allow to input directly
-    # a time. In that case the focus is provided 
+    # a time. In that case the focus is provided
     # by the text input.
     @mixins FocusProvidedByChild
 
@@ -375,25 +377,25 @@ class TimeInput extends AbstractDateInputWidget
 
         # The default `step` for a time input is one minute.
         super target, 60
-    
+
     #### Dummy management
 
-    # The dummy of a `TimeInput` is the same as the `Stepper`'s' one, 
-    # one text input, and two additional buttons to increment or 
+    # The dummy of a `TimeInput` is the same as the `Stepper`'s' one,
+    # one text input, and two additional buttons to increment or
     # decrement the value.
     createDummy:->
         dummy = super()
         dummy.append $ """<input type='text' class='value widget-done'></input>
                         <span class='down'></span>
                         <span class='up'></span>"""
-        
+
         # The focus isValidValue provided by the text input.
         @focusProvider = dummy.find "input"
 
         # Gets references to the buttons for setup.
         down = dummy.find(".down")
         up = dummy.find(".up")
-        
+
         # Pressing on the buttons starts an increment or decrement
         # interval according to the pressed button.
         buttonsMousedown = (e)=>
@@ -410,7 +412,7 @@ class TimeInput extends AbstractDateInputWidget
                 when up[0]
                     startFunction = @startIncrement
                     endFunction   = @endIncrement
-            
+
             # Initiate the interval.
             startFunction.call this
             # And register a callback to stop the interval on `mouseup`.
@@ -418,11 +420,11 @@ class TimeInput extends AbstractDateInputWidget
                 @mousePressed = false
                 endFunction.call this
                 $(document).unbind "mouseup", @documentDelegate
-        
+
         down.bind "mousedown", buttonsMousedown
         up.bind "mousedown", buttonsMousedown
-        
-        # When the mouse go out of the button while 
+
+        # When the mouse go out of the button while
         # an interval is runnung, the interval is stopped.
         down.bind "mouseout", =>
             if @incrementInterval isnt -1 then @endDecrement()
@@ -436,19 +438,23 @@ class TimeInput extends AbstractDateInputWidget
             if @mousePressed then @startIncrement()
 
         dummy
-    
+
     # The displayed value for a `TimeInput` is the time in the
     # format `hh:mm`, neither the seconds nor the milliseconds
     # are displayed.
     updateDummy:->
         @dummy.find("input").val @get("value").split(":")[0..1].join(":")
-    
+
     # The states of the widget is reflected on the widget's input.
     updateStates:->
         super()
-        if @get "readonly" then @focusProvider.attr "readonly", "readonly" else @focusProvider.removeAttr "readonly"
-        if @get "disabled" then @focusProvider.attr "disabled", "disabled" else @focusProvider.removeAttr "disabled"
-    
+
+        if @get "readonly" then @focusProvider.attr "readonly", "readonly"
+        else @focusProvider.removeAttr "readonly"
+
+        if @get "disabled" then @focusProvider.attr "disabled", "disabled"
+        else @focusProvider.removeAttr "disabled"
+
     #### Events handlers
 
     # Catch changes made to the text input content, validates it, and
@@ -456,25 +462,25 @@ class TimeInput extends AbstractDateInputWidget
     change:(e)->
         value = @focusProvider.val()
         if @isValidValue value then @set "value", value else @updateDummy()
-    
-    
+
+
     input:(e)->
 
-    # Releasing the mouse over the widget will force the focus on the 
+    # Releasing the mouse over the widget will force the focus on the
     # input. That way, clicking on the increment and decrement button
     # will also give the focus to the widget.
     mouseup:->
         if @get "disabled" then return true
 
-        @grabFocus()    
+        @grabFocus()
 
-        if @dragging 
+        if @dragging
             $(document).unbind "mousemove", @documentMouseMoveDelegate
-            $(document).unbind "mouseup",   @documentMouseUpDelegate 
+            $(document).unbind "mouseup",   @documentMouseUpDelegate
             @dragging = false
-        
+
         true
-    
+
     # The `TimeInput` allow to drag the mouse vertically to change the value.
     mousedown:(e)->
         if @cantInteract() then return true
@@ -482,9 +488,11 @@ class TimeInput extends AbstractDateInputWidget
         @dragging = true
         @pressedY = e.pageY
 
-        $(document).bind "mousemove", @documentMouseMoveDelegate = (e)=> @mousemove e
-        $(document).bind "mouseup",   @documentMouseUpDelegate   = (e)=> @mouseup e
-    
+        $(document).bind "mousemove",
+                         @documentMouseMoveDelegate =( e )=> @mousemove e
+        $(document).bind "mouseup",
+                         @documentMouseUpDelegate   =( e )=> @mouseup e
+
     # The value is changed on the basis that a move of 1 pixel change the value
     # of the amount of `step`.
     mousemove:(e)->
@@ -519,8 +527,11 @@ dateFromString=( string )->
     d
 
 dateToString=( date )->
-    "#{ fill date.getFullYear(), 4 }-#{ fill ( date.getMonth() + 1 ) }-#{ fill date.getDate() }"
-   
+    [ "#{ fill date.getFullYear(), 4 }",
+      "#{ fill date.getMonth() + 1   }",
+      "#{ fill date.getDate()        }",
+    ].join "-"
+
 # <a name='DateInput'></a>
 #### DateInput
 class DateInput extends AbstractDateInputWidget
@@ -533,7 +544,7 @@ class DateInput extends AbstractDateInputWidget
         super target
 
 # <a name='month'></a>
-## Month 
+## Month
 
 isValidMonth=( value )->
     unless value? then return false
@@ -564,13 +575,13 @@ class MonthInput extends AbstractDateInputWidget
         super target
 
 # <a name='week'></a>
-## Week 
+## Week
 
 isValidWeek=( value )->
     unless value? then return false
     (/// ^
         [\d]{4}    # Year
-        -W         # Week separator 
+        -W         # Week separator
         [\d]{2}    # Week number prefixed with W
     $ ///).test value
 
@@ -590,18 +601,18 @@ weekToString=( date )->
 
 # Returns a `Date` that is the first day of the first week of the year.
 # In fact, the returned `Date` can represent a day that is not in `year`
-# as a year can start in the middle of a week. 
+# as a year can start in the middle of a week.
 findFirstWeekFirstDay=( year )->
     d = new Date year, 0, 1, 0
     day = d.getDay()
-    
+
     if day is 0 then day = 7
 
-    if day > 3 
+    if day > 3
         new Date year, 0, 7 - day + 2, 0
-    else 
+    else
         new Date year, 0, 2 - day, 0
-    
+
 getWeekDate=( year, week )->
     start = findFirstWeekFirstDay year
     date = new Date start.valueOf() + MILLISECONDS_IN_WEEK * ( week - 1 )
@@ -624,7 +635,7 @@ class WeekInput extends AbstractDateInputWidget
 
 
 # <a name='datetime'></a>
-## DateTime 
+## DateTime
 
 isValidDateTime=( value )->
     unless value? then return false
@@ -642,7 +653,7 @@ isValidDateTime=( value )->
             (\+|\-)+   # +XX:XX or -XX:XX
             [\d]{2}:
             [\d]{2}
-        )           
+        )
     $ ///).test value
 
 datetimeFromString=( string )->
@@ -654,10 +665,13 @@ datetimeToString=( date )->
     if offset < 0
         sign = "+"
         offset *= -1
-    
+
     minutes = offset % 60
     hours = ( offset - minutes ) / 60
-    "#{ dateToString date }T#{ timeToString date }#{ sign }#{ fill hours }:#{ fill minutes }"
+    [ "#{ dateToString date }T",
+      "#{ timeToString date }",
+      "#{ sign }#{ fill hours }:#{ fill minutes }"
+    ].join ""
 
 # <a name='DateTimeInput'></a>
 #### DateTimeInput
@@ -669,10 +683,10 @@ class DateTimeInput extends AbstractDateInputWidget
         @isValidValue = isValidDateTime
 
         super target
-    
+
 # <a name='datetime-local'></a>
 ## DateTimeLocal
-validationRegexp= -> 
+validationRegexp= ->
     /// ^
         ([\d]{4})-     # Year
         ([\d]{2})-     # Month
@@ -689,21 +703,27 @@ isValidDateTimeLocal=( value )->
     validationRegexp().test value
 
 datetimeLocalFromString=( string )->
-    # Passing the date string directly in the constructor is valid, however the behavior
-    # in chrome and firefox are quite different, chrome consider that the passed-in date has
-    # an offset of `0`and the convert it to the current local offset when firefox consider
-    # the datestring as in the current local offset. In consequences, The date will differ between
-    # the two browsers of the amount of the current local offset.
+    # Passing the date string directly in the constructor is valid,
+    # however the behavior in chrome and firefox are quite different,
+    # chrome consider that the passed-in date has an offset of `0`
+    # and the convert it to the current local offset when firefox
+    # consider the datestring as in the current local offset.
+    # In consequences, The date will differ between the two browsers
+    # of the amount of the current local offset.
     #
-    # The `Date` will be created by parsing the string with the validation regex and pass
-    # each value as an argument in the `Date` constructor.
-    [ match, year, month, day, hours, minutes, seconds, milliseconds ] = validationRegexp().exec string
+    # The `Date` will be created by parsing the string with the validation
+    # regex and pass each value as an argument in the `Date` constructor.
+
+    [ match, year, month,
+      day, hours, minutes,
+      seconds, milliseconds ] = validationRegexp().exec string
+
     pI = parseInt
-    new Date pI( year    , 10 ), 
-             pI( month   , 10 ) - 1, 
-             pI( day     , 10 ), 
-             pI( hours   , 10 ), 
-             pI( minutes , 10 ), 
+    new Date pI( year    , 10 ),
+             pI( month   , 10 ) - 1,
+             pI( day     , 10 ),
+             pI( hours   , 10 ),
+             pI( minutes , 10 ),
              pI( seconds , 10 )
              if milliseconds? then pI milliseconds.replace(".", ""), 10 else 0
 
@@ -711,6 +731,7 @@ datetimeLocalToString=( date )->
     "#{ dateToString date }T#{ timeToString date }"
 
 # <a name='DateTimeLocalInput'></a>
+# FIX Find a way to fix the opera issue
 #### DateTimeLocalInput
 class DateTimeLocalInput extends AbstractDateInputWidget
     constructor:( target )->

@@ -3,16 +3,18 @@
 # for the widget's action.
 #
 # In that regards the testability of the widget cannot be guaranted concerning
-# the behavior of the target. Click emulation through javascript on a `file` input
-# is generally considered as opening a popup and then prevented by the browser.
+# the behavior of the target. Click emulation through javascript
+# on a `file` input is generally considered as opening a popup and then
+# prevented by the browser.
 #
-# Here some live instances : 
+# Here some live instances :
 # <div id="livedemos"></div>
 # <link rel="stylesheet" href="../css/styles.css" media="screen">
 # <link rel="stylesheet" href="../css/widgets.css" media="screen">
 #
 # <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
-# <script type='text/javascript' src='../depends/jquery.mousewheel.js'></script>
+# <script type='text/javascript'
+#         src='../depends/jquery.mousewheel.js'></script>
 # <script type='text/javascript' src='../depends/signals.js'></script>
 # <script type='text/javascript' src='../lib/widgets.js'></script>
 #
@@ -20,11 +22,11 @@
 # var picker1 = new FilePicker( $("<input type='file'></input>")[0] );
 # var picker2 = new FilePicker( $("<input type='file'></input>")[0] );
 # var picker3 = new FilePicker( $("<input type='file'></input>")[0] );
-# 
+#
 # picker2.set( "readonly", true );
 # picker2.set( "checked", true );
 # picker3.set( "disabled", true );
-# 
+#
 # picker1.attach("#livedemos");
 # picker2.attach("#livedemos");
 # picker3.attach("#livedemos");
@@ -35,8 +37,9 @@ class FilePicker extends Widget
 
     constructor:(target)->
 
-        # The `target` is mandatory in the `FilePicker` constructor so a default
-        # target is created when nothing is passed to the constructor. 
+        # The `target` is mandatory in the `FilePicker` constructor
+        # so a default target is created when nothing is passed
+        # to the constructor.
         unless target? then target = $("<input type='file'></input>")[0]
 
         super target
@@ -49,20 +52,20 @@ class FilePicker extends Widget
     # The target for a `FilePicker` must be an input with the type `file`.
     checkTarget:( target )->
         unless @isInputWithType target, "file"
-            throw "FilePicker must have an input file as target"
+            throw new Error "FilePicker must have an input file as target"
 
     # Display the target if defined.
     showTarget:->
         if @hasTarget then @jTarget.show()
 
     # When the target changed the `value`'s text is then replaced with
-    # the new value. 
+    # the new value.
     change:(e)->
         @setValueLabel if @jTarget.val()? then @jTarget.val() else "Browse"
         @dummy.attr "title", @jTarget.val()
-    
+
     #### Dummy management
-    
+
     # The dummy for a `FilePicker` is a `span` with a `filepicker` class on it.
     createDummy:->
         # It contains two `span` children for an icon and the value display.
@@ -79,24 +82,28 @@ class FilePicker extends Widget
         @focusProvider = @jTarget
 
         dummy
-    
+
     # This method allow to test the change of the `value`'s text.
     setValueLabel:( label )->
         @dummy.children(".value").text label
-    
+
     #### Properties Accessors
 
     # Disabling a `FilePicker` hides the target, in the contrary
     # enabling the widget will display the target again.
     set_disabled:( property, value )->
-        if value then @hideTarget() else unless @get("readonly") then @showTarget()
+        if value then @hideTarget()
+        else unless @get("readonly") then @showTarget()
+
         super property, value
-    
+
     # When a widget allow writing in it, the target is visible, otherwise the
-    # target is hidden. 
+    # target is hidden.
     set_readonly:( property, value )->
-        if value then @hideTarget() else unless @get("disabled") then @showTarget()
+        if value then @hideTarget()
+        else unless @get("disabled") then @showTarget()
+
         super property, value
-   
-    
+
+
 @FilePicker = FilePicker

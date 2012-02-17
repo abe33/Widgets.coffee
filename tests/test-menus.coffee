@@ -13,7 +13,7 @@ $( document ).ready ->
         assertThat model.items[0] is item1
         assertThat model.items[1] is item2
 
-    test "MenuModel should prevent invalid or incomplete actions to be passed in its constructor",->
+    test "MenuModel should prevent invalid or in complete actions to be passed in its constructor",->
 
         item1 = action:->
         item2= display:"irrelevant", action:"irrelevant"

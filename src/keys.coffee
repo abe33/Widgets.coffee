@@ -6,12 +6,12 @@
 # Key strokes are represented by the `KeyStroke` object.
 # It should only exist one instance of the `KeyStroke`
 # class for a given key combination. That's the purpose
-# of the `keystroke` function. 
+# of the `keystroke` function.
 
-# Use the `keystroke` function to get a `KeyStroke` instance 
+# Use the `keystroke` function to get a `KeyStroke` instance
 # corresponding to the passed `keyCode` and `modifiers`.
-# 
-# To get a key stroke you should do the following: 
+#
+# To get a key stroke you should do the following:
 #
 #     keystroke keys.a, keys.mod.ctrl + keys.mod.shift
 #
@@ -19,7 +19,7 @@
 # by adding different modifiers together.
 keystroke = (keyCode, modifiers)->
 
-    # The `keystroke` function ensure that only one `KeyStroke` instance 
+    # The `keystroke` function ensure that only one `KeyStroke` instance
     # exist for a given combination, it allow to use the equal operator
     # to compare key strokes.
     #
@@ -30,7 +30,8 @@ keystroke = (keyCode, modifiers)->
     if "#{keyCode}-#{modifiers}" of KeyStroke.instances
         KeyStroke.instances[ "#{keyCode}-#{modifiers}" ]
     else
-        KeyStroke.instances[ "#{keyCode}-#{modifiers}" ] = new KeyStroke keyCode, modifiers
+        KeyStroke.instances["#{keyCode}-#{modifiers}"] = new KeyStroke keyCode,
+                                                                       modifiers
 
 ##### KeyStroke class
 
@@ -41,7 +42,7 @@ class KeyStroke
     # All key stroke instances are stored at the class level.
     @instances = {}
 
-    # Takes the `keyCode` and the `modifiers` and initialize 
+    # Takes the `keyCode` and the `modifiers` and initialize
     # the specific modifiers properties.
     constructor:(keyCode, modifiers)->
 
@@ -52,16 +53,16 @@ class KeyStroke
         @ctrl       = ( modifiers & 0x01 ) is 1
         @shift      = ( ( modifiers >> 1 ) & 0x01 ) is 1
         @alt        = ( ( modifiers >> 2 ) & 0x01 ) is 1
-    
+
     # Compare the passed-in key event with the current instance.
     match:(e)->
-        e.keyCode  is @keyCode and 
+        e.keyCode  is @keyCode and
         e.ctrlKey  is @ctrl    and
         e.shiftKey is @shift   and
         e.altKey   is @alt
-    
+
     # Provide a human readable representation of the key stroke.
-    # For exemple, the following keystroke : 
+    # For exemple, the following keystroke :
     #
     #     keystroke keys.z, keys.mod.ctrl
     #
@@ -72,21 +73,21 @@ class KeyStroke
         if @ctrl  then a.push "Ctrl"
         if @shift then a.push "Shift"
         if @alt   then a.push "Alt"
-    
-        for k, v of keys 
+
+        for k, v of keys
             if @keyCode is v
-                a.push k.toUpperCase() 
+                a.push k.toUpperCase()
                 break
-        
+
         a.join "+"
 
 # A list of keys codes and modifiers values.
-keys = 
+keys =
     # Stores the modifiers values.
     # Use additions to produce the final modifier, such as in:
     #
     #     keystroke keys.a, keys.mod.ctrl + keys.mod.shift
-    mod: 
+    mod:
         ctrl        :1
         shift       :2
         alt         :4
@@ -100,7 +101,7 @@ keys =
     pause           :19
     caps_lock       :20
     escape          :27
-    space           :32            
+    space           :32
     page_up         :33
     page_down       :34
     end             :35
@@ -189,7 +190,7 @@ keys =
     open_bracket    :219
     back_slash      :220
     close_bracket   :221
-    single_quote    :222 
+    single_quote    :222
 
 @keystroke = keystroke
 @keys  = keys

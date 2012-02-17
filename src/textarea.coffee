@@ -1,7 +1,7 @@
 # The `TextArea` widget wrap the target within a `span` in order to
 # allow custom styling.
 #
-# Here some live instances : 
+# Here some live instances :
 # <div id="livedemos"></div>
 # <link rel="stylesheet" href="../css/styles.css" media="screen">
 # <link rel="stylesheet" href="../css/widgets.css" media="screen">
@@ -19,10 +19,10 @@
 # area1.set( "value", "hello" );
 # area2.set( "value", "readonly" );
 # area3.set( "value", "disabled" );
-# 
+#
 # area2.set( "readonly", true );
 # area3.set( "disabled", true );
-# 
+#
 # area1.attach("#livedemos");
 # area2.attach("#livedemos");
 # area3.attach("#livedemos");
@@ -34,11 +34,11 @@ class TextArea extends Widget
     constructor:(target)->
 
         # The `target` is mandatory in the `TextArea` constructor so a default
-        # target is created when nothing is passed to the constructor. 
+        # target is created when nothing is passed to the constructor.
         unless target? then target = $("<textarea></textarea")[0]
 
         super target
-        
+
         @valueIsObsolete = false
 
     #### Target management
@@ -46,8 +46,8 @@ class TextArea extends Widget
     # The target for a `TextArea` must be a `textarea` node.
     checkTarget:(target)->
         unless @isTag target, "textarea"
-            throw "TextArea only allow textarea nodes as target"
-    
+            throw new Error "TextArea only allow textarea nodes as target"
+
     #### Dummy management
 
     # The dummy for a `TextArea` is a `span` with a `textarea` class on it.
@@ -56,19 +56,19 @@ class TextArea extends Widget
         dummy.append @target
         @focusProvider = @jTarget
         dummy
-    
+
     #### Events handling
-    
+
     # When the user types some text in the target, the widget's
-    # value is marked as obsolete. 
+    # value is marked as obsolete.
     input:(e)->
         @valueIsObsolete = true
-    
+
     # When the `change` event occurs, the content of the
     # target is saved as the new widget's value and the obsolete
     # flag is set to `false`.
-    # 
-    # The flag is unset after the value's affectation, and since 
+    #
+    # The flag is unset after the value's affectation, and since
     # a `valueChanged` signal is dispatched, the `valueIsObsolete`
     # property allow a listener to know if the change done to the
     # widget was done by a user input.
@@ -76,5 +76,5 @@ class TextArea extends Widget
         @set "value", @jTarget.val()
         @valueIsObsolete = false
         true
-    
+
 @TextArea = TextArea

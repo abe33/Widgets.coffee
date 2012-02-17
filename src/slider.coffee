@@ -4,13 +4,14 @@
 # The `Slider` class extends `NumericWidget` and reuse all
 # the behavior of the base class.
 #
-# Here some live instances : 
+# Here some live instances :
 # <div id="livedemos"></div>
 # <link rel="stylesheet" href="../css/styles.css" media="screen">
 # <link rel="stylesheet" href="../css/widgets.css" media="screen">
 #
 # <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
-# <script type='text/javascript' src='../depends/jquery.mousewheel.js'></script>
+# <script type='text/javascript'
+#         src='../depends/jquery.mousewheel.js'></script>
 # <script type='text/javascript' src='../depends/signals.js'></script>
 # <script type='text/javascript' src='../lib/widgets.js'></script>
 #
@@ -18,19 +19,19 @@
 # var slider1 = new Slider();
 # var slider2 = new Slider();
 # var slider3 = new Slider();
-# 
+#
 # slider1.valueCenteredOnKnob = true;
 # slider2.valueCenteredOnKnob = true;
 # slider3.valueCenteredOnKnob = true;
-# 
+#
 # slider1.set("value", 12);
 # slider2.set("value", 45);
 # slider3.set("value", 78);
-# 
+#
 # slider2.set( "readonly", true );
 # slider2.set( "checked", true );
 # slider3.set( "disabled", true );
-# 
+#
 # slider1.attach("#livedemos");
 # slider2.attach("#livedemos");
 # slider3.attach("#livedemos");
@@ -46,10 +47,10 @@ class Slider extends NumericWidget
         @draggingKnob = false
 
         # The position of the mouse is stored during drag operation.
-        @lastMouseX = 0 
-        @lastMouseY = 0 
+        @lastMouseX = 0
+        @lastMouseY = 0
 
-        # A property that allow the `value` span to be 
+        # A property that allow the `value` span to be
         # centered with the knob.
         @valueCenteredOnKnob = true
 
@@ -58,38 +59,38 @@ class Slider extends NumericWidget
         unless @get("max")?  then @properties.max  = 100
 
         @set "value", @get "value"
-    
+
     #### Target management
 
     # The target for a `Slider` must be an input with the type `range`.
     checkTarget:( target )->
         unless @isInputWithType target, "range"
-            throw "Slider target must be an input with a range type" 
+            throw new Error "Slider target must be an input with a range type"
 
     #### Mouse controls
     #
     # The knob child of the slider can be dragged to modify
-    # the slider's value. 
+    # the slider's value.
 
     # Initiate a drag gesture.
     startDrag:(e)->
         @draggingKnob = true
 
         # The mouse position is stored when the drag gesture
-        # starts. 
+        # starts.
         @lastMouseX = e.pageX
         @lastMouseY = e.pageY
 
-        # The slider then register itself to the document's 
-        # `mousemove` and `mouseup` events. 
+        # The slider then register itself to the document's
+        # `mousemove` and `mouseup` events.
         # It ensure that the slider keeps to receive events
         # even when the mouse is outside of the slider.
         $(document).bind "mouseup", @documentMouseUpDelegate = (e)=>
             @endDrag()
-        
+
         $(document).bind "mousemove", @documentMouseMoveDelegate = (e)=>
             @drag e
-    
+
     # During the drag, the slider converts the data
     # in the mouse event object to drag related data.
     drag:(e)->
@@ -108,27 +109,27 @@ class Slider extends NumericWidget
         change = Math.round( normalizedValue * ( max - min ) )
 
         # To finally being added to the `value` property.
-        @set "value", @get("value") + change 
+        @set "value", @get("value") + change
 
         # The current mouse position is then stored for the
         # next drag call.
         @lastMouseX = e.pageX
         @lastMouseY = e.pageY
-    
+
     # When the drag ends the slider unregister from the document's
-    # events. 
+    # events.
     endDrag:->
         @draggingKnob = false
 
         $(document).unbind "mousemove", @documentMouseMoveDelegate
         $(document).unbind "mouseup",   @documentMouseUpDelegate
-    
+
     # Mouse events are converted in dragging data by
     # calculating the distance two mouse moves.
     getDragDataFromEvent:(e)->
         x:e.pageX - @lastMouseX
         y:e.pageY - @lastMouseY
-        
+
     # Pressing the mouse button over the knob start
     # the drag gesture.
     handleKnobMouseDown:(e)->
@@ -137,12 +138,12 @@ class Slider extends NumericWidget
         unless @cantInteract()
             @startDrag e
             @grabFocus()
-            # The default behavior is prevented. Otherwise, 
+            # The default behavior is prevented. Otherwise,
             # dragging the knob will end up to initiate a copy/paste
             # drag gesture at the browser level.
             e.preventDefault()
-    
-    # Pressing the mouse button over the track change 
+
+    # Pressing the mouse button over the track change
     # the value and start the drag gesture.
     handleTrackMouseDown:(e)->
         unless @cantInteract()
@@ -161,7 +162,7 @@ class Slider extends NumericWidget
             # Other than the value change, the track behave
             # as the knob do.
             @handleKnobMouseDown e
-            
+
     #### Dummy management
 
     # The dummy of the `Slider` widget is a parent `<span>` with
@@ -173,17 +174,17 @@ class Slider extends NumericWidget
                         <span class='knob'></span>
                         <span class='value'></span>
                     </span>"
-            
+
         # The slider register to the `mousedown` events
-        # of its track and its knob.    
+        # of its track and its knob.
         dummy.children(".knob").bind "mousedown", (e)=>
             @handleKnobMouseDown e
-        
+
         dummy.children(".track").bind "mousedown", (e)=>
             @handleTrackMouseDown e
 
         dummy
-    
+
     # Updates the dummy according to the slider's data.
     updateDummy:( value, min, max, step )->
 
@@ -191,23 +192,23 @@ class Slider extends NumericWidget
         knob      = @dummy.children ".knob"
         val       = @dummy.children ".value"
         knobWidth = knob.width()
-        valWidth  = val.width() 
+        valWidth  = val.width()
 
         # The knob left offset is calculated with the current size
-        # of the slider and the current size of the knob. 
+        # of the slider and the current size of the knob.
         knobPos = ( width - knobWidth ) * ( ( value - min ) / ( max - min ) )
         knob.css "left", knobPos
 
         # The `value` child text is updated with the current slider's
-        # value. 
+        # value.
         val.text value
 
         # If the `valueCenteredOnKnob` property is `true`, then the
         # `value` child's left offset property is also updated.
-        if @valueCenteredOnKnob 
-            valPos = ( knobPos + knobWidth / 2 ) - valWidth / 2 
+        if @valueCenteredOnKnob
+            valPos = ( knobPos + knobWidth / 2 ) - valWidth / 2
             val.css "left", valPos
         else
-            val.css "left", "auto"    
+            val.css "left", "auto"
 
 @Slider = Slider
