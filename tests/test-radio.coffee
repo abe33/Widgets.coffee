@@ -1,273 +1,280 @@
 $( document ).ready ->
 
-	module "radio tests"
+    module "radio tests"
 
-	test "Radio should allow input with a radio type",->
-		target = $("<input type='radio'></input>")[0]
-		
-		radio = new Radio target
-		
-		assertThat radio.target is target
+    test "Radio should allow input with a radio type",->
+        target = $("<input type='radio'></input>")[0]
 
+        radio = new Radio target
 
-	test "Radio should allow only input with a radio type",->
-		target = $("<input type='text'></input>")[0]
-		errorRaised = false
+        assertThat radio.target is target
 
-		try 
-			radio = new Radio target
-		catch e
-			errorRaised = true
-		
-		assertThat errorRaised
 
-	test "Radio should reflect the checked state of the input", ->
-		target = $("<input type='radio' checked></input>")[0]
-		
-		radio = new Radio target
+    test "Radio should allow only input with a radio type",->
+        target = $("<input type='text'></input>")[0]
+        errorRaised = false
 
-		assertThat radio.get "checked"
+        try
+            radio = new Radio target
+        catch e
+            errorRaised = true
 
-	test "Radio should apply change made to the checked property on the target", ->
-		target = $("<input type='radio' checked></input>")[0]
-		
-		radio = new Radio target
+        assertThat errorRaised
 
-		radio.set "checked", false
+    test "Radio should reflect the checked state of the input", ->
+        target = $("<input type='radio' checked></input>")[0]
 
-		assertThat radio.get("checked"), equalTo false
+        radio = new Radio target
 
-	test "Radio should be created without a target", ->
+        assertThat radio.get "checked"
 
-		errorRaised = false
+    test "Radio should apply change made to the checked property
+          on the target", ->
+        target = $("<input type='radio' checked></input>")[0]
 
-		try
-			radio = new Radio
-		catch e
-			errorRaised = true
-		
-		assertThat not errorRaised
+        radio = new Radio target
 
-	test "Radio should provide a dummy", ->
+        radio.set "checked", false
 
-		radio = new Radio
+        assertThat radio.get("checked"), equalTo false
 
-		assertThat radio.dummy, notNullValue()
+    test "Radio should be created without a target", ->
 
-	test "Radio should handle the checked property as a state", ->
+        errorRaised = false
 
-		radio = new Radio
+        try
+            radio = new Radio
+        catch e
+            errorRaised = true
 
-		radio.set "checked", true
+        assertThat not errorRaised
 
-		assertThat radio.dummy.hasClass "checked"
+    test "Radio should provide a dummy", ->
 
-	test "Radio should hide its target on creation", ->
-		target = $("<input type='radio' checked></input>")
-		
-		radio = new Radio target[0]
+        radio = new Radio
 
-		assertThat target.attr("style"), contains "display: none"
+        assertThat radio.dummy, notNullValue()
 
-	test "Clicking on a Radio should toggle its checked state", ->
+    test "Radio should handle the checked property as a state", ->
 
-		radio = new Radio
+        radio = new Radio
 
-		assertThat radio.get("checked"), equalTo false
+        radio.set "checked", true
 
-		radio.click()
+        assertThat radio.dummy.hasClass "checked"
 
-		assertThat radio.get("checked"), equalTo true
+    test "Radio should hide its target on creation", ->
+        target = $("<input type='radio' checked></input>")
 
+        radio = new Radio target[0]
 
-	test "Clicking on a Radio several time should never toggle checked back to false", ->
+        assertThat target.attr("style"), contains "display: none"
 
-		radio = new Radio
+    test "Clicking on a Radio should toggle its checked state", ->
 
-		assertThat radio.get("checked"), equalTo false
+        radio = new Radio
 
-		radio.click()
+        assertThat radio.get("checked"), equalTo false
 
-		assertThat radio.get("checked"), equalTo true
+        radio.click()
 
-		radio.click()
+        assertThat radio.get("checked"), equalTo true
 
-		assertThat radio.get("checked"), equalTo true
 
-	test "Clicking on a Radio shouldn't toggle its checked state when readonly", ->
+    test "Clicking on a Radio several time should never toggle checked
+          back to false", ->
 
-		radio = new Radio
-		radio.set "readonly", true
+        radio = new Radio
 
-		assertThat radio.get("checked"), equalTo false
+        assertThat radio.get("checked"), equalTo false
 
-		radio.click()
+        radio.click()
 
-		assertThat radio.get("checked"), equalTo false
+        assertThat radio.get("checked"), equalTo true
 
-	test "Clicking on a Radio shouldn't toggle its checked state when disabled", ->
+        radio.click()
 
-		radio = new Radio
-		radio.set "disabled", true
+        assertThat radio.get("checked"), equalTo true
 
-		assertThat radio.get("checked"), equalTo false
+    test "Clicking on a Radio shouldn't toggle its checked state
+          when readonly", ->
 
-		radio.click()
+        radio = new Radio
+        radio.set "readonly", true
 
-		assertThat radio.get("checked"), equalTo false
+        assertThat radio.get("checked"), equalTo false
 
-	test "Clicking on a Radio should grab the focus", ->
+        radio.click()
 
-		focusReveiced = false
+        assertThat radio.get("checked"), equalTo false
 
-		class MockRadio extends Radio
-			focus:(e)->
-				focusReveiced = true
-		
-		radio = new MockRadio
+    test "Clicking on a Radio shouldn't toggle its checked state
+          when disabled", ->
 
-		radio.click()
+        radio = new Radio
+        radio.set "disabled", true
 
-		assertThat focusReveiced
+        assertThat radio.get("checked"), equalTo false
 
-	test "Using enter should toggle the radio's checked state", ->
+        radio.click()
 
-		radio = new Radio
+        assertThat radio.get("checked"), equalTo false
 
-		radio.grabFocus()
+    test "Clicking on a Radio should grab the focus", ->
 
-		radio.keyup
-			keyCode:keys.enter
-			ctrlKey:false
-			shiftKey:false
-			altKey:false
-		
-		assertThat radio.get "checked"
+        focusReveiced = false
 
-	test "Using space should toggle the radio's checked state", ->
+        class MockRadio extends Radio
+            focus:(e)->
+                focusReveiced = true
 
-		radio = new Radio
+        radio = new MockRadio
 
-		radio.grabFocus()
+        radio.click()
 
-		radio.keyup
-			keyCode:keys.space
-			ctrlKey:false
-			shiftKey:false
-			altKey:false
-		
-		assertThat radio.get "checked"
+        assertThat focusReveiced
 
-	test "Using enter shouldn't toggle the radio's checked state when readonly", ->
+    test "Using enter should toggle the radio's checked state", ->
 
-		radio = new Radio
+        radio = new Radio
 
-		radio.set "readonly", true
+        radio.grabFocus()
 
-		radio.grabFocus()
+        radio.keyup
+            keyCode:keys.enter
+            ctrlKey:false
+            shiftKey:false
+            altKey:false
 
-		radio.keyup
-			keyCode:keys.enter
-			ctrlKey:false
-			shiftKey:false
-			altKey:false
-		
-		assertThat not radio.get "checked"
+        assertThat radio.get "checked"
 
-	test "Using space shouldn't toggle the radio's checked state when readonly", ->
+    test "Using space should toggle the radio's checked state", ->
 
-		radio = new Radio
+        radio = new Radio
 
-		radio.set "readonly", true
+        radio.grabFocus()
 
-		radio.grabFocus()
+        radio.keyup
+            keyCode:keys.space
+            ctrlKey:false
+            shiftKey:false
+            altKey:false
 
-		radio.keyup
-			keyCode:keys.space
-			ctrlKey:false
-			shiftKey:false
-			altKey:false
-		
-		assertThat not radio.get "checked"
+        assertThat radio.get "checked"
 
-	test "Radio reset should operate on the checked state", ->
-		
-		radio = new Radio
-		
-		radio.set "checked", true
-		
-		radio.reset()
-		
-		assertThat not radio.get "checked"
+    test "Using enter shouldn't toggle the radio's checked state
+          when readonly", ->
 
-	test "Radio should modify the value state synchronously with checked", ->
-		
-		radio = new Radio
-		radio.set "checked", true
+        radio = new Radio
 
-		assertThat radio.get("value"), equalTo true
+        radio.set "readonly", true
 
-	test "Radio should allow to specify a tuple of possible values", ->
+        radio.grabFocus()
 
-		radio = new Radio
+        radio.keyup
+            keyCode:keys.enter
+            ctrlKey:false
+            shiftKey:false
+            altKey:false
 
-		radio.set "values", [ "on", "off" ]
-		assertThat radio.get("value"), equalTo "off"
+        assertThat not radio.get "checked"
 
-		radio.set "checked", true
+    test "Using space shouldn't toggle the radio's checked state
+          when readonly", ->
 
-		assertThat radio.get("value"), equalTo "on"
+        radio = new Radio
 
-	test "Modifying the radio value should modify the checked state", ->
+        radio.set "readonly", true
 
-		radio = new Radio
+        radio.grabFocus()
 
-		radio.set "value", true
+        radio.keyup
+            keyCode:keys.space
+            ctrlKey:false
+            shiftKey:false
+            altKey:false
 
-		assertThat radio.get "checked"
+        assertThat not radio.get "checked"
 
-	test "Modifying the radio value should modify the checked state according to the values property", ->
+    test "Radio reset should operate on the checked state", ->
 
-		radio = new Radio
-		radio.set "values", [ "on", "off" ]
-		radio.set "value", "on"
+        radio = new Radio
 
-		assertThat radio.get "checked"
+        radio.set "checked", true
 
-	test "Radio should dispatch a checkedChanged signal", ->
+        radio.reset()
 
-		radio = new Radio
-		signalCalled = false
-		signalOrigin = null
-		signalValue = null
+        assertThat not radio.get "checked"
 
-		radio.checkedChanged.add ( widget, checked )->
-			signalCalled = true
-			signalOrigin = widget
-			signalValue = checked
-		
-		radio.set "checked", true
+    test "Radio should modify the value state synchronously with checked", ->
 
-		assertThat signalCalled
-		assertThat signalOrigin, equalTo radio
-		assertThat signalValue, equalTo true
+        radio = new Radio
+        radio.set "checked", true
 
+        assertThat radio.get("value"), equalTo true
 
-	# Some real radios placed at the top of the test runner.
-	# It allow to test the widget live in the test runner.
+    test "Radio should allow to specify a tuple of possible values", ->
 
-	target = $("<input type='radio'></input>")
+        radio = new Radio
 
-	radio1 = new Radio target[0]
-	radio2 = new Radio
-	radio3 = new Radio
+        radio.set "values", [ "on", "off" ]
+        assertThat radio.get("value"), equalTo "off"
 
-	radio2.set "readonly", true
-	radio2.set "checked", true
-	radio3.set "disabled", true
+        radio.set "checked", true
 
-	$("#qunit-header").before $ "<h4>Radio</h4>"
-	$("#qunit-header").before target
-	radio1.before "#qunit-header"
-	radio2.before "#qunit-header"
-	radio3.before "#qunit-header"
+        assertThat radio.get("value"), equalTo "on"
+
+    test "Modifying the radio value should modify the checked state", ->
+
+        radio = new Radio
+
+        radio.set "value", true
+
+        assertThat radio.get "checked"
+
+    test "Modifying the radio value should modify the checked
+          state according to the values property", ->
+
+        radio = new Radio
+        radio.set "values", [ "on", "off" ]
+        radio.set "value", "on"
+
+        assertThat radio.get "checked"
+
+    test "Radio should dispatch a checkedChanged signal", ->
+
+        radio = new Radio
+        signalCalled = false
+        signalOrigin = null
+        signalValue = null
+
+        radio.checkedChanged.add ( widget, checked )->
+            signalCalled = true
+            signalOrigin = widget
+            signalValue = checked
+
+        radio.set "checked", true
+
+        assertThat signalCalled
+        assertThat signalOrigin, equalTo radio
+        assertThat signalValue, equalTo true
+
+
+    # Some real radios placed at the top of the test runner.
+    # It allow to test the widget live in the test runner.
+
+    target = $("<input type='radio'></input>")
+
+    radio1 = new Radio target[0]
+    radio2 = new Radio
+    radio3 = new Radio
+
+    radio2.set "readonly", true
+    radio2.set "checked", true
+    radio3.set "disabled", true
+
+    $("#qunit-header").before $ "<h4>Radio</h4>"
+    $("#qunit-header").before target
+    radio1.before "#qunit-header"
+    radio2.before "#qunit-header"
+    radio3.before "#qunit-header"

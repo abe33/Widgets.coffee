@@ -83,9 +83,9 @@ class Batch
 
 run=( command, options, callback )->
     exe = spawn command, options
-    exe.stdout.on 'data', (data) -> print data.toString()
-    exe.stderr.on 'data', (data) -> print data.toString()
-    exe.on 'exit', (status) -> callback?()
+    exe.stdout.on 'data', ( data )-> print data.toString()
+    exe.stderr.on 'data', ( data )-> print data.toString()
+    exe.on 'exit', ( status )-> callback?()
 
 join=( dir, contents, inFile, callback )->
     files = ( "#{dir}/#{file}.coffee" for file in contents )
@@ -149,7 +149,7 @@ task 'lint', 'Lint the widgets', ->
     for file in allFiles
         files.push "src/#{file}.coffee"
     for k, { test } of compilationUnits
-        files.push "tests/test-#{file}.coffee"
+        files.push "tests/#{test}.coffee"
 
 
     batch = new Batch ( lintCommand file for file in files )

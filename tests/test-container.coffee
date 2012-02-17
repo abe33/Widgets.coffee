@@ -1,180 +1,190 @@
+class MockWidget extends Widget
+    createDummy:->
+        $ "<span></span>"
+
 $( document ).ready ->
 
-	class MockWidget extends Widget
-			createDummy:->
-				$ "<span></span>"
+    module "container tests"
 
-	module "container tests"
+    test "A container should have children", ->
 
-	test "A container should have children", ->
+        container = new Container
 
-		container = new Container
+        assertThat container.children, allOf notNullValue(), arrayWithLength 0
 
-		assertThat container.children, allOf notNullValue(), arrayWithLength 0
+    test "A container should allow to add children", ->
 
-	test "A container should allow to add children", ->
+        container = new Container
 
-		container = new Container
+        container.add new MockWidget
 
-		container.add new MockWidget
+        assertThat container.children, arrayWithLength 1
 
-		assertThat container.children, arrayWithLength 1
+    test "A container should prevent to add a null child", ->
 
-	test "A container should prevent to add a null child", ->
-		
-		container = new Container
+        container = new Container
 
-		container.add null
+        container.add null
 
-		assertThat container.children, arrayWithLength 0
+        assertThat container.children, arrayWithLength 0
 
-	test "A container should prevent to add an object which is not a widget", ->
+    test "A container should prevent to add an object which
+          is not a widget", ->
 
-		container = new Container
+        container = new Container
 
-		container.add {}
+        container.add {}
 
-		assertThat container.children, arrayWithLength 0
+        assertThat container.children, arrayWithLength 0
 
-	test "A container should allow to add a child that is an instance of a widget subclass", ->
+    test "A container should allow to add a child that
+          is an instance of a widget subclass", ->
 
-		container = new Container
+        container = new Container
 
-		container.add new MockWidget
+        container.add new MockWidget
 
-		assertThat container.children, arrayWithLength 1
+        assertThat container.children, arrayWithLength 1
 
-	test "A container should prevent to add the same child twice", ->
+    test "A container should prevent to add the same child twice", ->
 
-		container = new Container
-		child = new MockWidget
+        container = new Container
+        child = new MockWidget
 
-		container.add child
-		container.add child
+        container.add child
+        container.add child
 
-		assertThat container.children, array child
+        assertThat container.children, array child
 
-	test "A container should allow to remove a previously added child", ->
+    test "A container should allow to remove a previously added child", ->
 
-		container = new Container
-		child = new MockWidget
+        container = new Container
+        child = new MockWidget
 
-		container.add child
-		container.remove child
+        container.add child
+        container.remove child
 
-		assertThat container.children, arrayWithLength 0
+        assertThat container.children, arrayWithLength 0
 
-	test "A container shouldn't proceed when remove is called with null", ->
+    test "A container shouldn't proceed when remove is called with null", ->
 
-		container = new Container
-		child = new MockWidget
-		
-		container.add child
-		container.remove null
+        container = new Container
+        child = new MockWidget
 
-		assertThat container.children, arrayWithLength 1
+        container.add child
+        container.remove null
 
-	test "A container shouldn't proceed when remove is called with an object that isn't a widget", ->
-		
-		container = new Container
-		child = new MockWidget
-		
-		container.add child
-		container.remove {}
+        assertThat container.children, arrayWithLength 1
 
-		assertThat container.children, arrayWithLength 1
+    test "A container shouldn't proceed when remove is called
+          with an object that isn't a widget", ->
 
-	test "A container shouldn't proceed when remove is called with a widget which is not a child", ->
+        container = new Container
+        child = new MockWidget
 
-		container = new Container
-		child = new MockWidget
-		notChild = new MockWidget
-		
-		container.add child
-		container.remove notChild
+        container.add child
+        container.remove {}
 
-		assertThat container.children, arrayWithLength 1
+        assertThat container.children, arrayWithLength 1
 
-	test "A container should have a dummy", ->
+    test "A container shouldn't proceed when remove is called
+          with a widget which is not a child", ->
 
-		container = new Container
+        container = new Container
+        child = new MockWidget
+        notChild = new MockWidget
 
-		assertThat container.dummy, notNullValue()
+        container.add child
+        container.remove notChild
 
-	test "Adding a widget in a container should add its dummy as a child of the container's one", ->
+        assertThat container.children, arrayWithLength 1
 
-		container = new Container
-		child = new MockWidget
-		
-		container.add child
+    test "A container should have a dummy", ->
 
-		assertThat container.dummy.children().length, equalTo 1
-		assertThat container.dummy.children()[0], equalTo child.dummy[0]
+        container = new Container
 
-	test "Removing a widget should remove its dummy from the container's one", ->
+        assertThat container.dummy, notNullValue()
 
-		container = new Container
-		child = new MockWidget
-		
-		container.add child	
-		container.remove child	
+    test "Adding a widget in a container should add its dummy
+          as a child of the container's one", ->
 
-		assertThat container.dummy.children().length, equalTo 0
+        container = new Container
+        child = new MockWidget
 
-	test "Widgets added as child of a container should be able to access its parent", ->
+        container.add child
 
-		container = new Container
-		child = new MockWidget
+        assertThat container.dummy.children().length, equalTo 1
+        assertThat container.dummy.children()[0], equalTo child.dummy[0]
 
-		container.add child
+    test "Removing a widget should remove its dummy from
+          the container's one", ->
 
-		assertThat child.parent is container
+        container = new Container
+        child = new MockWidget
 
-	test "Widgets that are no longer a child of a container shouldn't hold a reference to it anymore", ->
+        container.add child
+        container.remove child
 
-		container = new Container
-		child = new MockWidget
+        assertThat container.dummy.children().length, equalTo 0
 
-		container.add child
-		container.remove child
+    test "Widgets added as child of a container should be able
+          to access its parent", ->
 
-		assertThat child.parent is null
+        container = new Container
+        child = new MockWidget
 
-	test "A container should prevent to take focus when one of its child receive it", ->
+        container.add child
 
-		widget = new MockWidget
-		container = new Container
+        assertThat child.parent is container
 
-		container.add widget
+    test "Widgets that are no longer a child of a container
+          shouldn't hold a reference to it anymore", ->
 
-		widget.dummy.focus()
+        container = new Container
+        child = new MockWidget
 
-		assertThat not container.hasFocus
+        container.add child
+        container.remove child
 
-	test "Keyboard commands that can't be found in children should be bubbled to the parent", ->
+        assertThat child.parent is null
 
-		keyDownCommandCalled = false
-		keyUpCommandCalled = false
+    test "A container should prevent to take focus when
+          one of its child receive it", ->
 
-		class MockContainer extends Container
-			triggerKeyDownCommand:(e)->
-				keyDownCommandCalled = true
-			
-			triggerKeyUpCommand:(e)->
-				keyUpCommandCalled = true
+        widget = new MockWidget
+        container = new Container
 
-		widget = new MockWidget
-		container = new MockContainer
+        container.add widget
 
-		container.add widget
+        widget.dummy.focus()
 
-		event = keyCode:16,	ctrlKey:true, shiftKey:true, altKey:true
+        assertThat not container.hasFocus
 
-		widget.triggerKeyDownCommand event	
-		widget.triggerKeyUpCommand event	
-		
-		assertThat keyDownCommandCalled
-		assertThat keyUpCommandCalled
-		
+    test "Keyboard commands that can't be found in children
+          should be bubbled to the parent", ->
+
+        keyDownCommandCalled = false
+        keyUpCommandCalled = false
+
+        class MockContainer extends Container
+            triggerKeyDownCommand:(e)->
+                keyDownCommandCalled = true
+
+            triggerKeyUpCommand:(e)->
+                keyUpCommandCalled = true
+
+        widget = new MockWidget
+        container = new MockContainer
+
+        container.add widget
+
+        event = keyCode:16, ctrlKey:true, shiftKey:true, altKey:true
+
+        widget.triggerKeyDownCommand event
+        widget.triggerKeyUpCommand event
+
+        assertThat keyDownCommandCalled
+        assertThat keyUpCommandCalled
+
 
 

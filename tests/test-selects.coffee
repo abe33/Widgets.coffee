@@ -9,7 +9,8 @@ $( document ).ready ->
 
         assertThat select.target is target
 
-    test "SingleSelect shouldn't accept anything else that a select as target", ->
+    test "SingleSelect shouldn't accept anything else that
+          a select as target", ->
         target = $( "<input></input>" )[0]
 
         errorRaised = false
@@ -18,10 +19,11 @@ $( document ).ready ->
             select = new SingleSelect target
         catch e
             errorRaised = true
-        
+
         assertThat errorRaised
 
-    test "SingleSelect shouldn't accept a select with multiple attribute as target", ->
+    test "SingleSelect shouldn't accept a select with multiple
+          attribute as target", ->
         target = $( "<select multiple></select>" )[0]
 
         errorRaised = false
@@ -30,14 +32,15 @@ $( document ).ready ->
             select = new SingleSelect target
         catch e
             errorRaised = true
-        
+
         assertThat errorRaised
 
     test "SingleSelect's dummy should display the selected option label", ->
 
         target = $( "<select>
                         <option>foo</option>
-                        <option selected value='__BAR__' label='BAR'>bar</option>
+                        <option selected value='__BAR__'
+                                label='BAR'>bar</option>
                      </select>" )[0]
         select = new SingleSelect target
 
@@ -52,10 +55,11 @@ $( document ).ready ->
                      </select>" )[0]
         select = new SingleSelect target
 
-        assertThat select.dummy.find(".value").text(), equalTo "bar"   
+        assertThat select.dummy.find(".value").text(), equalTo "bar"
         assertThat select.get("value"), equalTo "BAR"
 
-    test "SingleSelect's selected index should be the index of the child with the selected attribute", ->
+    test "SingleSelect's selected index should be the index
+          of the child with the selected attribute", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -66,7 +70,7 @@ $( document ).ready ->
         assertThat select.selectedPath, array 1
 
     test "Setting the value should change the selected index", ->
-     
+
         target = $( "<select>
                         <option>foo</option>
                         <option selected value='BAR'>bar</option>
@@ -79,7 +83,7 @@ $( document ).ready ->
         assertThat select.dummy.find(".value").text(), equalTo "foo"
 
         select.set "value", "BAR"
-        
+
         assertThat select.selectedPath, array 1
         assertThat select.dummy.find(".value").text(), equalTo "bar"
 
@@ -93,8 +97,9 @@ $( document ).ready ->
 
         assertThat target.attr("style"), contains "display: none"
 
-    test "SingleSelect should build a MenuModel with the option of the select", ->
-        
+    test "SingleSelect should build a MenuModel with the option
+          of the select", ->
+
         target = $( "<select>
                         <option>foo</option>
                         <option label='BAR' selected>bar</option>
@@ -102,10 +107,11 @@ $( document ).ready ->
         select = new SingleSelect target[0]
 
         assertThat select.model.size(), equalTo 2
-        assertThat select.model.items[0], hasProperty "display", equalTo "foo" 
-        assertThat select.model.items[1], hasProperty "display", equalTo "BAR" 
+        assertThat select.model.items[0], hasProperty "display", equalTo "foo"
+        assertThat select.model.items[1], hasProperty "display", equalTo "BAR"
 
-    test "SingleSelect model's items should have an action that select the item", ->
+    test "SingleSelect model's items should have an action
+          that select the item", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -116,8 +122,8 @@ $( document ).ready ->
         select.model.items[0].action()
 
         assertThat select.get("value"), equalTo "foo"
-    
-        
+
+
     test "SingleSelect should support the size attribute of the target", ->
 
         target = $ "<select size='2'>
@@ -127,9 +133,9 @@ $( document ).ready ->
         select = new SingleSelect target[0]
 
         assertThat select.get("size"), strictlyEqualTo 2
-    
+
     test "Changes made to the widget should be reflected on the target", ->
-        
+
         target = $( "<select>
                         <option>foo</option>
                         <option selected>bar</option>
@@ -144,7 +150,8 @@ $( document ).ready ->
 
         assertThat target.children("option[selected]").text(), equalTo "bar"
 
-    test "Changes made to the model should be reflected on the target (with add)", ->
+    test "Changes made to the model should be reflected
+          on the target (with add)", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -153,7 +160,7 @@ $( document ).ready ->
         select = new SingleSelect target[0]
 
         select.model.add display:"new item", value:"new value"
-        
+
         assertThat target.children("option").length, equalTo 3
 
     test "Changes made to the model should preserve the optgroup nodes", ->
@@ -169,12 +176,13 @@ $( document ).ready ->
         select = new SingleSelect target[0]
 
         select.model.add display:"new item", value:"new value"
-        
+
         assertThat target.find("optgroup").length, equalTo 1
         assertThat target.find("optgroup").children().length, equalTo 2
 
 
-    test "Items added to the model of a select should have their action defined automatically", ->
+    test "Items added to the model of a select should have
+          their action defined automatically", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -183,12 +191,14 @@ $( document ).ready ->
         select = new SingleSelect target[0]
 
         select.model.add display:"new item", value:"new value"
-        
+
         select.model.items[2].action()
 
-        assertThat target.children("option[selected]").text(), equalTo "new item"
+        assertThat target.children("option[selected]").text(),
+                   equalTo "new item"
 
-    test "Changes made to the model should be reflected on the target (with remove)", ->
+    test "Changes made to the model should be reflected
+          on the target (with remove)", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -197,7 +207,7 @@ $( document ).ready ->
         select = new SingleSelect target[0]
 
         select.model.remove select.model.items[1]
-        
+
         assertThat target.children("option").length, equalTo 1
 
     test "Changes made to the model should preserved the selection", ->
@@ -209,7 +219,7 @@ $( document ).ready ->
         select = new SingleSelect target[0]
 
         select.model.add display:"new item", value:"new value"
-        
+
         assertThat target.children("option[selected]").length, equalTo 1
         assertThat target.children("option[selected]").text(), equalTo "bar"
 
@@ -222,12 +232,13 @@ $( document ).ready ->
         select = new SingleSelect target[0]
 
         select.model.remove select.model.items[1]
-        
+
         assertThat target.children("option[selected]").length, equalTo 1
         assertThat target.children("option[selected]").text(), equalTo "foo"
         assertThat select.get("value"), equalTo "foo"
 
-    test "SingleSelect should provide a MenuList instance linked to the model", ->
+    test "SingleSelect should provide a MenuList instance
+          linked to the model", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -254,7 +265,8 @@ $( document ).ready ->
         select.detach()
         select.menuList.detach()
 
-    test "Pressing the mouse on a SingleSelect should select the value in the menuList", ->
+    test "Pressing the mouse on a SingleSelect should select
+          the value in the menuList", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -270,7 +282,8 @@ $( document ).ready ->
         select.detach()
         select.menuList.detach()
 
-    test "Pressing the mouse on a SingleSelect that have its menu list displayed should detach its menuList", ->
+    test "Pressing the mouse on a SingleSelect that have
+          its menu list displayed should detach its menuList", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -303,13 +316,16 @@ $( document ).ready ->
         select.dummy.mousedown()
 
 
-        assertThat select.menuList.dummy.attr("style"), contains "left: #{left}px"
-        assertThat select.menuList.dummy.attr("style"), contains "top: #{top}px"
+        assertThat select.menuList.dummy.attr("style"),
+                   contains "left: #{left}px"
+        assertThat select.menuList.dummy.attr("style"),
+                   contains "top: #{top}px"
 
         select.detach()
         select.menuList.detach()
 
-    test "When displayed, clicking on a list item should hide the menu list", ->
+    test "When displayed, clicking on a list item should hide
+          the menu list", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -318,7 +334,7 @@ $( document ).ready ->
         select = new SingleSelect target[0]
 
         select.attach "body"
-        
+
         select.dummy.mousedown()
         select.menuList.dummy.children().last().mouseup()
 
@@ -326,7 +342,8 @@ $( document ).ready ->
 
         select.detach()
 
-    test "Pressing the mouse on the select dummy should prevent the default behavior",->
+    test "Pressing the mouse on the select dummy should
+          prevent the default behavior",->
 
         select = new SingleSelect
         preventDefaultCalled = false
@@ -334,10 +351,11 @@ $( document ).ready ->
         select.mousedown preventDefault:->
             preventDefaultCalled = true
         , stopImmediatePropagation:->
-        
+
         assertThat preventDefaultCalled
 
-    test "Readonly select should prevent the mousedown to open the menu list", ->
+    test "Readonly select should prevent the mousedown
+          to open the menu list", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -347,14 +365,15 @@ $( document ).ready ->
         select.set "readonly", true
 
         select.attach "body"
-        
+
         select.dummy.mousedown()
 
         assertThat select.menuList.dummy.parent().length, equalTo 0
 
         select.detach()
 
-    test "Pressing the mouse on a SingleSelect should give the focus to the menu list", ->
+    test "Pressing the mouse on a SingleSelect should
+          give the focus to the menu list", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -371,7 +390,8 @@ $( document ).ready ->
         select.detach()
         select.menuList.detach()
 
-    test "Pressing the mouse to hide the menu list should give the focus back to the select", ->
+    test "Pressing the mouse to hide the menu list should
+          give the focus back to the select", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -390,7 +410,8 @@ $( document ).ready ->
         select.detach()
         select.menuList.detach()
 
-    test "When displayed, clicking on a list item should give the focus back to the select", ->
+    test "When displayed, clicking on a list item should
+          give the focus back to the select", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -399,7 +420,7 @@ $( document ).ready ->
         select = new SingleSelect target[0]
 
         select.attach "body"
-        
+
         select.dummy.mousedown()
         select.menuList.dummy.children().last().mouseup()
 
@@ -409,40 +430,42 @@ $( document ).ready ->
         select.detach()
 
     test "A SingleSelect should allow html content in items display", ->
-        
+
         select = new SingleSelect
         select.model.add display:"<b>foo</b>", value:'foo'
         select.set "value", "foo"
 
         assertThat select.dummy.find("b").length, equalTo 1
 
-    test "Pressing the mouse outside of the select and its menu should hide the menu", ->
-       
+    test "Pressing the mouse outside of the select and its menu
+          should hide the menu", ->
+
         class MockSingleSelect extends SingleSelect
             documentMouseDown:(e)->
                 e.pageX = 1000
                 e.pageY = 1000
-                
+
                 super e
-        
+
         target = $( "<select>
                         <option>foo</option>
                         <option selected>bar</option>
                      </select>" )
-        
+
         select = new MockSingleSelect target[0]
 
         select.attach "body"
-        
+
         select.dummy.mousedown()
 
         $(document).mousedown()
 
         assertThat select.menuList.dummy.parent().length, equalTo 0
-        
+
         select.detach()
 
-    test "Pressing the enter key when the select has the focus should open the menu", ->
+    test "Pressing the enter key when the select has the focus
+          should open the menu", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -457,13 +480,14 @@ $( document ).ready ->
             ctrlKey:false
             shiftKey:false
             altKey:false
-        
+
         assertThat select.menuList.dummy.parent().length, equalTo 1
 
         select.detach()
         select.menuList.detach()
 
-    test "Pressing the space key when the select has the focus should open the menu", ->
+    test "Pressing the space key when the select has the focus
+          should open the menu", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -478,13 +502,14 @@ $( document ).ready ->
             ctrlKey:false
             shiftKey:false
             altKey:false
-        
+
         assertThat select.menuList.dummy.parent().length, equalTo 1
 
         select.detach()
         select.menuList.detach()
 
-    test "Pressing the space key when the select is readonly shouldn't open the menu", ->
+    test "Pressing the space key when the select is readonly
+          shouldn't open the menu", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -500,12 +525,13 @@ $( document ).ready ->
             ctrlKey:false
             shiftKey:false
             altKey:false
-        
+
         assertThat select.menuList.dummy.parent().length, equalTo 0
 
         select.detach()
 
-    test "Pressing the up key should move the selection cursor to the up", ->
+    test "Pressing the up key should move the selection
+          cursor to the up", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -519,11 +545,12 @@ $( document ).ready ->
             shiftKey:false
             altKey:false
             preventDefault:->
-        
+
         assertThat select.get("value"), equalTo "foo"
 
 
-    test "Pressing the down key should move the selection cursor to the down", ->
+    test "Pressing the down key should move the selection cursor
+          to the down", ->
 
         target = $( "<select>
                         <option selected>foo</option>
@@ -537,11 +564,12 @@ $( document ).ready ->
             shiftKey:false
             altKey:false
             preventDefault:->
-        
+
         assertThat select.get("value"), equalTo "bar"
 
 
-    test "Pressing the down key should move the selection cursor to the start when it is already a the bottom", ->
+    test "Pressing the down key should move the selection cursor
+          to the start when it is already a the bottom", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -555,10 +583,11 @@ $( document ).ready ->
             shiftKey:false
             altKey:false
             preventDefault:->
-        
+
         assertThat select.get("value"), equalTo "foo"
 
-    test "Pressing the up key should move the selection cursor to the end when its already at the top", ->
+    test "Pressing the up key should move the selection cursor
+          to the end when its already at the top", ->
 
         target = $( "<select>
                         <option selected>foo</option>
@@ -572,10 +601,11 @@ $( document ).ready ->
             shiftKey:false
             altKey:false
             preventDefault:->
-        
+
         assertThat select.get("value"), equalTo "bar"
 
-    test "Pressing the down key when the select has optgroups should move the selection to the optgroup", ->
+    test "Pressing the down key when the select has optgroups
+          should move the selection to the optgroup", ->
 
         target = $( "<select>
                         <option selected>foo</option>
@@ -584,7 +614,7 @@ $( document ).ready ->
                             <option>rab</option>
                         </optgroup>
                      </select>" )
-        
+
         select = new SingleSelect target[0]
 
         select.keydown
@@ -593,10 +623,11 @@ $( document ).ready ->
             shiftKey:false
             altKey:false
             preventDefault:->
-        
+
         assertThat select.get("value"), equalTo "bar"
 
-    test "The selectedPath should be valid even when the selected items is in a optgroup", ->
+    test "The selectedPath should be valid even when the selected
+          items is in a optgroup", ->
         target = $( "<select>
                         <option>foo</option>
                         <optgroup>
@@ -604,12 +635,13 @@ $( document ).ready ->
                             <option>rab</option>
                         </optgroup>
                      </select>" )
-        
+
         select = new SingleSelect target[0]
-       
+
         assertThat select.selectedPath, array 1, 0
 
-    test "Moving down the selection when the selection is at the end of an optgroup should move the selection outside of the group", ->
+    test "Moving down the selection when the selection is at the end
+          of an optgroup should move the selection outside of the group", ->
 
         target = $( "<select>
                         <optgroup>
@@ -618,7 +650,7 @@ $( document ).ready ->
                         </optgroup>
                         <option>foo</option>
                      </select>" )
-        
+
         select = new SingleSelect target[0]
 
         select.keydown
@@ -627,10 +659,11 @@ $( document ).ready ->
             shiftKey:false
             altKey:false
             preventDefault:->
-        
+
         assertThat select.get("value"), equalTo "foo"
 
-    test "Moving down the selection when the selection is at the end of the last optgroup should move the selection to the top", ->
+    test "Moving down the selection when the selection is at the end
+          of the last optgroup should move the selection to the top", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -639,7 +672,7 @@ $( document ).ready ->
                             <option selected>rab</option>
                         </optgroup>
                      </select>" )
-        
+
         select = new SingleSelect target[0]
 
         select.keydown
@@ -648,10 +681,11 @@ $( document ).ready ->
             shiftKey:false
             altKey:false
             preventDefault:->
-        
+
         assertThat select.get("value"), equalTo "foo"
 
-    test "Moving down the selection when the selection is at the end of the last optgroup should move the selection to the top", ->
+    test "Moving down the selection when the selection is at the end
+          of the last optgroup should move the selection to the top", ->
 
         target = $( "<select>
                         <optgroup>
@@ -662,7 +696,7 @@ $( document ).ready ->
                             <option selected>rab</option>
                         </optgroup>
                      </select>" )
-        
+
         select = new SingleSelect target[0]
 
         select.keydown
@@ -671,10 +705,11 @@ $( document ).ready ->
             shiftKey:false
             altKey:false
             preventDefault:->
-        
+
         assertThat select.get("value"), equalTo "foo"
 
-    test "Moving up the selection when the selection is at the start of an optgroup should move the selection outside of the group", ->
+    test "Moving up the selection when the selection is at the start
+          of an optgroup should move the selection outside of the group", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -683,7 +718,7 @@ $( document ).ready ->
                             <option>rab</option>
                         </optgroup>
                      </select>" )
-        
+
         select = new SingleSelect target[0]
 
         select.keydown
@@ -692,10 +727,12 @@ $( document ).ready ->
             shiftKey:false
             altKey:false
             preventDefault:->
-        
+
         assertThat select.get("value"), equalTo "foo"
 
-    test "Moving up the selection when the selection is at the start of an optgroup that is at the top should move the selection bottom", ->
+    test "Moving up the selection when the selection is at the start
+          of an optgroup that is at the top should move the selection
+          bottom", ->
 
         target = $( "<select>
                         <optgroup>
@@ -704,7 +741,7 @@ $( document ).ready ->
                         </optgroup>
                         <option>foo</option>
                      </select>" )
-        
+
         select = new SingleSelect target[0]
 
         select.keydown
@@ -713,10 +750,12 @@ $( document ).ready ->
             shiftKey:false
             altKey:false
             preventDefault:->
-        
+
         assertThat select.get("value"), equalTo "foo"
 
-    test "Moving up the selection when the selection is at the start of an optgroup that is at the top should move the selection bottom", ->
+    test "Moving up the selection when the selection is at the start
+          of an optgroup that is at the top should move the selection
+          bottom", ->
 
         target = $( "<select>
                         <optgroup>
@@ -727,7 +766,7 @@ $( document ).ready ->
                             <option>foo</option>
                         </optgroup>
                      </select>" )
-        
+
         select = new SingleSelect target[0]
 
         select.keydown
@@ -736,7 +775,7 @@ $( document ).ready ->
             shiftKey:false
             altKey:false
             preventDefault:->
-        
+
         assertThat select.get("value"), equalTo "foo"
 
     test "Pressing the down key should prevent the default behavior", ->
@@ -756,7 +795,7 @@ $( document ).ready ->
             altKey:false
             preventDefault:->
                 preventDefaultCalled = true
-        
+
         assertThat preventDefaultCalled
 
     test "Pressing the up key should prevent the default behavior", ->
@@ -776,10 +815,11 @@ $( document ).ready ->
             altKey:false
             preventDefault:->
                 preventDefaultCalled = true
-        
+
         assertThat preventDefaultCalled
 
-    test "Pressing the up key on a readonly select shouldn't move the selection cursor to the up", ->
+    test "Pressing the up key on a readonly select shouldn't
+          move the selection cursor to the up", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -794,10 +834,11 @@ $( document ).ready ->
             shiftKey:false
             altKey:false
             preventDefault:->
-        
+
         assertThat select.get("value"), equalTo "bar"
 
-    test "Pressing the down key on a readonly select shouldn't move the selection cursor to the down", ->
+    test "Pressing the down key on a readonly select shouldn't
+          move the selection cursor to the down", ->
 
         target = $( "<select>
                         <option selected>foo</option>
@@ -812,7 +853,7 @@ $( document ).ready ->
             shiftKey:false
             altKey:false
             preventDefault:->
-        
+
         assertThat select.get("value"), equalTo "foo"
 
     test "Optgroups with a select should be handled as sub menus", ->
@@ -828,7 +869,8 @@ $( document ).ready ->
 
         assertThat select.model.items[1].menu, notNullValue()
 
-    test "Clicking on a list item in a child list should also set the value", ->
+    test "Clicking on a list item in a child list should
+          also set the value", ->
 
         target = $( "<select>
                         <option selected>foo</option>
@@ -850,8 +892,10 @@ $( document ).ready ->
 
         select.detach()
 
-    test "Pressing the mouse outside of the select list but on a child list shouldn't close the dialog before mouseup", ->
-        
+    test "Pressing the mouse outside of the select list
+          but on a child list shouldn't close the dialog
+          before mouseup", ->
+
         target = $( "<select>
                         <option>foo</option>
                         <optgroup label='irrelevant'>
@@ -859,23 +903,24 @@ $( document ).ready ->
                             <option>rab</option>
                         </option>
                      </select>" )
-        
+
         select = new SingleSelect target[0]
 
         select.attach "body"
-        
+
         select.dummy.mousedown()
         select.menuList.dummy.children("li").last().mouseover()
         select.menuList.childList.dummy.children("li").last().mousedown()
-        
+
         assertThat select.menuList.dummy.parent().length, equalTo 1
         assertThat select.menuList.childList.dummy.parent().length, equalTo 1
-        
+
         select.detach()
         select.menuList.detach()
         select.menuList.childList.detach()
 
-    test "Pressing the mouse on a SingleSelect should select the value in the menuList even when there're optgroups", ->
+    test "Pressing the mouse on a SingleSelect should select
+          the value in the menuList even when there're optgroups", ->
 
         target = $( "<select>
                         <option>foo</option>
@@ -892,19 +937,21 @@ $( document ).ready ->
         select.menuList.dummy.children("li").last().mouseover()
         select.menuList.childList.dummy.children("li").last().mouseup()
 
-        assertThat select.selectedPath, array 1, 1 
+        assertThat select.selectedPath, array 1, 1
 
         select.dummy.mousedown()
 
         assertThat select.menuList.selectedIndex, equalTo 1
         assertThat select.menuList.childList.selectedIndex, equalTo 1
 
-        select.detach() 
+        select.detach()
         select.menuList.detach()
         select.menuList.childList.detach()
 
-    test "The value for a select that only have optgroup and no selected item should be the default value of the select", ->
-        
+    test "The value for a select that only have optgroup
+          and no selected item should be the default
+          value of the select", ->
+
         target = $( "<select>
                         <optgroup label='irrelevant'>
                             <option>bar</option>
@@ -915,7 +962,7 @@ $( document ).ready ->
                             <option>oof</option>
                         </option>
                      </select>" )
-        
+
         select = new SingleSelect target[0]
 
         assertThat select.get("value"), equalTo "bar"
@@ -927,27 +974,29 @@ $( document ).ready ->
 
         select = new SingleSelect target
 
-        assertThat select.dummy.find(".value").text(), equalTo "Empty" 
+        assertThat select.dummy.find(".value").text(), equalTo "Empty"
 
     test "Empty SingleSelect should display a default placeholder", ->
 
         select = new SingleSelect
 
-        assertThat select.dummy.find(".value").text(), equalTo "Empty" 
+        assertThat select.dummy.find(".value").text(), equalTo "Empty"
 
-    test "Empty SingleSelect should use the title attribute of the target as placeholder for the display", ->
+    test "Empty SingleSelect should use the title attribute
+          of the target as placeholder for the display", ->
 
         target = $("<select title='foo'></select>")[0]
 
         select = new SingleSelect target
 
-        assertThat select.dummy.find(".value").text(), equalTo "foo" 
+        assertThat select.dummy.find(".value").text(), equalTo "foo"
 
-    test "SingleSelect with the default model should display the default placeholder", ->
+    test "SingleSelect with the default model should display
+         the default placeholder", ->
 
         select = new SingleSelect
 
-        assertThat select.dummy.find(".value").text(), equalTo "Empty" 
+        assertThat select.dummy.find(".value").text(), equalTo "Empty"
 
 
     s = "<select>

@@ -1,222 +1,230 @@
 $( document ).ready ->
 
-	module "radiogroup tests"
+    module "radiogroup tests"
 
-	test "A RadioGroup should allow any number of Radio as constructor arguments", ->
+    test "A RadioGroup should allow any number of Radio
+          as constructor arguments", ->
 
-		group = new RadioGroup new Radio, new Radio, new Radio
+        group = new RadioGroup new Radio, new Radio, new Radio
 
-		assertThat group.radios, arrayWithLength 3
+        assertThat group.radios, arrayWithLength 3
 
-	test "A RadioGroup should listen to the checkedChanged signal of its radios", ->
-		
-		signalCalled = false
+    test "A RadioGroup should listen to the checkedChanged signal
+          of its radios", ->
 
-		class MockRadioGroup extends RadioGroup
-			radioCheckedChanged:( radio, checked )->
-				signalCalled = true
+        signalCalled = false
 
-		radio = new Radio
-		group = new MockRadioGroup radio
+        class MockRadioGroup extends RadioGroup
+            radioCheckedChanged:( radio, checked )->
+                signalCalled = true
 
-		radio.set "checked", true
+        radio = new Radio
+        group = new MockRadioGroup radio
 
-		assertThat signalCalled
+        radio.set "checked", true
 
-	test "A RadioGroup should allow to add a Radio after its instanciation", ->
+        assertThat signalCalled
 
-		group = new RadioGroup
+    test "A RadioGroup should allow to add a Radio after its instanciation", ->
 
-		group.add new Radio
+        group = new RadioGroup
 
-		assertThat group.radios, arrayWithLength 1
+        group.add new Radio
 
-	test "A RadioGroup should listen to a Radio added via the add method", ->
-		
-		signalCalled = false
+        assertThat group.radios, arrayWithLength 1
 
-		class MockRadioGroup extends RadioGroup
-			radioCheckedChanged:( radio, checked )->
-				signalCalled = true
-		
-		radio = new Radio
-		group = new MockRadioGroup
+    test "A RadioGroup should listen to a Radio added via the add method", ->
 
-		group.add radio
+        signalCalled = false
 
-		radio.set "checked", true
+        class MockRadioGroup extends RadioGroup
+            radioCheckedChanged:( radio, checked )->
+                signalCalled = true
 
-		assertThat signalCalled
+        radio = new Radio
+        group = new MockRadioGroup
 
-	test "A RadioGroup should allow to remove a radio", ->
+        group.add radio
 
-		radio = new Radio
-		group = new RadioGroup radio
+        radio.set "checked", true
 
-		group.remove radio
+        assertThat signalCalled
 
-		assertThat group.radios, arrayWithLength 0
+    test "A RadioGroup should allow to remove a radio", ->
 
+        radio = new Radio
+        group = new RadioGroup radio
 
-	test "A RadioGroup shouldn't listen to a Radio that have been removed", ->
-		
-		signalCalled = false
+        group.remove radio
 
-		class MockRadioGroup extends RadioGroup
-			radioCheckedChanged:( radio, checked )->
-				signalCalled = true
-		
-		radio = new Radio
-		group = new MockRadioGroup radio
+        assertThat group.radios, arrayWithLength 0
 
-		group.remove radio
 
-		radio.set "checked", true
+    test "A RadioGroup shouldn't listen to a Radio that have been removed", ->
 
-		assertThat not signalCalled
+        signalCalled = false
 
-	test "A RadioGroup shouldn't allow to add twice the same radio", ->
+        class MockRadioGroup extends RadioGroup
+            radioCheckedChanged:( radio, checked )->
+                signalCalled = true
 
-		radio = new Radio
-		group = new RadioGroup radio
+        radio = new Radio
+        group = new MockRadioGroup radio
 
-		group.add radio
+        group.remove radio
 
-		assertThat group.radios, arrayWithLength 1
+        radio.set "checked", true
 
-	test "Adding a checked radio should automatically select it", ->
+        assertThat not signalCalled
 
-		radio = new Radio
-		radio.set "checked", true
-		
-		group = new RadioGroup radio
+    test "A RadioGroup shouldn't allow to add twice the same radio", ->
 
-		assertThat group.selectedRadio, equalTo radio
+        radio = new Radio
+        group = new RadioGroup radio
 
-	test "RadioGroup should be able to select a radio in the group", ->
+        group.add radio
 
-		radio1 = new Radio
-		radio2 = new Radio
-		radio3 = new Radio
+        assertThat group.radios, arrayWithLength 1
 
-		group = new RadioGroup radio1, radio2, radio3
+    test "Adding a checked radio should automatically select it", ->
 
-		group.select radio1
+        radio = new Radio
+        radio.set "checked", true
 
-		assertThat group.selectedRadio, radio1
+        group = new RadioGroup radio
 
-	test "Given three radios in a group, checking one should uncheck the others", ->
+        assertThat group.selectedRadio, equalTo radio
 
-		radio1 = new Radio
-		radio2 = new Radio
-		radio3 = new Radio
+    test "RadioGroup should be able to select a radio in the group", ->
 
-		radio1.set "checked", true
+        radio1 = new Radio
+        radio2 = new Radio
+        radio3 = new Radio
 
-		group = new RadioGroup radio1, radio2, radio3
+        group = new RadioGroup radio1, radio2, radio3
 
-		group.select radio3
+        group.select radio1
 
-		assertThat not radio1.get "checked"
-		assertThat not radio2.get "checked"
-		assertThat radio3.get "checked"
+        assertThat group.selectedRadio, radio1
 
-	test "Given three radios in a group, clicking on one should uncheck the others", ->
+    test "Given three radios in a group, checking one should uncheck
+          the others", ->
 
-		radio1 = new Radio
-		radio2 = new Radio
-		radio3 = new Radio
+        radio1 = new Radio
+        radio2 = new Radio
+        radio3 = new Radio
 
-		radio1.set "checked", true
+        radio1.set "checked", true
 
-		group = new RadioGroup radio1, radio2, radio3
+        group = new RadioGroup radio1, radio2, radio3
 
-		radio3.click()
+        group.select radio3
 
-		assertThat not radio1.get "checked"
-		assertThat not radio2.get "checked"
-		assertThat radio3.get "checked"
+        assertThat not radio1.get "checked"
+        assertThat not radio2.get "checked"
+        assertThat radio3.get "checked"
 
-	test "Given three radios in a group, unchecking the selected one should clear the selection", ->
+    test "Given three radios in a group, clicking on one should
+          uncheck the others", ->
 
-		radio1 = new Radio
-		radio2 = new Radio
-		radio3 = new Radio
+        radio1 = new Radio
+        radio2 = new Radio
+        radio3 = new Radio
 
-		radio1.set "checked", true
+        radio1.set "checked", true
 
-		group = new RadioGroup radio1, radio2, radio3
+        group = new RadioGroup radio1, radio2, radio3
 
-		radio1.set "checked", false
+        radio3.click()
 
-		assertThat group.selectedRadio, nullValue()
+        assertThat not radio1.get "checked"
+        assertThat not radio2.get "checked"
+        assertThat radio3.get "checked"
 
-	test "Given three radios in a group, calling select without an argument should clear the selection.", ->
+    test "Given three radios in a group, unchecking the selected
+          one should clear the selection", ->
 
-		radio1 = new Radio
-		radio2 = new Radio
-		radio3 = new Radio
+        radio1 = new Radio
+        radio2 = new Radio
+        radio3 = new Radio
 
-		radio1.set "checked", true
+        radio1.set "checked", true
 
-		group = new RadioGroup radio1, radio2, radio3
+        group = new RadioGroup radio1, radio2, radio3
 
-		group.select()
+        radio1.set "checked", false
 
-		assertThat group.selectedRadio, nullValue()
+        assertThat group.selectedRadio, nullValue()
 
-	test "Selection change on a radio group should dispatch a selectionChanged signal.", ->
+    test "Given three radios in a group, calling select without
+          an argument should clear the selection.", ->
 
-		signalCalled = false
-		signalSource = null
-		signalOldRadio = null
-		signalNewRadio = null
+        radio1 = new Radio
+        radio2 = new Radio
+        radio3 = new Radio
 
-		radio1 = new Radio
-		radio2 = new Radio
-		radio3 = new Radio
+        radio1.set "checked", true
 
-		group = new RadioGroup radio1, radio2, radio3
+        group = new RadioGroup radio1, radio2, radio3
 
-		group.selectionChanged.add ( group, oldSel, newSel )->
-			signalCalled = true
-			signalSource = group
-			signalOldRadio = oldSel
-			signalNewRadio = newSel
-		
-		group.select radio1
+        group.select()
 
-		assertThat signalCalled
-		assertThat signalSource is group
-		assertThat signalOldRadio, nullValue()
-		assertThat signalNewRadio is radio1
+        assertThat group.selectedRadio, nullValue()
 
-	test "The selectionChanged signal shouldn't be dispatched when select is called with the current selection", ->
-		signalCallCount = 0
+    test "Selection change on a radio group should dispatch
+          a selectionChanged signal.", ->
 
-		radio1 = new Radio
-		radio2 = new Radio
-		radio3 = new Radio
+        signalCalled = false
+        signalSource = null
+        signalOldRadio = null
+        signalNewRadio = null
 
-		group = new RadioGroup radio1, radio2, radio3
-		group.selectionChanged.add ->
-			signalCallCount++
-		
-		group.select radio1
-		group.select radio1
+        radio1 = new Radio
+        radio2 = new Radio
+        radio3 = new Radio
 
-		assertThat signalCallCount, equalTo 1
+        group = new RadioGroup radio1, radio2, radio3
 
+        group.selectionChanged.add ( group, oldSel, newSel )->
+            signalCalled = true
+            signalSource = group
+            signalOldRadio = oldSel
+            signalNewRadio = newSel
 
-	radio1 = new Radio
-	radio2 = new Radio
-	radio3 = new Radio
-	radio3.set "checked", true
-	radio3.set "disabled", true 
+        group.select radio1
 
-	group = new RadioGroup radio1, radio2, radio3
+        assertThat signalCalled
+        assertThat signalSource is group
+        assertThat signalOldRadio, nullValue()
+        assertThat signalNewRadio is radio1
 
-	$("#qunit-header").before $ "<h4>RadioGroup</h4>"
-	radio1.before "#qunit-header"
-	radio2.before "#qunit-header"
-	radio3.before "#qunit-header"
+    test "The selectionChanged signal shouldn't be dispatched
+          when select is called with the current selection", ->
+        signalCallCount = 0
+
+        radio1 = new Radio
+        radio2 = new Radio
+        radio3 = new Radio
+
+        group = new RadioGroup radio1, radio2, radio3
+        group.selectionChanged.add ->
+            signalCallCount++
+
+        group.select radio1
+        group.select radio1
+
+        assertThat signalCallCount, equalTo 1
+
+
+    radio1 = new Radio
+    radio2 = new Radio
+    radio3 = new Radio
+    radio3.set "checked", true
+    radio3.set "disabled", true
+
+    group = new RadioGroup radio1, radio2, radio3
+
+    $("#qunit-header").before $ "<h4>RadioGroup</h4>"
+    radio1.before "#qunit-header"
+    radio2.before "#qunit-header"
+    radio3.before "#qunit-header"
