@@ -65,7 +65,8 @@ compilationUnits=
         test:"test-dates"
     'colorpicker':
         depends:[ "keys", "module", "mixins", "widgets",
-                  "textinput", "checkbox", "radio", "radiogroup" ]
+                  "container", "textinput", "checkbox",
+                  "radio", "radiogroup" ]
         test:"test-colorpicker"
     'jquery':
         depends:allFiles[0..-2]
