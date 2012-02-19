@@ -36,9 +36,9 @@ class Module
         # made in child class.
         @::__superOf__ = @copy @::__superOf__
 
+        # Each member of each mixin is added to the current class
+        # prototype, unless the member is a constructor hook.
         for mixin in mixins
-            # Every member of the mixin is added to the current class
-            # prototype, unless the member is a constructor hook.
             for key, value of mixin when key isnt "constructorHook"
                 @::[key] = value
 
@@ -64,7 +64,7 @@ class Module
 
     # Stores the mixins constructor hooks.
     __constructorHooks__:[]
-    # Stores the respective constructors of mixed methods.
+    # Stores the respective super objects of mixed methods.
     __superOf__:{}
 
     # When `preventConstructorHooksInModule` is `true`, the `Module`

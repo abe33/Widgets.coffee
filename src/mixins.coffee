@@ -7,10 +7,11 @@
 #
 # * [ValueInRange](ValueInRange)
 # * [FocusProvidedByChild](FocusProvidedByChild)
+# * [HasChild](HasChild)
 
 # <a name="ValueInRange"></a>
-#### ValueInRange Mixin
-#
+## ValueInRange
+
 # ValueInRange provides a coherent behavior accross the widgets
 # which value can be constrained in a range through the `min`,
 # `max` and `step` attributes of their respective targets.
@@ -120,8 +121,8 @@ ValueInRange=
         false
 
 # <a name="FocusProvidedByChild"></a>
-#### FocusProvidedByChild Mixin
-#
+## FocusProvidedByChild
+
 # Allow a widget to handle the focus trough one of its child.
 #
 # For instance, A widget that should allow the user to input
@@ -176,6 +177,10 @@ FocusProvidedByChild=
         unless @get "disabled" then @grabFocus()
         true
 
+# <a name="HasChild"></a>
+## HasChild
+
+# Allow a widget to have widgets as children.
 HasChild=
     constructorHook:->
         # Children widgets are stored in an array in the
@@ -217,6 +222,8 @@ HasChild=
     createDummy:->
         $ "<span class='container'></span>"
 
+    # Focus on the widget is prevented if the focus target
+    # is one of its children.
     focus:(e)->
         if e.target is @dummy[0]
             @super "focus", e
