@@ -139,7 +139,7 @@ $( document ).ready ->
         className:"FilePicker"
         focusChildSelector:"input"
 
-    testFocusProvidedByChildMixinBegavior opt
+    testFocusProvidedByChildMixin opt
 
     # Some real widget's instance to play with in the test runner.
 

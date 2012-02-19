@@ -63,7 +63,7 @@ $( document ).ready ->
         className:"TextArea"
         focusChildSelector:"textarea"
 
-    testFocusProvidedByChildMixinBegavior opt
+    testFocusProvidedByChildMixin opt
 
 
 

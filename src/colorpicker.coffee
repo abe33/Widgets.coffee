@@ -619,7 +619,10 @@ class SquarePicker extends Widget
 #
 # dialog.attach("#livedemos3");
 # </script>
-class ColorPicker extends Container
+class ColorPicker extends Widget
+
+    @mixins HasChild
+
     constructor:->
         super()
 
