@@ -52,9 +52,9 @@ $( document ).ready ->
         undefinedStepValueMatcher:equalTo 1
 
 
-    testValueInRangeMixinBehavior opt
+    testValueInRangeMixin opt
 
-    testValueInRangeMixinIntervalsRunning opt
+    testValueInRangeMixinIntervals opt
 
     a =
         key:"up"
@@ -62,7 +62,7 @@ $( document ).ready ->
         valueMatcher:closeTo 15, 1
         initialValueMatcher:equalTo 10
 
-    testValueInRangeMixinKeyboardBehavior opt extends a
+    testValueInRangeMixinKeyboard opt extends a
 
     a =
         key:"down"
@@ -70,7 +70,7 @@ $( document ).ready ->
         valueMatcher:closeTo 5, 1
         initialValueMatcher:equalTo 10
 
-    testValueInRangeMixinKeyboardBehavior opt extends a
+    testValueInRangeMixinKeyboard opt extends a
 
     a =
         key:"right"
@@ -78,7 +78,7 @@ $( document ).ready ->
         valueMatcher:closeTo 15, 1
         initialValueMatcher:equalTo 10
 
-    testValueInRangeMixinKeyboardBehavior opt extends a
+    testValueInRangeMixinKeyboard opt extends a
 
     a =
         key:"left"
@@ -86,11 +86,11 @@ $( document ).ready ->
         valueMatcher:closeTo 5, 1
         initialValueMatcher:equalTo 10
 
-    testValueInRangeMixinKeyboardBehavior opt extends a
+    testValueInRangeMixinKeyboard opt extends a
 
-    testValueInRangeMixinMouseWheelBehavior opt
+    testValueInRangeMixinMouseWheel opt
 
-    testFocusProvidedByChildMixinBegavior opt
+    testFocusProvidedByChildMixin opt
 
     test "Stepper's input value should be the stepper value", ->
 

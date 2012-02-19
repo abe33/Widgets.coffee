@@ -650,8 +650,14 @@ $( document ).ready ->
 
 
 
+    module "colorpicker tests"
 
-    module "colorinput tests"
+    # FIX Can't run generic hasChild tests on ColorPicker as
+    # ColorPicker already has children.
+
+    # testHasChildMixin
+    #     cls:ColorPicker
+    #     className:"ColorPicker"
 
     test "A ColorPicker should be hidden at startup", ->
 

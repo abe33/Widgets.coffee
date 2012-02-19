@@ -47,7 +47,7 @@ $( document ).ready ->
         className:"TextInput"
         focusChildSelector:"input"
 
-    testFocusProvidedByChildMixinBegavior opt
+    testFocusProvidedByChildMixin opt
 
     test "Changing the value in the target should update the widget", ->
 

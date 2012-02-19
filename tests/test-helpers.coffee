@@ -16,7 +16,7 @@
 #   snappedValue:9
 #   singleIncrementValue:15
 #   singleDecrementValue:5
-testValueInRangeMixinBehavior=( opt )->
+testValueInRangeMixin=( opt )->
     test "#{ opt.className } value shouldn't be set on
           a value outside of the range", ->
         target = $ opt.defaultTarget
@@ -182,7 +182,7 @@ testValueInRangeMixinBehavior=( opt )->
 #   cls:Class
 #   className:"Class"
 #   defaultTarget:"<node>"
-testValueInRangeMixinIntervalsRunning=( opt )->
+testValueInRangeMixinIntervals=( opt )->
     asyncTest "#{ opt.className } should provide a way
                to increment the value on an interval", ->
 
@@ -302,7 +302,7 @@ testValueInRangeMixinIntervalsRunning=( opt )->
 #   action:"increment"
 #   valueMatcher:closeTo 2, 1
 #   initialValueMatcher:equalTo 10
-testValueInRangeMixinKeyboardBehavior=( opt )->
+testValueInRangeMixinKeyboard=( opt )->
     asyncTest "When the #{ opt.key } key is pressed the widget
                should #{ opt.action } the value", ->
 
@@ -455,7 +455,7 @@ testValueInRangeMixinKeyboardBehavior=( opt )->
 #   defaultTarget:"<node>"
 #   initialValue:10
 #   setValue:15
-testValueInRangeMixinMouseWheelBehavior=( opt )->
+testValueInRangeMixinMouseWheel=( opt )->
 
     class MockStepper extends opt.cls
         mousewheel:( e, d )->
@@ -496,7 +496,7 @@ testValueInRangeMixinMouseWheelBehavior=( opt )->
 #   cls:Class
 #   className:"Class"
 #   focusChildSelector:".value"
-testFocusProvidedByChildMixinBegavior=( opt )->
+testFocusProvidedByChildMixin=( opt )->
     test "#{ opt.className } shouldn't take focus,
           instead it should give it to its value input", ->
 
@@ -530,20 +530,230 @@ testFocusProvidedByChildMixinBegavior=( opt )->
 
         assertThat not widget.hasFocus
 
-    test "#{ opt.className }'s input should reflect the state of the widget", ->
+    test "#{ opt.className }'s input should reflect the state
+          of the widget", ->
 
         widget = new opt.cls
 
         widget.set "readonly", true
         widget.set "disabled", true
 
-        assertThat widget.dummy.find( opt.focusChildSelector ).attr("readonly"),
+        assertThat widget.dummy.find( opt.focusChildSelector )
+                               .attr("readonly"),
                    notNullValue()
-        assertThat widget.dummy.find( opt.focusChildSelector ).attr("disabled"),
+        assertThat widget.dummy.find( opt.focusChildSelector )
+                               .attr("disabled"),
                    notNullValue()
 
-@testValueInRangeMixinBehavior          =testValueInRangeMixinBehavior
-@testValueInRangeMixinKeyboardBehavior  =testValueInRangeMixinKeyboardBehavior
-@testValueInRangeMixinMouseWheelBehavior=testValueInRangeMixinMouseWheelBehavior
-@testValueInRangeMixinIntervalsRunning  =testValueInRangeMixinIntervalsRunning
-@testFocusProvidedByChildMixinBegavior  =testFocusProvidedByChildMixinBegavior
+# opt=
+#   cls:Class
+#   className:"Class"
+#
+# FIX tests goes into an infinite loop when testing widgets
+# that appends children in their constructor.
+testHasChildMixin=( opt )->
+    class MockWidget extends Widget
+        createDummy:->
+            $ "<span></span>"
+
+    test "A #{ opt.className } should have children", ->
+
+        container = new opt.cls
+
+        assertThat container.children, notNullValue(),
+        assertThat container.children.length, equalTo 0
+
+    test "A #{ opt.className } should allow to add children", ->
+
+        container = new opt.cls
+
+        container.add new MockWidget
+
+        assertThat container.children.length, equalTo 1
+
+    test "A #{ opt.className } should prevent to add a null child", ->
+
+        container = new opt.cls
+
+        container.add null
+
+        assertThat container.children.length, equalTo 0
+
+    test "A #{ opt.className } should prevent to add an object which
+          is not a widget", ->
+
+        container = new opt.cls
+
+        container.add {}
+
+        assertThat container.children.length, equalTo 0
+
+    test "A #{ opt.className } should allow to add a child that
+          is an instance of a widget subclass", ->
+
+        container = new opt.cls
+
+        container.add new MockWidget
+
+        assertThat container.children.length, equalTo 1
+
+    test "A #{ opt.className } should prevent to add the same child twice", ->
+
+        container = new opt.cls
+        child = new MockWidget
+
+        container.add child
+        container.add child
+
+        assertThat container.children[0] is child
+        assertThat container.children.length, equalTo 1
+
+    test "A #{ opt.className } should allow to remove
+          a previously added child", ->
+
+        container = new opt.cls
+        child = new MockWidget
+
+        container.add child
+        container.remove child
+
+        assertThat container.children, arrayWithLength 0
+
+    test "A #{ opt.className } shouldn't proceed when
+          remove is called with null", ->
+
+        container = new opt.cls
+        child = new MockWidget
+
+        container.add child
+        container.remove null
+
+        assertThat container.children, arrayWithLength 1
+
+    test "A #{ opt.className } shouldn't proceed when remove is called
+          with an object that isn't a widget", ->
+
+        container = new opt.cls
+        child = new MockWidget
+
+        container.add child
+        container.remove {}
+
+        assertThat container.children, arrayWithLength 1
+
+    test "A #{ opt.className } shouldn't proceed when remove is called
+          with a widget which is not a child", ->
+
+        container = new opt.cls
+        child = new MockWidget
+        notChild = new MockWidget
+
+        container.add child
+        container.remove notChild
+
+        assertThat container.children, arrayWithLength 1
+
+    test "A #{ opt.className } should have a dummy", ->
+
+        container = new opt.cls
+
+        assertThat container.dummy, notNullValue()
+
+    test "Adding a widget in a #{ opt.className } should add its dummy
+          as a child of the #{ opt.className }'s one", ->
+
+        container = new opt.cls
+        child = new MockWidget
+
+        container.add child
+
+        assertThat container.dummy.children().length, equalTo 1
+        assertThat container.dummy.children()[0], equalTo child.dummy[0]
+
+    test "Removing a widget should remove its dummy from
+          the #{ opt.className }'s one", ->
+
+        container = new opt.cls
+        child = new MockWidget
+
+        container.add child
+        container.remove child
+
+        assertThat container.dummy.children().length, equalTo 0
+
+    test "Widgets added as child of a #{ opt.className } should be able
+          to access its parent", ->
+
+        container = new opt.cls
+        child = new MockWidget
+
+        container.add child
+
+        assertThat child.parent is container
+
+    test "Widgets that are no longer a child of a #{ opt.className }
+          shouldn't hold a reference to it anymore", ->
+
+        container = new opt.cls
+        child = new MockWidget
+
+        container.add child
+        container.remove child
+
+        assertThat child.parent is null
+
+    test "A #{ opt.className } should take the focus normally", ->
+
+        widget = new MockWidget
+        container = new opt.cls
+
+        container.add widget
+
+        container.dummy.focus()
+
+        assertThat container.hasFocus
+
+    test "A #{ opt.className } should prevent to take focus when
+          one of its child receive it", ->
+
+        widget = new MockWidget
+        container = new opt.cls
+
+        container.add widget
+
+        widget.dummy.focus()
+
+        assertThat not container.hasFocus
+
+    test "Keyboard commands that can't be found in children
+          should be bubbled to the parent", ->
+
+        keyDownCommandCalled = false
+        keyUpCommandCalled = false
+
+        class MockContainer extends opt.cls
+            triggerKeyDownCommand:(e)->
+                keyDownCommandCalled = true
+
+            triggerKeyUpCommand:(e)->
+                keyUpCommandCalled = true
+
+        widget = new MockWidget
+        container = new MockContainer
+
+        container.add widget
+
+        event = keyCode:16, ctrlKey:true, shiftKey:true, altKey:true
+
+        widget.triggerKeyDownCommand event
+        widget.triggerKeyUpCommand event
+
+        assertThat keyDownCommandCalled
+        assertThat keyUpCommandCalled
+
+@testHasChildMixin               = testHasChildMixin
+@testValueInRangeMixin           = testValueInRangeMixin
+@testValueInRangeMixinKeyboard   = testValueInRangeMixinKeyboard
+@testValueInRangeMixinMouseWheel = testValueInRangeMixinMouseWheel
+@testValueInRangeMixinIntervals  = testValueInRangeMixinIntervals
+@testFocusProvidedByChildMixin   = testFocusProvidedByChildMixin

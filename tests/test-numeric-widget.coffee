@@ -38,7 +38,7 @@ $( document ).ready ->
 
         assertThat updateDummyCalled
 
-    testValueInRangeMixinBehavior
+    testValueInRangeMixin
         cls:NumericWidget
         className:"NumericWidget"
         defaultTarget:"<input min='0' max='100' step='5' value='10'>"
@@ -67,12 +67,12 @@ $( document ).ready ->
         undefinedMaxValueMatcher:nullValue()
         undefinedStepValueMatcher:nullValue()
 
-    testValueInRangeMixinIntervalsRunning
+    testValueInRangeMixinIntervals
         cls:NumericWidget
         className:"NumericWidget"
         defaultTarget:"<input min='0' max='100' step='5' value='10'>"
 
-    testValueInRangeMixinKeyboardBehavior
+    testValueInRangeMixinKeyboard
         cls:NumericWidget
         className:"NumericWidget"
         defaultTarget:"<input min='0' max='100' step='5' value='10'>"
@@ -81,7 +81,7 @@ $( document ).ready ->
         valueMatcher:closeTo 15, 1
         initialValueMatcher:equalTo 10
 
-    testValueInRangeMixinKeyboardBehavior
+    testValueInRangeMixinKeyboard
         cls:NumericWidget
         className:"NumericWidget"
         defaultTarget:"<input min='0' max='100' step='5' value='10'>"
@@ -90,7 +90,7 @@ $( document ).ready ->
         valueMatcher:closeTo 5, 1
         initialValueMatcher:equalTo 10
 
-    testValueInRangeMixinKeyboardBehavior
+    testValueInRangeMixinKeyboard
         cls:NumericWidget
         className:"NumericWidget"
         defaultTarget:"<input min='0' max='100' step='5' value='10'>"
@@ -99,7 +99,7 @@ $( document ).ready ->
         valueMatcher:closeTo 15, 1
         initialValueMatcher:equalTo 10
 
-    testValueInRangeMixinKeyboardBehavior
+    testValueInRangeMixinKeyboard
         cls:NumericWidget
         className:"NumericWidget"
         defaultTarget:"<input min='0' max='100' step='5' value='10'>"
@@ -108,7 +108,7 @@ $( document ).ready ->
         valueMatcher:closeTo 5, 1
         initialValueMatcher:equalTo 10
 
-    testValueInRangeMixinMouseWheelBehavior
+    testValueInRangeMixinMouseWheel
         cls:NumericWidget
         className:"NumericWidget"
         defaultTarget:"<input min='0' max='100' step='5' value='10'>"

@@ -189,7 +189,7 @@ testGenericDateWidgetBehaviors=( opt )->
                             max='#{ opt.maxValue }'
                             step='#{ opt.stepValue }'></input>"
 
-    testValueInRangeMixinBehavior
+    testValueInRangeMixin
         cls:opt.cls
         className:opt.className
         defaultTarget:defaultTarget
@@ -218,12 +218,12 @@ testGenericDateWidgetBehaviors=( opt )->
         undefinedMaxValueMatcher:opt.undefinedMaxValueMatcher
         undefinedStepValueMatcher:opt.undefinedStepValueMatcher
 
-    testValueInRangeMixinIntervalsRunning
+    testValueInRangeMixinIntervals
         cls:opt.cls
         className:opt.className
         defaultTarget:defaultTarget
 
-    testValueInRangeMixinKeyboardBehavior
+    testValueInRangeMixinKeyboard
         cls:opt.cls
         className:opt.className
         defaultTarget:defaultTarget
@@ -232,7 +232,7 @@ testGenericDateWidgetBehaviors=( opt )->
         valueMatcher:opt.singleIncrementValue
         initialValueMatcher:equalTo opt.defaultValue
 
-    testValueInRangeMixinKeyboardBehavior
+    testValueInRangeMixinKeyboard
         cls:opt.cls
         className:opt.className
         defaultTarget:defaultTarget
@@ -241,7 +241,7 @@ testGenericDateWidgetBehaviors=( opt )->
         valueMatcher:opt.singleDecrementValue
         initialValueMatcher:equalTo opt.defaultValue
 
-    testValueInRangeMixinKeyboardBehavior
+    testValueInRangeMixinKeyboard
         cls:opt.cls
         className:opt.className
         defaultTarget:defaultTarget
@@ -250,7 +250,7 @@ testGenericDateWidgetBehaviors=( opt )->
         valueMatcher:opt.singleIncrementValue
         initialValueMatcher:equalTo opt.defaultValue
 
-    testValueInRangeMixinKeyboardBehavior
+    testValueInRangeMixinKeyboard
         cls:opt.cls
         className:opt.className
         defaultTarget:defaultTarget
@@ -259,7 +259,7 @@ testGenericDateWidgetBehaviors=( opt )->
         valueMatcher:opt.singleDecrementValue
         initialValueMatcher:equalTo opt.defaultValue
 
-    testValueInRangeMixinMouseWheelBehavior
+    testValueInRangeMixinMouseWheel
         cls:opt.cls
         className:opt.className
         defaultTarget:defaultTarget
@@ -483,7 +483,7 @@ $( document ).ready ->
         undefinedMaxValueMatcher:nullValue()
         undefinedStepValueMatcher:equalTo 60
 
-    testFocusProvidedByChildMixinBegavior
+    testFocusProvidedByChildMixin
         className:"TimeInput"
         cls:TimeInput
         focusChildSelector:"input"

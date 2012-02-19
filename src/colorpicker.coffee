@@ -619,7 +619,10 @@ class SquarePicker extends Widget
 #
 # dialog.attach("#livedemos3");
 # </script>
-class ColorPicker extends Container
+class ColorPicker extends Widget
+
+    @mixins HasChild
+
     constructor:->
         super()
 
@@ -704,26 +707,26 @@ class ColorPicker extends Container
         # for both the `rgb` and `hsv` color space. And for each
         # components input, a `Radio` button is placed next to it
         # to allow the selection of the corresponding mode.
-        @add @redInput        = @createInput "red",        3
-        @add @redMode         = @createRadio "red"
+        @add @redInput        = @newInput "red", 3
+        @add @redMode         = @newRadio "red"
 
-        @add @greenInput      = @createInput "green",      3
-        @add @greenMode       = @createRadio "green"
+        @add @greenInput      = @newInput "green", 3
+        @add @greenMode       = @newRadio "green"
 
-        @add @blueInput       = @createInput "blue",       3
-        @add @blueMode        = @createRadio "blue"
+        @add @blueInput       = @newInput "blue", 3
+        @add @blueMode        = @newRadio "blue"
 
-        @add @hueInput        = @createInput "hue",        3
-        @add @hueMode         = @createRadio "hue",        true
+        @add @hueInput        = @newInput "hue", 3
+        @add @hueMode         = @newRadio "hue", true
 
-        @add @saturationInput = @createInput "saturation", 3
-        @add @saturationMode  = @createRadio "saturation"
+        @add @saturationInput = @newInput "saturation", 3
+        @add @saturationMode  = @newRadio "saturation"
 
-        @add @valueInput      = @createInput "value",      3
-        @add @valueMode       = @createRadio "value"
+        @add @valueInput      = @newInput "value", 3
+        @add @valueMode       = @newRadio "value"
 
         # One for the hexadecimal form.
-        @add @hexInput        = @createInput "hex",        6
+        @add @hexInput        = @newInput "hex", 6
 
         # And two `SquarePicker`.
         @add @squarePicker    = new SquarePicker
@@ -735,7 +738,7 @@ class ColorPicker extends Container
 
     # Creates a `TextInput` with a maximum length of `maxlength`
     # and add the `cls` class to the input's dummy.
-    createInput:( cls, maxlength )->
+    newInput:( cls, maxlength )->
         input = new TextInput
         input.addClasses cls
         input.set "maxlength", maxlength
@@ -750,7 +753,7 @@ class ColorPicker extends Container
         input
     # Creates a `Radio` with the specified class. Optionally
     # the checked property of the radio can be set to `true`.
-    createRadio:( cls, checked = false )->
+    newRadio:( cls, checked = false )->
         radio = new Radio
         radio.addClasses cls
         radio.set "checked", checked
