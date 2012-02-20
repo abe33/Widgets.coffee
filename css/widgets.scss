@@ -13,9 +13,9 @@
     -moz-opacity: $op; /* FF lt 1.5, Netscape */
 }
 @mixin transform($trans){
-    -webkit-transform:$trans;    
-       -moz-transform:$trans;   
-        -ms-transform:$trans;   
+    -webkit-transform:$trans;
+       -moz-transform:$trans;
+        -ms-transform:$trans;
          -o-transform:$trans;
             transform:$trans;
 }
@@ -26,12 +26,12 @@
           transition:#{$trans};
 }
 @mixin boxshadow($options){
-    -webkit-box-shadow:#{$options};   
+    -webkit-box-shadow:#{$options};
        -moz-box-shadow:#{$options};
             box-shadow:#{$options};
 }
 @mixin textshadow($options){
-    -webkit-text-shadow:#{$options};   
+    -webkit-text-shadow:#{$options};
        -moz-text-shadow:#{$options};
             text-shadow:#{$options};
 }
@@ -42,20 +42,25 @@
 }
 
 @mixin textborder($color){
-    -webkit-text-shadow: 1px 0px 0 $color, 
-                 -1px 0px 0 $color, 
-                 0px 1px 0 $color, 
-                 0px -1px 0 $color;
-                 
-    -moz-text-shadow: 1px 0px 0 $color, 
-                 -1px 0px 0 $color, 
-                 0px 1px 0 $color, 
+    -webkit-text-shadow: 1px 0px 0 $color,
+                 -1px 0px 0 $color,
+                 0px 1px 0 $color,
                  0px -1px 0 $color;
 
-    text-shadow: 1px 0px 0 $color, 
-                 -1px 0px 0 $color, 
-                 0px 1px 0 $color, 
+    -moz-text-shadow: 1px 0px 0 $color,
+                 -1px 0px 0 $color,
+                 0px 1px 0 $color,
                  0px -1px 0 $color;
+
+    text-shadow: 1px 0px 0 $color,
+                 -1px 0px 0 $color,
+                 0px 1px 0 $color,
+                 0px -1px 0 $color;
+}
+@mixin borderbox(){
+    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
+    box-sizing: border-box;         /* Opera/IE 8+ */
 }
 
 $selected-blue:#006cff;
@@ -66,6 +71,23 @@ $widget-button-background:#555;
 $widget-button-focus-background:#777;
 $widget-border:#222;
 $widget-button-border:#444;
+
+.disabled-text{
+    color:#666 !important;
+}
+.button-disabled-text{
+    color:#333 !important;
+}
+.down-arrow {
+    content:"";
+    position:absolute;
+    display:block;
+    width:0px;
+    height:0px;
+    border:1px solid #333;
+    border-color:#333 transparent transparent transparent;
+    border-width:5px;
+}
 
 .widget-common {
     display:inline-block;
@@ -86,13 +108,30 @@ $widget-button-border:#444;
     &.focus {
         outline:#ff0000 dotted 1px !important;
     }
-    input {
-        outline:none !important;
-        color:fff !important;
-        margin:0;
-    }
+    // input {
+    //     outline:none !important;
+    //     color:fff !important;
+    //     margin:0;
+    // }
 }
 
+.button-content {
+    display:block;
+    padding:2px 4px;
+
+    @include borderbox;
+}
+.text-content {
+    font-family:"Arial";
+    font-size:14px;
+    color:white;
+    background:none;
+    border:none;
+    color:white;
+    padding:2px 4px;
+
+    @include borderbox;
+}
 .button {
     @extend .widget-common;
 
@@ -102,7 +141,14 @@ $widget-button-border:#444;
     @include borderradius(3px);
 
     &.disabled, &.readonly {
+        &:hover {
+            background:$widget-button-background;
+        }
+    }
+    &.disabled {
+        @extend .button-disabled-text;
         &.focus, &:hover {
+            @extend .button-disabled-text;
             background:$widget-button-background;
         }
     }
@@ -111,8 +157,7 @@ $widget-button-border:#444;
         background:$widget-button-focus-background;
     }
     .content {
-        display:block;
-        padding:2px 4px;
+        @extend .button-content;
     }
 }
 
@@ -120,21 +165,18 @@ $widget-button-border:#444;
     @extend .widget-common;
     background:$widget-background;
     border:1px solid $widget-border;
-    
-    @include borderradius(4px); 
-    width:100px;
+
+    @include borderradius(4px);
     line-height:18px;
 
     &.disabled {
         input {
-            color:#666;
+            @extend .disabled-text;
         }
     }
 
     input {
-        background:none;
-        border:none;
-        color:white;
+        @extend .text-content;
         width:100%;
     }
 }
@@ -142,24 +184,20 @@ $widget-button-border:#444;
     @extend .widget-common;
     background:$widget-background;
     border:1px solid $widget-border;
-    
-    @include borderradius(4px); 
-    width:100px;
+
+    @include borderradius(4px);
     line-height:18px;
 
     &.disabled {
-        input {
-            color:#666;
+        textarea {
+            @extend .disabled-text;
         }
     }
 
     textarea {
-        background:none;
-        border:none;
+        @extend .text-content;
         width:100%;
-        color:white;
         resize:none;
-        font-family:"Arial";
     }
 }
 
@@ -172,7 +210,7 @@ $widget-button-border:#444;
 
     width:40px;
     height:20px;
-    
+
     border:1px solid $widget-border;
 
     @include borderradius(5px);
@@ -183,7 +221,10 @@ $widget-button-border:#444;
             background:$widget-button-focus-background;
         }
     }
-    
+    &:hover:before{
+        background:$widget-button-focus-background;
+    }
+
     &:before{
         content:"";
         width:18px;
@@ -206,7 +247,7 @@ $widget-button-border:#444;
         display:block;
         text-align:center;
         right:0;
-        top:0;
+        top:-1px;
         font-size:14px;
         line-height:22px;
     }
@@ -225,8 +266,13 @@ $widget-button-border:#444;
             color:#999;
         }
     }
+    &.disabled, &.readonly {
+        &:hover:before{
+            background:$widget-button-background;
+        }
+    }
     &.disabled {
-        color:#666;
+        @extend .disabled-text;
     }
 }
 
@@ -261,12 +307,10 @@ $widget-button-border:#444;
             }
         }
     }
-} 
+}
 
 .slider {
     @extend .widget-common;
-
-    width:100px;
 
     &.focus {
         .knob {
@@ -275,7 +319,7 @@ $widget-button-border:#444;
     }
     &.disabled {
         .value {
-            color:#999;
+            @extend .disabled-text;
         }
     }
     .track {
@@ -317,7 +361,7 @@ $widget-button-border:#444;
         margin-top:6px;
 
         &:before {
-            content:""; 
+            content:"";
             position:absolute;
             display:block;
             width:0px;
@@ -339,7 +383,6 @@ $widget-button-border:#444;
     border:1px solid $widget-border;
 
     color:white;
-    width:100px;
     height:20px;
 
     @include borderradius(6px);
@@ -387,22 +430,16 @@ $widget-button-border:#444;
         }
     }
     &.disabled {
-        background:#333;
         .value {
-            color:#999;
-        }
-        .up, .down {
-            background:#666;
+            @extend .disabled-text;
         }
     }
     .value {
-        background:transparent;
-        border:none;
+        @extend .text-content;
         width:100%;
         height:100%;
         margin-top:-2px;
         margin-left:2px;
-        color:white;
     }
     .up, .down  {
         position:absolute;
@@ -454,14 +491,13 @@ $widget-button-border:#444;
     border:1px solid $widget-border;
 
     color:white;
-    width:100px;
     overflow:hidden;
 
     @include borderradius(6px);
 
     &.disabled {
         .value {
-            color:#999;
+            @extend .disabled-text;
         }
     }
     &.focus {
@@ -476,6 +512,17 @@ $widget-button-border:#444;
             }
         }
     }
+
+    &.disabled, &.readonly {
+        &:hover {
+            .icon {
+                &:before {
+                    border-color:transparent transparent transparent #333;
+                }
+            }
+        }
+    }
+
     input {
         opacity:0;
         cursor:pointer;
@@ -484,28 +531,28 @@ $widget-button-border:#444;
         top:0;
     }
     .value {
+        @extend .text-content;
         margin-left:2px;
-        font-size:0.9em;
-        display:block;
+        margin-top:-1px;
+        margin-right:18px;
         overflow:hidden;
         white-space:nowrap;
-        text-overflow:ellipsis;       
+        text-overflow:ellipsis;
+
     }
     .icon {
         display:block;
-        position:relative;
-        float:right;
+        position:absolute;
         width:14px;
-        height: 14px;
-        margin-top:2px;
-        margin-bottom:2px;
-        margin-right:2px;
+        height: 15px;
+        top:2px;
+        right:2px;
         background:$widget-button-background;
         border:1px solid $widget-border;
         @include borderradius(4px);
 
         &:before {
-            content:""; 
+            content:"";
             position:absolute;
             display:block;
             width:0px;
@@ -524,37 +571,41 @@ $widget-button-border:#444;
 .dateinput {
     @extend .widget-common;
 
-    background:$widget-background;
-    border:1px solid $widget-border;
-    width:100px;
-    color:white;
-    @include borderradius(6px); 
-    &.disabled {
-        color:#666;
-    }
     &.time {
         @extend .stepper;
+
+        background:$widget-background;
+        border:1px solid $widget-border;
+        color:white;
+        @include borderradius(6px);
+        &.disabled {
+            @extend .disabled-text;
+        }
+    }
+    &.date {
+        @extend .button;
+        .value {
+            @extend .button-content;
+
+            &:before {
+                @extend .down-arrow;
+
+                margin-top:-2px;
+                right:3px;
+                top:50%;
+            }
+        }
     }
 }
 
 .colorinput {
-    @extend .widget-common;
-
-    background:$widget-button-background;
-    border:1px solid $widget-border;
-    width:100px;
-    @include borderradius(4px); 
-
-    &.focus {
-        background:$widget-button-focus-background;
-    }
-
+    @extend .button;
     .color {
         display:block;
         margin:2px;
         height:100%;
         font-size:13px;
-        @include borderradius(1px); 
+        @include borderradius(1px);
         text-indent:3px;
         line-height:20px;
     }
@@ -591,7 +642,7 @@ $widget-button-border:#444;
             top:50%;
             margin-left:-6px;
             margin-top:-6px;
-            
+
             @include borderradius(6px);
         }
     }
@@ -610,7 +661,7 @@ $widget-button-border:#444;
     }
     &.vertical {
         width:12px;
-        
+
         .cursor {
             margin-left:4px;
             width:14px;
@@ -837,7 +888,7 @@ $widget-button-border:#444;
             input {
                 font-size:12px;
                 line-height:16px;
-            }        
+            }
             &:before {
                 content:"R:";
                 color:#898989;
@@ -908,13 +959,17 @@ $widget-button-border:#444;
 
     background:$widget-button-background;
     border:1px solid $widget-button-border;
-    width:100px;
 
     @include borderradius(3px);
 
     &.disabled, &.readonly {
         &.focus, &:hover {
             background:$widget-button-background;
+        }
+    }
+    &.disabled {
+        .value {
+            @extend .button-disabled-text;
         }
     }
 
@@ -930,14 +985,7 @@ $widget-button-border:#444;
         @include overflow(ellipsis);
     }
     &:before {
-        content:""; 
-        position:absolute;
-        display:block;
-        width:0px;
-        height:0px;
-        border:1px solid #333;
-        border-color:#333 transparent transparent transparent;
-        border-width:5px;
+        @extend .down-arrow;
 
         margin-top:-2px;
         right:6px;
@@ -969,7 +1017,7 @@ $widget-button-border:#444;
         padding-right:20px;
 
         &:before {
-            content:""; 
+            content:"";
             position:absolute;
             display:block;
             width:0px;

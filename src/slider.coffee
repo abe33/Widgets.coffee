@@ -60,6 +60,14 @@ class Slider extends NumericWidget
 
         @set "value", @get "value"
 
+        @attached.add =>
+            @updateDummy @get("value"),
+                         @get("min"),
+                         @get("max"),
+                         @get("step")
+        , this
+
+
     #### Target management
 
     # The target for a `Slider` must be an input with the type `range`.
@@ -187,7 +195,6 @@ class Slider extends NumericWidget
 
     # Updates the dummy according to the slider's data.
     updateDummy:( value, min, max, step )->
-
         width     = @dummy.width()
         knob      = @dummy.children ".knob"
         val       = @dummy.children ".value"

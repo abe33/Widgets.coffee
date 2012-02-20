@@ -278,6 +278,48 @@ $( document ).ready ->
 
         assertThat target.find(".time").length, equalTo 1
 
+    test "Input with type date should be replaced by a DateInput", ->
+
+        target = $("<p><input type='date'></input></p>")
+
+        target.children().widgets()
+
+        assertThat target.find(".date").length, equalTo 1
+
+    test "Input with type month should be replaced by a MonthInput", ->
+
+        target = $("<p><input type='month'></input></p>")
+
+        target.children().widgets()
+
+        assertThat target.find(".month").length, equalTo 1
+
+    test "Input with type week should be replaced by a WeekInput", ->
+
+        target = $("<p><input type='week'></input></p>")
+
+        target.children().widgets()
+
+        assertThat target.find(".week").length, equalTo 1
+
+    test "Input with type datetime should be replaced by a DateTimeInput", ->
+
+        target = $("<p><input type='datetime'></input></p>")
+
+        target.children().widgets()
+
+        assertThat target.find(".datetime").length, equalTo 1
+
+    test "Input with type datetime-local should be replaced
+              by a DateTimeLocalInput", ->
+
+        target = $("<p><input type='datetime-local'></input></p>")
+
+        target.children().widgets()
+
+        assertThat target.find(".datetime-local").length, equalTo 1
+
+
     test "Many inputs with type radio and the same name should
           be handled by a RadioGroup", ->
 

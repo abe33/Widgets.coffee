@@ -5,52 +5,164 @@
     <title>Demo</title>
     <link rel="stylesheet" href="./css/styles.css" media="screen">
     <link rel="stylesheet" href="./css/widgets.css" media="screen">
-    
+
     <script type="text/javascript" src="./depends/jquery-1.6.1.min.js"></script>
     <script type="text/javascript" src="./depends/jquery.mousewheel.js"></script>
 
     <script type="text/javascript" src="./depends/signals.js"></script>
     <script type="text/javascript" src="./lib/widgets.js"></script>
-    
+
     <script type="text/javascript">
         $(document).ready(function(){
             $("input,textarea,select").widgets();
         });
 
     </script>
-        
+
 </head>
 <body>
-    
+
     <form target="./index.html">
-        <p><input type="radio" name="group" checked></input> <label>Heaven</label></p>
-        <p><input type="radio" name="group"></input> <label>Hell</label></p>
+        <table id='form'>
+            <thead>
+                <tr><th></th><th>Normal</th><th>Read-only</th><th>Disabled</th></tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Radio</td>
+                    <td>
+                       <input type="radio" name="group" checked></input>
+                       <input type="radio" name="group"></input>
+                    </td>
+                    <td>
+                      <input type="radio" name="group" checked readonly></input>
+                      <input type="radio" name="group" readonly></input>
+                    </td>
+                    <td>
+                      <input type="radio" name="group" checked disabled></input>
+                      <input type="radio" name="group" disabled></input>
+                    </td>
+                </tr>
+                <tr>
+                <td>CheckBox</td>
+                <td><input type="checkbox" name="done" checked></input></td>
+                <td><input type="checkbox" name="done" readonly></input></td>
+                <td><input type="checkbox" name="done" disabled></input></td>
+                </tr>
 
-        <p><input type="checkbox" name="done"></input> <label>Doomed</label></p>
+                <tr>
+                <td>TextInput</td>
+                <td><input type="text" value="A text field" name="name"></input>
+                </td>
+                <td><input type="text" value="A text field" name="name" readonly></input>
+                </td>
+                <td><input type="text" value="A text field" name="name" disabled></input></td>
+                </tr>
 
-        <p><input type="text" value="A text field" name="name"></input></p>
-        <p><input type="password" value="password" name="password"></input></p>
-        <p><textarea></textarea></p>
-        <p><select name="select">
-            <option selected>Item 1</option>
-            <option>Item 2</option>
-            <option>Long Item 3</option>
-            <optgroup label="Group 1">
-                <option>Item 4</option>
-                <option>Item 5</option>
-                <option>Item 6</option>
-            </optgroup>
-        </select></p>
-        
-        <p><input type="number" value="45" min="0" max="255" step="1" name="foo"></input></p>
-        <p><input type="range" value="12" min="10" max="50" step="1" name="oof"></input></p>
-        <p><input type="color" value="#cbdc1b" name="color"></input></p>
-        <p><input type="time" value="16:25" name="time" min="01:00" max="23:00"></input></p>
+                <tr>
+                <td></td>
+                <td><input type="password" value="password" name="password"></td>
+                <td><input type="password" value="password" name="password" readonly></td>
+                <td><input type="password" value="password" name="password" disabled></td>
+                </tr>
 
-        <p><input type="file" name="file"></input></p>
+                <tr>
+                <td>TextArea</td>
+                <td><textarea>Hello</textarea></td>
+                <td><textarea readonly>Hello</textarea></td>
+                <td><textarea disabled>Hello</textarea></td>
+                </tr>
 
-        <p><input type="button" value="button" onclick="console.log('input clicked');"></input>
-        <input type="submit" value="submit"></input></p>
+                <tr>
+                <td>SingleSelect</td>
+                <td><select name="select">
+                    <option selected>Item 1</option>
+                    <option>Item 2</option>
+                    <option>Long Item 3</option>
+                    <optgroup label="Group 1">
+                        <option>Item 4</option>
+                        <option>Item 5</option>
+                        <option>Item 6</option>
+                    </optgroup>
+                </select></td>
+                <td>not supported</td>
+                <td><select name="select" disabled>
+                    <option selected>Item 1</option>
+                    <option>Item 2</option>
+                    <option>Long Item 3</option>
+                    <optgroup label="Group 1">
+                        <option>Item 4</option>
+                        <option>Item 5</option>
+                        <option>Item 6</option>
+                    </optgroup>
+                </select></td>
+                </tr>
+
+                <tr>
+                <td>Stepper</td>
+                <td><input type="number" value="12" min="0" max="255" step="1" name="foo"></input></td>
+                <td><input type="number" value="27" min="0" max="255" step="1" name="foo" readonly></input></td>
+                <td><input type="number" value="49" min="0" max="255" step="1" name="foo" disabled></input></td>
+                </tr>
+
+                <tr>
+                <td>Slider</td>
+                <td><input type="range" value="12" min="10" max="50" step="1" name="oof"></input></td>
+                <td><input type="range" value="23" min="10" max="50" step="1" name="oof" readonly></input></td>
+                <td><input type="range" value="37" min="10" max="50" step="1" name="oof" disabled></input></td>
+                </tr>
+
+                <tr>
+                <td>ColorInput</td>
+                <td><input type="color" value="#cbdc1b" name="color"></input></td>
+                <td><input type="color" value="#cbdc1b" name="color" readonly></input></td>
+                <td><input type="color" value="#cbdc1b" name="color" disabled></input></td>
+                </tr>
+
+                <tr>
+                <td>TimeInput</td>
+                <td><input type="time" value="16:25" name="time" min="01:00" max="23:00"></input></td>
+                <td><input type="time" value="16:25" name="time" min="01:00" max="16:45" readonly></input></td>
+                <td><input type="time" value="16:25" name="time" min="01:00" max="18:23" disabled></input></td>
+                </tr>
+
+                <tr>
+                <td>DateInput</td>
+                <td><input type="date" value="2004-05-16" name="time" min="2004-01-01" max="2004-12-31"></td>
+                <td><input type="date" value="2004-05-16" name="time" min="2004-01-01" max="2004-12-31" readonly></td>
+                <td><input type="date" value="2004-05-16" name="time" min="2004-01-01" max="2004-12-31" disabled></td>
+                </tr>
+<!--
+                <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                </tr>
+-->
+                <tr>
+                <td>FilePicker</td>
+                <td><input type="file" name="file"></input></td>
+                <td><input type="file" name="file" readonly></input></td>
+                <td><input type="file" name="file" disabled></input></td>
+                </tr>
+
+                <tr>
+                <td>Buttons</td>
+                <td><input type="button" value="Button" onclick="console.log('input clicked');"></input></td>
+                <td><input type="button" value="Button" onclick="console.log('input clicked');" readonly></input></td>
+                <td><input type="button" value="Button" onclick="console.log('input clicked');" disabled></input></td>
+                </tr>
+
+                <tr>
+                <td></td>
+                <td><input type="submit" value="Submit"></input></td>
+                <td><input type="submit" value="Submit" readonly></input></td>
+                <td><input type="submit" value="Submit" disabled></input></td>
+                </tr>
+            </tbody>
+        </table>
+
     </form>
 
 </body>

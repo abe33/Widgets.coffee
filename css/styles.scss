@@ -58,6 +58,20 @@ a {
 	margin-top:4px !important;
 }
 
+#form {
+
+	th {
+		width:100px;
+		&:first-child {
+			width:150px;
+		}
+	}
+	.button, .textinput, .textarea, .colorinput, .single-select,
+	.dateinput, .stepper, .slider, .filepicker, .menulist {
+		width:100px;
+	}
+}
+
 #container {
 	#background {
 		background:#042029;
@@ -65,8 +79,8 @@ a {
 	}
 	td, th {
 		&.code {
-			
-			
+
+
 			border-left:2px solid #888;
 			background-color:#042029;
 			/*background-color:#073642;*/
@@ -141,7 +155,7 @@ a {
 			.w{color:#bbbbbb}
 			 div .gd, div .gd .x, div .gi, div .gi .x{display:inline-block;width:100%}
 		}
-	}	
+	}
 }
 .colorpicker {
 	&.dummy, &.dummy.focus {
@@ -155,7 +169,7 @@ a {
 	{
 		padding-left:20px;
 		width:80px !important;
-		
+
 		&:before {
 			content:"A:";
 			color:#898989;
@@ -165,8 +179,8 @@ a {
 			font-size:0.85em;
 			line-height:18px;
 		}
-		
-		
+
+
 	}
 	&.a:after {
 		content:"€";
@@ -202,7 +216,7 @@ a {
 		@include borderradius(8px);
 
 		&:before {
-            content:""; 
+            content:"";
             position:absolute;
             display:block;
             width:0px;
@@ -222,7 +236,7 @@ a {
 .menulist {
 	&.dummy {
 		position:relative !important;
-		z-index:0 !important; 
+		z-index:0 !important;
 		margin:4px 4px 0 0;
 	}
 }

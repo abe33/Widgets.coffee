@@ -710,6 +710,25 @@ $( document ).ready ->
         undefinedMaxValueMatcher:nullValue()
         undefinedStepValueMatcher:nullValue()
 
+    test "A DateInput dummy should contains an span that contains
+          the value", ->
+
+        input = new DateInput new Date 1970, 0, 1
+
+        text = input.dummy.find(".value")
+
+        assertThat text.length, equalTo 1
+        assertThat text.text(), equalTo "1970-01-01"
+
+    test "The DateInput dummy's input should be updated on value change", ->
+
+        input = new DateInput new Date 1970, 0, 1, 16, 32, 17, 565
+
+        input.set "value", "2004-05-13"
+        text = input.dummy.find(".value")
+
+        assertThat text.text(), equalTo "2004-05-13"
+
     module "monthinput tests"
 
     testGenericDateWidgetBehaviors

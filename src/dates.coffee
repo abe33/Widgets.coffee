@@ -543,6 +543,14 @@ class DateInput extends AbstractDateInputWidget
 
         super target
 
+    createDummy:->
+        dummy = super()
+        dummy.append "<span class='value'>#{ @get "value" }</span>"
+        dummy
+
+    updateDummy:->
+        @dummy.find(".value").text @get "value"
+
 # <a name='month'></a>
 ## Month
 

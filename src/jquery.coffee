@@ -103,9 +103,9 @@ class WidgetPlugin
                     # is used instead.
                     if widget?
                         if next.length > 0
-                            next.before widget.dummy
+                            widget.before next
                         else
-                            parent.append widget.dummy
+                            widget.attach parent
 
                     # Once a processor matched, the loop is breaked.
                     break
@@ -186,6 +186,26 @@ $.widgetPlugin.registerWidgetFor "time",
                                  $.widgetPlugin.inputWithType("time"),
                                  TimeInput
 
+$.widgetPlugin.registerWidgetFor "date",
+                                 $.widgetPlugin.inputWithType("date"),
+                                 DateInput
+
+$.widgetPlugin.registerWidgetFor "month",
+                                 $.widgetPlugin.inputWithType("month"),
+                                 MonthInput
+
+$.widgetPlugin.registerWidgetFor "week",
+                                 $.widgetPlugin.inputWithType("week"),
+                                 WeekInput
+
+$.widgetPlugin.registerWidgetFor "datetime",
+                                 $.widgetPlugin.inputWithType("datetime"),
+                                 DateTimeInput
+
+$.widgetPlugin.registerWidgetFor "datetime-local",
+                                 $.widgetPlugin.inputWithType(
+                                    "datetime-local"),
+                                 DateTimeLocalInput
 
 # The radio input are a special case since each radio that have the same name
 # are part of a group.
