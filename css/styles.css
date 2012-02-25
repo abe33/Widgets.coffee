@@ -27,8 +27,9 @@ a {
   width: 100px; }
   #form th:first-child {
     width: 150px; }
-#form .button, #form .textinput, #form .textarea, #form .colorinput, #form .single-select,
-#form .dateinput, #form .stepper, #form .slider, #form .filepicker, #form .menulist {
+
+.button, .textinput, .textarea, .colorinput, .single-select,
+.dateinput, .stepper, .slider, .filepicker, .menulist {
   width: 100px; }
 
 #container #background {
@@ -258,7 +259,7 @@ a {
     left: 50%;
     top: 50%; }
 
-.menulist.dummy {
+.dummy {
   position: relative !important;
   z-index: 0 !important;
-  margin: 4px 4px 0 0; }
+  margin: 4px 4px 0 0 !important; }

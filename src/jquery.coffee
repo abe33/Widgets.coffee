@@ -204,7 +204,7 @@ $.widgetPlugin.registerWidgetFor "datetime",
 
 $.widgetPlugin.registerWidgetFor "datetime-local",
                                  $.widgetPlugin.inputWithType(
-                                    "datetime-local"),
+                                     "datetime-local"),
                                  DateTimeLocalInput
 
 # The radio input are a special case since each radio that have the same name

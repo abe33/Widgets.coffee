@@ -1,7 +1,7 @@
 .disabled-text, .text.disabled input, .textarea.disabled textarea, .checkbox.disabled, .slider.disabled .value, .stepper.disabled .value, .disabled.dateinput.time .value, .filepicker.disabled .value, .dateinput.time.disabled {
   color: #666 !important; }
 
-.button-disabled-text, .button.disabled, .disabled.dateinput.date, .disabled.colorinput, .button.disabled.focus, .disabled.focus.dateinput.date, .disabled.focus.colorinput, .button.disabled:hover, .disabled.dateinput.date:hover, .disabled.colorinput:hover, .single-select.disabled .value {
+.button-disabled-text, .button.disabled, .disabled.dateinput.date, .disabled.colorinput, .button.disabled.focus, .disabled.focus.dateinput.date, .disabled.focus.colorinput, .button.disabled:hover, .disabled.dateinput.date:hover, .disabled.colorinput:hover, .single-select.disabled .value, .calendar td.blurred {
   color: #333 !important; }
 
 .down-arrow, .dateinput.date .value:before, .single-select:before {
@@ -14,7 +14,7 @@
   border-color: #333 transparent transparent transparent;
   border-width: 5px; }
 
-.widget-common, .button, .dateinput.date, .colorinput, .text, .textarea, .checkbox, .radio, .slider, .stepper, .dateinput.time, .filepicker, .dateinput, .gridpicker, .colorpicker, .single-select, .menulist {
+.widget-common, .button, .dateinput.date, .colorinput, .text, .textarea, .checkbox, .radio, .slider, .stepper, .dateinput.time, .filepicker, .dateinput, .gridpicker, .colorpicker, .single-select, .menulist, .calendar {
   display: inline-block;
   margin: 0px;
   margin: 4px 4px 0 0;
@@ -23,7 +23,7 @@
   font-size: 16px;
   vertical-align: bottom;
   color: fff; }
-  .widget-common.disabled, .disabled.button, .disabled.dateinput.date, .disabled.colorinput, .disabled.text, .disabled.textarea, .disabled.checkbox, .disabled.radio, .disabled.slider, .disabled.stepper, .disabled.dateinput.time, .disabled.filepicker, .disabled.dateinput, .disabled.gridpicker, .disabled.colorpicker, .disabled.single-select, .disabled.menulist, .widget-common.readonly, .readonly.button, .readonly.dateinput.date, .readonly.colorinput, .readonly.text, .readonly.textarea, .readonly.checkbox, .readonly.radio, .readonly.slider, .readonly.stepper, .readonly.dateinput.time, .readonly.filepicker, .readonly.dateinput, .readonly.gridpicker, .readonly.colorpicker, .readonly.single-select, .readonly.menulist {
+  .widget-common.disabled, .disabled.button, .disabled.dateinput.date, .disabled.colorinput, .disabled.text, .disabled.textarea, .disabled.checkbox, .disabled.radio, .disabled.slider, .disabled.stepper, .disabled.dateinput.time, .disabled.filepicker, .disabled.dateinput, .disabled.gridpicker, .disabled.colorpicker, .disabled.single-select, .disabled.menulist, .disabled.calendar, .widget-common.readonly, .readonly.button, .readonly.dateinput.date, .readonly.colorinput, .readonly.text, .readonly.textarea, .readonly.checkbox, .readonly.radio, .readonly.slider, .readonly.stepper, .readonly.dateinput.time, .readonly.filepicker, .readonly.dateinput, .readonly.gridpicker, .readonly.colorpicker, .readonly.single-select, .readonly.menulist, .readonly.calendar {
     opacity: 0.5;
     /* Standard: FF gt 1.5, Opera, Safari */
     filter: alpha(opacity=50);
@@ -34,9 +34,9 @@
     /* Safari 1.x */
     -moz-opacity: 0.5;
     /* FF lt 1.5, Netscape */ }
-  .widget-common:focus, .button:focus, .dateinput.date:focus, .colorinput:focus, .text:focus, .textarea:focus, .checkbox:focus, .radio:focus, .slider:focus, .stepper:focus, .dateinput.time:focus, .filepicker:focus, .dateinput:focus, .gridpicker:focus, .colorpicker:focus, .single-select:focus, .menulist:focus {
+  .widget-common:focus, .button:focus, .dateinput.date:focus, .colorinput:focus, .text:focus, .textarea:focus, .checkbox:focus, .radio:focus, .slider:focus, .stepper:focus, .dateinput.time:focus, .filepicker:focus, .dateinput:focus, .gridpicker:focus, .colorpicker:focus, .single-select:focus, .menulist:focus, .calendar:focus {
     outline: none; }
-  .widget-common.focus, .focus.button, .focus.dateinput.date, .focus.colorinput, .focus.text, .focus.textarea, .focus.checkbox, .focus.radio, .focus.slider, .focus.stepper, .focus.dateinput.time, .focus.filepicker, .focus.dateinput, .focus.gridpicker, .focus.colorpicker, .focus.single-select, .focus.menulist {
+  .widget-common.focus, .focus.button, .focus.dateinput.date, .focus.colorinput, .focus.text, .focus.textarea, .focus.checkbox, .focus.radio, .focus.slider, .focus.stepper, .focus.dateinput.time, .focus.filepicker, .focus.dateinput, .focus.gridpicker, .focus.colorpicker, .focus.single-select, .focus.menulist, .focus.calendar {
     outline: #ff0000 dotted 1px !important; }
 
 .button-content, .button .content, .dateinput.date .content, .colorinput .content, .dateinput.date .value {
@@ -77,6 +77,20 @@
     background: #555555; }
   .button.focus, .focus.dateinput.date, .focus.colorinput, .button:hover, .dateinput.date:hover, .colorinput:hover {
     background: #777777; }
+
+.popup, .colorpicker, .menulist, .calendar {
+  margin: 0px;
+  line-height: 16px;
+  position: absolute;
+  background: #555555;
+  border: 1px solid #444444;
+  -webkit-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.7);
+  -moz-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.7);
+  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.7);
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px; }
 
 .text {
   background: #333333;
@@ -287,10 +301,18 @@
     border: 1px solid #222222;
     line-height: 18px; }
     .stepper .up:after, .dateinput.time .up:after, .stepper .down:after, .dateinput.time .down:after {
-      color: #333;
-      text-align: center;
+      content: "";
+      position: absolute;
       display: block;
-      margin-top: -2px; }
+      width: 0px;
+      height: 0px;
+      border: 1px solid #333;
+      border-color: transparent transparent transparent #333;
+      border-width: 4px;
+      margin-top: -4px;
+      margin-left: -2px;
+      left: 50%;
+      top: 50%; }
     .stepper .up:hover:after, .dateinput.time .up:hover:after, .stepper .down:hover:after, .dateinput.time .down:hover:after {
       color: #fff; }
   .stepper .up, .dateinput.time .up {
@@ -300,8 +322,7 @@
     -o-border-radius: 0 4px 4px 0;
     border-radius: 0 4px 4px 0; }
     .stepper .up:after, .dateinput.time .up:after {
-      margin-left: -1px;
-      content: "+"; }
+      border-color: transparent transparent transparent #333; }
   .stepper .down, .dateinput.time .down {
     right: 18px;
     border-right: none;
@@ -310,7 +331,8 @@
     -o-border-radius: 4px 0 0 4px;
     border-radius: 4px 0 0 4px; }
     .stepper .down:after, .dateinput.time .down:after {
-      content: "-"; }
+      border-color: transparent #333 transparent transparent;
+      margin-left: -6px; }
 
 .filepicker {
   background: #333333;
@@ -632,18 +654,7 @@
   background: black; }
 
 .colorpicker {
-  background: #444;
-  border: 1px solid #222222;
-  line-height: 16px;
-  margin: 0;
   margin-top: 4px;
-  -webkit-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.7);
-  -moz-box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.7);
-  box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.7);
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
   padding: 0 0 4px 22px; }
   .colorpicker .gridpicker {
     width: 160px;
@@ -768,15 +779,7 @@
 
 .menulist {
   z-index: 2;
-  padding: 0;
-  margin: 0;
-  position: absolute;
-  background: #555555;
-  border: 1px solid #444444;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px; }
+  padding: 0; }
   .menulist .menuitem, .menulist .menu {
     position: relative;
     list-style: none;
@@ -800,3 +803,13 @@
   .menulist.cropped {
     overflow-x: hidden;
     overflow-y: auto; }
+
+.calendar td {
+  font-size: 14px;
+  text-align: center;
+  padding: 3px; }
+  .calendar td:hover {
+    background: #777777;
+    color: black !important; }
+  .calendar td.selected {
+    background: #777777; }

@@ -66,10 +66,10 @@ a {
 			width:150px;
 		}
 	}
-	.button, .textinput, .textarea, .colorinput, .single-select,
-	.dateinput, .stepper, .slider, .filepicker, .menulist {
-		width:100px;
-	}
+}
+.button, .textinput, .textarea, .colorinput, .single-select,
+.dateinput, .stepper, .slider, .filepicker, .menulist {
+	width:100px;
 }
 
 #container {
@@ -233,10 +233,8 @@ a {
 	}
 }
 
-.menulist {
-	&.dummy {
-		position:relative !important;
-		z-index:0 !important;
-		margin:4px 4px 0 0;
-	}
+.dummy {
+	position:relative !important;
+	z-index:0 !important;
+	margin:4px 4px 0 0 !important;
 }

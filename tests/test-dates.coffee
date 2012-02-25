@@ -722,12 +722,28 @@ $( document ).ready ->
 
     test "The DateInput dummy's input should be updated on value change", ->
 
-        input = new DateInput new Date 1970, 0, 1, 16, 32, 17, 565
+        input = new DateInput new Date 1970, 0, 1
 
         input.set "value", "2004-05-13"
         text = input.dummy.find(".value")
 
         assertThat text.text(), equalTo "2004-05-13"
+
+    test "Clicking on a DateInput should trigger a dialogRequested signal", ->
+
+        input = new DateInput new Date 1970, 0, 1
+
+        signalCalled = false
+        signalSource = null
+
+        input.dialogRequested.add ( widget )->
+            signalCalled = true
+            signalSource = widget
+
+        input.dummy.mouseup()
+
+        assertThat signalCalled
+        assertThat signalSource is input
 
     module "monthinput tests"
 

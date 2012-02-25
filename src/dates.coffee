@@ -347,7 +347,6 @@ timeToString=( date )->
 # <div id="timeinput-demos"></div>
 #
 # <script type='text/javascript'>
-# var f = function(){ console.log( "button clicked" ) };
 # var input1 = new TimeInput();
 # var input2 = new TimeInput();
 # var input3 = new TimeInput();
@@ -359,7 +358,6 @@ timeToString=( date )->
 # input2.attach("#timeinput-demos");
 # input3.attach("#timeinput-demos");
 # </script>
-
 class TimeInput extends AbstractDateInputWidget
     # The `TimeWidget` is displayed as a stepper
     # with a text input that allow to input directly
@@ -371,9 +369,9 @@ class TimeInput extends AbstractDateInputWidget
     # of the `AbstractDateInputWidget` class.
     constructor:( target )->
         @supportedType = "time"
-        @valueToDate = timeFromString
-        @dateToValue = timeToString
-        @isValidValue = isValidTime
+        @valueToDate   = timeFromString
+        @dateToValue   = timeToString
+        @isValidValue  = isValidTime
 
         # The default `step` for a time input is one minute.
         super target, 60
@@ -534,12 +532,30 @@ dateToString=( date )->
 
 # <a name='DateInput'></a>
 #### DateInput
+
+# Here some live instances :
+# <div id="dateinput-demos"></div>
+#
+# <script type='text/javascript'>
+# var input1 = new DateInput();
+# var input2 = new DateInput();
+# var input3 = new DateInput();
+#
+# input2.set( "readonly", true );
+# input3.set( "disabled", true );
+#
+# input1.attach("#dateinput-demos");
+# input2.attach("#dateinput-demos");
+# input3.attach("#dateinput-demos");
+# </script>
 class DateInput extends AbstractDateInputWidget
     constructor:( target )->
         @supportedType = "date"
-        @valueToDate = dateFromString
-        @dateToValue = dateToString
-        @isValidValue = isValidDate
+        @valueToDate   = dateFromString
+        @dateToValue   = dateToString
+        @isValidValue  = isValidDate
+
+        @dialogRequested = new Signal
 
         super target
 
@@ -550,6 +566,9 @@ class DateInput extends AbstractDateInputWidget
 
     updateDummy:->
         @dummy.find(".value").text @get "value"
+
+    mouseup:(e)->
+        @dialogRequested.dispatch this
 
 # <a name='month'></a>
 ## Month
@@ -576,9 +595,9 @@ monthToString=( date )->
 class MonthInput extends AbstractDateInputWidget
     constructor:( target )->
         @supportedType = "month"
-        @valueToDate = monthFromString
-        @dateToValue = monthToString
-        @isValidValue = isValidMonth
+        @valueToDate   = monthFromString
+        @dateToValue   = monthToString
+        @isValidValue  = isValidMonth
 
         super target
 
@@ -635,9 +654,9 @@ getWeekDate=( year, week )->
 class WeekInput extends AbstractDateInputWidget
     constructor:( target )->
         @supportedType = "week"
-        @valueToDate = weekFromString
-        @dateToValue = weekToString
-        @isValidValue = isValidWeek
+        @valueToDate   = weekFromString
+        @dateToValue   = weekToString
+        @isValidValue  = isValidWeek
 
         super target
 
@@ -686,9 +705,9 @@ datetimeToString=( date )->
 class DateTimeInput extends AbstractDateInputWidget
     constructor:( target )->
         @supportedType = "datetime"
-        @valueToDate = datetimeFromString
-        @dateToValue = datetimeToString
-        @isValidValue = isValidDateTime
+        @valueToDate   = datetimeFromString
+        @dateToValue   = datetimeToString
+        @isValidValue  = isValidDateTime
 
         super target
 
@@ -744,9 +763,9 @@ datetimeLocalToString=( date )->
 class DateTimeLocalInput extends AbstractDateInputWidget
     constructor:( target )->
         @supportedType = "datetime-local"
-        @valueToDate = datetimeLocalFromString
-        @dateToValue = datetimeLocalToString
-        @isValidValue = isValidDateTimeLocal
+        @valueToDate   = datetimeLocalFromString
+        @dateToValue   = datetimeLocalToString
+        @isValidValue  = isValidDateTimeLocal
 
         super target
 

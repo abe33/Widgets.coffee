@@ -6,7 +6,9 @@ allFiles = [
     "keys",       "mixins",         "module",   "widgets",     "container",
     "button",     "textinput",      "textarea", "checkbox",    "radio",
     "radiogroup", "numeric-widget", "slider",   "stepper",     "filepicker",
-    "menus",      "selects",        "dates",    "colorpicker", "jquery"     ]
+    "menus",      "selects",        "calendar", "dates",       "colorpicker",
+    "jquery"
+]
 
 allTestsDependencies = [ "test-helpers" ]
 compilationUnits=
@@ -60,6 +62,9 @@ compilationUnits=
         depends:[ "keys", "module", "mixins", "widgets",
                   "menus" ]
         test:"test-selects"
+    'calendar':
+        depends:[ "keys", "module", "mixins", "widgets" ]
+        test:"test-calendar"
     'dates':
         depends:[ "keys", "module", "mixins", "widgets" ]
         test:"test-dates"
@@ -106,9 +111,9 @@ testTask=(file)->
             join "tests",
                  allTestsDependencies.concat( compilationUnits[ file ].test ),
                  test, ->
-                console.log "#{file} tests compiled"
+                     console.log "#{file} tests compiled"
 
-                run 'firefox', [ ".tmp/test-tmp.html" ]
+                     run 'firefox', [ ".tmp/test-tmp.html" ]
 
 lint=( file, callback )->
     console.log "> Do '#{file}' has lints ?"

@@ -161,6 +161,16 @@ $widget-button-border:#444;
     }
 }
 
+.popup {
+    margin:0px;
+    line-height:16px;
+    position:absolute;
+    background:$widget-button-background;
+    border:1px solid $widget-button-border;
+    @include boxshadow( 1px 2px 3px rgba(0,0,0,0.7));
+    @include borderradius(3px);
+}
+
 .text {
     @extend .widget-common;
     background:$widget-background;
@@ -452,11 +462,19 @@ $widget-button-border:#444;
         line-height: 18px;
 
         &:after {
-            color:#333;
-            text-align:center;
+            content:"";
+            position:absolute;
             display:block;
-            margin-top:-2px;
+            width:0px;
+            height:0px;
+            border:1px solid #333;
+            border-color:transparent transparent transparent #333;
+            border-width:4px;
 
+            margin-top:-4px;
+            margin-left:-2px;
+            left:50%;
+            top:50%;
         }
         &:hover {
             &:after{
@@ -469,8 +487,7 @@ $widget-button-border:#444;
         right:2px;
         @include borderradius(0 4px 4px 0);
         &:after {
-            margin-left:-1px;
-            content:"+";
+            border-color:transparent transparent transparent #333;
         }
     }
     .down {
@@ -480,7 +497,8 @@ $widget-button-border:#444;
         @include borderradius(4px 0 0 4px);
 
         &:after {
-            content:"-";
+            border-color:transparent #333 transparent transparent;
+            margin-left:-6px;
         }
     }
 }
@@ -810,15 +828,9 @@ $widget-button-border:#444;
 .colorpicker {
 
     @extend .widget-common;
-    background:#444;
-    border:1px solid $widget-border;
-    line-height:16px;
+    @extend .popup;
 
-    margin:0;
     margin-top:4px;
-
-    @include boxshadow( 1px 2px 3px rgba(0,0,0,0.7));
-    @include borderradius(3px);
 
     padding:0 0 4px 22px;
 
@@ -994,15 +1006,10 @@ $widget-button-border:#444;
 }
 .menulist {
     @extend .widget-common;
+    @extend .popup;
 
     z-index:2;
     padding:0;
-    margin:0;
-    position:absolute;
-    background:$widget-button-background;
-    border:1px solid $widget-button-border;
-
-    @include borderradius(3px);
 
     .menuitem, .menu {
         position:relative;
@@ -1034,5 +1041,27 @@ $widget-button-border:#444;
     &.cropped {
         overflow-x:hidden;
         overflow-y:auto;
+    }
+}
+.calendar {
+    @extend .widget-common;
+    @extend .popup;
+
+    td {
+        font-size:14px;
+        text-align:center;
+        padding:3px;
+
+        &:hover {
+            background:$widget-button-focus-background;
+            color:black !important;
+        }
+
+        &.selected {
+            background:$widget-button-focus-background;
+        }
+        &.blurred {
+            @extend .button-disabled-text;
+        }
     }
 }

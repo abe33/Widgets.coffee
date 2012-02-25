@@ -34,6 +34,7 @@ $( document ).ready ->
             processorCalled = true
             processorScope = this
             processorTarget = target
+            null
 
         plugin.register id, elementMatch, elementProcessor
 
@@ -60,6 +61,7 @@ $( document ).ready ->
             processorCalled = true
             processorScope = this
             processorTarget = target
+            null
 
         plugin.register id, elementMatch, elementProcessor
 
