@@ -1090,3 +1090,14 @@ $( document ).ready ->
         assertThat signalCalled
         assertThat signalSource is widget
 
+    test "Classes set on the target should be kept by the widget", ->
+
+        class MockWidget extends Widget
+            createDummy:->
+                $ "<span class='foo'></span>"
+
+        target = $ "<input type='text' class='cssclass'></input>"
+        widget = new MockWidget target[0]
+
+        assertThat widget.dummy.hasClass "cssclass"
+
