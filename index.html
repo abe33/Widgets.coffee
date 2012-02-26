@@ -3,21 +3,86 @@
 <head>
     <meta charset="UTF-8" />
     <title>Demo</title>
-    <link rel="stylesheet" href="./css/styles.css" media="screen">
     <link rel="stylesheet" href="./css/widgets.css" media="screen">
+    <link rel="stylesheet" href="./css/styles.css" media="screen">
 
     <script type="text/javascript" src="./depends/jquery-1.6.1.min.js"></script>
+
+
     <script type="text/javascript" src="./depends/jquery.mousewheel.js"></script>
 
     <script type="text/javascript" src="./depends/signals.js"></script>
     <script type="text/javascript" src="./lib/widgets.js"></script>
 
     <script type="text/javascript">
+        function buildCell( cls, arg, value, cb, tr, readonly, disabled ){
+            var w = new cls(arg);
+
+            if( value )
+                w.set("value",value);
+            w.set("readonly", readonly);
+            w.set("disabled", disabled);
+            w.addClasses("dummy");
+
+            var td = $("<td></td>");
+
+            w.attach(td);
+            trr = $("<tr></tr>");
+            trr.append(td);
+            tr.append(trr);
+
+            if(cb)
+                cb.call(this,w);
+        }
+        function buildRow( cls, arg, value, cb ){
+            var body = $("body");
+            // var tr = $("<tr></tr>");
+            var tb = $("<table class='float'><tr><th>" + cls + "</th></tr></table>");
+
+            var cls = this[cls];
+
+            buildCell( cls, arg, value, cb, tb );
+            buildCell( cls, arg, value, cb, tb , true );
+            buildCell( cls, arg, value, cb, tb , false, true );
+
+            // tb.append(tr);
+            body.append(tb);
+        }
+        var popups = [
+            [ "ColorPicker", null, "#cbdc1b" ],
+            [ "Calendar"   , new Date(2011,5,17) ],
+            [ "MenuList"   ,
+               new MenuModel({ display:"Item 1" },
+                             { display:"Item 2" },
+                             { display:"Item 3" },
+                             { display:"Item 4" },
+                             { display:"Item 5" },
+                             { display:"Item 6" }),
+                null],
+            [ "SquarePicker", null, null, function(w){
+                w.set({
+                    rangeX:[0,100],
+                    rangeY:[0,100]
+                });
+                w.set("value",[20,45]);
+            } ]
+        ];
+
         $(document).ready(function(){
             $("input,textarea,select").widgets();
-        });
 
+            var l = popups.length;
+            var i = 0;
+            for(i;i<l;i++){
+                buildRow.apply(null,popups[i]);
+            }
+        });
     </script>
+    <style type="text/css">
+        body{
+            background-color:#042029 !important;
+        }
+    </style>
 
 </head>
 <body>
@@ -25,6 +90,7 @@
     <form target="./index.html">
         <table id='form'>
             <thead>
+                <tr><th colspan="4">HTML Form Substitution</th></tr>
                 <tr><th></th><th>Normal</th><th>Read-only</th><th>Disabled</th></tr>
             </thead>
             <tbody>
@@ -160,6 +226,7 @@
                 <td><input type="submit" value="Submit" readonly></input></td>
                 <td><input type="submit" value="Submit" disabled></input></td>
                 </tr>
+
             </tbody>
         </table>
 

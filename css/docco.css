@@ -1,0 +1,87 @@
+/*
+Syntax error: Undefined variable: "$base03".
+        on line 3 of ./docco.scss
+
+1: 
+2: code {
+3:     background:$base03 !important;
+4:     border:1px solid $base04 !important;
+5:     color:$base1;
+6: }
+7: 
+8: .docs {
+
+Backtrace:
+./docco.scss:3
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/script/variable.rb:49:in `_perform'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/script/node.rb:40:in `perform'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/script/list.rb:69:in `_perform'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/script/list.rb:69:in `map'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/script/list.rb:69:in `_perform'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/script/node.rb:40:in `perform'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/perform.rb:216:in `visit_prop'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `send'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/perform.rb:18:in `visit'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/base.rb:53:in `visit_children'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/base.rb:53:in `map'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/base.rb:53:in `visit_children'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/perform.rb:27:in `visit_children'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/perform.rb:39:in `with_environment'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/perform.rb:26:in `visit_children'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/perform.rb:238:in `visit_rule'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `send'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/perform.rb:18:in `visit'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/base.rb:53:in `visit_children'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/base.rb:53:in `map'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/base.rb:53:in `visit_children'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/perform.rb:27:in `visit_children'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/perform.rb:39:in `with_environment'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/perform.rb:26:in `visit_children'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/perform.rb:47:in `visit_root'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `send'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/base.rb:37:in `visit'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/perform.rb:18:in `visit'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/perform.rb:7:in `send'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/visitors/perform.rb:7:in `visit'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/tree/root_node.rb:20:in `render'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/engine.rb:299:in `_render'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/engine.rb:246:in `render'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/plugin/compiler.rb:339:in `update_stylesheet'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/plugin/compiler.rb:202:in `update_stylesheets'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/plugin/compiler.rb:200:in `each'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/plugin/compiler.rb:200:in `update_stylesheets'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/plugin/compiler.rb:272:in `watch'
+/usr/lib/ruby/1.8/fssm/path.rb:71:in `call'
+/usr/lib/ruby/1.8/fssm/path.rb:71:in `run_callback'
+/usr/lib/ruby/1.8/fssm/path.rb:54:in `callback_action'
+/usr/lib/ruby/1.8/fssm/path.rb:34:in `update'
+/usr/lib/ruby/1.8/fssm/state/directory.rb:32:in `modified'
+/usr/lib/ruby/1.8/fssm/state/directory.rb:31:in `each'
+/usr/lib/ruby/1.8/fssm/state/directory.rb:31:in `modified'
+/usr/lib/ruby/1.8/fssm/state/directory.rb:16:in `refresh'
+/usr/lib/ruby/1.8/fssm/backends/polling.rb:17:in `run'
+/usr/lib/ruby/1.8/fssm/backends/polling.rb:17:in `each'
+/usr/lib/ruby/1.8/fssm/backends/polling.rb:17:in `run'
+/usr/lib/ruby/1.8/fssm/backends/polling.rb:15:in `loop'
+/usr/lib/ruby/1.8/fssm/backends/polling.rb:15:in `run'
+/usr/lib/ruby/1.8/fssm/monitor.rb:24:in `run'
+/usr/lib/ruby/1.8/fssm.rb:17:in `monitor'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/plugin/compiler.rb:265:in `watch'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/plugin.rb:107:in `send'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/plugin.rb:107:in `method_missing'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/exec.rb:431:in `watch_or_update'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/exec.rb:302:in `process_result'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/exec.rb:41:in `parse'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/../lib/sass/../sass/exec.rb:21:in `parse!'
+/var/lib/gems/1.8/gems/sass-3.1.15/bin/sass:8
+/usr/local/bin/sass:19:in `load'
+/usr/local/bin/sass:19
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Syntax error: Undefined variable: \"$base03\".\A         on line 3 of ./docco.scss\A \A 1: \A 2: code {\A 3:     background:$base03 !important;\A 4:     border:1px solid $base04 !important;\A 5:     color:$base1;\A 6: }\A 7: \A 8: .docs {"; }

@@ -1,253 +1,45 @@
-@mixin borderradius($options)
-{
-    -webkit-border-radius:#{$options};
-       -moz-border-radius:#{$options};
-         -o-border-radius:#{$options};
-            border-radius:#{$options};
-}
-@mixin opacity($op,$opie){
-    opacity: $op; /* Standard: FF gt 1.5, Opera, Safari */
-    filter: alpha(opacity=$opie); /* IE lt 8 */
-    -ms-filter:"alpha(opacity=" + $opie + ")"; /* IE 8 */
-    -khtml-opacity: $op; /* Safari 1.x */
-    -moz-opacity: $op; /* FF lt 1.5, Netscape */
-}
-@mixin transform($trans){
-    -webkit-transform:$trans;
-       -moz-transform:$trans;
-        -ms-transform:$trans;
-         -o-transform:$trans;
-            transform:$trans;
-}
-@mixin transition($trans){
-  -webkit-transition:#{$trans};
-     -moz-transition:#{$trans};
-       -o-transition:#{$trans};
-          transition:#{$trans};
-}
-@mixin boxshadow($options){
-    -webkit-box-shadow:#{$options};
-       -moz-box-shadow:#{$options};
-            box-shadow:#{$options};
-}
-@mixin textshadow($options){
-    -webkit-text-shadow:#{$options};
-       -moz-text-shadow:#{$options};
-            text-shadow:#{$options};
-}
-@mixin overflow($options){
-    -o-text-overflow: $options;
-    -ms-text-overflow: $options;
-    text-overflow: $options;
-}
+@import "mixins";
+@import "colors";
+@import "common";
 
-@mixin textborder($color){
-    -webkit-text-shadow: 1px 0px 0 $color,
-                 -1px 0px 0 $color,
-                 0px 1px 0 $color,
-                 0px -1px 0 $color;
 
-    -moz-text-shadow: 1px 0px 0 $color,
-                 -1px 0px 0 $color,
-                 0px 1px 0 $color,
-                 0px -1px 0 $color;
-
-    text-shadow: 1px 0px 0 $color,
-                 -1px 0px 0 $color,
-                 0px 1px 0 $color,
-                 0px -1px 0 $color;
-}
-@mixin borderbox(){
-    -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
-    -moz-box-sizing: border-box;    /* Firefox, other Gecko */
-    box-sizing: border-box;         /* Opera/IE 8+ */
-}
-
-$selected-blue:#006cff;
-$focus-blue:#2dadff;
-
-$widget-background:#333;
-$widget-button-background:#555;
-$widget-button-focus-background:#777;
-$widget-border:#222;
-$widget-button-border:#444;
-
-.disabled-text{
-    color:#666 !important;
-}
-.button-disabled-text{
-    color:#333 !important;
-}
-.down-arrow {
-    content:"";
-    position:absolute;
-    display:block;
-    width:0px;
-    height:0px;
-    border:1px solid #333;
-    border-color:#333 transparent transparent transparent;
-    border-width:5px;
-}
-
-.widget-common {
-    display:inline-block;
-    margin:0px;
-    margin:4px 4px 0 0;
-    position:relative;
-    line-height:20px;
-    font-size:16px;
-    vertical-align:bottom;
-    color:fff;
-
-    &.disabled, &.readonly {
-        @include opacity(0.5,50);
-    }
-    &:focus {
-        outline:none;
-    }
-    &.focus {
-        outline:#ff0000 dotted 1px !important;
-    }
-    // input {
-    //     outline:none !important;
-    //     color:fff !important;
-    //     margin:0;
-    // }
-}
-
-.button-content {
-    display:block;
-    padding:2px 4px;
-
-    @include borderbox;
-}
-.text-content {
-    font-family:"Arial";
-    font-size:14px;
-    color:white;
-    background:none;
-    border:none;
-    color:white;
-    padding:2px 4px;
-
-    @include borderbox;
-}
-.button {
-    @extend .widget-common;
-
-    background:$widget-button-background;
-    border:1px solid $widget-button-border;
-
-    @include borderradius(3px);
-
-    &.disabled, &.readonly {
-        &:hover {
-            background:$widget-button-background;
-        }
-    }
-    &.disabled {
-        @extend .button-disabled-text;
-        &.focus, &:hover {
-            @extend .button-disabled-text;
-            background:$widget-button-background;
-        }
-    }
-
-    &.focus, &:hover {
-        background:$widget-button-focus-background;
-    }
-    .content {
-        @extend .button-content;
-    }
-}
-
-.popup {
-    margin:0px;
-    line-height:16px;
-    position:absolute;
-    background:$widget-button-background;
-    border:1px solid $widget-button-border;
-    @include boxshadow( 1px 2px 3px rgba(0,0,0,0.7));
-    @include borderradius(3px);
-}
-
-.text {
-    @extend .widget-common;
-    background:$widget-background;
-    border:1px solid $widget-border;
-
-    @include borderradius(4px);
-    line-height:18px;
-
-    &.disabled {
-        input {
-            @extend .disabled-text;
-        }
-    }
-
-    input {
-        @extend .text-content;
-        width:100%;
-    }
-}
 .textarea {
-    @extend .widget-common;
-    background:$widget-background;
-    border:1px solid $widget-border;
-
-    @include borderradius(4px);
-    line-height:18px;
-
-    &.disabled {
-        textarea {
-            @extend .disabled-text;
-        }
-    }
-
-    textarea {
-        @extend .text-content;
-        width:100%;
-        resize:none;
-    }
+    @extend .text;
 }
-
 
 .checkbox {
-    @extend .widget-common;
-
-    background:$widget-background;
-    color:#fff;
 
     width:40px;
-    height:20px;
+    height:24px;
+    background:$widget-text-background;
 
-    border:1px solid $widget-border;
-
+    @extend .widget-common;
+    @extend .text-content;
+    @extend .inset-box;
     @include borderradius(5px);
     @include transition("background 0.3s ease-out");
 
     &.focus {
         &:before {
-            background:$widget-button-focus-background;
+            @extend .outset-box.light;
         }
     }
     &:hover:before{
-        background:$widget-button-focus-background;
+        @extend .outset-box.light;
     }
 
     &:before{
         content:"";
-        width:18px;
-        height:18px;
+        width:16px;
+        height:16px;
         position:absolute;
-        background:$widget-button-background;
         z-index:1;
-        left:0;
-        top:0;
-        border:1px solid $widget-border;
+        left:1px;
+        top:1px;
 
+        @extend .outset-box;
         @include borderradius(4px);
-        @include transition("left 0.3s ease-out");
+        @include transition("left 0.4s ease-out");
     }
     &:after {
         content:"0";
@@ -257,13 +49,14 @@ $widget-button-border:#444;
         display:block;
         text-align:center;
         right:0;
-        top:-1px;
+        top:1px;
         font-size:14px;
         line-height:22px;
     }
 
     &.checked {
-        background:$selected-blue;
+        background:$blue1;
+        color:$base02;
         &:before {
             left:20px;
         }
@@ -272,27 +65,26 @@ $widget-button-border:#444;
             right:19px;
         }
         &.disabled {
-            background:$widget-button-background;
-            color:#999;
+            @extend .disabled-text-content;
         }
     }
     &.disabled, &.readonly {
         &:hover:before{
-            background:$widget-button-background;
+            @extend .outset-box;
         }
     }
     &.disabled {
-        @extend .disabled-text;
+        @extend .disabled-text-content;
     }
 }
 
 .radio {
-    @extend .widget-common;
 
-    background:$widget-background;
     width:20px;
     height:20px;
-    border:1px solid $widget-border;
+
+    @extend .widget-common;
+    @extend .inset-box;
     @include borderradius(20px);
 
     &:after {
@@ -302,18 +94,27 @@ $widget-button-border:#444;
     &.checked {
         &:after {
             width:14px;
-            height:14px;
+            height:12px;
             position:absolute;
             display:block;
             left:2px;
             top:2px;
-            background:$selected-blue;
-            border:1px solid $widget-border;
+
+            @extend .button.blue;
             @include borderradius(20px);
         }
         &.disabled {
             &:after {
-                background:#666;
+                @extend .button;
+
+                width:14px;
+                height:12px;
+                position:absolute;
+                display:block;
+                left:2px;
+                top:-2px;
+
+                @include borderradius(20px);
             }
         }
     }
@@ -329,46 +130,42 @@ $widget-button-border:#444;
     }
     &.disabled {
         .value {
-            @extend .disabled-text;
+            @extend .disabled-text-content;
         }
     }
     .track {
         position:absolute;
         z-index:0;
-        height:12px;
+        height:18px;
         display:block;
         width:100%;
 
-        background:$widget-background;
-        border:1px solid $widget-border;
-
-        @include borderradius(6px);
+        @extend .inset-box;
+        @include borderradius(9px);
     }
     .knob {
         position:relative;
         z-index:1;
-        background:$widget-button-background;
         width:40px;
         height:10px;
         display:block;
-        margin-top:1px;
+        margin-top:3px;
 
-        border:1px solid $widget-border;
-
-        @include borderradius(5px);
+        @extend .button;
+        @include borderradius(6px);
     }
     .value {
         display:inline-block;
         position:relative;
         color:#fff;
         padding:2px;
-        background:#333;
+        background:$widget-text-background;
         width:26px;
 
         text-align:center;
 
         @include borderradius(3px);
-        margin-top:6px;
+        margin-top:10px;
 
         &:before {
             content:"";
@@ -376,8 +173,8 @@ $widget-button-border:#444;
             display:block;
             width:0px;
             height:1px;
-            border:1px solid #333;
-            border-color:transparent transparent #333 transparent;
+            border:1px solid $widget-text-background;
+            border-color:transparent transparent $widget-text-background transparent;
             border-width:4px;
             margin-left:-4px;
             left:50%;
@@ -387,21 +184,19 @@ $widget-button-border:#444;
 }
 
 .stepper {
-    @extend .widget-common;
 
-    background:$widget-background;
-    border:1px solid $widget-border;
+    height:26px;
 
-    color:white;
-    height:20px;
-
+    @extend .text;
     @include borderradius(6px);
+
+    input {
+        margin-top:3px;
+    }
     &.disabled, &.readonly {
         .up, .down  {
             &:hover {
-                &:after{
-                    color:#333;
-                }
+                @extend .outset-box;
             }
         }
         &:hover {
@@ -412,63 +207,50 @@ $widget-button-border:#444;
     }
     &:hover {
         &:before, &:after {
-            content:"";
-            position:absolute;
-            display:block;
-            width:0px;
-            height:0px;
-            border:1px solid $widget-button-background;
-            border-width:5px;
-
-            right:36px;
+            @extend .arrow;
+            border-width:4px;
+            right:38px;
             top:50%;
-
         }
         &:before {
-            border-color:$widget-button-background transparent transparent transparent;
+            border-color:$base01 transparent transparent transparent;
             margin-top:2px;
         }
         &:after {
-            border-color:transparent transparent $widget-button-background transparent;
-            margin-top:-12px;
+            border-color:transparent transparent $base01 transparent;
+            margin-top:-10px;
         }
     }
 
-    &.focus {
-        .up, .down {
-            background:$widget-button-focus-background;
-        }
-    }
     &.disabled {
         .value {
-            @extend .disabled-text;
+            @extend .disabled-text-content;
         }
+
     }
     .value {
         @extend .text-content;
         width:100%;
         height:100%;
-        margin-top:-2px;
+        margin-top:0px;
         margin-left:2px;
     }
     .up, .down  {
+        margin:0;
         position:absolute;
         width:14px;
         height:14px;
-        top:2px;
+        top:4px;
         cursor:pointer;
-        background:$widget-button-background;
-        border:1px solid $widget-border;
         line-height: 18px;
 
+        @extend .outset-box;
+
+        &:hover {
+            @extend .outset-box.light;
+        }
+
         &:after {
-            content:"";
-            position:absolute;
-            display:block;
-            width:0px;
-            height:0px;
-            border:1px solid #333;
-            border-color:transparent transparent transparent #333;
             border-width:4px;
 
             margin-top:-4px;
@@ -476,110 +258,71 @@ $widget-button-border:#444;
             left:50%;
             top:50%;
         }
-        &:hover {
-            &:after{
-                color:#fff;
-            }
-        }
     }
 
     .up {
-        right:2px;
+        right:3px;
         @include borderradius(0 4px 4px 0);
         &:after {
-            border-color:transparent transparent transparent #333;
+            @extend .right-arrow;
         }
     }
     .down {
-        right:18px;
-        border-right:none;
+        right:19px;
+        border-right:none !important;
 
         @include borderradius(4px 0 0 4px);
 
         &:after {
-            border-color:transparent #333 transparent transparent;
+            @extend .left-arrow;
             margin-left:-6px;
         }
     }
 }
 .filepicker {
-    @extend .widget-common;
 
-    background:$widget-background;
-    border:1px solid $widget-border;
-
-    color:white;
+    height:24px;
     overflow:hidden;
 
-    @include borderradius(6px);
+    @extend .text;
 
     &.disabled {
         .value {
-            @extend .disabled-text;
+            @extend .disabled-text-content;
         }
     }
-    &.focus {
-        .icon {
-            background:$widget-button-focus-background;
-        }
-    }
-    &:hover {
-        .icon {
-            &:before{
-                border-color:transparent transparent transparent #fff;
-            }
-        }
-    }
-
-    &.disabled, &.readonly {
-        &:hover {
-            .icon {
-                &:before {
-                    border-color:transparent transparent transparent #333;
-                }
-            }
-        }
-    }
-
     input {
         opacity:0;
         cursor:pointer;
         position:absolute;
         right:0;
         top:0;
+        width:auto !important;
     }
     .value {
         @extend .text-content;
         margin-left:2px;
-        margin-top:-1px;
+        top:3px;
         margin-right:18px;
         overflow:hidden;
         white-space:nowrap;
         text-overflow:ellipsis;
+        position:relative;
 
     }
     .icon {
-        display:block;
-        position:absolute;
+        top:-1px;
+        right:-1px;
         width:14px;
-        height: 15px;
-        top:2px;
-        right:2px;
-        background:$widget-button-background;
-        border:1px solid $widget-border;
-        @include borderradius(4px);
+        height: 14px;
+        position: absolute;
+
+        @extend .button;
 
         &:before {
-            content:"";
-            position:absolute;
-            display:block;
-            width:0px;
-            height:0px;
-            border:1px solid #333;
-            border-color:transparent transparent transparent #333;
-            border-width:4px;
+            @extend .right-arrow;
 
-            margin-top:-4px;
+            margin-top:-5px;
             margin-left:-2px;
             left:50%;
             top:50%;
@@ -591,48 +334,32 @@ $widget-button-border:#444;
 
     &.time {
         @extend .stepper;
-
-        background:$widget-background;
-        border:1px solid $widget-border;
-        color:white;
-        @include borderradius(6px);
-        &.disabled {
-            @extend .disabled-text;
-        }
     }
     &.date {
-        @extend .button;
-        .value {
-            @extend .button-content;
+        @extend .single-select;
 
-            &:before {
-                @extend .down-arrow;
-
-                margin-top:-2px;
-                right:3px;
-                top:50%;
-            }
-        }
     }
 }
 
 .colorinput {
     @extend .button;
+
     .color {
         display:block;
         margin:2px;
         height:100%;
         font-size:13px;
-        @include borderradius(1px);
         text-indent:3px;
         line-height:20px;
+        border:1px solid $widget-button-border;
+        @include borderradius(2px);
     }
 }
 .gridpicker {
     @extend .widget-common;
 
     background:$widget-button-background;
-    border:1px solid $widget-border;
+    border:1px solid $widget-button-border;
 
     width:100px;
     height:100px;
@@ -846,13 +573,13 @@ $widget-button-border:#444;
     }
 
     .oldColor, .newColor {
-        background:$widget-background;
+        background:$widget-text-background;
         display:block;
         position:absolute;
         width:12px;
-        height:80px;
+        height:81px;
         left:4px;
-        border:1px solid $widget-border;
+        border:1px solid $widget-button-border;
     }
     .oldColor {
         border-top:none;
@@ -866,7 +593,7 @@ $widget-button-border:#444;
     .radio {
         float:right;
         width:10px;
-        height:18px;
+        height:17px;
         @include borderradius(4px 0 0 4px);
 
         margin-right:-1px;
@@ -875,7 +602,7 @@ $widget-button-border:#444;
             &:after {
                 @include borderradius(3px 0 0 3px);
                 width:8px;
-                height:16px;
+                height:13px;
                 left:0px;
                 top:0px;
             }
@@ -886,7 +613,7 @@ $widget-button-border:#444;
         float:right;
         clear:right;
 
-        height:18px;
+        height:17px;
 
         @include borderradius( 4px );
 
@@ -896,10 +623,10 @@ $widget-button-border:#444;
         &.red, &.green, &.blue, &.hue, &.saturation, &.value, &.hex {
             width:40px;
             padding-left:15px;
-            line-height:16px;
+            line-height:14px;
             input {
-                font-size:12px;
-                line-height:16px;
+                font-size:13px;
+                line-height:14px;
             }
             &:before {
                 content:"R:";
@@ -955,39 +682,24 @@ $widget-button-border:#444;
         }
 
         &.hex {
-
+            height:20px;
             padding-left:13px;
             width:53px;
+            input {
+                font-size:14px;
+                line-height:16px;
+            }
             &:before {
                 content:"#";
                 text-indent:2px;
+                top:2px;
             }
         }
     }
 }
 
 .single-select {
-    @extend .widget-common;
-
-    background:$widget-button-background;
-    border:1px solid $widget-button-border;
-
-    @include borderradius(3px);
-
-    &.disabled, &.readonly {
-        &.focus, &:hover {
-            background:$widget-button-background;
-        }
-    }
-    &.disabled {
-        .value {
-            @extend .button-disabled-text;
-        }
-    }
-
-    &.focus, &:hover {
-        background:$widget-button-focus-background;
-    }
+    @extend .button;
 
     .value {
         display:block;
@@ -1016,22 +728,18 @@ $widget-button-border:#444;
         list-style:none;
         padding:2px 4px;
 
+        @extend .buttont-text-content;
+        @extend .inset-text;
+
         &.selected {
-            background:$widget-button-focus-background;
+            background:$widget-button-focus-background2;
         }
     }
     .menu {
         padding-right:20px;
 
         &:before {
-            content:"";
-            position:absolute;
-            display:block;
-            width:0px;
-            height:0px;
-            border:1px solid #333;
-            border-color:transparent transparent transparent #333;
-            border-width:5px;
+            @extend .right-arrow;
 
             margin-top:-4px;
             right:2px;
@@ -1047,21 +755,37 @@ $widget-button-border:#444;
     @extend .widget-common;
     @extend .popup;
 
+    th {
+        @extend .button-text-content;
+        @extend .inset-text;
+    }
     td {
         font-size:14px;
         text-align:center;
-        padding:3px;
+        padding:3px 6px;
 
+        @extend .button-text-content;
+        @extend .inset-text;
         &:hover {
             background:$widget-button-focus-background;
-            color:black !important;
+            color:$widget-button-color !important;
         }
 
         &.selected {
             background:$widget-button-focus-background;
         }
         &.blurred {
-            @extend .button-disabled-text;
+            @extend .button-disabled-text-content;
+        }
+    }
+    &.disabled, &.readonly {
+        td {
+            &:hover {
+                background:none;
+            }
+            &.blurred:hover {
+                @extend .button-disabled-text-content;
+            }
         }
     }
 }
