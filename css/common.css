@@ -57,16 +57,91 @@
 
 .inset-box, .text {
   background: #042029;
-  border: 1px solid #001921;
-  -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.1),                         0pt 1px 3px 0px rgba(0, 0, 0, 0.5) inset,                         0pt 1px 7px 0px rgba(0, 0, 0, 0.3) inset;
-  -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.1),                         0pt 1px 3px 0px rgba(0, 0, 0, 0.5) inset,                         0pt 1px 7px 0px rgba(0, 0, 0, 0.3) inset;
-  box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.1),                         0pt 1px 3px 0px rgba(0, 0, 0, 0.5) inset,                         0pt 1px 7px 0px rgba(0, 0, 0, 0.3) inset;
-  -webkit-border-radius: 4px;
-  -moz-border-radius: 4px;
-  -o-border-radius: 4px;
-  border-radius: 4px; }
-  .inset-box.focus, .focus.text {
+  -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+  -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+  box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+  .inset-box.light, .light.text, .text.focus {
     background-color: #002b36; }
+  .inset-box.white, .white.text {
+    background: #657b83;
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    .inset-box.white.light, .white.light.text, .white.text.focus {
+      background: #93a1a1;
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+  .inset-box.red, .red.text {
+    background: #dc322f;
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    .inset-box.red.light, .red.light.text, .red.text.focus {
+      background: #fe5c4d;
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+  .inset-box.orange, .orange.text {
+    background: #cb4b16;
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    .inset-box.orange.light, .orange.light.text, .orange.text.focus {
+      background: #e66a36;
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+  .inset-box.yellow, .yellow.text {
+    background: #b58900;
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    .inset-box.yellow.light, .yellow.light.text, .yellow.text.focus {
+      background: #cfa521;
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+  .inset-box.green, .green.text {
+    background: #859900;
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    .inset-box.green.light, .green.light.text, .green.text.focus {
+      background: #a9bf1b;
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+  .inset-box.cyan, .cyan.text {
+    background: #2aa198;
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    .inset-box.cyan.light, .cyan.light.text, .cyan.text.focus {
+      background: #4ccac1;
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+  .inset-box.blue, .blue.text {
+    background: #268bd2;
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    .inset-box.blue.light, .blue.light.text, .blue.text.focus {
+      background: #34a0ec;
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+  .inset-box.violet, .violet.text {
+    background: #6c71c4;
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    .inset-box.violet.light, .violet.light.text, .violet.text.focus {
+      background: #8389eb;
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
 
 .outset-box, .button, .button.disabled:hover, .button.readonly:hover, .button.disabled.focus, .popup {
   border: 1px solid #839496;
@@ -116,6 +191,22 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    .outset-box.dark.light, .dark.light.button, .dark.light.button.disabled:hover, .dark.light.button.readonly:hover, .dark.light.button.disabled.focus, .dark.button.focus, .dark.button:hover, .dark.light.popup {
+      border: 1px solid #0b4959;
+      background: -moz-linear-gradient(top, #0b4959 0%, #073642 100%);
+      /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0b4959), color-stop(100%, #073642));
+      /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, #0b4959 0%, #073642 100%);
+      /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, #0b4959 0%, #073642 100%);
+      /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, #0b4959 0%, #073642 100%);
+      /* IE10+ */
+      background: linear-gradient(top, #0b4959 0%, #073642 100%);
+      -webkit-box-shadow: 0pt 2px 0px 0px #002b36,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #002b36,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #002b36,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.red, .red.button, .red.button.disabled:hover, .red.button.readonly:hover, .red.button.disabled.focus, .red.popup {
     border: 1px solid #fe5c4d;
     background: -moz-linear-gradient(top, #fe5c4d 0%, #dc322f 100%);
@@ -132,6 +223,22 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    .outset-box.red.light, .red.light.button, .red.light.button.disabled:hover, .red.light.button.readonly:hover, .red.light.button.disabled.focus, .red.button.focus, .red.button:hover, .red.light.popup {
+      border: 1px solid #ff8377;
+      background: -moz-linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
+      /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ff8377), color-stop(100%, #fe5c4d));
+      /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
+      /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
+      /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
+      /* IE10+ */
+      background: linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
+      -webkit-box-shadow: 0pt 2px 0px 0px #dc322f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #dc322f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #dc322f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.green, .green.button, .green.button.disabled:hover, .green.button.readonly:hover, .green.button.disabled.focus, .green.popup {
     border: 1px solid #a9bf1b;
     background: -moz-linear-gradient(top, #a9bf1b 0%, #859900 100%);
@@ -148,6 +255,22 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    .outset-box.green.light, .green.light.button, .green.light.button.disabled:hover, .green.light.button.readonly:hover, .green.light.button.disabled.focus, .green.button.focus, .green.button:hover, .green.light.popup {
+      border: 1px solid #cadf44;
+      background: -moz-linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
+      /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #cadf44), color-stop(100%, #a9bf1b));
+      /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
+      /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
+      /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
+      /* IE10+ */
+      background: linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
+      -webkit-box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.blue, .blue.button, .blue.button.disabled:hover, .blue.button.readonly:hover, .blue.button.disabled.focus, .blue.popup {
     border: 1px solid #34a0ec;
     background: -moz-linear-gradient(top, #34a0ec 0%, #268bd2 100%);
@@ -164,6 +287,22 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    .outset-box.blue.light, .blue.light.button, .blue.light.button.disabled:hover, .blue.light.button.readonly:hover, .blue.light.button.disabled.focus, .blue.button.focus, .blue.button:hover, .blue.light.popup {
+      border: 1px solid #57afec;
+      background: -moz-linear-gradient(top, #57afec 0%, #34a0ec 100%);
+      /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #57afec), color-stop(100%, #34a0ec));
+      /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, #57afec 0%, #34a0ec 100%);
+      /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, #57afec 0%, #34a0ec 100%);
+      /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, #57afec 0%, #34a0ec 100%);
+      /* IE10+ */
+      background: linear-gradient(top, #57afec 0%, #34a0ec 100%);
+      -webkit-box-shadow: 0pt 2px 0px 0px #268bd2,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #268bd2,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #268bd2,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.yellow, .yellow.button, .yellow.button.disabled:hover, .yellow.button.readonly:hover, .yellow.button.disabled.focus, .yellow.popup {
     border: 1px solid #cfa521;
     background: -moz-linear-gradient(top, #cfa521 0%, #b58900 100%);
@@ -180,6 +319,22 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    .outset-box.yellow.light, .yellow.light.button, .yellow.light.button.disabled:hover, .yellow.light.button.readonly:hover, .yellow.light.button.disabled.focus, .yellow.button.focus, .yellow.button:hover, .yellow.light.popup {
+      border: 1px solid #f7ca3b;
+      background: -moz-linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
+      /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7ca3b), color-stop(100%, #cfa521));
+      /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
+      /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
+      /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
+      /* IE10+ */
+      background: linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
+      -webkit-box-shadow: 0pt 2px 0px 0px #b58900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #b58900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #b58900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.orange, .orange.button, .orange.button.disabled:hover, .orange.button.readonly:hover, .orange.button.disabled.focus, .orange.popup {
     border: 1px solid #e66a36;
     background: -moz-linear-gradient(top, #e66a36 0%, #cb4b16 100%);
@@ -196,6 +351,22 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    .outset-box.orange.light, .orange.light.button, .orange.light.button.disabled:hover, .orange.light.button.readonly:hover, .orange.light.button.disabled.focus, .orange.button.focus, .orange.button:hover, .orange.light.popup {
+      border: 1px solid #ff8b5b;
+      background: -moz-linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
+      /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ff8b5b), color-stop(100%, #e66a36));
+      /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
+      /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
+      /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
+      /* IE10+ */
+      background: linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
+      -webkit-box-shadow: 0pt 2px 0px 0px #cb4b16,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #cb4b16,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #cb4b16,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.violet, .violet.button, .violet.button.disabled:hover, .violet.button.readonly:hover, .violet.button.disabled.focus, .violet.popup {
     border: 1px solid #8389eb;
     background: -moz-linear-gradient(top, #8389eb 0%, #6c71c4 100%);
@@ -212,6 +383,22 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    .outset-box.violet.light, .violet.light.button, .violet.light.button.disabled:hover, .violet.light.button.readonly:hover, .violet.light.button.disabled.focus, .violet.button.focus, .violet.button:hover, .violet.light.popup {
+      border: 1px solid #9ba0e6;
+      background: -moz-linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
+      /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9ba0e6), color-stop(100%, #8389eb));
+      /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
+      /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
+      /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
+      /* IE10+ */
+      background: linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
+      -webkit-box-shadow: 0pt 2px 0px 0px #6c71c4,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #6c71c4,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #6c71c4,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.cyan, .cyan.button, .cyan.button.disabled:hover, .cyan.button.readonly:hover, .cyan.button.disabled.focus, .cyan.popup {
     border: 1px solid #4ccac1;
     background: -moz-linear-gradient(top, #4ccac1 0%, #2aa198 100%);
@@ -228,6 +415,22 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    .outset-box.cyan.light, .cyan.light.button, .cyan.light.button.disabled:hover, .cyan.light.button.readonly:hover, .cyan.light.button.disabled.focus, .cyan.button.focus, .cyan.button:hover, .cyan.light.popup {
+      border: 1px solid #7bdbd4;
+      background: -moz-linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
+      /* FF3.6+ */
+      background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7bdbd4), color-stop(100%, #4ccac1));
+      /* Chrome,Safari4+ */
+      background: -webkit-linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
+      /* Chrome10+,Safari5.1+ */
+      background: -o-linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
+      /* Opera 11.10+ */
+      background: -ms-linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
+      /* IE10+ */
+      background: linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
+      -webkit-box-shadow: 0pt 2px 0px 0px #2aa198,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #2aa198,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #2aa198,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
 
 .text-content, .text input, .text textarea {
   color: #839496;
@@ -265,7 +468,11 @@
   text-shadow: 0pt 1px 0px rgba(255,255,255, 0.3); }
 
 .text {
-  line-height: 18px; }
+  line-height: 18px;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  -o-border-radius: 4px;
+  border-radius: 4px; }
   .text input, .text textarea {
     background: none;
     border: none;

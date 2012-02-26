@@ -66,15 +66,68 @@
     @include boxshadow("0pt 1px 0px 0px rgba(255,255,255, 0.6)");
 }
 .inset-box{
-    background:$widget-text-background;
-    border:1px solid $widget-text-border;
-    @include boxshadow("0pt 1px 0pt rgba(255, 255, 255, 0.1),
-                        0pt 1px 3px 0px rgba(0, 0, 0, 0.5) inset,
-                        0pt 1px 7px 0px rgba(0, 0, 0, 0.3) inset");
-    @include borderradius(4px);
+    @include inset-box($widget-text-background, $widget-text-border, $widget-text-shadow);
 
-    &.focus {
+    &.light {
         background-color:$widget-text-focus-background;
+    }
+
+    &.white {
+        @include inset-box($widget-button-background,$widget-text-border,$widget-text-shadow);
+
+        &.light {
+            @include inset-box($widget-button-focus-background,$widget-text-border,$widget-text-shadow);
+        }
+    }
+
+    &.red {
+        @include inset-box($red1,$widget-text-border,$widget-text-shadow);
+
+        &.light {
+            @include inset-box($red2,$widget-text-border,$widget-text-shadow);
+        }
+    }
+    &.orange {
+        @include inset-box($orange1,$widget-text-border,$widget-text-shadow);
+
+        &.light {
+            @include inset-box($orange2,$widget-text-border,$widget-text-shadow);
+        }
+    }
+    &.yellow {
+        @include inset-box($yellow1,$widget-text-border,$widget-text-shadow);
+
+        &.light {
+            @include inset-box($yellow2,$widget-text-border,$widget-text-shadow);
+        }
+    }
+    &.green {
+        @include inset-box($green1,$widget-text-border,$widget-text-shadow);
+
+        &.light {
+            @include inset-box($green2,$widget-text-border,$widget-text-shadow);
+        }
+    }
+    &.cyan {
+        @include inset-box($cyan1,$widget-text-border,$widget-text-shadow);
+
+        &.light {
+            @include inset-box($cyan2,$widget-text-border,$widget-text-shadow);
+        }
+    }
+    &.blue {
+        @include inset-box($blue1,$widget-text-border,$widget-text-shadow);
+
+        &.light {
+            @include inset-box($blue2,$widget-text-border,$widget-text-shadow);
+        }
+    }
+    &.violet {
+        @include inset-box($violet1,$widget-text-border,$widget-text-shadow);
+
+        &.light {
+            @include inset-box($violet2,$widget-text-border,$widget-text-shadow);
+        }
     }
 }
 .outset-box {
@@ -86,27 +139,51 @@
     }
     &.dark {
         @include outset-box($base03,$base02,$base04);
+        &.light {
+            @include outset-box($base02,$base01-2,$base03);
+        }
     }
     &.red {
         @include outset-box($red1,$red2,$red0);
+        &.light {
+            @include outset-box($red2,$red3,$red1);
+        }
     }
     &.green {
         @include outset-box($green1,$green2,$green0);
+        &.light {
+            @include outset-box($green2,$green3,$green1);
+        }
     }
     &.blue {
         @include outset-box($blue1,$blue2,$blue0);
+        &.light {
+            @include outset-box($blue2,$blue3,$blue1);
+        }
     }
     &.yellow {
         @include outset-box($yellow1,$yellow2,$yellow0);
+        &.light {
+            @include outset-box($yellow2,$yellow3,$yellow1);
+        }
     }
     &.orange {
         @include outset-box($orange1,$orange2,$orange0);
+        &.light {
+            @include outset-box($orange2,$orange3,$orange1);
+        }
     }
     &.violet {
         @include outset-box($violet1,$violet2,$violet0);
+        &.light {
+            @include outset-box($violet2,$violet3,$violet1);
+        }
     }
     &.cyan {
         @include outset-box($cyan1,$cyan2,$cyan0);
+        &.light {
+            @include outset-box($cyan2,$cyan3,$cyan1);
+        }
     }
 }
 .text-content {
@@ -169,6 +246,7 @@
 
     @extend .widget-common;
     @extend .inset-box;
+    @include borderradius(4px);
 
     &.disabled {
         input, textarea {
@@ -190,6 +268,7 @@
         resize:none;
     }
     &.focus {
+        @extend .inset-box.light;
         input, textarea {
             color:$widget-text-focus-color;
         }

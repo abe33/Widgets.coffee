@@ -35,38 +35,42 @@
         position:absolute;
         z-index:1;
         left:1px;
-        top:1px;
+        top:2px;
 
         @extend .outset-box;
         @include borderradius(4px);
         @include transition("left 0.4s ease-out");
     }
     &:after {
-        content:"0";
+        content:"off";
         position:absolute;
         font-size:.9em;
         width:20px;
         display:block;
         text-align:center;
-        right:0;
+        right:1px;
         top:1px;
         font-size:14px;
         line-height:22px;
     }
 
     &.checked {
-        background:$blue1;
         color:$base02;
+        @extend .inset-box.blue;
+
         &:before {
             left:20px;
         }
         &:after{
-            content:"1";
-            right:19px;
+            content:"on";
+            right:20px;
         }
         &.disabled {
             @extend .disabled-text-content;
-            background:$widget-button-focus-background;
+            @extend .inset-box.white;
+            &:after {
+                color:$base0;
+            }
         }
     }
     &.disabled, &.readonly {
@@ -153,7 +157,7 @@
     .track {
         position:absolute;
         z-index:0;
-        height:18px;
+        height:20px;
         display:block;
         width:100%;
 
@@ -166,8 +170,9 @@
         width:40px;
         height:10px;
         display:block;
-        margin:3px;
-        margin-bottom:0px;
+        margin-left:3px;
+        margin-top:3px;
+        margin-right:5px;
 
         @extend .outset-box;
         @include borderradius(6px);
@@ -366,7 +371,7 @@
         display:block;
         margin:2px;
         height:100%;
-        font-size:13px;
+        font-size:14px;
         text-indent:3px;
         line-height:20px;
         border:1px solid $widget-button-border;
@@ -572,6 +577,7 @@
 
 .colorpicker {
 
+    line-height:14px;
     @extend .widget-common;
     @extend .popup;
 
@@ -610,20 +616,28 @@
 
     .radio {
         float:right;
-        width:10px;
-        height:17px;
+        width:12px;
+        height:20px;
+        margin-top:3px;
+        margin-right:-1px;
+        background-color:$widget-text-background;
+
         @include borderradius(4px 0 0 4px);
 
-        margin-right:-1px;
-
+        &.focus{
+            background-color:$widget-text-focus-background;
+        }
         &.checked {
             &:after {
                 @include borderradius(3px 0 0 3px);
                 width:8px;
                 height:13px;
-                left:0px;
-                top:0px;
+                left:1px;
+                top:1px;
             }
+        }
+        &.red {
+            margin-top:5px;
         }
     }
 
@@ -631,12 +645,21 @@
         float:right;
         clear:right;
 
-        height:17px;
+        height:20px;
+        margin-top:3px;
 
         @include borderradius( 4px );
 
+        &.red {
+            margin-top:5px;
+        }
         &.red, &.green, &.blue, &.hue, &.saturation, &.value {
             @include borderradius( 0 4px 4px 0 );
+            background-color:$widget-text-background;
+
+            &.focus{
+                background-color:$widget-text-focus-background;
+            }
         }
         &.red, &.green, &.blue, &.hue, &.saturation, &.value, &.hex {
             width:40px;
@@ -700,7 +723,6 @@
         }
 
         &.hex {
-            height:21px;
             padding-left:13px;
             width:53px;
             input {
@@ -746,7 +768,7 @@
         list-style:none;
         padding:2px 4px;
 
-        @extend .buttont-text-content;
+        @extend .button-text-content;
         @extend .inset-text;
 
         &.selected {
@@ -767,6 +789,12 @@
     &.cropped {
         overflow-x:hidden;
         overflow-y:auto;
+    }
+
+    &.disabled {
+        .menuitem, .menu {
+            @extend .button-disabled-text-content;
+        }
     }
 }
 .calendar {
@@ -802,6 +830,17 @@
                 background:none;
             }
             &.blurred:hover {
+                @extend .button-disabled-text-content;
+            }
+            &.selected{
+                background:$widget-button-focus-background;
+            }
+        }
+    }
+    &.disabled {
+        td {
+            @extend .button-disabled-text-content;
+            &:hover{
                 @extend .button-disabled-text-content;
             }
         }

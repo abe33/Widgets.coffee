@@ -24,7 +24,7 @@
             w.set("disabled", disabled);
             w.addClasses("dummy");
 
-            var td = $("<td></td>");
+            var td = $("<td class='state'></td>");
 
             w.attach(td);
             trr = $("<tr></tr>");
@@ -35,9 +35,9 @@
                 cb.call(this,w);
         }
         function buildRow( cls, arg, value, cb ){
-            var body = $("body");
+            var body = $("#form");
             // var tr = $("<tr></tr>");
-            var tb = $("<table class='float'><tr><th>" + cls + "</th></tr></table>");
+            var tb = $("<table class='float widget'><tr><th>" + cls + "</th></tr></table>");
 
             var cls = this[cls];
 
@@ -46,11 +46,16 @@
             buildCell( cls, arg, value, cb, tb , false, true );
 
             // tb.append(tr);
-            body.append(tb);
+            body.after(tb);
         }
         var popups = [
-            [ "ColorPicker", null, "#859900" ],
-            [ "Calendar"   , new Date(2011,5,17) ],
+            [ "SquarePicker", null, null, function(w){
+                w.set({
+                    rangeX:[0,100],
+                    rangeY:[0,100]
+                });
+                w.set("value",[20,45]);
+            } ],
             [ "MenuList"   ,
                new MenuModel({ display:"Item 1" },
                              { display:"Item 2" },
@@ -59,13 +64,8 @@
                              { display:"Item 5" },
                              { display:"Item 6" }),
                 null],
-            [ "SquarePicker", null, null, function(w){
-                w.set({
-                    rangeX:[0,100],
-                    rangeY:[0,100]
-                });
-                w.set("value",[20,45]);
-            } ]
+            [ "Calendar"   , new Date(2011,5,17) ],
+            [ "ColorPicker", null, "#859900" ]
         ];
 
         $(document).ready(function(){
@@ -231,7 +231,7 @@
 
                 <tr>
                 <td></td>
-                <td><input type="submit" value="Submit" class='green'</input></td>
+                <td><input type="submit" value="Submit"></input></td>
                 <td><input type="submit" value="Submit" readonly></input></td>
                 <td><input type="submit" value="Submit" disabled></input></td>
                 </tr>
@@ -239,6 +239,17 @@
             </tbody>
         </table>
 
+
     </form>
+    <table class="float">
+        <tr><th>Accentize</th></tr>
+        <tr><td><input type="button" value="Button" class='red'></input></td>
+        <tr><td><input type="button" value="Button" class='orange'></input></td>
+        <tr><td><input type="button" value="Button" class='yellow'></input></td>
+        <tr><td><input type="button" value="Button" class='green'></input></td>
+        <tr><td><input type="button" value="Button" class='cyan'></input></td>
+        <tr><td><input type="button" value="Button" class='blue'></input></td>
+        <tr><td><input type="button" value="Button" class='violet'></input></td></tr>
+    </table>
 
 </body>

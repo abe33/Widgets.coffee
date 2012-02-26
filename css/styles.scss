@@ -40,7 +40,7 @@ h4 {
 	padding-bottom:6px;
 	padding-left:4px;
 	margin:5px 5px 0px 0px;
-	@extend .outset-box.dark;
+	background:$base02;
 	@include borderradius(4px);
 
 	th {
@@ -64,6 +64,32 @@ td {
 }
 .float{
 	float:left;
+
+	td.state {
+		padding-left:16px;
+		&:before{
+			content:"";
+			position:absolute;
+			margin-left:-42px;
+			margin-top:30px;
+			width:60px;
+			height:15px;
+			padding-right:5px;
+			padding-bottom:2px;
+			padding-top:1px;
+			color:$widget-text-color;
+			background:$widget-text-background;
+			font-size:13px;
+			text-transform:uppercase;
+			text-align:right;
+
+			@include transform("rotate(-90deg)");
+			@include borderradius(5px 5px 0px 0px);
+		}
+	}
+	tr:nth-child(2) td.state:before { content:"Normal"; }
+	tr:nth-child(3) td.state:before { content:"Readonly"; }
+	tr:nth-child(4) td.state:before { content:"Disabled"; }
 }
 
 .button, .text, .textarea, .colorinput, .single-select,

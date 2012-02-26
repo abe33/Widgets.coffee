@@ -13,11 +13,11 @@
     -moz-opacity: $op;
 }
 @mixin transform($trans){
-    -webkit-transform:$trans;
-       -moz-transform:$trans;
-        -ms-transform:$trans;
-         -o-transform:$trans;
-            transform:$trans;
+    -webkit-transform:#{$trans};
+       -moz-transform:#{$trans};
+        -ms-transform:#{$trans};
+         -o-transform:#{$trans};
+            transform:#{$trans};
 }
 @mixin transition($trans){
   -webkit-transition:#{$trans};
@@ -84,4 +84,11 @@
     @include vgradient($c2,$c1);
     @include boxshadow("0pt 2px 0px 0px #{$cs},
                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5)");
+}
+@mixin inset-box($c,$cb,$cs){
+    background:$c;
+    // border:1px solid transparentize($cb, 0.5);
+    @include boxshadow("0pt 1px 0pt rgba(255, 255, 255, 0.15),
+                        0pt 2px 1px 0px #{ $cs } inset,
+                        0pt 2px 7px 0px #{ transparentize( $cs, 0.2 ) } inset");
 }

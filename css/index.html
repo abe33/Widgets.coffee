@@ -12,11 +12,15 @@
         float:left;
         margin: 4px;
        }
-       div.outset-box {
+       div.outset-box, div.inset-box {
         width:120px;
         height:30px;
         display: inline-block;
         margin: 4px;
+        border-radius:4px;
+        -moz-box-sizing:border-box;
+        -webkit-box-sizing:border-box;
+        box-sizing:border-box;
        }
        div.arrow{
         position: relative;
@@ -28,23 +32,58 @@
 <body>
 
 <div class='container'>
-    <div class='outset-box dark'></div>
-    <div class='outset-box'></div>
-    <div class='outset-box light'></div>
-    <div class='outset-box red'></div>
-    <div class='outset-box orange'></div>
-    <div class='outset-box yellow'></div>
-    <div class='outset-box green'></div>
-    <div class='outset-box cyan'></div>
-    <div class='outset-box blue'></div>
-    <div class='outset-box violet'></div>
+  <div class='outset-box dark'></div>
+  <div class='outset-box'></div>
+  <div class='outset-box red'></div>
+  <div class='outset-box orange'></div>
+  <div class='outset-box yellow'></div>
+  <div class='outset-box green'></div>
+  <div class='outset-box cyan'></div>
+  <div class='outset-box blue'></div>
+  <div class='outset-box violet'></div>
 </div>
 
 <div class='container'>
-    <div class='arrow up-arrow'></div>
-    <div class='arrow left-arrow'></div>
-    <div class='arrow down-arrow'></div>
-    <div class='arrow right-arrow'></div>
+  <div class='outset-box dark light'></div>
+  <div class='outset-box light'></div>
+  <div class='outset-box red light'></div>
+  <div class='outset-box orange light'></div>
+  <div class='outset-box yellow light'></div>
+  <div class='outset-box green light'></div>
+  <div class='outset-box cyan light'></div>
+  <div class='outset-box blue light'></div>
+  <div class='outset-box violet light'></div>
+</div>
+
+<div class='container'>
+  <div class='inset-box'></div>
+  <div class='inset-box white'></div>
+  <div class='inset-box red'></div>
+  <div class='inset-box orange'></div>
+  <div class='inset-box yellow'></div>
+  <div class='inset-box green'></div>
+  <div class='inset-box cyan'></div>
+  <div class='inset-box blue'></div>
+  <div class='inset-box violet'></div>
+</div>
+
+<div class='container'>
+  <div class='inset-box light'></div>
+  <div class='inset-box white light'></div>
+  <div class='inset-box red light'></div>
+  <div class='inset-box orange light'></div>
+  <div class='inset-box yellow light'></div>
+  <div class='inset-box green light'></div>
+  <div class='inset-box cyan light'></div>
+  <div class='inset-box blue light'></div>
+  <div class='inset-box violet light'></div>
+</div>
+
+<div class='container'>
+  <div class='arrow up-arrow'></div>
+  <div class='arrow left-arrow'></div>
+  <div class='arrow down-arrow'></div>
+  <div class='arrow right-arrow'></div>
 </div>
 
 </body>
