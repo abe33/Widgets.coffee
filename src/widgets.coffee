@@ -138,6 +138,10 @@ class Widget extends Module
                 # The style set on the target is copied on the dummy.
                 @dummy.attr "style", @jTarget.attr "style"
 
+                # Same thing for the target classes.
+                classes = @jTarget.attr("class")?.split /\s+/g
+                @addClasses.apply this, classes
+
                 # If the target had an `id` attribute, the widget's id
                 # will be derived from it such as `#{ original id }-widget`.
                 id = @jTarget.attr "id"
