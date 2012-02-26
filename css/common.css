@@ -1,6 +1,7 @@
+@import url("http://fonts.googleapis.com/css?family=Homenaje");
 .font, .widget-common, .button, .text, .text-content, .text input, .text textarea {
   font-size: 18px;
-  font-family: 'Share', sans-serif; }
+  font-family: 'Homenaje', sans-serif; }
 
 .arrow, .down-arrow, .up-arrow, .left-arrow, .right-arrow {
   content: "";
@@ -238,7 +239,7 @@
   -moz-text-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.8);
   text-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.8); }
 
-.disabled-text-content, .text.disabled input {
+.disabled-text-content, .text.disabled input, .text.disabled textarea {
   color: #586e75 !important; }
 
 .button {
@@ -274,7 +275,7 @@
   .text textarea {
     resize: none; }
   .text.focus input, .text.focus textarea {
-    color: #eee8d5; }
+    color: #bbc4c4; }
 
 .popup {
   margin: 0px;

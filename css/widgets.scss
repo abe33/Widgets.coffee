@@ -66,6 +66,7 @@
         }
         &.disabled {
             @extend .disabled-text-content;
+            background:$widget-button-focus-background;
         }
     }
     &.disabled, &.readonly {
@@ -100,19 +101,17 @@
             left:2px;
             top:2px;
 
-            @extend .button.blue;
+            @extend .outset-box.blue;
             @include borderradius(20px);
         }
         &.disabled {
             &:after {
-                @extend .button;
+                @extend .outset-box;
 
                 width:14px;
                 height:12px;
                 position:absolute;
                 display:block;
-                left:2px;
-                top:-2px;
 
                 @include borderradius(20px);
             }
@@ -123,9 +122,27 @@
 .slider {
     @extend .widget-common;
 
+    &:hover {
+        .knob {
+            @extend .outset-box.light;
+        }
+    }
     &.focus {
         .knob {
-            background:$widget-button-focus-background;
+            @extend .outset-box.light;
+        }
+        .track {
+            background-color:$widget-text-focus-background;
+        }
+        .value {
+            color:$widget-text-focus-color;
+        }
+    }
+    &.disabled, &.readonly {
+        &:hover {
+            .knob {
+                @extend .outset-box;
+            }
         }
     }
     &.disabled {
@@ -149,15 +166,16 @@
         width:40px;
         height:10px;
         display:block;
-        margin-top:3px;
+        margin:3px;
+        margin-bottom:0px;
 
-        @extend .button;
+        @extend .outset-box;
         @include borderradius(6px);
     }
     .value {
         display:inline-block;
         position:relative;
-        color:#fff;
+        color:$widget-text-color;
         padding:2px;
         background:$widget-text-background;
         width:26px;
@@ -559,7 +577,7 @@
 
     margin-top:4px;
 
-    padding:0 0 4px 22px;
+    padding:0 0 3px 22px;
 
     .gridpicker {
         width:160px;
@@ -682,7 +700,7 @@
         }
 
         &.hex {
-            height:20px;
+            height:21px;
             padding-left:13px;
             width:53px;
             input {

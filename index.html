@@ -49,7 +49,7 @@
             body.append(tb);
         }
         var popups = [
-            [ "ColorPicker", null, "#cbdc1b" ],
+            [ "ColorPicker", null, "#859900" ],
             [ "Calendar"   , new Date(2011,5,17) ],
             [ "MenuList"   ,
                new MenuModel({ display:"Item 1" },
@@ -97,23 +97,32 @@
                 <tr>
                     <td>Radio</td>
                     <td>
-                       <input type="radio" name="group" checked></input>
-                       <input type="radio" name="group"></input>
+                       <input type="radio" name="group1" checked></input>
+                       <input type="radio" name="group1"></input>
                     </td>
                     <td>
-                      <input type="radio" name="group" checked readonly></input>
-                      <input type="radio" name="group" readonly></input>
+                      <input type="radio" name="group2" checked readonly></input>
+                      <input type="radio" name="group2" readonly></input>
                     </td>
                     <td>
-                      <input type="radio" name="group" checked disabled></input>
-                      <input type="radio" name="group" disabled></input>
+                      <input type="radio" name="group3" checked disabled></input>
+                      <input type="radio" name="group3" disabled></input>
                     </td>
                 </tr>
                 <tr>
                 <td>CheckBox</td>
-                <td><input type="checkbox" name="done" checked></input></td>
-                <td><input type="checkbox" name="done" readonly></input></td>
-                <td><input type="checkbox" name="done" disabled></input></td>
+                <td>
+                    <input type="checkbox" name="done"></input>
+                    <input type="checkbox" name="done" checked></input>
+                </td>
+                <td>
+                    <input type="checkbox" name="done" readonly></input>
+                    <input type="checkbox" name="done" readonly checked></input>
+                </td>
+                <td>
+                    <input type="checkbox" name="done" disabled></input>
+                    <input type="checkbox" name="done" disabled checked></input>
+                </td>
                 </tr>
 
                 <tr>
@@ -180,9 +189,9 @@
 
                 <tr>
                 <td>ColorInput</td>
-                <td><input type="color" value="#cbdc1b" name="color"></input></td>
-                <td><input type="color" value="#cbdc1b" name="color" readonly></input></td>
-                <td><input type="color" value="#cbdc1b" name="color" disabled></input></td>
+                <td><input type="color" value="#859900" name="color"></input></td>
+                <td><input type="color" value="#859900" name="color" readonly></input></td>
+                <td><input type="color" value="#859900" name="color" disabled></input></td>
                 </tr>
 
                 <tr>
@@ -222,7 +231,7 @@
 
                 <tr>
                 <td></td>
-                <td><input type="submit" value="Submit"></input></td>
+                <td><input type="submit" value="Submit" class='green'</input></td>
                 <td><input type="submit" value="Submit" readonly></input></td>
                 <td><input type="submit" value="Submit" disabled></input></td>
                 </tr>

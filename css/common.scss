@@ -1,9 +1,11 @@
 @import "colors";
 @import "mixins";
 
+@import url("http://fonts.googleapis.com/css?family=Homenaje");
+
 .font {
     font-size:18px;
-    font-family:'Share', sans-serif;
+    font-family:'Homenaje', sans-serif;
 }
 
 .arrow {
@@ -169,7 +171,7 @@
     @extend .inset-box;
 
     &.disabled {
-        input {
+        input, textarea {
             @extend .disabled-text-content;
         }
     }
@@ -189,7 +191,7 @@
     }
     &.focus {
         input, textarea {
-            color:$base4;
+            color:$widget-text-focus-color;
         }
     }
 }

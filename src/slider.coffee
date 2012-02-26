@@ -198,8 +198,10 @@ class Slider extends NumericWidget
         width     = @dummy.width()
         knob      = @dummy.children ".knob"
         val       = @dummy.children ".value"
-        knobWidth = knob.width()
         valWidth  = val.width()
+        knobWidth = knob.width()
+        knobWidth += parseInt knob.css "margin-left"
+        knobWidth += parseInt knob.css "margin-right"
 
         # The knob left offset is calculated with the current size
         # of the slider and the current size of the knob.
