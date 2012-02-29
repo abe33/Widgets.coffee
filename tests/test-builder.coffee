@@ -40,32 +40,32 @@ $(document).ready ->
         assertThat o.property1, equalTo "value 1"
         assertThat o.property2, equalTo "value 2"
 
-    test "BuildUnit should callback if a function is provided", ->
+    test "BuildUnit should cell if a function is provided", ->
 
         class D
 
-        callbackCalled = false
-        callbackArg = null
+        cellCalled = false
+        cellArg = null
 
         unit = new BuildUnit D, null, null, (arg)->
-            callbackCalled = true
-            callbackArg = arg
+            cellCalled = true
+            cellArg = arg
 
         o = unit.build()
-        assertThat callbackCalled
-        assertThat o is callbackArg
+        assertThat cellCalled
+        assertThat o is cellArg
 
     module "tablebuilder tests"
 
     test "TableBuilder should be able to build a table
-          and allow a callback to modify its content", ->
+          and allow a cell to modify its content", ->
 
         table = new TableBuilder
             cls:Button
-            args:[ display:"Button", action:-> ]
+            args:[ action:-> ]
             rows:3
             cols:3
-            callback:(opts)->
+            cells:(opts)->
                 opts.td.addClass "foo"
                 opts.widget.set "disabled", true
 
@@ -79,11 +79,11 @@ $(document).ready ->
 
         table = new TableBuilder
             cls:Button
-            args:[ display:"Button", action:-> ]
+            args:[ action:-> ]
             rows:3
             cols:3
             tableClass:"className"
-            callback:(opts)->
+            cells:(opts)->
                 opts.td.addClass "foo"
                 opts.widget.set "disabled", true
 
@@ -91,16 +91,14 @@ $(document).ready ->
 
         assertThat t.hasClass "className"
 
-    test "TableBuilder should add a header cell if table title is provided", ->
+    test "TableBuilder should add a general header cell
+          if table title is provided", ->
         table = new TableBuilder
-            tableTitle:"Buttons"
+            title:"Buttons"
             cls:Button
-            args:[ display:"Button", action:-> ]
+            args:[ action:-> ]
             rows:3
             cols:3
-            callback:(opts)->
-                opts.td.addClass "foo"
-                opts.widget.set "disabled", true
 
         t = table.build()
 
@@ -108,22 +106,90 @@ $(document).ready ->
         assertThat t.find("th").text(), contains "Buttons"
         assertThat t.find("th").attr("colspan"), equalTo "3"
 
+    test "TableBuilder should add a header for each column
+          if a function is provided", ->
+
+        table = new TableBuilder
+            cls:Button
+            args:[ action:-> ]
+            rows:3
+            cols:3
+            columnHeaders:(opts)->
+                "foo#{opts.col+1}"
+
+        t = table.build()
+
+        assertThat t.find("th").length, equalTo 3
+        assertThat $(t.find("th")[0]).text(), equalTo "foo1"
+        assertThat $(t.find("th")[1]).text(), equalTo "foo2"
+        assertThat $(t.find("th")[2]).text(), equalTo "foo3"
+
+    test "TableBuilder should add a header for each row
+          if a function is provided", ->
+
+        table = new TableBuilder
+            cls:Button
+            args:[ action:-> ]
+            rows:3
+            cols:3
+            rowHeaders:(opts)->
+                "foo#{opts.row + 1}"
+
+        t = table.build()
+
+        assertThat t.find("th").length, equalTo 3
+        assertThat $(t.find("th")[0]).text(), equalTo "foo1"
+        assertThat $(t.find("th")[1]).text(), equalTo "foo2"
+        assertThat $(t.find("th")[2]).text(), equalTo "foo3"
+
+    test "TableBuilder should add adjust the colspan
+          and column headers when row headers are provided", ->
+
+        table = new TableBuilder
+            cls:Button
+            args:[ action:-> ]
+            rows:3
+            cols:3
+            title:"Foo"
+            columnHeaders:(opts)->
+                "foo#{opts.col+1}"
+            rowHeaders:(opts)->
+                "foo#{opts.row + 1}"
+
+        t = table.build()
+
+        assertThat t.find("th").first().attr("colspan"), equalTo "4"
+        assertThat $(t.find("tr")[1]).children().length, equalTo 4
+
+    test "TableBuilder shouldn't create anything in a cell
+          unless the cls options is provided", ->
+
+        table = new TableBuilder
+            rows:3
+            cols:3
+        t = table.build()
+        t.children("td").each (i,o)->
+            assertThat $(o).children().length, equalTo 0
+
+
 
     # Some live demos
     states = [ null, "readonly", "disabled" ]
     colors = [ null, "green", "blue" ]
+    colHeaderLabels = [ "Normal", "Blue", "Green" ]
+    rowHeaderLabels = [ "Normal", "Readonly", "Disabled" ]
 
     table = new TableBuilder
-        tableTitle:"Buttons"
-        tableClass:"float"
+        title:"Buttons"
         cls:Button,
         args:[ display:"Button", action:-> ]
         rows:3
         cols:3
-        callback:(opts)->
-            opts.widget.addClasses colors[ opts.x ] if colors[ opts.x ]?
-            opts.widget.set states[ opts.y ], true if states[ opts.y ]?
-
-            opts.td.addClass "state" if opts.x is 0
+        tableClass:"float dummy"
+        columnHeaders:(opts)-> rowHeaderLabels[opts.col]
+        rowHeaders:(opts)-> colHeaderLabels[opts.row]
+        cells:(opts)->
+            opts.widget.addClasses colors[ opts.col ] if colors[ opts.col ]?
+            opts.widget.set states[ opts.row ], true if states[ opts.row ]?
 
     $("#qunit-header").before table.build()

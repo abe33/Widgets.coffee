@@ -7,35 +7,80 @@ class TableBuilder
     constructor:( @options )->
 
     build:->
+        cols = [0..@options.cols-1]
+        rows = [0..@options.rows-1]
+
+        hasColumnHeaders = @options.columnHeaders?
+        hasRowHeaders    = @options.rowHeaders?
+
         table = $("<table></table>")
         table.addClass @options.tableClass if @options.tableClass?
 
-        if @options.tableTitle?
-            table.append $ "<tr><th colspan='#{ @options.cols }'>
-                                #{ @options.tableTitle }
+        if @options.title?
+            colspan = @options.cols
+            colspan += 1 if hasRowHeaders
+            table.append $ "<tr><th colspan='#{ colspan }'>
+                                #{ @options.title }
                             </th></tr>"
 
-        for y in [0..@options.rows-1]
+        if hasColumnHeaders
+            tr = $("<tr></tr>")
+            opts =
+                builder:this
+                table:table
+                tr:tr
+
+            tr.append "<td></td>" if hasRowHeaders
+
+            for col in cols
+                th = $("<th></th>")
+
+                opts.col = col
+                opts.th = th
+
+                th.text @options.columnHeaders opts
+
+                tr.append th
+
+            table.append tr
+
+        for row in rows
             tr = $("<tr></tr>")
             table.append tr
 
-            for x in [0..@options.cols-1]
+            opts =
+                builder:this
+                table:table
+                tr:tr
+
+            if hasRowHeaders
+                th = $("<th></th>")
+
+
+                opts.row = row
+                opts.th = th
+
+                th.text @options.rowHeaders opts
+
+                tr.append th
+
+            for col in cols
                 td = $("<td></td>")
                 tr.append td
 
-                unit = new BuildUnit @options.cls, @options.args
-                widget = unit.build()
-                widget.attach td
+                if @options.cls?
+                    unit = new BuildUnit @options.cls, @options.args
+                    widget = unit.build()
+                    widget.attach td
+                    opts.widget = widget
 
-                @options.callback? (
-                    builder:this
-                    widget:widget
-                    table:table
-                    tr:tr
+                opts[k] = v for k,v of {
                     td:td
-                    x:x
-                    y:y
-                )
+                    col:col
+                    row:row
+                }
+
+                @options.cells? opts
 
         table
 
