@@ -7,74 +7,87 @@
     <link rel="stylesheet" href="./css/styles.css" media="screen">
 
     <script type="text/javascript" src="./depends/jquery-1.6.1.min.js"></script>
-
-
     <script type="text/javascript" src="./depends/jquery.mousewheel.js"></script>
 
     <script type="text/javascript" src="./depends/signals.js"></script>
     <script type="text/javascript" src="./lib/widgets.js"></script>
 
     <script type="text/javascript">
-        function buildCell( cls, arg, value, cb, tr, readonly, disabled ){
-            var w = new cls(arg);
-
-            if( value )
-                w.set("value",value);
-            w.set("readonly", readonly);
-            w.set("disabled", disabled);
-            w.addClasses("dummy");
-
-            var td = $("<td class='state'></td>");
-
-            w.attach(td);
-            trr = $("<tr></tr>");
-            trr.append(td);
-            tr.append(trr);
-
-            if(cb)
-                cb.call(this,w);
+        function handleState (opts){
+            opts.widget.addClasses("dummy");
+            if( opts.x == 0 ){
+                opts.td.addClass("state");
+            }
+            if( opts.y == 1 ){
+                opts.widget.set("readonly",true);
+            }
+            else if( opts.y == 2 ){
+                opts.widget.set("disabled",true)
+            }
         }
-        function buildRow( cls, arg, value, cb ){
-            var body = $("#form");
-            // var tr = $("<tr></tr>");
-            var tb = $("<table class='float widget'><tr><th>" + cls + "</th></tr></table>");
-
-            var cls = this[cls];
-
-            buildCell( cls, arg, value, cb, tb );
-            buildCell( cls, arg, value, cb, tb , true );
-            buildCell( cls, arg, value, cb, tb , false, true );
-
-            // tb.append(tr);
-            body.after(tb);
-        }
-        var popups = [
-            [ "SquarePicker", null, null, function(w){
-                w.set({
-                    rangeX:[0,100],
-                    rangeY:[0,100]
-                });
-                w.set("value",[20,45]);
-            } ],
-            [ "MenuList"   ,
-               new MenuModel({ display:"Item 1" },
-                             { display:"Item 2" },
-                             { display:"Item 3" },
-                             { display:"Item 4" },
-                             { display:"Item 5" },
-                             { display:"Item 6" }),
-                null],
-            [ "Calendar"   , new Date(2011,5,17) ],
-            [ "ColorPicker", null, "#859900" ]
-        ];
-
         $(document).ready(function(){
+
+            var builds = [{
+                tableTitle:"SquarePicker",
+                cls:SquarePicker,
+                rows:3,
+                cols:1,
+                tableClass:"float",
+                callback:function(opts){
+                    opts.widget.set({
+                        rangeX:[0,100],
+                        rangeY:[0,100]
+                    });
+                    opts.widget.set("value",[20,45]);
+                    if( opts.y == 1 ){
+                        opts.widget.set("readonly",true);
+                    }
+                    else if( opts.y == 2 ){
+                        opts.widget.set("disabled",true)
+                    }
+                    handleState(opts);
+                }
+            },{
+                tableTitle:"MenuList",
+                cls:MenuList,
+                rows:3,
+                cols:1,
+                args:[new MenuModel({ display:"Item 1" },
+                                 { display:"Item 2" },
+                                 { display:"Item 3" },
+                                 { display:"Item 4" },
+                                 { display:"Item 5" },
+                                 { display:"Item 6" })],
+                tableClass:"float",
+                callback:handleState
+            },{
+                tableTitle:"Calendar",
+                cls:Calendar,
+                rows:3,
+                cols:1,
+                args:[new Date(2011,5,17)],
+                tableClass:"float",
+                callback:handleState
+            },{
+                tableTitle:"ColorPicker",
+                cls:ColorPicker,
+                rows:3,
+                cols:1,
+                tableClass:"float",
+                callback:function(opts){
+                    opts.widget.set("value","#859900");
+                    handleState(opts);
+                }
+            }];
+
             $("input,textarea,select").widgets();
 
-            var l = popups.length;
+            var l = builds.length;
             var i = 0;
             for(i;i<l;i++){
-                buildRow.apply(null,popups[i]);
+                var tb = new TableBuilder( builds[i] );
+                var t = tb.build();
+                $("#form").after(t);
             }
         });
     </script>
@@ -241,15 +254,36 @@
 
 
     </form>
-    <table class="float">
-        <tr><th>Accentize</th></tr>
-        <tr><td><input type="button" value="Button" class='red'></input></td>
-        <tr><td><input type="button" value="Button" class='orange'></input></td>
-        <tr><td><input type="button" value="Button" class='yellow'></input></td>
-        <tr><td><input type="button" value="Button" class='green'></input></td>
-        <tr><td><input type="button" value="Button" class='cyan'></input></td>
-        <tr><td><input type="button" value="Button" class='blue'></input></td>
-        <tr><td><input type="button" value="Button" class='violet'></input></td></tr>
-    </table>
+<table class="float" id="accentize">
+    <tr><th colspan="2">Accentize</th></tr>
+    <tr>
+        <td><input type="button" value="Button" class='red'></input></td>
+        <td><input type="text" value="Text" class='red'></input></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Button" class='orange'></input></td>
+        <td><input type="text" value="Text" class='orange'></input></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Button" class='yellow'></input></td>
+        <td><input type="text" value="Text" class='yellow'></input></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Button" class='green'></input></td>
+        <td><input type="text" value="Text" class='green'></input></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Button" class='cyan'></input></td>
+        <td><input type="text" value="Text" class='cyan'></input></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Button" class='blue'></input></td>
+        <td><input type="text" value="Text" class='blue'></input></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Button" class='violet'></input></td>
+        <td><input type="text" value="Text" class='violet'></input></td>
+    </tr>
+</table>
 
 </body>
