@@ -154,10 +154,8 @@ class MenuList extends Widget
         @selectedIndex = -1
 
         # The model is stored in its own property.
-        @createProperty "model"
+        @model = null
         @set "model", model
-
-        @createProperty "size"
 
         # A `MenuList` keep reference to both its parent
         # and its child list.
@@ -329,14 +327,14 @@ class MenuList extends Widget
     set_model:( property, value )->
         @clearList()
 
-        @properties[ property ]?.contentChanged.remove @modelChanged, this
+        @[ property ]?.contentChanged.remove @modelChanged, this
         value?.contentChanged.add @modelChanged, this
 
         @buildList value
-        @properties[ property ] = value
+        @[ property ] = value
 
     set_size:( property, value )->
-        @properties[ property ] = value
+        @[ property ] = value
         @updateSize()
         value
 

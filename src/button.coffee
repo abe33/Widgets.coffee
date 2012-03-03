@@ -62,8 +62,8 @@ class Button extends Widget
 
         super target
 
-        # The action object of this button is stored in a property.
-        @createProperty "action", action
+        # The action object of this button.
+        @action = action
 
         # Initialize the button's content with the provided data.
         @updateContent()

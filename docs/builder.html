@@ -16,7 +16,8 @@
         <span class="k">if</span> <span class="py">@options</span><span class="p">.</span><span class="nx">title</span><span class="o">?</span>
             <span class="nv">colspan </span><span class="o">=</span> <span class="py">@options</span><span class="p">.</span><span class="nx">cols</span>
             <span class="nx">colspan</span> <span class="o">+=</span> <span class="mi">1</span> <span class="k">if</span> <span class="nx">hasRowHeaders</span>
-            <span class="nx">table</span><span class="p">.</span><span class="nx">append</span> <span class="nx">$</span> <span class="s">&quot;&lt;tr&gt;&lt;th colspan=&#39;</span><span class="si">#{</span> <span class="nx">colspan</span> <span class="si">}</span><span class="s">&#39;&gt;</span>
+            <span class="nx">table</span><span class="p">.</span><span class="nx">append</span> <span class="nx">$</span> <span class="s">&quot;&lt;tr&gt;&lt;th colspan=&#39;</span><span class="si">#{</span> <span class="nx">colspan</span> <span class="si">}</span><span class="s">&#39;</span>
+<span class="s">                                    class=&#39;table-header&#39;&gt;</span>
 <span class="s">                                </span><span class="si">#{</span> <span class="py">@options</span><span class="p">.</span><span class="nx">title</span> <span class="si">}</span><span class="s"></span>
 <span class="s">                            &lt;/th&gt;&lt;/tr&gt;&quot;</span>
 
@@ -30,7 +31,7 @@
             <span class="nx">tr</span><span class="p">.</span><span class="nx">append</span> <span class="s">&quot;&lt;td&gt;&lt;/td&gt;&quot;</span> <span class="k">if</span> <span class="nx">hasRowHeaders</span>
 
             <span class="k">for</span> <span class="nx">col</span> <span class="k">in</span> <span class="nx">cols</span>
-                <span class="nv">th </span><span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;th&gt;&lt;/th&gt;&quot;</span><span class="p">)</span>
+                <span class="nv">th </span><span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;th class=&#39;column-header&#39;&gt;&lt;/th&gt;&quot;</span><span class="p">)</span>
 
                 <span class="nv">opts.col </span><span class="o">=</span> <span class="nx">col</span>
                 <span class="nv">opts.th </span><span class="o">=</span> <span class="nx">th</span>
@@ -51,7 +52,7 @@
                 <span class="py">tr</span><span class="o">:</span><span class="nx">tr</span>
 
             <span class="k">if</span> <span class="nx">hasRowHeaders</span>
-                <span class="nv">th </span><span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;th&gt;&lt;/th&gt;&quot;</span><span class="p">)</span>
+                <span class="nv">th </span><span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;th class=&#39;row-header&#39;&gt;&lt;/th&gt;&quot;</span><span class="p">)</span>
 
 
                 <span class="nv">opts.row </span><span class="o">=</span> <span class="nx">row</span>
