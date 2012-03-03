@@ -40,6 +40,12 @@
     -moz-opacity: 0.5; }
     .widget-common.disabled.focus, .disabled.focus.button, .disabled.focus.text, .widget-common.readonly.focus, .readonly.focus.button, .readonly.focus.text {
       outline: 1px dotted red !important; }
+    .widget-common.disabled .disabled, .disabled.button .disabled, .disabled.text .disabled, .widget-common.disabled .readonly, .disabled.button .readonly, .disabled.text .readonly, .widget-common.readonly .disabled, .readonly.button .disabled, .readonly.text .disabled, .widget-common.readonly .readonly, .readonly.button .readonly, .readonly.text .readonly {
+      opacity: 1;
+      filter: alpha(opacity=100);
+      -ms-filter: "alpha(opacity=100)";
+      -khtml-opacity: 1;
+      -moz-opacity: 1; }
   .widget-common:focus, .button:focus, .text:focus {
     outline: none; }
   .widget-common.focus, .focus.button, .focus.text {
