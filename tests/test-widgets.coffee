@@ -1101,3 +1101,32 @@ $( document ).ready ->
 
         assertThat widget.dummy.hasClass "cssclass"
 
+    test "Widgets with a disabled parent should behave as disabled", ->
+
+        parent = new Widget
+        child = new Widget
+
+        child.parent = parent
+        parent.set "disabled", true
+
+        assertThat child.get("disabled")
+        assertThat child.cantInteract()
+
+    test "Widgets with a readonly parent should behave as disabled", ->
+
+        parent = new Widget
+        child = new Widget
+
+        child.parent = parent
+        parent.set "readonly", true
+
+        assertThat child.get("readonly")
+        assertThat child.cantInteract()
+
+    test "Widgets should provides a string representation", ->
+
+        widget = new Widget
+        widget.set "id", "someid"
+
+        assertThat widget.toString(), equalTo "[object Widget(id=\"someid\")]"
+

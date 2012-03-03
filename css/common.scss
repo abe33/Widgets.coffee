@@ -51,6 +51,9 @@
         &.focus {
             outline:1px dotted rgba(255,0,0,1) !important;
         }
+        .disabled, .readonly {
+            @include opacity(1,100);
+        }
     }
     &:focus {
         outline:none;

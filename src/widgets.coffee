@@ -225,12 +225,25 @@ class Widget extends Module
     # The accessors functions for the widget's properties.
     #
     # Setters accessors are prefixed with `set_` and getters's one with `get_`.
+
+    # A widget is disabled if its own disabled property is `true`
+    # or if it's a child of a disabled widget.
+    get_disabled:( property )->
+        res = @properties[ property ]
+        res = res or @parent.get property if @parent?
+        res
     set_disabled:( property, value )->
         @properties[ property ] = @booleanToAttribute property, value
         # Disabled widget don't allow to receive focus.
         @setFocusable not value
 
     # Read-only widgets don't allow their `value` to be changed.
+    # A widget is readonly if its own readonly property is `true`
+    # or if it's a child of a readonly widget.
+    get_readonly:( property )->
+        res = @properties[ property ]
+        res = res or @parent.get property if @parent?
+        res
     set_readonly:( property, value )->
         @properties[ property ] = @booleanToAttribute property, value
 
@@ -259,9 +272,9 @@ class Widget extends Module
     # they are originally unique).
     set_id:( property, value )->
         if value?
-            @dummy.attr "id", value
+            @dummy?.attr "id", value
         else
-            @dummy.removeAttr "id"
+            @dummy?.removeAttr "id"
 
         @properties[ property ] = value
 
@@ -301,8 +314,7 @@ class Widget extends Module
             @jTarget.hide()
 
     # Reset the target as a `<input type='reset'>` could do.
-    reset:->
-        @set "value", @targetInitialValue
+    reset:-> @set "value", @targetInitialValue
 
     # A placeholder for the target's change event.
     targetChange:( e )->
@@ -540,5 +552,11 @@ class Widget extends Module
             if value then @jTarget.attr property, property
             else @jTarget.removeAttr property
         value
+
+    #### Miscelaneous functions
+
+    toString:->
+        details = if @get("id") then "(id=\"#{ @get("id") }\")" else ""
+        "[object #{ @constructor.name }#{ details }]"
 
 @Widget = Widget
