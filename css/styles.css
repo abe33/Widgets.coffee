@@ -1,25 +1,22 @@
 @import url("http://fonts.googleapis.com/css?family=Homenaje");
-code {
-  background: #002b36 !important;
-  border: 1px solid #042029 !important;
-  color: #93a1a1; }
-
 .docs {
-  background: #073642 !important;
+  background: #a6b0b0 !important;
+  color: #586e75;
   font-family: 'Palatino Linotype','Book Antiqua',Palatino,FreeSerif,serif;
   font-size: 14px; }
-  .docs pre {
-    color: #93a1a1;
-    background: #042029 !important;
-    border: 1px solid #001921 !important; }
-    .docs pre code {
-      background: none !important;
-      border: none !important; }
+  .docs code, .docs pre {
+    background: #839496 !important;
+    border: 1px solid #657b83 !important;
+    color: #073642; }
+  .docs pre code {
+    background: none !important;
+    border: none !important; }
   .docs h1, .docs h2, .docs h3, .docs h4, .docs h5, .docs h6 {
-    color: #bbc4c4;
-    -webkit-text-shadow: 0pt 1px 3px rgba(0, 0, 0, 1);
-    -moz-text-shadow: 0pt 1px 3px rgba(0, 0, 0, 1);
-    text-shadow: 0pt 1px 3px rgba(0, 0, 0, 1); }
+    color: #002b36; }
+    .docs h1:first-letter, .docs h2:first-letter, .docs h3:first-letter, .docs h4:first-letter, .docs h5:first-letter, .docs h6:first-letter {
+      -webkit-text-shadow: 1px 0px 0 #073642, -1px 0px 0 #073642, 0px 1px 0 #073642, 0px -1px 0 #073642;
+      -moz-text-shadow: 1px 0px 0 #073642, -1px 0px 0 #073642, 0px 1px 0 #073642, 0px -1px 0 #073642;
+      text-shadow: 1px 0px 0 #073642, -1px 0px 0 #073642, 0px 1px 0 #073642, 0px -1px 0 #073642; }
   .docs h1:first-letter {
     color: #859900; }
   .docs h3:first-letter {

@@ -1,15 +1,15 @@
 /*
-Syntax error: Undefined variable: "$base03".
+Syntax error: Undefined variable: "$base2".
         on line 3 of ./docco.scss
 
 1: 
-2: code {
-3:     background:$base03 !important;
-4:     border:1px solid $base04 !important;
-5:     color:$base1;
-6: }
-7: 
-8: .docs {
+2: .docs {
+3:     background:$base2 !important;
+4:     color:$base01;
+5:     // background:$base02 !important;
+6:     code, pre {
+7:         background:$base0 !important;
+8:         border:1px solid $base00 !important;
 
 Backtrace:
 ./docco.scss:3
@@ -84,4 +84,4 @@ Backtrace:
 body:before {
   white-space: pre;
   font-family: monospace;
-  content: "Syntax error: Undefined variable: \"$base03\".\A         on line 3 of ./docco.scss\A \A 1: \A 2: code {\A 3:     background:$base03 !important;\A 4:     border:1px solid $base04 !important;\A 5:     color:$base1;\A 6: }\A 7: \A 8: .docs {"; }
+  content: "Syntax error: Undefined variable: \"$base2\".\A         on line 3 of ./docco.scss\A \A 1: \A 2: .docs {\A 3:     background:$base2 !important;\A 4:     color:$base01;\A 5:     // background:$base02 !important;\A 6:     code, pre {\A 7:         background:$base0 !important;\A 8:         border:1px solid $base00 !important;"; }
