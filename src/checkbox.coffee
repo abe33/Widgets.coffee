@@ -62,10 +62,10 @@ class CheckBox extends Widget
         #     console.log checkbox.get "value"
         #
         # Will output `off`.
-        @createProperty "values", [ true, false ]
+        @values = [ true, false ]
 
         # The `checked` property reflect the `checked` attribute of the target.
-        @createProperty "checked", @booleanFromAttribute("checked", false)
+        @checked = @booleanFromAttribute("checked", false)
 
         # The initial `checked` value is saved for a possible reset.
         @targetInitialChecked = @get "checked"
@@ -95,7 +95,7 @@ class CheckBox extends Widget
 
     # Setting the `checked` property also affect the `value` property.
     set_checked:( property, value )->
-        @properties[ property ] = value
+        @[ property ] = value
         @updateValue value, @get("values")
         @booleanToAttribute property, value
         @checkedChanged.dispatch this, value
@@ -112,7 +112,7 @@ class CheckBox extends Widget
     # change.
     set_values:( property, value )->
         @updateValue @get("checked"), value
-        @properties[ property ] = value
+        @[ property ] = value
 
     #### Dummy management
 

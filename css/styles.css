@@ -229,12 +229,18 @@ code {
     -moz-opacity: 0.5; }
     .widget-common.disabled.focus, .disabled.focus.button, .disabled.focus.text, .widget-common.readonly.focus, .readonly.focus.button, .readonly.focus.text {
       outline: 1px dotted red !important; }
+    .widget-common.disabled .disabled, .disabled.button .disabled, .disabled.text .disabled, .widget-common.disabled .readonly, .disabled.button .readonly, .disabled.text .readonly, .widget-common.readonly .disabled, .readonly.button .disabled, .readonly.text .disabled, .widget-common.readonly .readonly, .readonly.button .readonly, .readonly.text .readonly {
+      opacity: 1;
+      filter: alpha(opacity=100);
+      -ms-filter: "alpha(opacity=100)";
+      -khtml-opacity: 1;
+      -moz-opacity: 1; }
   .widget-common:focus, .button:focus, .text:focus {
     outline: none; }
   .widget-common.focus, .focus.button, .focus.text {
     outline: 1px dotted rgba(255, 0, 0, 0.7) !important; }
 
-.inset-text, .button, #form th, .float th {
+.inset-text, .button {
   -webkit-text-shadow: 0pt 1px 0px rgba(255,255,255, 0.6);
   -moz-text-shadow: 0pt 1px 0px rgba(255,255,255, 0.6);
   text-shadow: 0pt 1px 0px rgba(255,255,255, 0.6); }
@@ -697,14 +703,14 @@ h4 {
 #qunit-header {
   margin-top: 4px !important; }
 
-#form {
-  float: left; }
-  #form th {
-    width: 100px; }
-    #form th:first-child {
-      width: 150px; }
+td {
+  color: #839496; }
 
-#form, .float {
+#popups th:first-child {
+  width: 150px; }
+
+.float {
+  float: left;
   padding-bottom: 6px;
   padding-left: 4px;
   margin: 5px 5px 0px 0px;
@@ -713,52 +719,37 @@ h4 {
   -moz-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px; }
-  #form th, .float th {
+  .float th {
     font-weight: normal;
-    color: #839496; }
-  #form .calendar th, .float .calendar th {
+    font-variant: small-caps;
+    font-weight: normal;
+    text-align: left;
+    color: #839496;
+    -webkit-text-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.8);
+    -moz-text-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.8);
+    text-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.8); }
+    .float th[colspan] {
+      text-align: center; }
+  .float .calendar th {
     color: #002b36; }
-
-td {
-  color: #839496; }
-
-#popups th:first-child {
-  width: 150px; }
-
-.float {
-  float: left; }
-  .float td.state {
-    padding-left: 16px; }
-    .float td.state:before {
-      content: "";
-      position: absolute;
-      margin-left: -42px;
-      margin-top: 30px;
-      width: 60px;
-      height: 15px;
-      padding-right: 5px;
-      padding-bottom: 2px;
-      padding-top: 1px;
-      color: #839496;
-      background: #042029;
-      font-size: 13px;
-      text-transform: uppercase;
-      text-align: right;
-      -webkit-transform: rotate(-90deg);
-      -moz-transform: rotate(-90deg);
-      -ms-transform: rotate(-90deg);
-      -o-transform: rotate(-90deg);
-      transform: rotate(-90deg);
-      -webkit-border-radius: 5px 5px 0px 0px;
-      -moz-border-radius: 5px 5px 0px 0px;
-      -o-border-radius: 5px 5px 0px 0px;
-      border-radius: 5px 5px 0px 0px; }
-  .float tr:nth-child(2) td.state:before {
-    content: "Normal"; }
-  .float tr:nth-child(3) td.state:before {
-    content: "Readonly"; }
-  .float tr:nth-child(4) td.state:before {
-    content: "Disabled"; }
+  .float .not-standard {
+    background: #cb4b16;
+    color: #bbc4c4;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px;
+    text-align: center;
+    padding: 6px 0px 7px 0px;
+    margin-top: 6px;
+    width: 100px;
+    font-size: 12px;
+    text-transform: uppercase;
+    -webkit-text-shadow: 0pt 1px 3px rgba(0, 0, 0, 1);
+    -moz-text-shadow: 0pt 1px 3px rgba(0, 0, 0, 1);
+    text-shadow: 0pt 1px 3px rgba(0, 0, 0, 1); }
+  .float.dummy {
+    float: none; }
 
 .button, .text, .textarea, .colorinput, .single-select,
 .dateinput, .stepper, .slider, .filepicker {

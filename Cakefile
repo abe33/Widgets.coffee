@@ -7,7 +7,7 @@ allFiles = [
     "button",     "textinput",      "textarea", "checkbox",    "radio",
     "radiogroup", "numeric-widget", "slider",   "stepper",     "filepicker",
     "menus",      "selects",        "calendar", "dates",       "colorpicker",
-    "jquery"
+    "jquery",     "builder"
 ]
 
 allTestsDependencies = [ "test-helpers" ]
@@ -76,6 +76,9 @@ compilationUnits=
     'jquery':
         depends:allFiles[0..-2]
         test:"test-jquery"
+    'builder':
+        depends:[ "keys", "module", "mixins", "widgets", "button" ]
+        test:"test-builder"
 
 class Batch
     constructor:( @commands )->

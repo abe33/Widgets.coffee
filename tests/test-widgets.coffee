@@ -160,10 +160,10 @@ $( document ).ready ->
         widget = new Widget
 
         getter = (property)->
-            @properties[property]
+            @[property]
 
         setter = (property, value)->
-            @properties[property] = value
+            @[property] = value
 
         widget.createProperty "foo", "bar", setter, getter
 
@@ -757,10 +757,10 @@ $( document ).ready ->
         class MockWidgetA extends Widget
             constructor:(target)->
                 super target
-                @createProperty "foo", "bar"
+                @foo = "bar"
 
             set_foo:( property, value )->
-                @properties[ property ] = value
+                @[ property ] = value
 
         class MockWidgetB extends MockWidgetA
             set_foo:( property, value )->
@@ -1100,4 +1100,46 @@ $( document ).ready ->
         widget = new MockWidget target[0]
 
         assertThat widget.dummy.hasClass "cssclass"
+
+    test "Widgets with a disabled parent should behave as disabled", ->
+
+        parent = new Widget
+        child = new Widget
+
+        child.parent = parent
+        parent.set "disabled", true
+
+        assertThat child.get("disabled")
+        assertThat child.cantInteract()
+
+    test "Widgets with a readonly parent should behave as disabled", ->
+
+        parent = new Widget
+        child = new Widget
+
+        child.parent = parent
+        parent.set "readonly", true
+
+        assertThat child.get("readonly")
+        assertThat child.cantInteract()
+
+    test "Widgets should provides a string representation", ->
+
+        widget = new Widget
+        widget.set "id", "someid"
+
+        assertThat widget.toString(), equalTo "[object Widget(id=\"someid\")]"
+
+    test "Widgets should provides a string representation with details", ->
+        class MockWidget extends Widget
+            toString:->
+                @stringify "name"
+
+        widget = new MockWidget
+        widget.set "id", "someid"
+        widget.set "name", "somename"
+
+        s = "[object MockWidget(id=\"someid\", name=\"somename\")]"
+
+        assertThat widget.toString(), equalTo s
 

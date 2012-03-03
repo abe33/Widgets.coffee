@@ -263,10 +263,10 @@ class ColorInput extends Widget
         unless isValidValue value
             value = "#000000"
 
-        @properties["value"] = value
+        @["value"] = value
 
         # The color object is then created with the widget's value.
-        @createProperty "color", colorObjectFromValue value
+        @color = colorObjectFromValue value
 
         @dialogRequested.add ColorInput.defaultListener.dialogRequested,
                              ColorInput.defaultListener
@@ -340,7 +340,7 @@ class ColorInput extends Widget
 
         # The value is then changed.
         @set "value", "##{rgb}"
-        @properties[ property ] = value
+        @[ property ] = value
 
     # Sets the value for this widget.
     set_value:( property, value )->
@@ -351,7 +351,7 @@ class ColorInput extends Widget
 
         # The `color` object for this widget is updated according
         # to the new widget's value.
-        @properties["color"] = colorObjectFromValue value
+        @["color"] = colorObjectFromValue value
         @updateDummy value
 
         super property, value
@@ -403,8 +403,8 @@ class SquarePicker extends Widget
     constructor:->
         super()
 
-        @createProperty "rangeX", [0,1]
-        @createProperty "rangeY", [0,1]
+        @rangeX = [0,1]
+        @rangeY = [0,1]
         @set "value", [0,0]
         @dragging = false
         @xLocked = false
@@ -472,12 +472,12 @@ class SquarePicker extends Widget
     # Sets the value of the horizontal range.
     set_rangeX:( property, value )->
         unless @isValidRange value then return @get property
-        @properties[ property ] = value
+        @[ property ] = value
 
     # Sets the value of the vertical range.
     set_rangeY:( property, value )->
         unless @isValidRange value then return @get property
-        @properties[ property ] = value
+        @[ property ] = value
 
     # Sets the value for this widget.
     # The value is an array containing the two values
@@ -650,7 +650,7 @@ class ColorPicker extends Widget
         #
         # Those modes are [HSV](#HSV), [SHV](#SHV), [VHS](#VHS),
         # [RGB](#RGB), [GRB](#GRB), [BGR](#BGR).
-        @createProperty "mode"
+        @mode = null
         @editModes = [
             new RGBMode
             new GRBMode
@@ -796,7 +796,7 @@ class ColorPicker extends Widget
 
         # The hexadecimal value is then affected as the
         # new value for this widgets.
-        @properties["value"] = "##{value}"
+        @["value"] = "##{value}"
 
         # All the affectation below will trigger `valueChanged` signals
         # on the children widgets, so the lock is activated.
@@ -866,14 +866,14 @@ class ColorPicker extends Widget
 
     # Changes the color edit mode for this dialog.
     set_mode:( property, value )->
-        oldMode = @properties[ property ]
+        oldMode = @[ property ]
 
         if oldMode? then oldMode.dispose()
         if value?
             value.init this
             value.update @model
 
-        @properties[ property ] = value
+        @[ property ] = value
 
     # Changing the widget's value using the `value` setter
     # will feed the model with completely new datas from the passed-in color.
