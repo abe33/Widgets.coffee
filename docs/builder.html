@@ -1,0 +1,106 @@
+<!DOCTYPE html>  <html> <head>   <title>builder.coffee</title>   <meta http-equiv="content-type" content="text/html; charset=UTF-8">   <link rel="stylesheet" media="all" href="docco.css" /> </head> <body>   <div id="container">     <div id="background"></div>            <div id="jump_to">         Jump To &hellip;         <div id="jump_wrapper">           <div id="jump_page">                                           <a class="source" href="builder.html">                 builder.coffee               </a>                                           <a class="source" href="button.html">                 button.coffee               </a>                                           <a class="source" href="calendar.html">                 calendar.coffee               </a>                                           <a class="source" href="checkbox.html">                 checkbox.coffee               </a>                                           <a class="source" href="colorpicker.html">                 colorpicker.coffee               </a>                                           <a class="source" href="container.html">                 container.coffee               </a>                                           <a class="source" href="dates.html">                 dates.coffee               </a>                                           <a class="source" href="filepicker.html">                 filepicker.coffee               </a>                                           <a class="source" href="jquery.html">                 jquery.coffee               </a>                                           <a class="source" href="keys.html">                 keys.coffee               </a>                                           <a class="source" href="menus.html">                 menus.coffee               </a>                                           <a class="source" href="mixins.html">                 mixins.coffee               </a>                                           <a class="source" href="module.html">                 module.coffee               </a>                                           <a class="source" href="numeric-widget.html">                 numeric-widget.coffee               </a>                                           <a class="source" href="radio.html">                 radio.coffee               </a>                                           <a class="source" href="radiogroup.html">                 radiogroup.coffee               </a>                                           <a class="source" href="selects.html">                 selects.coffee               </a>                                           <a class="source" href="slider.html">                 slider.coffee               </a>                                           <a class="source" href="stepper.html">                 stepper.coffee               </a>                                           <a class="source" href="textarea.html">                 textarea.coffee               </a>                                           <a class="source" href="textinput.html">                 textinput.coffee               </a>                                           <a class="source" href="widgets.html">                 widgets.coffee               </a>                        </div>         </div>       </div>          <table cellpadding="0" cellspacing="0">       <thead>         <tr>           <th class="docs">             <h1>               builder.coffee             </h1>           </th>           <th class="code">           </th>         </tr>       </thead>       <tbody>                               <tr id="section-1">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-1">&#182;</a>               </div>               <p>This file contains the classes used in the demo file.</p>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>TableBuilder</h3>
+
+<p><code>TableBuilder</code> creates a table containing widgets.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">TableBuilder</span>
+    <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="py">@options</span> <span class="p">)</span><span class="o">-&gt;</span>
+
+    <span class="py">build</span><span class="o">:-&gt;</span>
+        <span class="nv">cols </span><span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">..</span><span class="py">@options</span><span class="p">.</span><span class="nx">cols</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="nv">rows </span><span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">..</span><span class="py">@options</span><span class="p">.</span><span class="nx">rows</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="nv">hasColumnHeaders </span><span class="o">=</span> <span class="py">@options</span><span class="p">.</span><span class="nx">columnHeaders</span><span class="o">?</span>
+        <span class="nv">hasRowHeaders    </span><span class="o">=</span> <span class="py">@options</span><span class="p">.</span><span class="nx">rowHeaders</span><span class="o">?</span>
+
+        <span class="nv">table </span><span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;table&gt;&lt;/table&gt;&quot;</span><span class="p">)</span>
+        <span class="nx">table</span><span class="p">.</span><span class="nx">addClass</span> <span class="py">@options</span><span class="p">.</span><span class="nx">tableClass</span> <span class="k">if</span> <span class="py">@options</span><span class="p">.</span><span class="nx">tableClass</span><span class="o">?</span>
+
+        <span class="k">if</span> <span class="py">@options</span><span class="p">.</span><span class="nx">title</span><span class="o">?</span>
+            <span class="nv">colspan </span><span class="o">=</span> <span class="py">@options</span><span class="p">.</span><span class="nx">cols</span>
+            <span class="nx">colspan</span> <span class="o">+=</span> <span class="mi">1</span> <span class="k">if</span> <span class="nx">hasRowHeaders</span>
+            <span class="nx">table</span><span class="p">.</span><span class="nx">append</span> <span class="nx">$</span> <span class="s">&quot;&lt;tr&gt;&lt;th colspan=&#39;</span><span class="si">#{</span> <span class="nx">colspan</span> <span class="si">}</span><span class="s">&#39;&gt;</span>
+<span class="s">                                </span><span class="si">#{</span> <span class="py">@options</span><span class="p">.</span><span class="nx">title</span> <span class="si">}</span><span class="s"></span>
+<span class="s">                            &lt;/th&gt;&lt;/tr&gt;&quot;</span>
+
+        <span class="k">if</span> <span class="nx">hasColumnHeaders</span>
+            <span class="nv">tr </span><span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;tr&gt;&lt;/tr&gt;&quot;</span><span class="p">)</span>
+            <span class="nv">opts </span><span class="o">=</span>
+                <span class="py">builder</span><span class="o">:</span><span class="k">this</span>
+                <span class="py">table</span><span class="o">:</span><span class="nx">table</span>
+                <span class="py">tr</span><span class="o">:</span><span class="nx">tr</span>
+
+            <span class="nx">tr</span><span class="p">.</span><span class="nx">append</span> <span class="s">&quot;&lt;td&gt;&lt;/td&gt;&quot;</span> <span class="k">if</span> <span class="nx">hasRowHeaders</span>
+
+            <span class="k">for</span> <span class="nx">col</span> <span class="k">in</span> <span class="nx">cols</span>
+                <span class="nv">th </span><span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;th&gt;&lt;/th&gt;&quot;</span><span class="p">)</span>
+
+                <span class="nv">opts.col </span><span class="o">=</span> <span class="nx">col</span>
+                <span class="nv">opts.th </span><span class="o">=</span> <span class="nx">th</span>
+
+                <span class="nx">th</span><span class="p">.</span><span class="nx">text</span> <span class="py">@options</span><span class="p">.</span><span class="nx">columnHeaders</span> <span class="nx">opts</span>
+
+                <span class="nx">tr</span><span class="p">.</span><span class="nx">append</span> <span class="nx">th</span>
+
+            <span class="nx">table</span><span class="p">.</span><span class="nx">append</span> <span class="nx">tr</span>
+
+        <span class="k">for</span> <span class="nx">row</span> <span class="k">in</span> <span class="nx">rows</span>
+            <span class="nv">tr </span><span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;tr&gt;&lt;/tr&gt;&quot;</span><span class="p">)</span>
+            <span class="nx">table</span><span class="p">.</span><span class="nx">append</span> <span class="nx">tr</span>
+
+            <span class="nv">opts </span><span class="o">=</span>
+                <span class="py">builder</span><span class="o">:</span><span class="k">this</span>
+                <span class="py">table</span><span class="o">:</span><span class="nx">table</span>
+                <span class="py">tr</span><span class="o">:</span><span class="nx">tr</span>
+
+            <span class="k">if</span> <span class="nx">hasRowHeaders</span>
+                <span class="nv">th </span><span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;th&gt;&lt;/th&gt;&quot;</span><span class="p">)</span>
+
+
+                <span class="nv">opts.row </span><span class="o">=</span> <span class="nx">row</span>
+                <span class="nv">opts.th </span><span class="o">=</span> <span class="nx">th</span>
+
+                <span class="nx">th</span><span class="p">.</span><span class="nx">text</span> <span class="py">@options</span><span class="p">.</span><span class="nx">rowHeaders</span> <span class="nx">opts</span>
+
+                <span class="nx">tr</span><span class="p">.</span><span class="nx">append</span> <span class="nx">th</span>
+
+            <span class="k">for</span> <span class="nx">col</span> <span class="k">in</span> <span class="nx">cols</span>
+                <span class="nv">td </span><span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;td&gt;&lt;/td&gt;&quot;</span><span class="p">)</span>
+                <span class="nx">tr</span><span class="p">.</span><span class="nx">append</span> <span class="nx">td</span>
+
+                <span class="k">if</span> <span class="py">@options</span><span class="p">.</span><span class="nx">cls</span><span class="o">?</span>
+                    <span class="nv">unit </span><span class="o">=</span> <span class="k">new</span> <span class="nx">BuildUnit</span> <span class="py">@options</span><span class="p">.</span><span class="nx">cls</span><span class="p">,</span> <span class="py">@options</span><span class="p">.</span><span class="nx">args</span>
+                    <span class="nv">widget </span><span class="o">=</span> <span class="nx">unit</span><span class="p">.</span><span class="nx">build</span><span class="p">()</span>
+                    <span class="nx">widget</span><span class="p">.</span><span class="nx">attach</span> <span class="nx">td</span>
+                    <span class="nv">opts.widget </span><span class="o">=</span> <span class="nx">widget</span>
+
+                <span class="nx">opts</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">=</span> <span class="nx">v</span> <span class="k">for</span> <span class="nx">k</span><span class="p">,</span><span class="nx">v</span> <span class="k">of</span> <span class="p">{</span>
+                    <span class="py">td</span><span class="o">:</span><span class="nx">td</span>
+                    <span class="py">col</span><span class="o">:</span><span class="nx">col</span>
+                    <span class="py">row</span><span class="o">:</span><span class="nx">row</span>
+                <span class="p">}</span>
+
+                <span class="py">@options</span><span class="p">.</span><span class="nx">cells</span><span class="o">?</span> <span class="nx">opts</span>
+
+        <span class="nx">table</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>Builds an instanceofof a class with the specified arguments</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">BuildUnit</span>
+    <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="py">@klass</span><span class="p">,</span> <span class="py">@args</span> <span class="o">=</span> <span class="p">[],</span> <span class="py">@set</span> <span class="o">=</span> <span class="p">{},</span> <span class="py">@callback</span> <span class="o">=</span> <span class="kc">null</span> <span class="p">)</span><span class="o">-&gt;</span>
+
+    <span class="py">build</span><span class="o">:-&gt;</span>
+        <span class="nv">o </span><span class="o">=</span> <span class="py">@construct</span> <span class="py">@klass</span><span class="p">,</span> <span class="py">@args</span>
+        <span class="k">if</span> <span class="nx">o</span><span class="p">.</span><span class="nx">set</span> <span class="k">instanceof</span> <span class="nb">Function</span> <span class="k">then</span> <span class="nx">o</span><span class="p">.</span><span class="nx">set</span> <span class="py">@set</span>
+        <span class="k">else</span> <span class="nx">o</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="o">=</span> <span class="py">@set</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span> <span class="k">for</span> <span class="nx">k</span> <span class="k">of</span> <span class="py">@set</span>
+
+        <span class="py">@callback</span><span class="o">?</span> <span class="nx">o</span>
+        <span class="nx">o</span>
+
+    <span class="py">construct</span><span class="o">:</span><span class="p">(</span> <span class="nx">klass</span><span class="p">,</span> <span class="nx">args</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="nv">f </span><span class="o">=</span> <span class="nb">BUILDS</span><span class="p">[</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span> <span class="p">]</span>
+        <span class="nx">f</span> <span class="nx">klass</span><span class="p">,</span> <span class="nx">args</span>
+
+<span class="nb">BUILDS</span><span class="o">=</span><span class="p">(</span>
+    <span class="k">new</span> <span class="nb">Function</span><span class="p">(</span> <span class="s">&quot;return new arguments[0](</span><span class="si">#{</span>
+        <span class="p">(</span><span class="s">&quot;arguments[1][</span><span class="si">#{</span><span class="nx">j</span><span class="o">-</span><span class="mi">1</span><span class="si">}</span><span class="s">]&quot;</span> <span class="k">for</span> <span class="nx">j</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">..</span><span class="nx">i</span><span class="p">]</span> <span class="k">when</span> <span class="nx">j</span> <span class="o">isnt</span> <span class="mi">0</span> <span class="p">).</span><span class="nx">join</span> <span class="s">&quot;,&quot;</span>
+    <span class="si">}</span><span class="s">);&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="nx">i</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">..</span><span class="mi">24</span><span class="p">]</span>
+<span class="p">)</span>
+
+<span class="py">@BuildUnit</span> <span class="o">=</span> <span class="nx">BuildUnit</span>
+<span class="py">@TableBuilder</span> <span class="o">=</span> <span class="nx">TableBuilder</span>
+
+</pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

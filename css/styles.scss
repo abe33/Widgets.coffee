@@ -27,32 +27,6 @@ h4 {
 	margin-top:4px !important;
 }
 
-#form{
-	float:left;
-	th {
-		width:100px;
-		&:first-child {
-			width:150px;
-		}
-	}
-}
-#form, .float {
-	padding-bottom:6px;
-	padding-left:4px;
-	margin:5px 5px 0px 0px;
-	background:$base02;
-	@include borderradius(4px);
-
-	th {
-		font-weight:normal;
-		color:$widget-text-color;
-		@extend .inset-text;
-	}
-	.calendar th {
-		color:$widget-button-color;
-	}
-}
-
 td {
 	color:$widget-text-color;
 }
@@ -64,32 +38,44 @@ td {
 }
 .float{
 	float:left;
+	padding-bottom:6px;
+	padding-left:4px;
+	margin:5px 5px 0px 0px;
+	background:$base02;
+	@include borderradius(4px);
 
-	td.state {
-		padding-left:16px;
-		&:before{
-			content:"";
-			position:absolute;
-			margin-left:-42px;
-			margin-top:30px;
-			width:60px;
-			height:15px;
-			padding-right:5px;
-			padding-bottom:2px;
-			padding-top:1px;
-			color:$widget-text-color;
-			background:$widget-text-background;
-			font-size:13px;
-			text-transform:uppercase;
-			text-align:right;
+	th {
+		font-weight:normal;
+		font-variant:small-caps;
+		font-weight:normal;
+		text-align:left;
+		color:$widget-text-color;
 
-			@include transform("rotate(-90deg)");
-			@include borderradius(5px 5px 0px 0px);
+		@include textshadow("0pt 1px 3px rgba(0, 0, 0, 0.8)");
+
+		&[colspan] {
+			text-align:center;
 		}
 	}
-	tr:nth-child(2) td.state:before { content:"Normal"; }
-	tr:nth-child(3) td.state:before { content:"Readonly"; }
-	tr:nth-child(4) td.state:before { content:"Disabled"; }
+	.calendar th {
+		color:$widget-button-color;
+	}
+	.not-standard {
+		background:$orange1;
+		color:$widget-text-focus-color;
+		@include borderradius(3px);
+		text-align:center;
+		padding:6px 0px 7px 0px;
+		margin-top:6px;
+		width:100px;
+		font-size:12px;
+		text-transform:uppercase;
+		@include textshadow("0pt 1px 3px rgba(0, 0, 0, 1)");
+	}
+
+	&.dummy {
+		float:none;
+	}
 }
 
 .button, .text, .textarea, .colorinput, .single-select,

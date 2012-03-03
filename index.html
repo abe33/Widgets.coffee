@@ -7,74 +7,89 @@
     <link rel="stylesheet" href="./css/styles.css" media="screen">
 
     <script type="text/javascript" src="./depends/jquery-1.6.1.min.js"></script>
-
-
     <script type="text/javascript" src="./depends/jquery.mousewheel.js"></script>
 
     <script type="text/javascript" src="./depends/signals.js"></script>
     <script type="text/javascript" src="./lib/widgets.js"></script>
 
     <script type="text/javascript">
-        function buildCell( cls, arg, value, cb, tr, readonly, disabled ){
-            var w = new cls(arg);
-
-            if( value )
-                w.set("value",value);
-            w.set("readonly", readonly);
-            w.set("disabled", disabled);
-            w.addClasses("dummy");
-
-            var td = $("<td class='state'></td>");
-
-            w.attach(td);
-            trr = $("<tr></tr>");
-            trr.append(td);
-            tr.append(trr);
-
-            if(cb)
-                cb.call(this,w);
+        states = [null,"readonly","disabled"];
+        function handleState (opts){
+            opts.widget.addClasses("dummy");
+            if( states[opts.row] ){
+                opts.widget.set(states[opts.row],true);
+            }
         }
-        function buildRow( cls, arg, value, cb ){
-            var body = $("#form");
-            // var tr = $("<tr></tr>");
-            var tb = $("<table class='float widget'><tr><th>" + cls + "</th></tr></table>");
-
-            var cls = this[cls];
-
-            buildCell( cls, arg, value, cb, tb );
-            buildCell( cls, arg, value, cb, tb , true );
-            buildCell( cls, arg, value, cb, tb , false, true );
-
-            // tb.append(tr);
-            body.after(tb);
+        function rowHeaders(opts){
+            return ([ "Normal", "Readonly", "Disabled" ])[opts.row];
         }
-        var popups = [
-            [ "SquarePicker", null, null, function(w){
-                w.set({
-                    rangeX:[0,100],
-                    rangeY:[0,100]
-                });
-                w.set("value",[20,45]);
-            } ],
-            [ "MenuList"   ,
-               new MenuModel({ display:"Item 1" },
-                             { display:"Item 2" },
-                             { display:"Item 3" },
-                             { display:"Item 4" },
-                             { display:"Item 5" },
-                             { display:"Item 6" }),
-                null],
-            [ "Calendar"   , new Date(2011,5,17) ],
-            [ "ColorPicker", null, "#859900" ]
-        ];
-
         $(document).ready(function(){
+
+            var builds = [{
+                title:"SquarePicker",
+                cls:SquarePicker,
+                rows:3,
+                cols:1,
+                tableClass:"float",
+                rowHeaders:rowHeaders,
+                cells:function(opts){
+                    opts.widget.set({
+                        rangeX:[0,100],
+                        rangeY:[0,100]
+                    });
+                    opts.widget.set("value",[20,45]);
+                    if( opts.y == 1 ){
+                        opts.widget.set("readonly",true);
+                    }
+                    else if( opts.y == 2 ){
+                        opts.widget.set("disabled",true)
+                    }
+                    handleState(opts);
+                }
+            },{
+                title:"MenuList",
+                cls:MenuList,
+                rows:3,
+                cols:1,
+                args:[new MenuModel({ display:"Item 1" },
+                                 { display:"Item 2" },
+                                 { display:"Item 3" },
+                                 { display:"Item 4" },
+                                 { display:"Item 5" },
+                                 { display:"Item 6" })],
+                tableClass:"float",
+                rowHeaders:rowHeaders,
+                cells:handleState
+            },{
+                title:"Calendar",
+                cls:Calendar,
+                rows:3,
+                cols:1,
+                args:[new Date(2011,5,17)],
+                tableClass:"float",
+                rowHeaders:rowHeaders,
+                cells:handleState
+            },{
+                title:"ColorPicker",
+                cls:ColorPicker,
+                rows:3,
+                cols:1,
+                tableClass:"float",
+                rowHeaders:rowHeaders,
+                cells:function(opts){
+                    opts.widget.set("value","#859900");
+                    handleState(opts);
+                }
+            }];
+
             $("input,textarea,select").widgets();
 
-            var l = popups.length;
+            var l = builds.length;
             var i = 0;
             for(i;i<l;i++){
-                buildRow.apply(null,popups[i]);
+                var tb = new TableBuilder( builds[i] );
+                var t = tb.build();
+                $("#form").after(t);
             }
         });
     </script>
@@ -88,14 +103,14 @@
 <body>
 
     <form target="./index.html">
-        <table id='form'>
+        <table id='form' class='float'>
             <thead>
                 <tr><th colspan="4">HTML Form Substitution</th></tr>
                 <tr><th></th><th>Normal</th><th>Read-only</th><th>Disabled</th></tr>
             </thead>
             <tbody>
                 <tr>
-                    <td>Radio</td>
+                    <th>Radio</th>
                     <td>
                        <input type="radio" name="group1" checked></input>
                        <input type="radio" name="group1"></input>
@@ -110,7 +125,7 @@
                     </td>
                 </tr>
                 <tr>
-                <td>CheckBox</td>
+                <th>CheckBox</th>
                 <td>
                     <input type="checkbox" name="done"></input>
                     <input type="checkbox" name="done" checked></input>
@@ -126,7 +141,7 @@
                 </tr>
 
                 <tr>
-                <td>TextInput</td>
+                <th>TextInput</th>
                 <td><input type="text" value="A text field" name="name"></input>
                 </td>
                 <td><input type="text" value="A text field" name="name" readonly></input>
@@ -142,14 +157,14 @@
                 </tr>
 
                 <tr>
-                <td>TextArea</td>
+                <th>TextArea</th>
                 <td><textarea>Hello</textarea></td>
                 <td><textarea readonly>Hello</textarea></td>
                 <td><textarea disabled>Hello</textarea></td>
                 </tr>
 
                 <tr>
-                <td>SingleSelect</td>
+                <th>SingleSelect</th>
                 <td><select name="select">
                     <option selected>Item 1</option>
                     <option>Item 2</option>
@@ -160,7 +175,7 @@
                         <option>Item 6</option>
                     </optgroup>
                 </select></td>
-                <td>not supported</td>
+                <td><div class='not-standard'>not standard</div></td>
                 <td><select name="select" disabled>
                     <option selected>Item 1</option>
                     <option>Item 2</option>
@@ -174,35 +189,35 @@
                 </tr>
 
                 <tr>
-                <td>Stepper</td>
+                <th>Stepper</th>
                 <td><input type="number" value="12" min="0" max="255" step="1" name="foo"></input></td>
                 <td><input type="number" value="27" min="0" max="255" step="1" name="foo" readonly></input></td>
                 <td><input type="number" value="49" min="0" max="255" step="1" name="foo" disabled></input></td>
                 </tr>
 
                 <tr>
-                <td>Slider</td>
+                <th>Slider</th>
                 <td><input type="range" value="12" min="10" max="50" step="1" name="oof"></input></td>
                 <td><input type="range" value="23" min="10" max="50" step="1" name="oof" readonly></input></td>
                 <td><input type="range" value="37" min="10" max="50" step="1" name="oof" disabled></input></td>
                 </tr>
 
                 <tr>
-                <td>ColorInput</td>
+                <th>ColorInput</th>
                 <td><input type="color" value="#859900" name="color"></input></td>
                 <td><input type="color" value="#859900" name="color" readonly></input></td>
                 <td><input type="color" value="#859900" name="color" disabled></input></td>
                 </tr>
 
                 <tr>
-                <td>TimeInput</td>
+                <th>TimeInput</th>
                 <td><input type="time" value="16:25" name="time" min="01:00" max="23:00"></input></td>
                 <td><input type="time" value="16:25" name="time" min="01:00" max="16:45" readonly></input></td>
                 <td><input type="time" value="16:25" name="time" min="01:00" max="18:23" disabled></input></td>
                 </tr>
 
                 <tr>
-                <td>DateInput</td>
+                <th>DateInput</th>
                 <td><input type="date" value="2004-05-16" name="time" min="2004-01-01" max="2004-12-31"></td>
                 <td><input type="date" value="2004-05-16" name="time" min="2004-01-01" max="2004-12-31" readonly></td>
                 <td><input type="date" value="2004-05-16" name="time" min="2004-01-01" max="2004-12-31" disabled></td>
@@ -216,21 +231,21 @@
                 </tr>
 -->
                 <tr>
-                <td>FilePicker</td>
+                <th>FilePicker</th>
                 <td><input type="file" name="file"></input></td>
                 <td><input type="file" name="file" readonly></input></td>
                 <td><input type="file" name="file" disabled></input></td>
                 </tr>
 
                 <tr>
-                <td>Buttons</td>
+                <th>Buttons</th>
                 <td><input type="button" value="Button" onclick="console.log('input clicked');"></input></td>
                 <td><input type="button" value="Button" onclick="console.log('input clicked');" readonly></input></td>
                 <td><input type="button" value="Button" onclick="console.log('input clicked');" disabled></input></td>
                 </tr>
 
                 <tr>
-                <td></td>
+                <th></th>
                 <td><input type="submit" value="Submit"></input></td>
                 <td><input type="submit" value="Submit" readonly></input></td>
                 <td><input type="submit" value="Submit" disabled></input></td>
@@ -241,15 +256,36 @@
 
 
     </form>
-    <table class="float">
-        <tr><th>Accentize</th></tr>
-        <tr><td><input type="button" value="Button" class='red'></input></td>
-        <tr><td><input type="button" value="Button" class='orange'></input></td>
-        <tr><td><input type="button" value="Button" class='yellow'></input></td>
-        <tr><td><input type="button" value="Button" class='green'></input></td>
-        <tr><td><input type="button" value="Button" class='cyan'></input></td>
-        <tr><td><input type="button" value="Button" class='blue'></input></td>
-        <tr><td><input type="button" value="Button" class='violet'></input></td></tr>
-    </table>
+<table class="float" id="accentize">
+    <tr><th colspan="2">Accentize</th></tr>
+    <tr>
+        <td><input type="button" value="Button" class='red'></input></td>
+        <td><input type="text" value="Text" class='red'></input></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Button" class='orange'></input></td>
+        <td><input type="text" value="Text" class='orange'></input></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Button" class='yellow'></input></td>
+        <td><input type="text" value="Text" class='yellow'></input></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Button" class='green'></input></td>
+        <td><input type="text" value="Text" class='green'></input></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Button" class='cyan'></input></td>
+        <td><input type="text" value="Text" class='cyan'></input></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Button" class='blue'></input></td>
+        <td><input type="text" value="Text" class='blue'></input></td>
+    </tr>
+    <tr>
+        <td><input type="button" value="Button" class='violet'></input></td>
+        <td><input type="text" value="Text" class='violet'></input></td>
+    </tr>
+</table>
 
 </body>
