@@ -103,6 +103,7 @@ $(document).ready ->
         t = table.build()
 
         assertThat t.find("th").length, equalTo 1
+        assertThat t.find("th").hasClass "table-header"
         assertThat t.find("th").text(), contains "Buttons"
         assertThat t.find("th").attr("colspan"), equalTo "3"
 
@@ -120,6 +121,7 @@ $(document).ready ->
         t = table.build()
 
         assertThat t.find("th").length, equalTo 3
+        assertThat t.find("th").hasClass "column-header"
         assertThat $(t.find("th")[0]).text(), equalTo "foo1"
         assertThat $(t.find("th")[1]).text(), equalTo "foo2"
         assertThat $(t.find("th")[2]).text(), equalTo "foo3"
@@ -138,6 +140,7 @@ $(document).ready ->
         t = table.build()
 
         assertThat t.find("th").length, equalTo 3
+        assertThat t.find("th").hasClass "row-header"
         assertThat $(t.find("th")[0]).text(), equalTo "foo1"
         assertThat $(t.find("th")[1]).text(), equalTo "foo2"
         assertThat $(t.find("th")[2]).text(), equalTo "foo3"
@@ -167,11 +170,13 @@ $(document).ready ->
         table = new TableBuilder
             rows:3
             cols:3
+
         t = table.build()
-        t.children("td").each (i,o)->
+        assertThat t.length, equalTo 1
+        assertThat t.find("td").length, equalTo 9
+
+        t.find("td").each (i,o)->
             assertThat $(o).children().length, equalTo 0
-
-
 
     # Some live demos
     states = [ null, "readonly", "disabled" ]

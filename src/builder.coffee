@@ -19,7 +19,8 @@ class TableBuilder
         if @options.title?
             colspan = @options.cols
             colspan += 1 if hasRowHeaders
-            table.append $ "<tr><th colspan='#{ colspan }'>
+            table.append $ "<tr><th colspan='#{ colspan }'
+                                    class='table-header'>
                                 #{ @options.title }
                             </th></tr>"
 
@@ -33,7 +34,7 @@ class TableBuilder
             tr.append "<td></td>" if hasRowHeaders
 
             for col in cols
-                th = $("<th></th>")
+                th = $("<th class='column-header'></th>")
 
                 opts.col = col
                 opts.th = th
@@ -54,7 +55,7 @@ class TableBuilder
                 tr:tr
 
             if hasRowHeaders
-                th = $("<th></th>")
+                th = $("<th class='row-header'></th>")
 
 
                 opts.row = row
