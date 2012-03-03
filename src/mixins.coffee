@@ -26,11 +26,11 @@ ValueInRange=
     # decrement intervals.
     constructorHook:->
         # The `min` property represent the lower bound of the value's range.
-        @createProperty "min"
+        @min = null
         # The `max` property represent the upper bound of the value's range.
-        @createProperty "max"
+        @max = null
         # The `step` property represent the gap between legible values.
-        @createProperty "step"
+        @step = null
 
         #### Keyboard controls
 

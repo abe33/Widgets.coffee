@@ -109,23 +109,23 @@ class AbstractDateInputWidget extends Widget
 
         # Step is step before any other operation. As `min`
         # `max` and `value` must respect that step.
-        @properties.step  = if isNaN step then defaultStep else step
+        @.step  = if isNaN step then defaultStep else step
 
         # If a valid `min` bounds is defined, the value is snapped
         # according to the `step` property before being its affectation.
         if min?
             minDate = @snapToStep @valueToDate min
-            @properties.min = @dateToValue minDate
+            @.min = @dateToValue minDate
         # If a valid `max` bounds is defined, the value is snapped
         # according to the `step` property before being its affectation.
         if max?
             maxDate = @snapToStep @valueToDate max
-            @properties.max = @dateToValue maxDate
+            @.max = @dateToValue maxDate
 
         # The value of the widget is then adjusted itself to the step
         # and range defined previously.
-        @properties.date  = @fitToRange date, minDate, maxDate
-        @properties.value = @dateToValue date
+        @.date  = @fitToRange date, minDate, maxDate
+        @.value = @dateToValue date
 
         # To avoid infinite loops and unnecessary conversion, locks
         # are defined for the `date` and `value` setters.
@@ -204,19 +204,19 @@ class AbstractDateInputWidget extends Widget
         if max? then max = @valueToDate max
 
         # The passed-in value is then adjusted to the widget's range.
-        @properties[ property ] = @fitToRange value, min, max
+        @[ property ] = @fitToRange value, min, max
 
         # The lock prevent a call to the `date` setter to call
         # back the `value` setter when `date` was called within
         # the `value` setter.
         unless @dateSetProgrammatically
             @valueSetProgrammatically = true
-            @set "value", @dateToValue @properties[ property ]
+            @set "value", @dateToValue @[ property ]
             @valueSetProgrammatically = false
 
         # The dummy is updated before returning the final value.
         @updateDummy()
-        @properties[ property ]
+        @[ property ]
 
     # Sets the value of the widget. Only valid values are allowed,
     # they are validated with the `isValidValue` function defined
@@ -236,7 +236,7 @@ class AbstractDateInputWidget extends Widget
 
         # The dummy is updated before returning the final value.
         @updateDummy()
-        @properties[ property ]
+        @[ property ]
 
     # Sets the `min` property of the widget.
     #
@@ -250,7 +250,7 @@ class AbstractDateInputWidget extends Widget
         # The `min` property can't be greater that the `max` property.
         if value > @get "max" then return @get property
 
-        @properties[ property ] = @dateToValue @snapToStep @valueToDate value
+        @[ property ] = @dateToValue @snapToStep @valueToDate value
         @valueToAttribute property, value
         # When affected, the current `date` of the widget is
         # adjusted to the new range by calling the `date` setter.
@@ -269,7 +269,7 @@ class AbstractDateInputWidget extends Widget
         # The `max` property can't be greater that the `min` property.
         if value < @get "min" then return @get property
 
-        @properties[ property ] = @dateToValue @snapToStep @valueToDate value
+        @[ property ] = @dateToValue @snapToStep @valueToDate value
         # When affected, the current `date` of the widget is
         # adjusted to the new range by calling the `date` setter.
         @valueToAttribute property, value
@@ -282,7 +282,7 @@ class AbstractDateInputWidget extends Widget
         # A `null` or `NaN` step will disable the value snapping.
         # `NaN` value end up to `null`.
         if isNaN value then value = null
-        @properties[ property ] = value
+        @[ property ] = value
         @valueToAttribute property, value
         # When affected, the current `date` of the widget is
         # adjusted to the new step by calling the `date` setter.

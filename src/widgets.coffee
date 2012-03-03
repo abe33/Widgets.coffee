@@ -79,13 +79,13 @@ class Widget extends Module
 
         # Default properties's values are retreived from the target or set to
         # `undefined` if there's no target specified.
-        @properties =
-            disabled : @booleanFromAttribute "disabled"
-            readonly : @booleanFromAttribute "readonly"
-            required : @booleanFromAttribute "required"
-            value    : @valueFromAttribute   "value"
-            name     : @valueFromAttribute   "name"
-            id       : null
+
+        @disabled = @booleanFromAttribute "disabled"
+        @readonly = @booleanFromAttribute "readonly"
+        @required = @booleanFromAttribute "required"
+        @value    = @valueFromAttribute   "value"
+        @name     = @valueFromAttribute   "name"
+        @id       = null
 
         # Dummy creation is done in the `createDummy` method.
         @dummy = @createDummy()
@@ -152,16 +152,19 @@ class Widget extends Module
 
         super()
 
-    #### Shared Properties accessors
+    #### Properties accessors
     #
-    # Since changes made on the widget should be reflected
-    # on the target, its necessary to provide an accessor-like
-    # mechanism.
+    # Properties of a widgets can be accessed either directly
+    # or through the `get` and `set` methods of the widget.
     #
-    # The `get` and `set` methods provides this mechanism.
-    # Custom accessors can be specified for these properties.
-    # Accessors definition can be done in the `createProperty`
-    # method below.
+    # Generally, its a bad idea to set a widget's properties
+    # directly on the widget. Some properties implies changes
+    # in other parts of the widgets and updates of its dummy,
+    # so they should be accessed through the `set` method.
+    # The same goes for retrieving the value of a property
+    # since the value of some properties may be affected
+    # by some other factors (see the `disabled` or `readonly`
+    # properties for a concrete exemple).
 
     # When called, the `get` method will check for the existence
     # of a custom getter handler for the property, if one exist
@@ -171,7 +174,7 @@ class Widget extends Module
         if "get_#{property}" of this
             @[ "get_#{property}" ].call this, property
         else
-            @properties[ property ]
+            @[ property ]
 
     # The `set` method allow two way of use, the first is
     # two pass the property's name as the first argument
@@ -195,11 +198,10 @@ class Widget extends Module
     # The `handlePropertyChange` realize the concrete action
     # of a changing a property.
     handlePropertyChange:( property, value )->
-        if property of @properties
-            if "set_#{property}" of this
-                @[ "set_#{property}" ].call this, property, value
-            else
-                @properties[ property ] = value
+        if "set_#{property}" of this
+            @[ "set_#{property}" ].call this, property, value
+        else
+            @[ property ] = value
 
         @updateStates()
         @propertyChanged.dispatch this, property, value
@@ -217,23 +219,24 @@ class Widget extends Module
     # When creating a new property in a children class, define the accessors
     # functions as methods in the class body to allow overrides in subclasses.
     createProperty:( property, value=undefined, setter=null, getter=null )->
-        @properties[ property ] = value
+        @[ property ] = value
 
         if setter? then @[ "set_#{property}" ] = setter
         if getter? then @[ "get_#{property}" ] = getter
 
     # The accessors functions for the widget's properties.
     #
-    # Setters accessors are prefixed with `set_` and getters's one with `get_`.
+    # Setters accessors are prefixed with `set_` and getters's
+    # one with `get_`.
 
     # A widget is disabled if its own disabled property is `true`
     # or if it's a child of a disabled widget.
     get_disabled:( property )->
-        res = @properties[ property ]
+        res = @[ property ]
         res = res or @parent.get property if @parent?
         res
     set_disabled:( property, value )->
-        @properties[ property ] = @booleanToAttribute property, value
+        @[ property ] = @booleanToAttribute property, value
         # Disabled widget don't allow to receive focus.
         @setFocusable not value
 
@@ -241,15 +244,15 @@ class Widget extends Module
     # A widget is readonly if its own readonly property is `true`
     # or if it's a child of a readonly widget.
     get_readonly:( property )->
-        res = @properties[ property ]
+        res = @[ property ]
         res = res or @parent.get property if @parent?
         res
     set_readonly:( property, value )->
-        @properties[ property ] = @booleanToAttribute property, value
+        @[ property ] = @booleanToAttribute property, value
 
     # Required widgets prevents a form to be submitted if it don't validate.
     set_required:( property, value )->
-        @properties[ property ] = @booleanToAttribute property, value
+        @[ property ] = @booleanToAttribute property, value
 
     # Sets the value of both the widget and its target if the widget
     # allow it.
@@ -259,13 +262,13 @@ class Widget extends Module
             return @get property
         else
             if value isnt @get property
-                @properties[ property ] = value
+                @[ property ] = value
                 @valueToAttribute property, value
                 @valueChanged.dispatch this, value
 
     # Sets the name of the target.
     set_name:( property, value )->
-        @properties[ property ] = @valueToAttribute property, value
+        @[ property ] = @valueToAttribute property, value
 
     # The `id` setter operate only on the dummy, and not on the target.
     # It preserve the uniqueness of ids of the form inputs (given that
@@ -276,7 +279,7 @@ class Widget extends Module
         else
             @dummy?.removeAttr "id"
 
-        @properties[ property ] = value
+        @[ property ] = value
 
     #### Target management
 
@@ -555,8 +558,31 @@ class Widget extends Module
 
     #### Miscelaneous functions
 
-    toString:->
-        details = if @get("id") then "(id=\"#{ @get("id") }\")" else ""
-        "[object #{ @constructor.name }#{ details }]"
+    # Returns the string representation of this widget.
+    toString:-> @stringify()
+
+    # Returns a string representation of this widget.
+    # By default, the `id` of the widget is displayed
+    # if not null.
+    # A `details` array can be passed to the `stringify`
+    # function, containing a list of properties's names
+    # to append to the output string.
+    #
+    # For instance, a call to :
+    #
+    #     @stringify "name"
+    #
+    # For a widget with an `id` and a `name` will return
+    #
+    #     [object Widget(id="id", name="name")]
+    stringify:( details... )->
+        args = ""
+        a = []
+        a.push "id=\"#{ @get("id") }\"" if @get("id")?
+        a.push "#{ d }=\"#{ @get( d ) }\"" for d in details when @get( d )?
+
+        args = "(#{ a.join ", " })" if a.length > 0
+
+        "[object #{ @constructor.name }#{ args }]"
 
 @Widget = Widget

@@ -26,8 +26,8 @@ DAYS =  ["S","M","T","W","T","F","S"]
 class Calendar extends Widget
     constructor:( value )->
         super()
-        @createProperty "mode", "date"
-        @createProperty "value", if value? then value else new Date
+        @mode = "date"
+        @value = if value? then value else new Date
 
         @updateDummy()
 
@@ -89,13 +89,13 @@ class Calendar extends Widget
     #### Properties Accessors
 
     set_value:( property, value )->
-        @properties[ property ] = value
+        @[ property ] = value
         @updateDummy()
 
     set_mode:( property, value )->
         unless value in [ "date", "month", "week" ] then return @get "mode"
 
-        @properties[ property ] = value
+        @[ property ] = value
 
 
 

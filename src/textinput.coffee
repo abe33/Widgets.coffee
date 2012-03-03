@@ -43,7 +43,7 @@ class TextInput extends Widget
 
         super target
 
-        @createProperty "maxlength", @valueFromAttribute "maxlength"
+        @maxlength = @valueFromAttribute "maxlength"
 
         @valueIsObsolete = false
 
@@ -75,7 +75,7 @@ class TextInput extends Widget
             @jTarget.attr "maxlength", value
         else
             @jTarget.removeAttr "maxlength"
-        @properties[ property ] = value
+        @[ property ] = value
 
     #### Events handling
 

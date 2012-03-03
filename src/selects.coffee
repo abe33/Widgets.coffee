@@ -43,14 +43,14 @@ class SingleSelect extends Widget
     constructor:( target )->
         super target
 
-        @createProperty "size"
+        @size = null
 
         # When a target is provided, the model for the `SingleSelect` object
         # is builded from the data of the target.
         if @hasTarget
 
             size = parseInt @valueFromAttribute "size"
-            @properties.size = size unless isNaN size
+            @.size = size unless isNaN size
 
             @model = @buildModel new MenuModel, @jTarget.children()
 
@@ -454,7 +454,7 @@ class SingleSelect extends Widget
 
         # Returns the new value if legible, otherwise the
         # function returns the original value.
-        if newValue? isnt null then @properties[ property ] = newValue
+        if newValue? isnt null then @[ property ] = newValue
         else oldValue
 
     #### Signal Listeners
@@ -466,7 +466,7 @@ class SingleSelect extends Widget
         # item in the model.
         unless @getItemAt( @selectedPath )?
             @selectedPath = @findNext [ 0 ]
-            @properties[ "value" ] = @getItemAt( @selectedPath ).value
+            @[ "value" ] = @getItemAt( @selectedPath ).value
 
         # If a target is defined, the target's content is rebuilded
         # from the model.

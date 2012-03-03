@@ -25,14 +25,14 @@ class NumericWidget extends Widget
         if isNaN step then step = null
 
         # The `min` property represent the lower bound of the value's range.
-        @properties.min   = min
+        @.min   = min
         # The `max` property represent the upper bound of the value's range.
-        @properties.max   = max
+        @.max   = max
         # The `step` property represent the gap between legible values.
-        @properties.step  = step
+        @.step  = step
         # The `value` property is a number so the data from
         # the target is parsed before affectation.
-        @properties.value = parseFloat @valueFromAttribute "value",0
+        @.value = parseFloat @valueFromAttribute "value",0
 
         # Target is hidden if provided.
         @hideTarget()
@@ -88,7 +88,7 @@ class NumericWidget extends Widget
             return @get property
         else
             value = @snapToStep value
-            @properties[ property ] = value
+            @[ property ] = value
             @valueToAttribute property, value
             @set "value", @fitToRange @get( "value"), value, max
             return value
@@ -103,7 +103,7 @@ class NumericWidget extends Widget
             return @get property
         else
             value = @snapToStep value
-            @properties[ property ] = value
+            @[ property ] = value
             @valueToAttribute property, value
             @set "value", @fitToRange @get( "value"), min, value
             return value
@@ -115,7 +115,7 @@ class NumericWidget extends Widget
         min = @get "min"
         max = @get "max"
         @valueToAttribute property, value
-        @properties[ property ] = value
+        @[ property ] = value
         @set "value", @fitToRange @get( "value"), min, max
         return value
 
