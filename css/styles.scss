@@ -36,13 +36,19 @@ td {
 		width:150px;
 	}
 }
+form{
+	display:inline-block;
+}
 .float{
-	float:left;
+	// float:left;
 	padding-bottom:6px;
-	padding-left:4px;
 	margin:5px 5px 0px 0px;
 	background:$base02;
+	display:inline-block;
+	vertical-align:top;
+
 	@include borderradius(4px);
+
 
 	th {
 		font-weight:normal;
@@ -53,8 +59,10 @@ td {
 
 		@include textshadow("0pt 1px 3px rgba(0, 0, 0, 0.8)");
 
-		&[colspan] {
+		&.table-header {
 			text-align:center;
+			background:$widget-text-background;
+			@include borderradius(3px);
 		}
 	}
 	.calendar th {

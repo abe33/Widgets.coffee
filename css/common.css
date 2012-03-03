@@ -149,7 +149,7 @@
       -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
       box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
 
-.outset-box, .button, .button.disabled:hover, .button.readonly:hover, .button.disabled.focus, .popup {
+.outset-box, .button, .button.disabled:hover, .button.readonly:hover, .button.disabled.focus, .popup, .popup.disabled {
   border: 1px solid #839496;
   background: -moz-linear-gradient(top, #839496 0%, #657b83 100%);
   /* FF3.6+ */
@@ -165,7 +165,7 @@
   -webkit-box-shadow: 0pt 2px 0px 0px #586e75,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0pt 2px 0px 0px #586e75,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
   box-shadow: 0pt 2px 0px 0px #586e75,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.light, .light.button, .light.button.disabled:hover, .light.button.readonly:hover, .light.button.disabled.focus, .button.focus, .button:hover, .light.popup {
+  .outset-box.light, .light.button, .light.button.disabled:hover, .light.button.readonly:hover, .light.button.disabled.focus, .button.focus, .button:hover, .light.popup, .light.popup.disabled {
     border: 1px solid #a6b0b0;
     background: -moz-linear-gradient(top, #a6b0b0 0%, #93a1a1 100%);
     /* FF3.6+ */
@@ -181,7 +181,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #839496,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #839496,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #839496,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.dark, .dark.button, .dark.button.disabled:hover, .dark.button.readonly:hover, .dark.button.disabled.focus, .dark.popup {
+  .outset-box.dark, .dark.button, .dark.button.disabled:hover, .dark.button.readonly:hover, .dark.button.disabled.focus, .dark.popup, .dark.popup.disabled {
     border: 1px solid #073642;
     background: -moz-linear-gradient(top, #073642 0%, #002b36 100%);
     /* FF3.6+ */
@@ -197,7 +197,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.dark.light, .dark.light.button, .dark.light.button.disabled:hover, .dark.light.button.readonly:hover, .dark.light.button.disabled.focus, .dark.button.focus, .dark.button:hover, .dark.light.popup {
+    .outset-box.dark.light, .dark.light.button, .dark.light.button.disabled:hover, .dark.light.button.readonly:hover, .dark.light.button.disabled.focus, .dark.button.focus, .dark.button:hover, .dark.light.popup, .dark.light.popup.disabled {
       border: 1px solid #0b4959;
       background: -moz-linear-gradient(top, #0b4959 0%, #073642 100%);
       /* FF3.6+ */
@@ -213,7 +213,7 @@
       -webkit-box-shadow: 0pt 2px 0px 0px #002b36,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #002b36,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #002b36,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.red, .red.button, .red.button.disabled:hover, .red.button.readonly:hover, .red.button.disabled.focus, .red.popup {
+  .outset-box.red, .red.button, .red.button.disabled:hover, .red.button.readonly:hover, .red.button.disabled.focus, .red.popup, .red.popup.disabled {
     border: 1px solid #fe5c4d;
     background: -moz-linear-gradient(top, #fe5c4d 0%, #dc322f 100%);
     /* FF3.6+ */
@@ -229,7 +229,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.red.light, .red.light.button, .red.light.button.disabled:hover, .red.light.button.readonly:hover, .red.light.button.disabled.focus, .red.button.focus, .red.button:hover, .red.light.popup {
+    .outset-box.red.light, .red.light.button, .red.light.button.disabled:hover, .red.light.button.readonly:hover, .red.light.button.disabled.focus, .red.button.focus, .red.button:hover, .red.light.popup, .red.light.popup.disabled {
       border: 1px solid #ff8377;
       background: -moz-linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
       /* FF3.6+ */
@@ -245,7 +245,7 @@
       -webkit-box-shadow: 0pt 2px 0px 0px #dc322f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #dc322f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #dc322f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.green, .green.button, .green.button.disabled:hover, .green.button.readonly:hover, .green.button.disabled.focus, .green.popup {
+  .outset-box.green, .green.button, .green.button.disabled:hover, .green.button.readonly:hover, .green.button.disabled.focus, .green.popup, .green.popup.disabled {
     border: 1px solid #a9bf1b;
     background: -moz-linear-gradient(top, #a9bf1b 0%, #859900 100%);
     /* FF3.6+ */
@@ -261,7 +261,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.green.light, .green.light.button, .green.light.button.disabled:hover, .green.light.button.readonly:hover, .green.light.button.disabled.focus, .green.button.focus, .green.button:hover, .green.light.popup {
+    .outset-box.green.light, .green.light.button, .green.light.button.disabled:hover, .green.light.button.readonly:hover, .green.light.button.disabled.focus, .green.button.focus, .green.button:hover, .green.light.popup, .green.light.popup.disabled {
       border: 1px solid #cadf44;
       background: -moz-linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
       /* FF3.6+ */
@@ -277,7 +277,7 @@
       -webkit-box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.blue, .blue.button, .blue.button.disabled:hover, .blue.button.readonly:hover, .blue.button.disabled.focus, .blue.popup {
+  .outset-box.blue, .blue.button, .blue.button.disabled:hover, .blue.button.readonly:hover, .blue.button.disabled.focus, .blue.popup, .blue.popup.disabled {
     border: 1px solid #34a0ec;
     background: -moz-linear-gradient(top, #34a0ec 0%, #268bd2 100%);
     /* FF3.6+ */
@@ -293,7 +293,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.blue.light, .blue.light.button, .blue.light.button.disabled:hover, .blue.light.button.readonly:hover, .blue.light.button.disabled.focus, .blue.button.focus, .blue.button:hover, .blue.light.popup {
+    .outset-box.blue.light, .blue.light.button, .blue.light.button.disabled:hover, .blue.light.button.readonly:hover, .blue.light.button.disabled.focus, .blue.button.focus, .blue.button:hover, .blue.light.popup, .blue.light.popup.disabled {
       border: 1px solid #57afec;
       background: -moz-linear-gradient(top, #57afec 0%, #34a0ec 100%);
       /* FF3.6+ */
@@ -309,7 +309,7 @@
       -webkit-box-shadow: 0pt 2px 0px 0px #268bd2,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #268bd2,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #268bd2,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.yellow, .yellow.button, .yellow.button.disabled:hover, .yellow.button.readonly:hover, .yellow.button.disabled.focus, .yellow.popup {
+  .outset-box.yellow, .yellow.button, .yellow.button.disabled:hover, .yellow.button.readonly:hover, .yellow.button.disabled.focus, .yellow.popup, .yellow.popup.disabled {
     border: 1px solid #cfa521;
     background: -moz-linear-gradient(top, #cfa521 0%, #b58900 100%);
     /* FF3.6+ */
@@ -325,7 +325,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.yellow.light, .yellow.light.button, .yellow.light.button.disabled:hover, .yellow.light.button.readonly:hover, .yellow.light.button.disabled.focus, .yellow.button.focus, .yellow.button:hover, .yellow.light.popup {
+    .outset-box.yellow.light, .yellow.light.button, .yellow.light.button.disabled:hover, .yellow.light.button.readonly:hover, .yellow.light.button.disabled.focus, .yellow.button.focus, .yellow.button:hover, .yellow.light.popup, .yellow.light.popup.disabled {
       border: 1px solid #f7ca3b;
       background: -moz-linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
       /* FF3.6+ */
@@ -341,7 +341,7 @@
       -webkit-box-shadow: 0pt 2px 0px 0px #b58900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #b58900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #b58900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.orange, .orange.button, .orange.button.disabled:hover, .orange.button.readonly:hover, .orange.button.disabled.focus, .orange.popup {
+  .outset-box.orange, .orange.button, .orange.button.disabled:hover, .orange.button.readonly:hover, .orange.button.disabled.focus, .orange.popup, .orange.popup.disabled {
     border: 1px solid #e66a36;
     background: -moz-linear-gradient(top, #e66a36 0%, #cb4b16 100%);
     /* FF3.6+ */
@@ -357,7 +357,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.orange.light, .orange.light.button, .orange.light.button.disabled:hover, .orange.light.button.readonly:hover, .orange.light.button.disabled.focus, .orange.button.focus, .orange.button:hover, .orange.light.popup {
+    .outset-box.orange.light, .orange.light.button, .orange.light.button.disabled:hover, .orange.light.button.readonly:hover, .orange.light.button.disabled.focus, .orange.button.focus, .orange.button:hover, .orange.light.popup, .orange.light.popup.disabled {
       border: 1px solid #ff8b5b;
       background: -moz-linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
       /* FF3.6+ */
@@ -373,7 +373,7 @@
       -webkit-box-shadow: 0pt 2px 0px 0px #cb4b16,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #cb4b16,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #cb4b16,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.violet, .violet.button, .violet.button.disabled:hover, .violet.button.readonly:hover, .violet.button.disabled.focus, .violet.popup {
+  .outset-box.violet, .violet.button, .violet.button.disabled:hover, .violet.button.readonly:hover, .violet.button.disabled.focus, .violet.popup, .violet.popup.disabled {
     border: 1px solid #8389eb;
     background: -moz-linear-gradient(top, #8389eb 0%, #6c71c4 100%);
     /* FF3.6+ */
@@ -389,7 +389,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.violet.light, .violet.light.button, .violet.light.button.disabled:hover, .violet.light.button.readonly:hover, .violet.light.button.disabled.focus, .violet.button.focus, .violet.button:hover, .violet.light.popup {
+    .outset-box.violet.light, .violet.light.button, .violet.light.button.disabled:hover, .violet.light.button.readonly:hover, .violet.light.button.disabled.focus, .violet.button.focus, .violet.button:hover, .violet.light.popup, .violet.light.popup.disabled {
       border: 1px solid #9ba0e6;
       background: -moz-linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
       /* FF3.6+ */
@@ -405,7 +405,7 @@
       -webkit-box-shadow: 0pt 2px 0px 0px #6c71c4,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #6c71c4,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #6c71c4,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.cyan, .cyan.button, .cyan.button.disabled:hover, .cyan.button.readonly:hover, .cyan.button.disabled.focus, .cyan.popup {
+  .outset-box.cyan, .cyan.button, .cyan.button.disabled:hover, .cyan.button.readonly:hover, .cyan.button.disabled.focus, .cyan.popup, .cyan.popup.disabled {
     border: 1px solid #4ccac1;
     background: -moz-linear-gradient(top, #4ccac1 0%, #2aa198 100%);
     /* FF3.6+ */
@@ -421,7 +421,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.cyan.light, .cyan.light.button, .cyan.light.button.disabled:hover, .cyan.light.button.readonly:hover, .cyan.light.button.disabled.focus, .cyan.button.focus, .cyan.button:hover, .cyan.light.popup {
+    .outset-box.cyan.light, .cyan.light.button, .cyan.light.button.disabled:hover, .cyan.light.button.readonly:hover, .cyan.light.button.disabled.focus, .cyan.button.focus, .cyan.button:hover, .cyan.light.popup, .cyan.light.popup.disabled {
       border: 1px solid #7bdbd4;
       background: -moz-linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
       /* FF3.6+ */

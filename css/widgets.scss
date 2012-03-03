@@ -802,6 +802,7 @@
     @extend .popup;
 
     th {
+        text-align:center !important;
         @extend .button-text-content;
         @extend .inset-text;
     }

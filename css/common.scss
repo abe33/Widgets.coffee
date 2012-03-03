@@ -285,4 +285,8 @@
     @extend .outset-box;
     @extend .button-text-content;
     @include borderradius(4px);
+
+    &.disabled {
+        @extend .outset-box;
+    }
 }

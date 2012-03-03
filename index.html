@@ -61,15 +61,6 @@
                 rowHeaders:rowHeaders,
                 cells:handleState
             },{
-                title:"Calendar",
-                cls:Calendar,
-                rows:3,
-                cols:1,
-                args:[new Date(2011,5,17)],
-                tableClass:"float",
-                rowHeaders:rowHeaders,
-                cells:handleState
-            },{
                 title:"ColorPicker",
                 cls:ColorPicker,
                 rows:3,
@@ -79,6 +70,22 @@
                 cells:function(opts){
                     opts.widget.set("value","#859900");
                     handleState(opts);
+                }
+            },{
+                title:"Calendar",
+                cls:Calendar,
+                rows:3,
+                cols:3,
+                args:[new Date(2011,5,17)],
+                tableClass:"float",
+                rowHeaders:rowHeaders,
+                cells:function(opts){
+                    handleState(opts);
+                    opts.widget.set("mode",
+                                   (["date","month","week"])[opts.col]);
+                },
+                columnHeaders:function(opts){
+                    return (["Date","Month","Week"])[opts.col];
                 }
             }];
 
@@ -105,7 +112,7 @@
     <form target="./index.html">
         <table id='form' class='float'>
             <thead>
-                <tr><th colspan="4">HTML Form Substitution</th></tr>
+                <tr><th colspan="4" class="table-header">HTML Form Substitution</th></tr>
                 <tr><th></th><th>Normal</th><th>Read-only</th><th>Disabled</th></tr>
             </thead>
             <tbody>
@@ -257,7 +264,7 @@
 
     </form>
 <table class="float" id="accentize">
-    <tr><th colspan="2">Accentize</th></tr>
+    <tr><th colspan="2" class="table-header">Accentize</th></tr>
     <tr>
         <td><input type="button" value="Button" class='red'></input></td>
         <td><input type="text" value="Text" class='red'></input></td>
