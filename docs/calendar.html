@@ -4,6 +4,10 @@
 
     <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="py">@value</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Date</span><span class="p">(),</span> <span class="py">@mode</span> <span class="o">=</span> <span class="s">&quot;date&quot;</span> <span class="p">)</span><span class="o">-&gt;</span>
         <span class="k">super</span><span class="p">()</span>
+        <span class="py">@display</span> <span class="py">@value</span>
+
+    <span class="py">display</span><span class="o">:</span><span class="p">(</span> <span class="nx">date</span> <span class="p">)</span><span class="o">-&gt;</span>
+        <span class="py">@month</span> <span class="o">=</span> <span class="nx">date</span><span class="p">.</span><span class="nx">firstDateOfMonth</span><span class="p">()</span>
         <span class="py">@updateDummy</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>Dummy Management</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">createDummy</span><span class="o">:-&gt;</span>
         <span class="nv">dummy </span><span class="o">=</span> <span class="nx">$</span> <span class="s">&quot;&lt;span class=&#39;calendar&#39;&gt;</span>
 <span class="s">                     &lt;table&gt;&lt;/table&gt;</span>
@@ -12,35 +16,42 @@
         <span class="nx">dummy</span>
 
     <span class="py">updateDummy</span><span class="o">:-&gt;</span>
-        <span class="nv">value </span><span class="o">=</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">).</span><span class="nx">clone</span><span class="p">()</span>
-        <span class="py">@updateCells</span> <span class="nx">value</span>
+        <span class="py">@updateCells</span> <span class="py">@month</span>
 
-        <span class="nx">value</span><span class="p">.</span><span class="nx">setDate</span> <span class="mi">1</span>
-        <span class="nv">monthStartDay </span><span class="o">=</span> <span class="nx">value</span><span class="p">.</span><span class="nx">getDay</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="nv">monthStartDay </span><span class="o">=</span> <span class="py">@month</span><span class="p">.</span><span class="nx">getDay</span><span class="p">()</span> <span class="o">-</span> <span class="mi">1</span>
         <span class="nv">monthStartDay </span><span class="o">=</span> <span class="mi">6</span> <span class="k">if</span> <span class="nx">monthStartDay</span> <span class="o">is</span> <span class="o">-</span><span class="mi">1</span>
 
-        <span class="nv">date </span><span class="o">=</span> <span class="nx">value</span><span class="p">.</span><span class="nx">clone</span><span class="p">()</span>
-        <span class="nx">date</span><span class="p">.</span><span class="nx">incrementDate</span> <span class="o">-</span><span class="nx">monthStartDay</span>
+        <span class="nv">date </span><span class="o">=</span> <span class="py">@month</span><span class="p">.</span><span class="nx">clone</span><span class="p">().</span><span class="nx">incrementDate</span> <span class="o">-</span><span class="nx">monthStartDay</span>
 
         <span class="py">@dummy</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;td&quot;</span><span class="p">).</span><span class="nx">each</span> <span class="p">(</span> <span class="nx">i</span><span class="p">,</span> <span class="nx">o</span> <span class="p">)</span><span class="o">=&gt;</span>
             <span class="nv">td </span><span class="o">=</span> <span class="nx">$</span> <span class="nx">o</span>
             <span class="nx">td</span><span class="p">.</span><span class="nx">text</span> <span class="nx">date</span><span class="p">.</span><span class="nx">date</span><span class="p">()</span>
+            <span class="nx">td</span><span class="p">.</span><span class="nx">attr</span> <span class="s">&quot;name&quot;</span><span class="p">,</span> <span class="nb">Date</span><span class="p">.</span><span class="nx">dateToString</span> <span class="nx">date</span>
+
+            <span class="nx">td</span><span class="p">.</span><span class="nx">parent</span><span class="p">().</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;th&quot;</span><span class="p">).</span><span class="nx">text</span> <span class="nx">date</span><span class="p">.</span><span class="nx">week</span><span class="p">()</span> <span class="k">if</span> <span class="nx">td</span><span class="p">.</span><span class="nx">index</span><span class="p">()</span> <span class="o">is</span> <span class="mi">1</span>
+
             <span class="py">@toggleState</span> <span class="nx">td</span><span class="p">,</span> <span class="nx">date</span>
             <span class="nx">date</span><span class="p">.</span><span class="nx">incrementDate</span> <span class="mi">1</span>
 
     <span class="py">updateCells</span><span class="o">:</span><span class="p">(</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
 
         <span class="nv">table </span><span class="o">=</span> <span class="py">@dummy</span><span class="p">.</span><span class="nx">find</span> <span class="s">&quot;table&quot;</span>
+        <span class="nx">table</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s">&quot;td&quot;</span><span class="p">).</span><span class="nx">unbind</span> <span class="s">&quot;mouseup&quot;</span><span class="p">,</span> <span class="py">@cellDelegate</span>
         <span class="nx">table</span><span class="p">.</span><span class="nx">children</span><span class="p">().</span><span class="nx">remove</span><span class="p">()</span>
 
-        <span class="nv">header </span><span class="o">=</span> <span class="nx">$</span> <span class="s">&quot;&lt;tr&gt;&lt;/tr&gt;&quot;</span>
+        <span class="nv">header </span><span class="o">=</span> <span class="nx">$</span> <span class="s">&quot;&lt;tr&gt;&lt;th&gt;&lt;/th&gt;&lt;/tr&gt;&quot;</span>
         <span class="nx">header</span><span class="p">.</span><span class="nx">append</span> <span class="s">&quot;&lt;th&gt;</span><span class="si">#{</span> <span class="nx">day</span> <span class="si">}</span><span class="s">&lt;/th&gt;&quot;</span> <span class="k">for</span> <span class="nx">day</span> <span class="k">in</span> <span class="nx">Calendar</span><span class="p">.</span><span class="nb">DAYS</span>
         <span class="nx">table</span><span class="p">.</span><span class="nx">append</span> <span class="nx">header</span>
 
         <span class="k">for</span> <span class="nx">y</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">..</span><span class="py">@linesNeeded</span> <span class="nx">value</span><span class="p">]</span>
-            <span class="nv">line </span><span class="o">=</span> <span class="nx">$</span> <span class="s">&quot;&lt;tr&gt;&lt;/tr&gt;&quot;</span>
+            <span class="nv">line </span><span class="o">=</span> <span class="nx">$</span> <span class="s">&quot;&lt;tr&gt;&lt;th class=&#39;week&#39;&gt;&lt;/th&gt;&lt;/tr&gt;&quot;</span>
             <span class="k">for</span> <span class="nx">x</span> <span class="k">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">..</span><span class="mi">6</span><span class="p">]</span>
-                <span class="nx">line</span><span class="p">.</span><span class="nx">append</span> <span class="s">&quot;&lt;td&gt;&lt;/td&gt;&quot;</span>
+                <span class="nv">cell </span><span class="o">=</span> <span class="nx">$</span> <span class="s">&quot;&lt;td&gt;&lt;/td&gt;&quot;</span>
+                <span class="nx">cell</span><span class="p">.</span><span class="nx">bind</span> <span class="s">&quot;mouseup&quot;</span><span class="p">,</span> <span class="py">@cellDelegate</span><span class="o">=</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="o">=&gt;</span>
+                    <span class="k">unless</span> <span class="py">@cantInteract</span><span class="p">()</span>
+                        <span class="py">@set</span> <span class="s">&quot;value&quot;</span><span class="p">,</span>
+                             <span class="nb">Date</span><span class="p">.</span><span class="nx">dateFromString</span> <span class="nx">$</span><span class="p">(</span><span class="nx">e</span><span class="p">.</span><span class="nx">target</span><span class="p">).</span><span class="nx">attr</span> <span class="s">&quot;name&quot;</span>
+                <span class="nx">line</span><span class="p">.</span><span class="nx">append</span> <span class="nx">cell</span>
             <span class="nx">table</span><span class="p">.</span><span class="nx">append</span> <span class="nx">line</span>
 
     <span class="py">linesNeeded</span><span class="o">:</span><span class="p">(</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
@@ -61,7 +72,7 @@
         <span class="nx">td</span><span class="p">.</span><span class="nx">addClass</span> <span class="s">&quot;blurred&quot;</span> <span class="k">if</span> <span class="o">not</span> <span class="nx">sameMonth</span>
         <span class="nx">td</span><span class="p">.</span><span class="nx">addClass</span> <span class="s">&quot;today&quot;</span> <span class="k">if</span> <span class="nx">date</span><span class="p">.</span><span class="nx">isToday</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h3>Properties Accessors</h3>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">set_value</span><span class="o">:</span><span class="p">(</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
         <span class="py">@</span><span class="p">[</span> <span class="nx">property</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span>
-        <span class="py">@updateDummy</span><span class="p">()</span>
+        <span class="py">@display</span> <span class="nx">value</span>
         <span class="nx">value</span>
 
     <span class="py">set_mode</span><span class="o">:</span><span class="p">(</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span> <span class="p">)</span><span class="o">-&gt;</span>
@@ -70,8 +81,6 @@
         <span class="py">@</span><span class="p">[</span> <span class="nx">property</span> <span class="p">]</span> <span class="o">=</span> <span class="nx">value</span>
         <span class="py">@updateDummy</span><span class="p">()</span>
         <span class="nx">value</span>
-
-
 
 <span class="py">@Calendar</span> <span class="o">=</span> <span class="nx">Calendar</span>
 

@@ -1119,8 +1119,15 @@
 .calendar table {
   padding: 3px;
   border-spacing: 0px; }
+  .calendar table tr:nth-child(2) td {
+    border-top: 1px solid #586e75; }
   .calendar table th {
     text-align: center !important; }
+    .calendar table th.week {
+      font-size: 12px;
+      font-weight: normal;
+      padding: 3px 6px;
+      border-right: 1px solid #586e75; }
   .calendar table td {
     font-size: 14px;
     text-align: center;
@@ -1130,8 +1137,10 @@
       color: #002b36 !important; }
     .calendar table td.selected {
       background: #93a1a1; }
+      .calendar table td.selected.today {
+        background: #34a0ec; }
     .calendar table td.today {
-      border: 1px solid #bbc4c4; }
+      background: rgba(38, 139, 210, 0.5); }
 .calendar.disabled table td:hover, .calendar.readonly table td:hover {
   background: none; }
 .calendar.disabled table td.selected, .calendar.readonly table td.selected {

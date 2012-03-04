@@ -12,12 +12,12 @@
 #
 # The supported dates and time modes and their corresponding widgets are :
 #
-# * [time](#time)                   :[TimeInput](#TimeInput)
-# * [date](#date)                   :[DateInput](#DateInput)
-# * [month](#month)                 :[MonthInput](#MonthInput)
-# * [week](#week)                   :[WeekInput](#WeekInput)
-# * [datetime](#datetime)           :[DateTimeInput](#DateTimeInput)
-# * [datetime-local](#datetime-loca):[DateTimeLocalInput](#DateTimeLocalInput)
+# * [TimeInput](#TimeInput)
+# * [DateInput](#DateInput)
+# * [MonthInput](#MonthInput)
+# * [WeekInput](#WeekInput)
+# * [DateTimeInput](#DateTimeInput)
+# * [DateTimeLocalInput](#DateTimeLocalInput)
 
 #### Abstract
 #
@@ -266,55 +266,6 @@ class AbstractDateInputWidget extends Widget
         @set "date", @get "date"
         value
 
-# <a name='time'></a>
-## Time
-
-# Match if the passed-in string is a valid time string.
-# The following strings are considered as valid :
-# `10`, `10:15`, `10:15:40` or `10:15:40.768`
-isValidTime=( value )->
-    unless value? then return false
-    (/// ^
-        [\d]{2}                 # Hours are required
-        (:[\d]{2}               # Minutes are optional
-            (:[\d]{2}           # Seconds as well
-                (\.[\d]{1,4})?  # Milliseconds too
-            )?                  # End Seconds
-        )?                      # End Minutes
-    $ ///).test value
-
-# Converts a time string into a `Date` object where the time properties,
-# hours, minutes, seconds and milliseconds, are sets with the provided
-# datas or `0`.
-timeFromString=( string )->
-    [ hours, min, sec ] = string.split ":"
-    [ sec, ms ] = if sec? then sec.split "." else [ 0, 0 ]
-
-    # UTC dates start at 1:00 AM so we have to remove one hour.
-    time = safeInt( hours - 1 ) * Date.MILLISECONDS_IN_HOUR   +
-           safeInt( min )       * Date.MILLISECONDS_IN_MINUTE +
-           safeInt( sec )       * Date.MILLISECONDS_IN_SECOND +
-           safeInt( ms )
-
-    d = new Date time
-    d
-
-# Converts a `Date` object in a string such as `10:15:40`.
-# If the milliseconds count is different than `0` then the
-# output will look as `10:15:40.768`.
-timeToString=( date )->
-    h  = date.hours()
-    m  = date.minutes()
-    s  = date.seconds()
-    ms = date.milliseconds()
-
-    time ="#{ fill h }:#{ fill m }:#{ fill s }"
-
-    if ms isnt 0
-        time += ".#{ ms }"
-
-    time
-
 # <a name='TimeInput'></a>
 #### TimeInput
 
@@ -346,9 +297,9 @@ class TimeInput extends AbstractDateInputWidget
     # of the `AbstractDateInputWidget` class.
     constructor:( target )->
         @supportedType = "time"
-        @valueToDate   = timeFromString
-        @dateToValue   = timeToString
-        @isValidValue  = isValidTime
+        @valueToDate   = Date.timeFromString
+        @dateToValue   = Date.timeToString
+        @isValidValue  = Date.isValidTime
 
         # The default `step` for a time input is one minute.
         super target, 60
@@ -481,32 +432,6 @@ class TimeInput extends AbstractDateInputWidget
             @pressedY = y
 
 
-# <a name='date'></a>
-## Date
-
-# A valid date is a string such as `2012-12-29`.
-isValidDate=( value )->
-    unless value? then return false
-    (/// ^
-        [\d]{4}-   # Year
-        [\d]{2}-   # Month
-        [\d]{2}    # Day of the month
-    $ ///).test value
-
-# A valid date string can be passed directly to the `Date` constructor.
-dateFromString=( string )->
-    d = new Date string
-    # Hours may vary when constructing a `Date` from a date string.
-    # The returned date's hours are then reset to `0`.
-    d.setHours 0
-    d
-
-dateToString=( date )->
-    [ "#{ fill date.year(), 4 }",
-      "#{ fill date.month() + 1   }",
-      "#{ fill date.date()        }",
-    ].join "-"
-
 # <a name='DateInput'></a>
 #### DateInput
 
@@ -528,9 +453,9 @@ dateToString=( date )->
 class DateInput extends AbstractDateInputWidget
     constructor:( target )->
         @supportedType = "date"
-        @valueToDate   = dateFromString
-        @dateToValue   = dateToString
-        @isValidValue  = isValidDate
+        @valueToDate   = Date.dateFromString
+        @dateToValue   = Date.dateToString
+        @isValidValue  = Date.isValidDate
 
         @dialogRequested = new Signal
 
@@ -547,175 +472,38 @@ class DateInput extends AbstractDateInputWidget
     mouseup:(e)->
         @dialogRequested.dispatch this
 
-# <a name='month'></a>
-## Month
-
-isValidMonth=( value )->
-    unless value? then return false
-    (/// ^
-        [\d]{4}-   # Year
-        [\d]{2}    # Month
-    $ ///).test value
-
-monthFromString=( string )->
-    d = new Date string
-    # Hours may vary when constructing a `Date`.
-    # The returned date's hours are then reset to `0`.
-    d.setHours 0
-    d
-
-monthToString=( date )->
-    "#{ fill date.year(), 4 }-#{ fill ( date.month() + 1 ) }"
-
 # <a name='MonthInput'></a>
 #### MonthInput
 class MonthInput extends AbstractDateInputWidget
     constructor:( target )->
         @supportedType = "month"
-        @valueToDate   = monthFromString
-        @dateToValue   = monthToString
-        @isValidValue  = isValidMonth
+        @valueToDate   = Date.monthFromString
+        @dateToValue   = Date.monthToString
+        @isValidValue  = Date.isValidMonth
 
         super target
-
-# <a name='week'></a>
-## Week
-
-isValidWeek=( value )->
-    unless value? then return false
-    (/// ^
-        [\d]{4}    # Year
-        -W         # Week separator
-        [\d]{2}    # Week number prefixed with W
-    $ ///).test value
-
-# Converts a string such as `2011-W09` into a `Date` object
-# that represent the first day of the corresponding week, even
-# if it's not in the same year.
-weekFromString=( string )->
-    [ year, week ] = ( parseInt s for s in string.split "-W" )
-
-    getWeekDate year, week
-
-weekToString=( date )->
-    "#{ fill date.year(), 4 }-W#{ fill date.week() }"
-
-getWeekDate=( year, week )->
-    start = Date.findFirstWeekFirstDay year
-    date = new Date start.valueOf() + Date.MILLISECONDS_IN_WEEK * ( week - 1 )
-    date.setHours 0
-    date.setMinutes 0
-    date.setSeconds 0
-    date.setMilliseconds 0
-    date
 
 # <a name='WeekInput'></a>
 #### WeekInput
 class WeekInput extends AbstractDateInputWidget
     constructor:( target )->
         @supportedType = "week"
-        @valueToDate   = weekFromString
-        @dateToValue   = weekToString
-        @isValidValue  = isValidWeek
+        @valueToDate   = Date.weekFromString
+        @dateToValue   = Date.weekToString
+        @isValidValue  = Date.isValidWeek
 
         super target
-
-
-# <a name='datetime'></a>
-## DateTime
-
-isValidDateTime=( value )->
-    unless value? then return false
-    (/// ^
-        [\d]{4}-       # Year
-        [\d]{2}-       # Month
-        [\d]{2}        # Day of the Month
-        T              # Start time token
-        [\d]{2}:       # Hours
-        [\d]{2}:       # Minutes
-        [\d]{2}        # Seconds
-        (\.[\d]{1,4})? # Optionnal milliseconds
-        (              # Mandatory terminator
-            Z|         # Either Z,
-            (\+|\-)+   # +XX:XX or -XX:XX
-            [\d]{2}:
-            [\d]{2}
-        )
-    $ ///).test value
-
-datetimeFromString=( string )->
-    new Date string
-
-datetimeToString=( date )->
-    offset = date.getTimezoneOffset()
-    sign = "-"
-    if offset < 0
-        sign = "+"
-        offset *= -1
-
-    minutes = offset % 60
-    hours = ( offset - minutes ) / 60
-    [ "#{ dateToString date }T",
-      "#{ timeToString date }",
-      "#{ sign }#{ fill hours }:#{ fill minutes }"
-    ].join ""
 
 # <a name='DateTimeInput'></a>
 #### DateTimeInput
 class DateTimeInput extends AbstractDateInputWidget
     constructor:( target )->
         @supportedType = "datetime"
-        @valueToDate   = datetimeFromString
-        @dateToValue   = datetimeToString
-        @isValidValue  = isValidDateTime
+        @valueToDate   = Date.datetimeFromString
+        @dateToValue   = Date.datetimeToString
+        @isValidValue  = Date.isValidDateTime
 
         super target
-
-# <a name='datetime-local'></a>
-## DateTimeLocal
-validationRegexp= ->
-    /// ^
-        ([\d]{4})-     # Year
-        ([\d]{2})-     # Month
-        ([\d]{2})      # Day of the Month
-        T              # Start time token
-        ([\d]{2}):     # Hours
-        ([\d]{2}):     # Minutes
-        ([\d]{2})      # Seconds
-        (\.[\d]{1,3})? # Optionnal milliseconds
-    $ ///
-
-isValidDateTimeLocal=( value )->
-    unless value? then return false
-    validationRegexp().test value
-
-datetimeLocalFromString=( string )->
-    # Passing the date string directly in the constructor is valid,
-    # however the behavior in chrome and firefox are quite different,
-    # chrome consider that the passed-in date has an offset of `0`
-    # and the convert it to the current local offset when firefox
-    # consider the datestring as in the current local offset.
-    # In consequences, The date will differ between the two browsers
-    # of the amount of the current local offset.
-    #
-    # The `Date` will be created by parsing the string with the validation
-    # regex and pass each value as an argument in the `Date` constructor.
-
-    [ match, year, month,
-      day, hours, minutes,
-      seconds, milliseconds ] = validationRegexp().exec string
-
-    pI = parseInt
-    new Date pI( year    , 10 ),
-             pI( month   , 10 ) - 1,
-             pI( day     , 10 ),
-             pI( hours   , 10 ),
-             pI( minutes , 10 ),
-             pI( seconds , 10 )
-             if milliseconds? then pI milliseconds.replace(".", ""), 10 else 0
-
-datetimeLocalToString=( date )->
-    "#{ dateToString date }T#{ timeToString date }"
 
 # <a name='DateTimeLocalInput'></a>
 # FIX Find a way to fix the opera issue
@@ -723,35 +511,11 @@ datetimeLocalToString=( date )->
 class DateTimeLocalInput extends AbstractDateInputWidget
     constructor:( target )->
         @supportedType = "datetime-local"
-        @valueToDate   = datetimeLocalFromString
-        @dateToValue   = datetimeLocalToString
-        @isValidValue  = isValidDateTimeLocal
+        @valueToDate   = Date.datetimeLocalFromString
+        @dateToValue   = Date.datetimeLocalToString
+        @isValidValue  = Date.isValidDateTimeLocal
 
         super target
-
-@isValidTime = isValidTime
-@timeToString = timeToString
-@timeFromString = timeFromString
-
-@isValidDate = isValidDate
-@dateToString = dateToString
-@dateFromString = dateFromString
-
-@isValidMonth = isValidMonth
-@monthToString = monthToString
-@monthFromString = monthFromString
-
-@isValidWeek = isValidWeek
-@weekToString = weekToString
-@weekFromString = weekFromString
-
-@isValidDateTime = isValidDateTime
-@datetimeToString = datetimeToString
-@datetimeFromString = datetimeFromString
-
-@isValidDateTimeLocal = isValidDateTimeLocal
-@datetimeLocalToString = datetimeLocalToString
-@datetimeLocalFromString = datetimeLocalFromString
 
 @TimeInput = TimeInput
 @DateInput = DateInput

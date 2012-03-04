@@ -805,10 +805,23 @@
         padding:3px;
         border-spacing:0px;
 
+        tr:nth-child(2) {
+            td {
+                border-top:1px solid $base01;
+            }
+        }
+
         th {
             text-align:center !important;
             @extend .button-text-content;
             @extend .inset-text;
+
+            &.week {
+                font-size:12px;
+                font-weight:normal;
+                padding:3px 6px;
+                border-right:1px solid $base01;
+            }
         }
         td {
             font-size:14px;
@@ -824,12 +837,15 @@
 
             &.selected {
                 background:$widget-button-focus-background;
+                &.today {
+                    background:$blue2;
+                }
             }
             &.blurred {
                 @extend .button-disabled-text-content;
             }
             &.today {
-                border:1px solid $base3;
+                background:transparentize($blue1, 0.5);
             }
         }
     }

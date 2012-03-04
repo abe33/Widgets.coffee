@@ -6,6 +6,10 @@ class Calendar extends Widget
 
     constructor:( @value = new Date(), @mode = "date" )->
         super()
+        @display @value
+
+    display:( date )->
+        @month = date.firstDateOfMonth()
         @updateDummy()
 
     #### Dummy Management
@@ -18,35 +22,42 @@ class Calendar extends Widget
         dummy
 
     updateDummy:->
-        value = @get("value").clone()
-        @updateCells value
+        @updateCells @month
 
-        value.setDate 1
-        monthStartDay = value.getDay() - 1
+        monthStartDay = @month.getDay() - 1
         monthStartDay = 6 if monthStartDay is -1
 
-        date = value.clone()
-        date.incrementDate -monthStartDay
+        date = @month.clone().incrementDate -monthStartDay
 
         @dummy.find("td").each ( i, o )=>
             td = $ o
             td.text date.date()
+            td.attr "name", Date.dateToString date
+
+            td.parent().find("th").text date.week() if td.index() is 1
+
             @toggleState td, date
             date.incrementDate 1
 
     updateCells:( value )->
 
         table = @dummy.find "table"
+        table.find("td").unbind "mouseup", @cellDelegate
         table.children().remove()
 
-        header = $ "<tr></tr>"
+        header = $ "<tr><th></th></tr>"
         header.append "<th>#{ day }</th>" for day in Calendar.DAYS
         table.append header
 
         for y in [0..@linesNeeded value]
-            line = $ "<tr></tr>"
+            line = $ "<tr><th class='week'></th></tr>"
             for x in [0..6]
-                line.append "<td></td>"
+                cell = $ "<td></td>"
+                cell.bind "mouseup", @cellDelegate=(e)=>
+                    unless @cantInteract()
+                        @set "value",
+                             Date.dateFromString $(e.target).attr "name"
+                line.append cell
             table.append line
 
     linesNeeded:( value )->
@@ -76,7 +87,7 @@ class Calendar extends Widget
 
     set_value:( property, value )->
         @[ property ] = value
-        @updateDummy()
+        @display value
         value
 
     set_mode:( property, value )->
@@ -85,7 +96,5 @@ class Calendar extends Widget
         @[ property ] = value
         @updateDummy()
         value
-
-
 
 @Calendar = Calendar
