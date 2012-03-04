@@ -1,23 +1,5 @@
 runTests=()->
 
-    module "date monkey patch tests"
-
-    test "Date.findFirstWeekFirstDay should always returns a monday", ->
-
-        for year in [2000..2020]
-            assertThat Date.findFirstWeekFirstDay(year).getDay(),
-                       describedAs equalTo(1), "For year #{year}"
-
-    test "Date::getWeek should return a valid week", ->
-
-        assertThat new Date(2012,0,1).getWeek(), equalTo 52
-
-        for date in [2..8]
-            assertThat new Date(2012,0,date).getWeek(), equalTo 1
-
-        for date in [9..15]
-            assertThat new Date(2012,0,date).getWeek(), equalTo 2
-
     module "calendar tests"
 
     test "Calendar should provide a mode property", ->

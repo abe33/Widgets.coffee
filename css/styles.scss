@@ -5,7 +5,8 @@
 
 body {
     @extend .font;
-    background:$base02;
+    // background:$base02;
+    background:$base2 !important;
 }
 
 a {
@@ -20,7 +21,7 @@ a {
 }
 h4 {
 	@extend .font;
-	color:$base2;
+	color:$base02;
 }
 
 #qunit-header {

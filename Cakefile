@@ -3,74 +3,77 @@ fs            = require 'fs'
 {spawn, exec} = require 'child_process'
 
 allFiles = [
-    "keys",       "mixins",         "module",   "widgets",     "container",
-    "button",     "textinput",      "textarea", "checkbox",    "radio",
-    "radiogroup", "numeric-widget", "slider",   "stepper",     "filepicker",
-    "menus",      "selects",        "calendar", "dates",       "colorpicker",
-    "jquery",     "builder"
+    "std",        "keys",       "mixins",         "module",   "widgets",
+    "container",  "button",     "textinput",      "textarea", "checkbox",
+    "radio",      "radiogroup", "numeric-widget", "slider",   "stepper",
+    "filepicker", "menus",      "selects",        "calendar", "dates",
+    "colorpicker","jquery",     "builder"
 ]
 
 allTestsDependencies = [ "test-helpers" ]
 compilationUnits=
+    'std':
+        depends:[]
+        test:"test-std"
     'keys':
         depends:[]
         test:"test-keys"
     'widgets':
-        depends:[ "keys", "module", "mixins" ]
+        depends:[ "std", "keys", "module", "mixins" ]
         test:"test-widgets"
     'container':
-        depends:[ "keys", "module", "mixins", "widgets" ]
+        depends:[ "std", "keys", "module", "mixins", "widgets" ]
         test:"test-container"
     'button':
-        depends:[ "keys", "module", "mixins", "widgets" ]
+        depends:[ "std", "keys", "module", "mixins", "widgets" ]
         test:"test-button"
     'textinput':
-        depends:[ "keys", "module", "mixins", "widgets" ]
+        depends:[ "std", "keys", "module", "mixins", "widgets" ]
         test:"test-textinput"
     'textarea':
-        depends:[ "keys", "module", "mixins", "widgets" ]
+        depends:[ "std", "keys", "module", "mixins", "widgets" ]
         test:"test-textarea"
     'checkbox':
-        depends:[ "keys", "module", "mixins", "widgets" ]
+        depends:[ "std", "keys", "module", "mixins", "widgets" ]
         test:"test-checkbox"
     'radio':
-        depends:[ "keys", "module", "mixins", "widgets",
+        depends:[ "std", "keys", "module", "mixins", "widgets",
                   "checkbox" ]
         test:"test-radio"
     'radiogroup':
-        depends:[ "keys", "module", "mixins", "widgets",
+        depends:[ "std", "keys", "module", "mixins", "widgets",
                   "checkbox", "radio" ]
         test:"test-radiogroup"
     'numeric-widget':
-        depends:[ "keys", "module", "mixins", "widgets" ]
+        depends:[ "std", "keys", "module", "mixins", "widgets" ]
         test:"test-numeric-widget"
     'slider':
-        depends:[ "keys", "module", "mixins", "widgets",
+        depends:[ "std", "keys", "module", "mixins", "widgets",
                   "numeric-widget" ]
         test:"test-slider"
     'stepper':
-        depends:[ "keys", "module", "mixins", "widgets",
+        depends:[ "std", "keys", "module", "mixins", "widgets",
                   "numeric-widget" ]
         test:"test-stepper"
     'filepicker':
-        depends:[ "keys", "module", "mixins", "widgets" ]
+        depends:[ "std", "keys", "module", "mixins", "widgets" ]
         test:"test-filepicker"
     'menus':
-        depends:[ "keys", "module", "mixins", "widgets" ]
+        depends:[ "std", "keys", "module", "mixins", "widgets" ]
         test:"test-menus"
     'selects':
-        depends:[ "keys", "module", "mixins", "widgets",
+        depends:[ "std", "keys", "module", "mixins", "widgets",
                   "menus" ]
         test:"test-selects"
     'calendar':
-        depends:[ "keys", "module", "mixins", "widgets" ]
+        depends:[ "std", "keys", "module", "mixins", "widgets" ]
         test:"test-calendar"
     'dates':
-        depends:[ "keys", "module", "mixins", "widgets",
+        depends:[ "std", "keys", "module", "mixins", "widgets",
                   "calendar" ]
         test:"test-dates"
     'colorpicker':
-        depends:[ "keys", "module", "mixins", "widgets",
+        depends:[ "std", "keys", "module", "mixins", "widgets",
                   "container", "textinput", "checkbox",
                   "radio", "radiogroup" ]
         test:"test-colorpicker"
@@ -78,7 +81,7 @@ compilationUnits=
         depends:allFiles[0..-2]
         test:"test-jquery"
     'builder':
-        depends:[ "keys", "module", "mixins", "widgets", "button" ]
+        depends:[ "std", "keys", "module", "mixins", "widgets", "button" ]
         test:"test-builder"
 
 class Batch

@@ -155,7 +155,7 @@ testGenericDateWidgetBehaviors=( opt )->
                            step='foo'></input>")[0]
         input = new opt.cls target
 
-        assertThat not isNaN input.get( "date" ).getHours()
+        assertThat not isNaN input.get( "date" ).hours()
         assertThat input.get( "min" ), opt.undefinedMinValueMatcher
         assertThat input.get( "max" ), opt.undefinedMaxValueMatcher
         assertThat input.get( "step" ), opt.undefinedStepValueMatcher

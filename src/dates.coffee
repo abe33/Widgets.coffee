@@ -19,22 +19,6 @@
 # * [datetime](#datetime)           :[DateTimeInput](#DateTimeInput)
 # * [datetime-local](#datetime-loca):[DateTimeLocalInput](#DateTimeLocalInput)
 
-#### Utilities
-
-# Cast the `value` into an integer.
-# In case the passed-in `value` cannot be casted in an
-# integer, the function return the value of `0`
-safeInt=( value )->
-    n = parseInt value
-    unless isNaN n then n else 0
-
-# Fills the string `s` with `0` until its length is
-# equal to the length `l`.
-fill=( s, l = 2 )->
-    s = String s
-    s = "0#{s}" while s.length < l
-    s
-
 #### Abstract
 #
 # Validation and conversion functions for each mode are available
@@ -48,7 +32,7 @@ fill=( s, l = 2 )->
 #
 # The date widgets provides an additional `date` property,
 # accessible through a property accessor, that allow to manipulate
-# the widget's value using a `Date` instance.
+# the widget's value using  a `Date` instance.
 class AbstractDateInputWidget extends Widget
     # Date and time widgets can operate in a range. Their prototype is then
     # decorated with the `ValueInRange` mixin.
@@ -102,23 +86,23 @@ class AbstractDateInputWidget extends Widget
 
         # Step is step before any other operation. As `min`
         # `max` and `value` must respect that step.
-        @.step  = if isNaN step then defaultStep else step
+        @step  = if isNaN step then defaultStep else step
 
         # If a valid `min` bounds is defined, the value is snapped
         # according to the `step` property before being its affectation.
         if min?
             minDate = @snapToStep @valueToDate min
-            @.min = @dateToValue minDate
+            @min = @dateToValue minDate
         # If a valid `max` bounds is defined, the value is snapped
         # according to the `step` property before being its affectation.
         if max?
             maxDate = @snapToStep @valueToDate max
-            @.max = @dateToValue maxDate
+            @max = @dateToValue maxDate
 
         # The value of the widget is then adjusted itself to the step
         # and range defined previously.
-        @.date  = @fitToRange date, minDate, maxDate
-        @.value = @dateToValue date
+        @date  = @fitToRange date, minDate, maxDate
+        @value = @dateToValue date
 
         # To avoid infinite loops and unnecessary conversion, locks
         # are defined for the `date` and `value` setters.
@@ -151,7 +135,7 @@ class AbstractDateInputWidget extends Widget
         ms = value.getTime()
         step = @get "step"
         if step?
-            value.setTime ms - ( ms % ( step * MILLISECONDS_IN_SECOND ) )
+            value.setTime ms - ( ms % ( step * Date.MILLISECONDS_IN_SECOND ) )
 
         value
 
@@ -160,7 +144,7 @@ class AbstractDateInputWidget extends Widget
         d    = @get "date"
         step = @get "step"
         ms   = d.valueOf()
-        d.setTime ms + step * MILLISECONDS_IN_SECOND
+        d.setTime ms + step * Date.MILLISECONDS_IN_SECOND
         @set "date", d
 
     # Overrides of the `ValueInRange` mixin method to support date value.
@@ -168,7 +152,7 @@ class AbstractDateInputWidget extends Widget
         d    = @get "date"
         step = @get "step"
         ms   = d.valueOf()
-        d.setTime ms - step * MILLISECONDS_IN_SECOND
+        d.setTime ms - step * Date.MILLISECONDS_IN_SECOND
         @set "date", d
 
     #### Dummy Management
@@ -187,7 +171,7 @@ class AbstractDateInputWidget extends Widget
     # Only valid dates are allowed. Invalid dates are easily
     # identifiable as all their getters will return `NaN`.
     set_date:( property, value )->
-        if not value? or isNaN value.getDate() then return @get "date"
+        if not value? or isNaN value.date() then return @get "date"
 
         min = @get "min"
         max = @get "max"
@@ -307,9 +291,9 @@ timeFromString=( string )->
     [ sec, ms ] = if sec? then sec.split "." else [ 0, 0 ]
 
     # UTC dates start at 1:00 AM so we have to remove one hour.
-    time = safeInt( hours - 1 ) * MILLISECONDS_IN_HOUR   +
-           safeInt( min )       * MILLISECONDS_IN_MINUTE +
-           safeInt( sec )       * MILLISECONDS_IN_SECOND +
+    time = safeInt( hours - 1 ) * Date.MILLISECONDS_IN_HOUR   +
+           safeInt( min )       * Date.MILLISECONDS_IN_MINUTE +
+           safeInt( sec )       * Date.MILLISECONDS_IN_SECOND +
            safeInt( ms )
 
     d = new Date time
@@ -319,10 +303,10 @@ timeFromString=( string )->
 # If the milliseconds count is different than `0` then the
 # output will look as `10:15:40.768`.
 timeToString=( date )->
-    h  = date.getHours()
-    m  = date.getMinutes()
-    s  = date.getSeconds()
-    ms = date.getMilliseconds()
+    h  = date.hours()
+    m  = date.minutes()
+    s  = date.seconds()
+    ms = date.milliseconds()
 
     time ="#{ fill h }:#{ fill m }:#{ fill s }"
 
@@ -493,7 +477,7 @@ class TimeInput extends AbstractDateInputWidget
             ms = @get("date").valueOf()
             step = @get "step"
 
-            @set "date", new Date ms + dif * step * MILLISECONDS_IN_SECOND
+            @set "date", new Date ms + dif * step * Date.MILLISECONDS_IN_SECOND
             @pressedY = y
 
 
@@ -518,9 +502,9 @@ dateFromString=( string )->
     d
 
 dateToString=( date )->
-    [ "#{ fill date.getFullYear(), 4 }",
-      "#{ fill date.getMonth() + 1   }",
-      "#{ fill date.getDate()        }",
+    [ "#{ fill date.year(), 4 }",
+      "#{ fill date.month() + 1   }",
+      "#{ fill date.date()        }",
     ].join "-"
 
 # <a name='DateInput'></a>
@@ -581,7 +565,7 @@ monthFromString=( string )->
     d
 
 monthToString=( date )->
-    "#{ fill date.getFullYear(), 4 }-#{ fill ( date.getMonth() + 1 ) }"
+    "#{ fill date.year(), 4 }-#{ fill ( date.month() + 1 ) }"
 
 # <a name='MonthInput'></a>
 #### MonthInput
@@ -614,11 +598,11 @@ weekFromString=( string )->
     getWeekDate year, week
 
 weekToString=( date )->
-    "#{ fill date.getFullYear(), 4 }-W#{ fill date.getWeek() }"
+    "#{ fill date.year(), 4 }-W#{ fill date.week() }"
 
 getWeekDate=( year, week )->
     start = Date.findFirstWeekFirstDay year
-    date = new Date start.valueOf() + MILLISECONDS_IN_WEEK * ( week - 1 )
+    date = new Date start.valueOf() + Date.MILLISECONDS_IN_WEEK * ( week - 1 )
     date.setHours 0
     date.setMinutes 0
     date.setSeconds 0
