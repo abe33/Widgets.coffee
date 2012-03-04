@@ -21,13 +21,6 @@
 
 #### Utilities
 
-# A group of *"constants"* for basic time and dates computations.
-MILLISECONDS_IN_SECOND = 1000
-MILLISECONDS_IN_MINUTE = MILLISECONDS_IN_SECOND * 60
-MILLISECONDS_IN_HOUR   = MILLISECONDS_IN_MINUTE * 60
-MILLISECONDS_IN_DAY    = MILLISECONDS_IN_HOUR * 24
-MILLISECONDS_IN_WEEK   = MILLISECONDS_IN_DAY * 7
-
 # Cast the `value` into an integer.
 # In case the passed-in `value` cannot be casted in an
 # integer, the function return the value of `0`
@@ -621,27 +614,10 @@ weekFromString=( string )->
     getWeekDate year, week
 
 weekToString=( date )->
-    start = findFirstWeekFirstDay date.getFullYear()
-    dif   = date.valueOf() - start.valueOf()
-    week  = Math.round ( dif / MILLISECONDS_IN_WEEK ) + 1
-    "#{ fill date.getFullYear(), 4 }-W#{ fill week }"
-
-# Returns a `Date` that is the first day of the first week of the year.
-# In fact, the returned `Date` can represent a day that is not in `year`
-# as a year can start in the middle of a week.
-findFirstWeekFirstDay=( year )->
-    d = new Date year, 0, 1, 0
-    day = d.getDay()
-
-    if day is 0 then day = 7
-
-    if day > 3
-        new Date year, 0, 7 - day + 2, 0
-    else
-        new Date year, 0, 2 - day, 0
+    "#{ fill date.getFullYear(), 4 }-W#{ fill date.getWeek() }"
 
 getWeekDate=( year, week )->
-    start = findFirstWeekFirstDay year
+    start = Date.findFirstWeekFirstDay year
     date = new Date start.valueOf() + MILLISECONDS_IN_WEEK * ( week - 1 )
     date.setHours 0
     date.setMinutes 0

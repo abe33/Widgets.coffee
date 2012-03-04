@@ -4,14 +4,17 @@ Date::clone=-> new Date @valueOf()
 
 Date::incrementDate=( amount )->
     @setDate @getDate() + amount
+    this
 
 Date::incrementMonth=( amount )->
     @setMonth @getMonth() + amount
+    this
 
 Date::firstDateOfMonth=->
     date = @clone()
     date.setDate 1
     date
+
 Date::lastDateOfMonth=->
     date = @clone()
     date.setDate 1
@@ -19,16 +22,44 @@ Date::lastDateOfMonth=->
     date.incrementDate -1
     date
 
+Date.findFirstWeekFirstDay=(year)->
+    d = new Date year, 0, 1, 0, 0, 0, 0
+    day = d.getDay()
+
+    day = 7 if day is 0
+
+    if day > 4
+        new Date year, 0, 9 - day, 0
+    else
+        new Date year, 0, 2 - day, 0
+
+Date::getWeek=( dowOffset = 0 )->
+    start = Date.findFirstWeekFirstDay @getFullYear()
+    dif   = this - start - @getTimezoneOffset() * MILLISECONDS_IN_MINUTE
+    week  = Math.floor ( dif / MILLISECONDS_IN_WEEK ) + 1
+    week or 52
+
+Date::isToday=->
+    today = new Date
+
+    @getFullYear() is today.getFullYear() and
+    @getMonth()    is today.getMonth()    and
+    @getDate()     is today.getDate()
+
 Date::monthLength=-> @lastDateOfMonth().getDate()
 
-DAYS =  ["S","M","T","W","T","F","S"]
+# A group of *"constants"* for basic time and dates computations.
+MILLISECONDS_IN_SECOND = 1000
+MILLISECONDS_IN_MINUTE = MILLISECONDS_IN_SECOND * 60
+MILLISECONDS_IN_HOUR   = MILLISECONDS_IN_MINUTE * 60
+MILLISECONDS_IN_DAY    = MILLISECONDS_IN_HOUR * 24
+MILLISECONDS_IN_WEEK   = MILLISECONDS_IN_DAY * 7
+
+DAYS =  ["M","T","W","T","F","S","S",]
 
 class Calendar extends Widget
-    constructor:( value )->
+    constructor:( @value = new Date(), @mode = "date" )->
         super()
-        @mode = "date"
-        @value = if value? then value else new Date
-
         @updateDummy()
 
     #### Dummy Management
@@ -45,7 +76,8 @@ class Calendar extends Widget
         @updateCells value
 
         value.setDate 1
-        monthStartDay = value.getDay()
+        monthStartDay = value.getDay() - 1
+        monthStartDay = 6 if monthStartDay is -1
 
         date = value.clone()
         date.incrementDate -monthStartDay
@@ -72,18 +104,26 @@ class Calendar extends Widget
             table.append line
 
     linesNeeded:( value )->
-        days = value.monthLength() + value.firstDateOfMonth().getDay()
+        day = value.firstDateOfMonth().getDay()
+        day = 7 if day is 0
+        days = value.monthLength() + day
         Math.ceil( days / 7 ) - 1
 
     #### Selection Management
 
     toggleState:( td, date )->
         value = @get("value")
+        sameDate = date.getDate() is value.getDate()
+        sameMonth = date.getMonth() is value.getMonth()
+        sameWeek = date.getWeek() is value.getWeek()
 
-        if date.getDate() is value.getDate()
-            td.addClass "selected"
-        else if date.getMonth() isnt value.getMonth()
-            td.addClass "blurred"
+        switch @get("mode")
+            when "date"  then td.addClass "selected" if sameDate and sameMonth
+            when "month" then td.addClass "selected" if sameMonth
+            when "week"  then td.addClass "selected" if sameWeek
+
+        td.addClass "blurred" if not sameMonth
+        td.addClass "today" if date.isToday()
 
 
     #### Properties Accessors
@@ -91,11 +131,14 @@ class Calendar extends Widget
     set_value:( property, value )->
         @[ property ] = value
         @updateDummy()
+        value
 
     set_mode:( property, value )->
-        unless value in [ "date", "month", "week" ] then return @get "mode"
+        if value not in [ "date", "month", "week" ] then return @get "mode"
 
         @[ property ] = value
+        @updateDummy()
+        value
 
 
 

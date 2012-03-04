@@ -801,48 +801,60 @@
     @extend .widget-common;
     @extend .popup;
 
-    th {
-        text-align:center !important;
-        @extend .button-text-content;
-        @extend .inset-text;
-    }
-    td {
-        font-size:14px;
-        text-align:center;
-        padding:3px 6px;
+    table {
+        padding:3px;
+        border-spacing:0px;
 
-        @extend .button-text-content;
-        @extend .inset-text;
-        &:hover {
-            background:$widget-button-focus-background;
-            color:$widget-button-color !important;
+        th {
+            text-align:center !important;
+            @extend .button-text-content;
+            @extend .inset-text;
         }
+        td {
+            font-size:14px;
+            text-align:center;
+            padding:3px 6px;
 
-        &.selected {
-            background:$widget-button-focus-background;
-        }
-        &.blurred {
-            @extend .button-disabled-text-content;
+            @extend .button-text-content;
+            @extend .inset-text;
+            &:hover {
+                background:$widget-button-focus-background;
+                color:$widget-button-color !important;
+            }
+
+            &.selected {
+                background:$widget-button-focus-background;
+            }
+            &.blurred {
+                @extend .button-disabled-text-content;
+            }
+            &.today {
+                border:1px solid $base3;
+            }
         }
     }
     &.disabled, &.readonly {
-        td {
-            &:hover {
-                background:none;
-            }
-            &.blurred:hover {
-                @extend .button-disabled-text-content;
-            }
-            &.selected{
-                background:$widget-button-focus-background;
+        table {
+            td {
+                &:hover {
+                    background:none;
+                }
+                &.blurred:hover {
+                    @extend .button-disabled-text-content;
+                }
+                &.selected{
+                    background:$widget-button-focus-background;
+                }
             }
         }
     }
     &.disabled {
-        td {
-            @extend .button-disabled-text-content;
-            &:hover{
+        table {
+            td {
                 @extend .button-disabled-text-content;
+                &:hover{
+                    @extend .button-disabled-text-content;
+                }
             }
         }
     }

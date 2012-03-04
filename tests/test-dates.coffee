@@ -25,6 +25,13 @@ testGenericDateTimeFunctions=( opt )->
                 opt.fromStringFunction( opt.reverseData ) ) ),
             dateEquals opt.fromStringFunction( opt.reverseData )
 
+        for data in opt.validData
+            assertThat opt.fromStringFunction(
+                opt.toStringFunction(
+                    opt.fromStringFunction( data ) ) ),
+                dateEquals opt.fromStringFunction( data )
+
+
 testGenericDateWidgetBehaviors=( opt )->
 
     test "A #{ opt.className } should allow an input
@@ -364,7 +371,7 @@ $( document ).ready ->
         type:"week"
         validateFunctionName:"isValidWeek"
         validateFunction:isValidWeek
-        validData:[ "2011-W12", "1970-W07" ]
+        validData:[ "2011-W12", "1970-W07", "2007-W03", "2015-W25" ]
         invalidData:[ "", "foo", "200-W1", "20-W00", "-W", null ]
 
         toStringFunctionName:"weekToString"
@@ -377,9 +384,9 @@ $( document ).ready ->
         fromStringFunctionName:"weekFromString"
         fromStringFunction:weekFromString
         fromStringData:[ [ "2012-W01", new Date 2012, 0, 2  ],
-                         [ "2011-W01", new Date 2011, 0, 3  ],
+                         [ "2011-W02", new Date 2011, 0, 10  ],
                          [ "2011-W34", new Date 2011, 7, 22 ],
-                         [ "2010-W19", new Date 2010, 4, 10 ] ]
+                         [ "2010-W19", new Date 2010, 4, 10  ] ]
 
         reverseData:"2011-W12"
 
@@ -790,21 +797,21 @@ $( document ).ready ->
         cls:WeekInput
         type:"week"
 
-        defaultDate:new Date 2012, 0, 2, 0
+        defaultDate:weekFromString "2012-W01"
         defaultValue:"2012-W01"
 
         invalidDates:[ null, new Date "foo" ]
         invalidValues:[ null, "foo", "122-50", "1-1-+6" ]
 
-        setDate:new Date 2011, 7, 15, 0
-        setValue:"2011-W33"
+        setDate:weekFromString "2011-W31"
+        setValue:"2011-W31"
 
-        minDate:new Date 2011, 0, 24, 0
+        minDate:weekFromString "2011-W04"
         minValue:"2011-W04"
         valueBelowRange:"2011-W01"
         invalidMinValue:"2014-W35"
 
-        maxDate:new Date 2013, 0, 21, 0
+        maxDate:weekFromString "2013-W04"
         maxValue:"2013-W04"
         valueAboveRange:"2100-W05"
         invalidMaxValue:"2010-W09"

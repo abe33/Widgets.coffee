@@ -127,7 +127,7 @@ instance at the end of the build.</li>
 to pass arguments contained in an array to the constructor
 we need to have a bunch of function that instanciate a class with
 a number of arguments corresponding to the number of elements
-in the array.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nv">f </span><span class="o">=</span> <span class="nb">BUILDS</span><span class="p">[</span> <span class="nx">args</span><span class="p">.</span><span class="nx">length</span> <span class="p">]</span>
+in the array.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="nv">f </span><span class="o">=</span> <span class="nb">BUILDS</span><span class="p">[</span> <span class="nx">args</span> <span class="o">?</span> <span class="py">args.length </span><span class="o">:</span> <span class="mi">0</span> <span class="p">]</span>
         <span class="nx">f</span> <span class="nx">klass</span><span class="p">,</span> <span class="nx">args</span></pre></div>             </td>           </tr>                               <tr id="section-31">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-31">&#182;</a>               </div>               <p>Contains all the function that will instanciate a class with a specific
 number of arguments. These functions are all generated at runtime with
 the <code>Function</code> constructor.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nb">BUILDS</span><span class="o">=</span><span class="p">(</span>

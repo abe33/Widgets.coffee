@@ -197,7 +197,7 @@ class BuildUnit
         # we need to have a bunch of function that instanciate a class with
         # a number of arguments corresponding to the number of elements
         # in the array.
-        f = BUILDS[ args.length ]
+        f = BUILDS[ if args? then args.length else 0 ]
         f klass, args
 
 # Contains all the function that will instanciate a class with a specific

@@ -66,7 +66,8 @@ compilationUnits=
         depends:[ "keys", "module", "mixins", "widgets" ]
         test:"test-calendar"
     'dates':
-        depends:[ "keys", "module", "mixins", "widgets" ]
+        depends:[ "keys", "module", "mixins", "widgets",
+                  "calendar" ]
         test:"test-dates"
     'colorpicker':
         depends:[ "keys", "module", "mixins", "widgets",
