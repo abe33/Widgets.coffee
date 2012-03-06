@@ -3,26 +3,44 @@
   font-size: 18px;
   font-family: 'Homenaje', sans-serif; }
 
-.arrow, .down-arrow, .up-arrow, .left-arrow, .right-arrow {
+.no-text {
+  text-indent: -9999px; }
+
+.arrow {
   content: "";
   position: absolute;
   display: block;
   width: 0px;
   height: 0px;
-  border: 1px solid #002b36;
-  border-width: 5px; }
+  border: 5px solid #002b36; }
+  .arrow.down {
+    border-color: #002b36 transparent transparent transparent; }
+  .arrow.up {
+    border-color: transparent transparent #002b36 transparent; }
+  .arrow.left {
+    border-color: transparent #002b36 transparent transparent; }
+  .arrow.right {
+    border-color: transparent transparent transparent #002b36; }
 
-.down-arrow {
-  border-color: #002b36 transparent transparent transparent; }
-
-.up-arrow {
-  border-color: transparent transparent #002b36 transparent; }
-
-.left-arrow {
-  border-color: transparent #002b36 transparent transparent; }
-
-.right-arrow {
-  border-color: transparent transparent transparent #002b36; }
+.chevron {
+  width: 4px;
+  height: 4px;
+  position: absolute;
+  display: block;
+  border: 2px solid #002b36;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg); }
+  .chevron.down {
+    border-color: transparent transparent #002b36 #002b36; }
+  .chevron.up {
+    border-color: #002b36 #002b36 transparent transparent; }
+  .chevron.left {
+    border-color: #002b36 transparent transparent #002b36; }
+  .chevron.right {
+    border-color: transparent #002b36 #002b36 transparent; }
 
 .widget-common, .button, .text {
   display: inline-block;

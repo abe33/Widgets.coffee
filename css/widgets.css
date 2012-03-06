@@ -3,26 +3,44 @@
   font-size: 18px;
   font-family: 'Homenaje', sans-serif; }
 
-.arrow, .down-arrow, .single-select:before, .dateinput.date:before, .up-arrow, .left-arrow, .stepper .down:after, .dateinput.time .down:after, .right-arrow, .stepper .up:after, .dateinput.time .up:after, .filepicker .icon:before, .menulist .menu:before, .stepper:hover:before, .dateinput.time:hover:before, .stepper:hover:after, .dateinput.time:hover:after {
+.no-text, .calendar a.prev-month, .calendar a.next-month, .calendar a.next-year, .calendar a.prev-year {
+  text-indent: -9999px; }
+
+.arrow, .stepper:hover:before, .dateinput.time:hover:before, .stepper:hover:after, .dateinput.time:hover:after, .stepper .up:after, .dateinput.time .up:after, .stepper .down:after, .dateinput.time .down:after, .filepicker .icon:before, .single-select:before, .dateinput.date:before, .menulist .menu:before {
   content: "";
   position: absolute;
   display: block;
   width: 0px;
   height: 0px;
-  border: 1px solid #002b36;
-  border-width: 5px; }
+  border: 5px solid #002b36; }
+  .arrow.down, .down.stepper:hover:before, .down.dateinput.time:hover:before, .down.stepper:hover:after, .down.dateinput.time:hover:after, .stepper .down.up:after, .dateinput.time .down.up:after, .stepper .down:after, .dateinput.time .down:after, .filepicker .down.icon:before, .down.single-select:before, .down.dateinput.date:before, .single-select:before, .dateinput.date:before, .menulist .down.menu:before {
+    border-color: #002b36 transparent transparent transparent; }
+  .arrow.up, .up.stepper:hover:before, .up.dateinput.time:hover:before, .up.stepper:hover:after, .up.dateinput.time:hover:after, .stepper .up:after, .dateinput.time .up:after, .stepper .up.down:after, .dateinput.time .up.down:after, .filepicker .up.icon:before, .up.single-select:before, .up.dateinput.date:before, .menulist .up.menu:before {
+    border-color: transparent transparent #002b36 transparent; }
+  .arrow.left, .left.stepper:hover:before, .left.dateinput.time:hover:before, .left.stepper:hover:after, .left.dateinput.time:hover:after, .stepper .left.up:after, .dateinput.time .left.up:after, .stepper .left.down:after, .dateinput.time .left.down:after, .stepper .down:after, .dateinput.time .down:after, .filepicker .left.icon:before, .left.single-select:before, .left.dateinput.date:before, .menulist .left.menu:before {
+    border-color: transparent #002b36 transparent transparent; }
+  .arrow.right, .right.stepper:hover:before, .right.dateinput.time:hover:before, .right.stepper:hover:after, .right.dateinput.time:hover:after, .stepper .right.up:after, .dateinput.time .right.up:after, .stepper .up:after, .dateinput.time .up:after, .stepper .right.down:after, .dateinput.time .right.down:after, .filepicker .right.icon:before, .filepicker .icon:before, .right.single-select:before, .right.dateinput.date:before, .menulist .right.menu:before, .menulist .menu:before {
+    border-color: transparent transparent transparent #002b36; }
 
-.down-arrow, .single-select:before, .dateinput.date:before {
-  border-color: #002b36 transparent transparent transparent; }
-
-.up-arrow {
-  border-color: transparent transparent #002b36 transparent; }
-
-.left-arrow, .stepper .down:after, .dateinput.time .down:after {
-  border-color: transparent #002b36 transparent transparent; }
-
-.right-arrow, .stepper .up:after, .dateinput.time .up:after, .filepicker .icon:before, .menulist .menu:before {
-  border-color: transparent transparent transparent #002b36; }
+.chevron, .calendar a.prev-month:before, .calendar a.next-month:before, .calendar a.next-year:before, .calendar a.prev-year:before, .calendar a.prev-year:after, .calendar a.next-year:after {
+  width: 4px;
+  height: 4px;
+  position: absolute;
+  display: block;
+  border: 2px solid #002b36;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg); }
+  .chevron.down, .calendar a.down.prev-month:before, .calendar a.down.next-month:before, .calendar a.down.next-year:before, .calendar a.down.prev-year:before, .calendar a.down.prev-year:after, .calendar a.down.next-year:after {
+    border-color: transparent transparent #002b36 #002b36; }
+  .chevron.up, .calendar a.up.prev-month:before, .calendar a.up.next-month:before, .calendar a.up.next-year:before, .calendar a.up.prev-year:before, .calendar a.up.prev-year:after, .calendar a.up.next-year:after {
+    border-color: #002b36 #002b36 transparent transparent; }
+  .chevron.left, .calendar a.left.prev-month:before, .calendar a.left.next-month:before, .calendar a.left.next-year:before, .calendar a.left.prev-year:before, .calendar a.prev-year:before, .calendar a.left.prev-year:after, .calendar a.prev-year:after, .calendar a.prev-month:before, .calendar a.left.next-year:after {
+    border-color: #002b36 transparent transparent #002b36; }
+  .chevron.right, .calendar a.right.prev-month:before, .calendar a.right.next-month:before, .calendar a.right.next-year:before, .calendar a.right.prev-year:before, .calendar a.right.prev-year:after, .calendar a.next-year:before, .calendar a.right.next-year:after, .calendar a.next-year:after, .calendar a.next-month:before {
+    border-color: transparent #002b36 #002b36 transparent; }
 
 .widget-common, .button, .filepicker .icon, .colorinput, .single-select, .dateinput.date, .text, .textarea, .stepper, .dateinput.time, .filepicker, .checkbox, .radio, .slider, .dateinput, .gridpicker, .colorpicker, .menulist, .calendar {
   display: inline-block;
@@ -51,7 +69,7 @@
   .widget-common.focus, .focus.button, .filepicker .focus.icon, .focus.colorinput, .focus.single-select, .focus.dateinput.date, .focus.text, .focus.textarea, .focus.stepper, .focus.dateinput.time, .focus.filepicker, .focus.checkbox, .focus.radio, .focus.slider, .focus.dateinput, .focus.gridpicker, .focus.colorpicker, .focus.menulist, .focus.calendar {
     outline: 1px dotted rgba(255, 0, 0, 0.7) !important; }
 
-.inset-text, .button, .filepicker .icon, .colorinput, .single-select, .dateinput.date, .menulist .menuitem, .menulist .menu, .calendar th, .calendar td {
+.inset-text, .button, .filepicker .icon, .colorinput, .single-select, .dateinput.date, .menulist .menuitem, .menulist .menu, .calendar table th, .calendar table td {
   -webkit-text-shadow: 0pt 1px 0px rgba(255,255,255, 0.6);
   -moz-text-shadow: 0pt 1px 0px rgba(255,255,255, 0.6);
   text-shadow: 0pt 1px 0px rgba(255,255,255, 0.6); }
@@ -165,7 +183,7 @@
   -webkit-box-shadow: 0pt 2px 0px 0px #586e75,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0pt 2px 0px 0px #586e75,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
   box-shadow: 0pt 2px 0px 0px #586e75,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.light, .light.button, .filepicker .light.icon, .light.colorinput, .light.single-select, .light.dateinput.date, .light.button.disabled:hover, .filepicker .light.disabled.icon:hover, .light.disabled.colorinput:hover, .light.disabled.single-select:hover, .light.disabled.dateinput.date:hover, .light.button.readonly:hover, .filepicker .light.readonly.icon:hover, .light.readonly.colorinput:hover, .light.readonly.single-select:hover, .light.readonly.dateinput.date:hover, .light.button.disabled.focus, .filepicker .light.disabled.focus.icon, .light.disabled.focus.colorinput, .light.disabled.focus.single-select, .light.disabled.focus.dateinput.date, .button.focus, .filepicker .focus.icon, .focus.colorinput, .focus.single-select, .focus.dateinput.date, .button:hover, .filepicker .icon:hover, .colorinput:hover, .single-select:hover, .dateinput.date:hover, .light.popup, .light.colorpicker, .light.menulist, .light.calendar, .light.popup.disabled, .light.disabled.colorpicker, .light.disabled.menulist, .light.disabled.calendar, .checkbox.focus:before, .checkbox:hover:before, .light.checkbox:before, .light.checkbox.disabled:hover:before, .light.checkbox.readonly:hover:before, .light.radio.checked.disabled:after, .slider:hover .knob, .slider.focus .knob, .slider.disabled:hover .light.knob, .slider.readonly:hover .light.knob, .slider .light.knob, .stepper.disabled .light.up:hover, .disabled.dateinput.time .light.up:hover, .stepper.disabled .light.down:hover, .disabled.dateinput.time .light.down:hover, .stepper.readonly .light.up:hover, .readonly.dateinput.time .light.up:hover, .stepper.readonly .light.down:hover, .readonly.dateinput.time .light.down:hover, .stepper .light.up, .dateinput.time .light.up, .stepper .light.down, .dateinput.time .light.down, .stepper .up:hover, .dateinput.time .up:hover, .stepper .down:hover, .dateinput.time .down:hover {
+  .outset-box.light, .light.button, .filepicker .light.icon, .light.colorinput, .light.single-select, .light.dateinput.date, .light.button.disabled:hover, .filepicker .light.disabled.icon:hover, .light.disabled.colorinput:hover, .light.disabled.single-select:hover, .light.disabled.dateinput.date:hover, .light.button.readonly:hover, .filepicker .light.readonly.icon:hover, .light.readonly.colorinput:hover, .light.readonly.single-select:hover, .light.readonly.dateinput.date:hover, .light.button.disabled.focus, .filepicker .light.disabled.focus.icon, .light.disabled.focus.colorinput, .light.disabled.focus.single-select, .light.disabled.focus.dateinput.date, .button.focus, .filepicker .focus.icon, .focus.colorinput, .focus.single-select, .focus.dateinput.date, .button:hover, .filepicker .icon:hover, .colorinput:hover, .single-select:hover, .dateinput.date:hover, .light.popup, .light.colorpicker, .light.menulist, .light.calendar, .light.popup.disabled, .light.disabled.colorpicker, .light.disabled.menulist, .light.disabled.calendar, .checkbox.focus:before, .checkbox:hover:before, .light.checkbox:before, .light.checkbox.disabled:hover:before, .light.checkbox.readonly:hover:before, .light.radio.checked.disabled:after, .slider:hover .knob, .slider.focus .knob, .slider.disabled:hover .light.knob, .slider.readonly:hover .light.knob, .slider .light.knob, .stepper.disabled .light.up:hover, .disabled.dateinput.time .light.up:hover, .stepper.disabled .light.down:hover, .disabled.dateinput.time .light.down:hover, .stepper.readonly .light.up:hover, .readonly.dateinput.time .light.up:hover, .stepper.readonly .light.down:hover, .readonly.dateinput.time .light.down:hover, .stepper .light.up, .dateinput.time .light.up, .stepper .light.down, .dateinput.time .light.down, .stepper .up:hover, .dateinput.time .up:hover, .stepper .down:hover, .dateinput.time .down:hover, .colorpicker.disabled .radio.checked:after, .calendar.disabled a.today, .calendar.disabled a.today:hover {
     border: 1px solid #a6b0b0;
     background: -moz-linear-gradient(top, #a6b0b0 0%, #93a1a1 100%);
     /* FF3.6+ */
@@ -197,7 +215,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.dark.light, .dark.light.button, .filepicker .dark.light.icon, .dark.light.colorinput, .dark.light.single-select, .dark.light.dateinput.date, .dark.light.button.disabled:hover, .filepicker .dark.light.disabled.icon:hover, .dark.light.disabled.colorinput:hover, .dark.light.disabled.single-select:hover, .dark.light.disabled.dateinput.date:hover, .dark.light.button.readonly:hover, .filepicker .dark.light.readonly.icon:hover, .dark.light.readonly.colorinput:hover, .dark.light.readonly.single-select:hover, .dark.light.readonly.dateinput.date:hover, .dark.light.button.disabled.focus, .filepicker .dark.light.disabled.focus.icon, .dark.light.disabled.focus.colorinput, .dark.light.disabled.focus.single-select, .dark.light.disabled.focus.dateinput.date, .dark.button.focus, .filepicker .dark.focus.icon, .dark.focus.colorinput, .dark.focus.single-select, .dark.focus.dateinput.date, .dark.button:hover, .filepicker .dark.icon:hover, .dark.colorinput:hover, .dark.single-select:hover, .dark.dateinput.date:hover, .dark.light.popup, .dark.light.colorpicker, .dark.light.menulist, .dark.light.calendar, .dark.light.popup.disabled, .dark.light.disabled.colorpicker, .dark.light.disabled.menulist, .dark.light.disabled.calendar, .dark.checkbox.focus:before, .dark.checkbox:hover:before, .dark.light.checkbox:before, .dark.light.checkbox.disabled:hover:before, .dark.light.checkbox.readonly:hover:before, .dark.light.radio.checked.disabled:after, .slider:hover .dark.knob, .slider.focus .dark.knob, .slider.disabled:hover .dark.light.knob, .slider.readonly:hover .dark.light.knob, .slider .dark.light.knob, .stepper.disabled .dark.light.up:hover, .disabled.dateinput.time .dark.light.up:hover, .stepper.disabled .dark.light.down:hover, .disabled.dateinput.time .dark.light.down:hover, .stepper.readonly .dark.light.up:hover, .readonly.dateinput.time .dark.light.up:hover, .stepper.readonly .dark.light.down:hover, .readonly.dateinput.time .dark.light.down:hover, .stepper .dark.light.up, .dateinput.time .dark.light.up, .stepper .dark.light.down, .dateinput.time .dark.light.down, .stepper .dark.up:hover, .dateinput.time .dark.up:hover, .stepper .dark.down:hover, .dateinput.time .dark.down:hover {
+    .outset-box.dark.light, .dark.light.button, .filepicker .dark.light.icon, .dark.light.colorinput, .dark.light.single-select, .dark.light.dateinput.date, .dark.light.button.disabled:hover, .filepicker .dark.light.disabled.icon:hover, .dark.light.disabled.colorinput:hover, .dark.light.disabled.single-select:hover, .dark.light.disabled.dateinput.date:hover, .dark.light.button.readonly:hover, .filepicker .dark.light.readonly.icon:hover, .dark.light.readonly.colorinput:hover, .dark.light.readonly.single-select:hover, .dark.light.readonly.dateinput.date:hover, .dark.light.button.disabled.focus, .filepicker .dark.light.disabled.focus.icon, .dark.light.disabled.focus.colorinput, .dark.light.disabled.focus.single-select, .dark.light.disabled.focus.dateinput.date, .dark.button.focus, .filepicker .dark.focus.icon, .dark.focus.colorinput, .dark.focus.single-select, .dark.focus.dateinput.date, .dark.button:hover, .filepicker .dark.icon:hover, .dark.colorinput:hover, .dark.single-select:hover, .dark.dateinput.date:hover, .dark.light.popup, .dark.light.colorpicker, .dark.light.menulist, .dark.light.calendar, .dark.light.popup.disabled, .dark.light.disabled.colorpicker, .dark.light.disabled.menulist, .dark.light.disabled.calendar, .dark.checkbox.focus:before, .dark.checkbox:hover:before, .dark.light.checkbox:before, .dark.light.checkbox.disabled:hover:before, .dark.light.checkbox.readonly:hover:before, .dark.light.radio.checked.disabled:after, .slider:hover .dark.knob, .slider.focus .dark.knob, .slider.disabled:hover .dark.light.knob, .slider.readonly:hover .dark.light.knob, .slider .dark.light.knob, .stepper.disabled .dark.light.up:hover, .disabled.dateinput.time .dark.light.up:hover, .stepper.disabled .dark.light.down:hover, .disabled.dateinput.time .dark.light.down:hover, .stepper.readonly .dark.light.up:hover, .readonly.dateinput.time .dark.light.up:hover, .stepper.readonly .dark.light.down:hover, .readonly.dateinput.time .dark.light.down:hover, .stepper .dark.light.up, .dateinput.time .dark.light.up, .stepper .dark.light.down, .dateinput.time .dark.light.down, .stepper .dark.up:hover, .dateinput.time .dark.up:hover, .stepper .dark.down:hover, .dateinput.time .dark.down:hover, .colorpicker.disabled .dark.radio.checked:after, .calendar.disabled a.dark.today, .calendar.disabled a.dark.today:hover {
       border: 1px solid #0b4959;
       background: -moz-linear-gradient(top, #0b4959 0%, #073642 100%);
       /* FF3.6+ */
@@ -229,7 +247,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.red.light, .red.light.button, .filepicker .red.light.icon, .red.light.colorinput, .red.light.single-select, .red.light.dateinput.date, .red.light.button.disabled:hover, .filepicker .red.light.disabled.icon:hover, .red.light.disabled.colorinput:hover, .red.light.disabled.single-select:hover, .red.light.disabled.dateinput.date:hover, .red.light.button.readonly:hover, .filepicker .red.light.readonly.icon:hover, .red.light.readonly.colorinput:hover, .red.light.readonly.single-select:hover, .red.light.readonly.dateinput.date:hover, .red.light.button.disabled.focus, .filepicker .red.light.disabled.focus.icon, .red.light.disabled.focus.colorinput, .red.light.disabled.focus.single-select, .red.light.disabled.focus.dateinput.date, .red.button.focus, .filepicker .red.focus.icon, .red.focus.colorinput, .red.focus.single-select, .red.focus.dateinput.date, .red.button:hover, .filepicker .red.icon:hover, .red.colorinput:hover, .red.single-select:hover, .red.dateinput.date:hover, .red.light.popup, .red.light.colorpicker, .red.light.menulist, .red.light.calendar, .red.light.popup.disabled, .red.light.disabled.colorpicker, .red.light.disabled.menulist, .red.light.disabled.calendar, .red.checkbox.focus:before, .red.checkbox:hover:before, .red.light.checkbox:before, .red.light.checkbox.disabled:hover:before, .red.light.checkbox.readonly:hover:before, .red.light.radio.checked.disabled:after, .slider:hover .red.knob, .slider.focus .red.knob, .slider.disabled:hover .red.light.knob, .slider.readonly:hover .red.light.knob, .slider .red.light.knob, .stepper.disabled .red.light.up:hover, .disabled.dateinput.time .red.light.up:hover, .stepper.disabled .red.light.down:hover, .disabled.dateinput.time .red.light.down:hover, .stepper.readonly .red.light.up:hover, .readonly.dateinput.time .red.light.up:hover, .stepper.readonly .red.light.down:hover, .readonly.dateinput.time .red.light.down:hover, .stepper .red.light.up, .dateinput.time .red.light.up, .stepper .red.light.down, .dateinput.time .red.light.down, .stepper .red.up:hover, .dateinput.time .red.up:hover, .stepper .red.down:hover, .dateinput.time .red.down:hover {
+    .outset-box.red.light, .red.light.button, .filepicker .red.light.icon, .red.light.colorinput, .red.light.single-select, .red.light.dateinput.date, .red.light.button.disabled:hover, .filepicker .red.light.disabled.icon:hover, .red.light.disabled.colorinput:hover, .red.light.disabled.single-select:hover, .red.light.disabled.dateinput.date:hover, .red.light.button.readonly:hover, .filepicker .red.light.readonly.icon:hover, .red.light.readonly.colorinput:hover, .red.light.readonly.single-select:hover, .red.light.readonly.dateinput.date:hover, .red.light.button.disabled.focus, .filepicker .red.light.disabled.focus.icon, .red.light.disabled.focus.colorinput, .red.light.disabled.focus.single-select, .red.light.disabled.focus.dateinput.date, .red.button.focus, .filepicker .red.focus.icon, .red.focus.colorinput, .red.focus.single-select, .red.focus.dateinput.date, .red.button:hover, .filepicker .red.icon:hover, .red.colorinput:hover, .red.single-select:hover, .red.dateinput.date:hover, .red.light.popup, .red.light.colorpicker, .red.light.menulist, .red.light.calendar, .red.light.popup.disabled, .red.light.disabled.colorpicker, .red.light.disabled.menulist, .red.light.disabled.calendar, .red.checkbox.focus:before, .red.checkbox:hover:before, .red.light.checkbox:before, .red.light.checkbox.disabled:hover:before, .red.light.checkbox.readonly:hover:before, .red.light.radio.checked.disabled:after, .slider:hover .red.knob, .slider.focus .red.knob, .slider.disabled:hover .red.light.knob, .slider.readonly:hover .red.light.knob, .slider .red.light.knob, .stepper.disabled .red.light.up:hover, .disabled.dateinput.time .red.light.up:hover, .stepper.disabled .red.light.down:hover, .disabled.dateinput.time .red.light.down:hover, .stepper.readonly .red.light.up:hover, .readonly.dateinput.time .red.light.up:hover, .stepper.readonly .red.light.down:hover, .readonly.dateinput.time .red.light.down:hover, .stepper .red.light.up, .dateinput.time .red.light.up, .stepper .red.light.down, .dateinput.time .red.light.down, .stepper .red.up:hover, .dateinput.time .red.up:hover, .stepper .red.down:hover, .dateinput.time .red.down:hover, .colorpicker.disabled .red.radio.checked:after, .calendar.disabled a.red.today, .calendar.disabled a.red.today:hover {
       border: 1px solid #ff8377;
       background: -moz-linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
       /* FF3.6+ */
@@ -261,7 +279,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.green.light, .green.light.button, .filepicker .green.light.icon, .green.light.colorinput, .green.light.single-select, .green.light.dateinput.date, .green.light.button.disabled:hover, .filepicker .green.light.disabled.icon:hover, .green.light.disabled.colorinput:hover, .green.light.disabled.single-select:hover, .green.light.disabled.dateinput.date:hover, .green.light.button.readonly:hover, .filepicker .green.light.readonly.icon:hover, .green.light.readonly.colorinput:hover, .green.light.readonly.single-select:hover, .green.light.readonly.dateinput.date:hover, .green.light.button.disabled.focus, .filepicker .green.light.disabled.focus.icon, .green.light.disabled.focus.colorinput, .green.light.disabled.focus.single-select, .green.light.disabled.focus.dateinput.date, .green.button.focus, .filepicker .green.focus.icon, .green.focus.colorinput, .green.focus.single-select, .green.focus.dateinput.date, .green.button:hover, .filepicker .green.icon:hover, .green.colorinput:hover, .green.single-select:hover, .green.dateinput.date:hover, .green.light.popup, .green.light.colorpicker, .green.light.menulist, .green.light.calendar, .green.light.popup.disabled, .green.light.disabled.colorpicker, .green.light.disabled.menulist, .green.light.disabled.calendar, .green.checkbox.focus:before, .green.checkbox:hover:before, .green.light.checkbox:before, .green.light.checkbox.disabled:hover:before, .green.light.checkbox.readonly:hover:before, .green.light.radio.checked.disabled:after, .slider:hover .green.knob, .slider.focus .green.knob, .slider.disabled:hover .green.light.knob, .slider.readonly:hover .green.light.knob, .slider .green.light.knob, .stepper.disabled .green.light.up:hover, .disabled.dateinput.time .green.light.up:hover, .stepper.disabled .green.light.down:hover, .disabled.dateinput.time .green.light.down:hover, .stepper.readonly .green.light.up:hover, .readonly.dateinput.time .green.light.up:hover, .stepper.readonly .green.light.down:hover, .readonly.dateinput.time .green.light.down:hover, .stepper .green.light.up, .dateinput.time .green.light.up, .stepper .green.light.down, .dateinput.time .green.light.down, .stepper .green.up:hover, .dateinput.time .green.up:hover, .stepper .green.down:hover, .dateinput.time .green.down:hover {
+    .outset-box.green.light, .green.light.button, .filepicker .green.light.icon, .green.light.colorinput, .green.light.single-select, .green.light.dateinput.date, .green.light.button.disabled:hover, .filepicker .green.light.disabled.icon:hover, .green.light.disabled.colorinput:hover, .green.light.disabled.single-select:hover, .green.light.disabled.dateinput.date:hover, .green.light.button.readonly:hover, .filepicker .green.light.readonly.icon:hover, .green.light.readonly.colorinput:hover, .green.light.readonly.single-select:hover, .green.light.readonly.dateinput.date:hover, .green.light.button.disabled.focus, .filepicker .green.light.disabled.focus.icon, .green.light.disabled.focus.colorinput, .green.light.disabled.focus.single-select, .green.light.disabled.focus.dateinput.date, .green.button.focus, .filepicker .green.focus.icon, .green.focus.colorinput, .green.focus.single-select, .green.focus.dateinput.date, .green.button:hover, .filepicker .green.icon:hover, .green.colorinput:hover, .green.single-select:hover, .green.dateinput.date:hover, .green.light.popup, .green.light.colorpicker, .green.light.menulist, .green.light.calendar, .green.light.popup.disabled, .green.light.disabled.colorpicker, .green.light.disabled.menulist, .green.light.disabled.calendar, .green.checkbox.focus:before, .green.checkbox:hover:before, .green.light.checkbox:before, .green.light.checkbox.disabled:hover:before, .green.light.checkbox.readonly:hover:before, .green.light.radio.checked.disabled:after, .slider:hover .green.knob, .slider.focus .green.knob, .slider.disabled:hover .green.light.knob, .slider.readonly:hover .green.light.knob, .slider .green.light.knob, .stepper.disabled .green.light.up:hover, .disabled.dateinput.time .green.light.up:hover, .stepper.disabled .green.light.down:hover, .disabled.dateinput.time .green.light.down:hover, .stepper.readonly .green.light.up:hover, .readonly.dateinput.time .green.light.up:hover, .stepper.readonly .green.light.down:hover, .readonly.dateinput.time .green.light.down:hover, .stepper .green.light.up, .dateinput.time .green.light.up, .stepper .green.light.down, .dateinput.time .green.light.down, .stepper .green.up:hover, .dateinput.time .green.up:hover, .stepper .green.down:hover, .dateinput.time .green.down:hover, .colorpicker.disabled .green.radio.checked:after, .calendar.disabled a.green.today, .calendar.disabled a.green.today:hover {
       border: 1px solid #cadf44;
       background: -moz-linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
       /* FF3.6+ */
@@ -277,7 +295,7 @@
       -webkit-box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.blue, .blue.button, .filepicker .blue.icon, .blue.colorinput, .blue.single-select, .blue.dateinput.date, .blue.button.disabled:hover, .filepicker .blue.disabled.icon:hover, .blue.disabled.colorinput:hover, .blue.disabled.single-select:hover, .blue.disabled.dateinput.date:hover, .blue.button.readonly:hover, .filepicker .blue.readonly.icon:hover, .blue.readonly.colorinput:hover, .blue.readonly.single-select:hover, .blue.readonly.dateinput.date:hover, .blue.button.disabled.focus, .filepicker .blue.disabled.focus.icon, .blue.disabled.focus.colorinput, .blue.disabled.focus.single-select, .blue.disabled.focus.dateinput.date, .blue.popup, .blue.colorpicker, .blue.menulist, .blue.calendar, .blue.popup.disabled, .blue.disabled.colorpicker, .blue.disabled.menulist, .blue.disabled.calendar, .blue.checkbox:before, .blue.checkbox.disabled:hover:before, .blue.checkbox.readonly:hover:before, .radio.checked:after, .blue.radio.checked.disabled:after, .slider.disabled:hover .blue.knob, .slider.readonly:hover .blue.knob, .slider .blue.knob, .stepper.disabled .blue.up:hover, .disabled.dateinput.time .blue.up:hover, .stepper.disabled .blue.down:hover, .disabled.dateinput.time .blue.down:hover, .stepper.readonly .blue.up:hover, .readonly.dateinput.time .blue.up:hover, .stepper.readonly .blue.down:hover, .readonly.dateinput.time .blue.down:hover, .stepper .blue.up, .dateinput.time .blue.up, .stepper .blue.down, .dateinput.time .blue.down {
+  .outset-box.blue, .blue.button, .filepicker .blue.icon, .blue.colorinput, .blue.single-select, .blue.dateinput.date, .blue.button.disabled:hover, .filepicker .blue.disabled.icon:hover, .blue.disabled.colorinput:hover, .blue.disabled.single-select:hover, .blue.disabled.dateinput.date:hover, .blue.button.readonly:hover, .filepicker .blue.readonly.icon:hover, .blue.readonly.colorinput:hover, .blue.readonly.single-select:hover, .blue.readonly.dateinput.date:hover, .blue.button.disabled.focus, .filepicker .blue.disabled.focus.icon, .blue.disabled.focus.colorinput, .blue.disabled.focus.single-select, .blue.disabled.focus.dateinput.date, .blue.popup, .blue.colorpicker, .blue.menulist, .blue.calendar, .blue.popup.disabled, .blue.disabled.colorpicker, .blue.disabled.menulist, .blue.disabled.calendar, .blue.checkbox:before, .blue.checkbox.disabled:hover:before, .blue.checkbox.readonly:hover:before, .radio.checked:after, .blue.radio.checked.disabled:after, .slider.disabled:hover .blue.knob, .slider.readonly:hover .blue.knob, .slider .blue.knob, .stepper.disabled .blue.up:hover, .disabled.dateinput.time .blue.up:hover, .stepper.disabled .blue.down:hover, .disabled.dateinput.time .blue.down:hover, .stepper.readonly .blue.up:hover, .readonly.dateinput.time .blue.up:hover, .stepper.readonly .blue.down:hover, .readonly.dateinput.time .blue.down:hover, .stepper .blue.up, .dateinput.time .blue.up, .stepper .blue.down, .dateinput.time .blue.down, .calendar a.today, .calendar.readonly a.today:hover {
     border: 1px solid #34a0ec;
     background: -moz-linear-gradient(top, #34a0ec 0%, #268bd2 100%);
     /* FF3.6+ */
@@ -293,7 +311,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.blue.light, .blue.light.button, .filepicker .blue.light.icon, .blue.light.colorinput, .blue.light.single-select, .blue.light.dateinput.date, .blue.light.button.disabled:hover, .filepicker .blue.light.disabled.icon:hover, .blue.light.disabled.colorinput:hover, .blue.light.disabled.single-select:hover, .blue.light.disabled.dateinput.date:hover, .blue.light.button.readonly:hover, .filepicker .blue.light.readonly.icon:hover, .blue.light.readonly.colorinput:hover, .blue.light.readonly.single-select:hover, .blue.light.readonly.dateinput.date:hover, .blue.light.button.disabled.focus, .filepicker .blue.light.disabled.focus.icon, .blue.light.disabled.focus.colorinput, .blue.light.disabled.focus.single-select, .blue.light.disabled.focus.dateinput.date, .blue.button.focus, .filepicker .blue.focus.icon, .blue.focus.colorinput, .blue.focus.single-select, .blue.focus.dateinput.date, .blue.button:hover, .filepicker .blue.icon:hover, .blue.colorinput:hover, .blue.single-select:hover, .blue.dateinput.date:hover, .blue.light.popup, .blue.light.colorpicker, .blue.light.menulist, .blue.light.calendar, .blue.light.popup.disabled, .blue.light.disabled.colorpicker, .blue.light.disabled.menulist, .blue.light.disabled.calendar, .blue.checkbox.focus:before, .blue.checkbox:hover:before, .blue.light.checkbox:before, .blue.light.checkbox.disabled:hover:before, .blue.light.checkbox.readonly:hover:before, .light.radio.checked:after, .blue.light.radio.checked.disabled:after, .slider:hover .blue.knob, .slider.focus .blue.knob, .slider.disabled:hover .blue.light.knob, .slider.readonly:hover .blue.light.knob, .slider .blue.light.knob, .stepper.disabled .blue.light.up:hover, .disabled.dateinput.time .blue.light.up:hover, .stepper.disabled .blue.light.down:hover, .disabled.dateinput.time .blue.light.down:hover, .stepper.readonly .blue.light.up:hover, .readonly.dateinput.time .blue.light.up:hover, .stepper.readonly .blue.light.down:hover, .readonly.dateinput.time .blue.light.down:hover, .stepper .blue.light.up, .dateinput.time .blue.light.up, .stepper .blue.light.down, .dateinput.time .blue.light.down, .stepper .blue.up:hover, .dateinput.time .blue.up:hover, .stepper .blue.down:hover, .dateinput.time .blue.down:hover {
+    .outset-box.blue.light, .blue.light.button, .filepicker .blue.light.icon, .blue.light.colorinput, .blue.light.single-select, .blue.light.dateinput.date, .blue.light.button.disabled:hover, .filepicker .blue.light.disabled.icon:hover, .blue.light.disabled.colorinput:hover, .blue.light.disabled.single-select:hover, .blue.light.disabled.dateinput.date:hover, .blue.light.button.readonly:hover, .filepicker .blue.light.readonly.icon:hover, .blue.light.readonly.colorinput:hover, .blue.light.readonly.single-select:hover, .blue.light.readonly.dateinput.date:hover, .blue.light.button.disabled.focus, .filepicker .blue.light.disabled.focus.icon, .blue.light.disabled.focus.colorinput, .blue.light.disabled.focus.single-select, .blue.light.disabled.focus.dateinput.date, .blue.button.focus, .filepicker .blue.focus.icon, .blue.focus.colorinput, .blue.focus.single-select, .blue.focus.dateinput.date, .blue.button:hover, .filepicker .blue.icon:hover, .blue.colorinput:hover, .blue.single-select:hover, .blue.dateinput.date:hover, .blue.light.popup, .blue.light.colorpicker, .blue.light.menulist, .blue.light.calendar, .blue.light.popup.disabled, .blue.light.disabled.colorpicker, .blue.light.disabled.menulist, .blue.light.disabled.calendar, .blue.checkbox.focus:before, .blue.checkbox:hover:before, .blue.light.checkbox:before, .blue.light.checkbox.disabled:hover:before, .blue.light.checkbox.readonly:hover:before, .light.radio.checked:after, .blue.light.radio.checked.disabled:after, .slider:hover .blue.knob, .slider.focus .blue.knob, .slider.disabled:hover .blue.light.knob, .slider.readonly:hover .blue.light.knob, .slider .blue.light.knob, .stepper.disabled .blue.light.up:hover, .disabled.dateinput.time .blue.light.up:hover, .stepper.disabled .blue.light.down:hover, .disabled.dateinput.time .blue.light.down:hover, .stepper.readonly .blue.light.up:hover, .readonly.dateinput.time .blue.light.up:hover, .stepper.readonly .blue.light.down:hover, .readonly.dateinput.time .blue.light.down:hover, .stepper .blue.light.up, .dateinput.time .blue.light.up, .stepper .blue.light.down, .dateinput.time .blue.light.down, .stepper .blue.up:hover, .dateinput.time .blue.up:hover, .stepper .blue.down:hover, .dateinput.time .blue.down:hover, .colorpicker.disabled .blue.radio.checked:after, .calendar a.light.today, .calendar a.today:hover, .calendar.readonly a.light.today:hover, .calendar.disabled a.blue.today, .calendar.disabled a.blue.today:hover {
       border: 1px solid #57afec;
       background: -moz-linear-gradient(top, #57afec 0%, #34a0ec 100%);
       /* FF3.6+ */
@@ -325,7 +343,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.yellow.light, .yellow.light.button, .filepicker .yellow.light.icon, .yellow.light.colorinput, .yellow.light.single-select, .yellow.light.dateinput.date, .yellow.light.button.disabled:hover, .filepicker .yellow.light.disabled.icon:hover, .yellow.light.disabled.colorinput:hover, .yellow.light.disabled.single-select:hover, .yellow.light.disabled.dateinput.date:hover, .yellow.light.button.readonly:hover, .filepicker .yellow.light.readonly.icon:hover, .yellow.light.readonly.colorinput:hover, .yellow.light.readonly.single-select:hover, .yellow.light.readonly.dateinput.date:hover, .yellow.light.button.disabled.focus, .filepicker .yellow.light.disabled.focus.icon, .yellow.light.disabled.focus.colorinput, .yellow.light.disabled.focus.single-select, .yellow.light.disabled.focus.dateinput.date, .yellow.button.focus, .filepicker .yellow.focus.icon, .yellow.focus.colorinput, .yellow.focus.single-select, .yellow.focus.dateinput.date, .yellow.button:hover, .filepicker .yellow.icon:hover, .yellow.colorinput:hover, .yellow.single-select:hover, .yellow.dateinput.date:hover, .yellow.light.popup, .yellow.light.colorpicker, .yellow.light.menulist, .yellow.light.calendar, .yellow.light.popup.disabled, .yellow.light.disabled.colorpicker, .yellow.light.disabled.menulist, .yellow.light.disabled.calendar, .yellow.checkbox.focus:before, .yellow.checkbox:hover:before, .yellow.light.checkbox:before, .yellow.light.checkbox.disabled:hover:before, .yellow.light.checkbox.readonly:hover:before, .yellow.light.radio.checked.disabled:after, .slider:hover .yellow.knob, .slider.focus .yellow.knob, .slider.disabled:hover .yellow.light.knob, .slider.readonly:hover .yellow.light.knob, .slider .yellow.light.knob, .stepper.disabled .yellow.light.up:hover, .disabled.dateinput.time .yellow.light.up:hover, .stepper.disabled .yellow.light.down:hover, .disabled.dateinput.time .yellow.light.down:hover, .stepper.readonly .yellow.light.up:hover, .readonly.dateinput.time .yellow.light.up:hover, .stepper.readonly .yellow.light.down:hover, .readonly.dateinput.time .yellow.light.down:hover, .stepper .yellow.light.up, .dateinput.time .yellow.light.up, .stepper .yellow.light.down, .dateinput.time .yellow.light.down, .stepper .yellow.up:hover, .dateinput.time .yellow.up:hover, .stepper .yellow.down:hover, .dateinput.time .yellow.down:hover {
+    .outset-box.yellow.light, .yellow.light.button, .filepicker .yellow.light.icon, .yellow.light.colorinput, .yellow.light.single-select, .yellow.light.dateinput.date, .yellow.light.button.disabled:hover, .filepicker .yellow.light.disabled.icon:hover, .yellow.light.disabled.colorinput:hover, .yellow.light.disabled.single-select:hover, .yellow.light.disabled.dateinput.date:hover, .yellow.light.button.readonly:hover, .filepicker .yellow.light.readonly.icon:hover, .yellow.light.readonly.colorinput:hover, .yellow.light.readonly.single-select:hover, .yellow.light.readonly.dateinput.date:hover, .yellow.light.button.disabled.focus, .filepicker .yellow.light.disabled.focus.icon, .yellow.light.disabled.focus.colorinput, .yellow.light.disabled.focus.single-select, .yellow.light.disabled.focus.dateinput.date, .yellow.button.focus, .filepicker .yellow.focus.icon, .yellow.focus.colorinput, .yellow.focus.single-select, .yellow.focus.dateinput.date, .yellow.button:hover, .filepicker .yellow.icon:hover, .yellow.colorinput:hover, .yellow.single-select:hover, .yellow.dateinput.date:hover, .yellow.light.popup, .yellow.light.colorpicker, .yellow.light.menulist, .yellow.light.calendar, .yellow.light.popup.disabled, .yellow.light.disabled.colorpicker, .yellow.light.disabled.menulist, .yellow.light.disabled.calendar, .yellow.checkbox.focus:before, .yellow.checkbox:hover:before, .yellow.light.checkbox:before, .yellow.light.checkbox.disabled:hover:before, .yellow.light.checkbox.readonly:hover:before, .yellow.light.radio.checked.disabled:after, .slider:hover .yellow.knob, .slider.focus .yellow.knob, .slider.disabled:hover .yellow.light.knob, .slider.readonly:hover .yellow.light.knob, .slider .yellow.light.knob, .stepper.disabled .yellow.light.up:hover, .disabled.dateinput.time .yellow.light.up:hover, .stepper.disabled .yellow.light.down:hover, .disabled.dateinput.time .yellow.light.down:hover, .stepper.readonly .yellow.light.up:hover, .readonly.dateinput.time .yellow.light.up:hover, .stepper.readonly .yellow.light.down:hover, .readonly.dateinput.time .yellow.light.down:hover, .stepper .yellow.light.up, .dateinput.time .yellow.light.up, .stepper .yellow.light.down, .dateinput.time .yellow.light.down, .stepper .yellow.up:hover, .dateinput.time .yellow.up:hover, .stepper .yellow.down:hover, .dateinput.time .yellow.down:hover, .colorpicker.disabled .yellow.radio.checked:after, .calendar.disabled a.yellow.today, .calendar.disabled a.yellow.today:hover {
       border: 1px solid #f7ca3b;
       background: -moz-linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
       /* FF3.6+ */
@@ -357,7 +375,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.orange.light, .orange.light.button, .filepicker .orange.light.icon, .orange.light.colorinput, .orange.light.single-select, .orange.light.dateinput.date, .orange.light.button.disabled:hover, .filepicker .orange.light.disabled.icon:hover, .orange.light.disabled.colorinput:hover, .orange.light.disabled.single-select:hover, .orange.light.disabled.dateinput.date:hover, .orange.light.button.readonly:hover, .filepicker .orange.light.readonly.icon:hover, .orange.light.readonly.colorinput:hover, .orange.light.readonly.single-select:hover, .orange.light.readonly.dateinput.date:hover, .orange.light.button.disabled.focus, .filepicker .orange.light.disabled.focus.icon, .orange.light.disabled.focus.colorinput, .orange.light.disabled.focus.single-select, .orange.light.disabled.focus.dateinput.date, .orange.button.focus, .filepicker .orange.focus.icon, .orange.focus.colorinput, .orange.focus.single-select, .orange.focus.dateinput.date, .orange.button:hover, .filepicker .orange.icon:hover, .orange.colorinput:hover, .orange.single-select:hover, .orange.dateinput.date:hover, .orange.light.popup, .orange.light.colorpicker, .orange.light.menulist, .orange.light.calendar, .orange.light.popup.disabled, .orange.light.disabled.colorpicker, .orange.light.disabled.menulist, .orange.light.disabled.calendar, .orange.checkbox.focus:before, .orange.checkbox:hover:before, .orange.light.checkbox:before, .orange.light.checkbox.disabled:hover:before, .orange.light.checkbox.readonly:hover:before, .orange.light.radio.checked.disabled:after, .slider:hover .orange.knob, .slider.focus .orange.knob, .slider.disabled:hover .orange.light.knob, .slider.readonly:hover .orange.light.knob, .slider .orange.light.knob, .stepper.disabled .orange.light.up:hover, .disabled.dateinput.time .orange.light.up:hover, .stepper.disabled .orange.light.down:hover, .disabled.dateinput.time .orange.light.down:hover, .stepper.readonly .orange.light.up:hover, .readonly.dateinput.time .orange.light.up:hover, .stepper.readonly .orange.light.down:hover, .readonly.dateinput.time .orange.light.down:hover, .stepper .orange.light.up, .dateinput.time .orange.light.up, .stepper .orange.light.down, .dateinput.time .orange.light.down, .stepper .orange.up:hover, .dateinput.time .orange.up:hover, .stepper .orange.down:hover, .dateinput.time .orange.down:hover {
+    .outset-box.orange.light, .orange.light.button, .filepicker .orange.light.icon, .orange.light.colorinput, .orange.light.single-select, .orange.light.dateinput.date, .orange.light.button.disabled:hover, .filepicker .orange.light.disabled.icon:hover, .orange.light.disabled.colorinput:hover, .orange.light.disabled.single-select:hover, .orange.light.disabled.dateinput.date:hover, .orange.light.button.readonly:hover, .filepicker .orange.light.readonly.icon:hover, .orange.light.readonly.colorinput:hover, .orange.light.readonly.single-select:hover, .orange.light.readonly.dateinput.date:hover, .orange.light.button.disabled.focus, .filepicker .orange.light.disabled.focus.icon, .orange.light.disabled.focus.colorinput, .orange.light.disabled.focus.single-select, .orange.light.disabled.focus.dateinput.date, .orange.button.focus, .filepicker .orange.focus.icon, .orange.focus.colorinput, .orange.focus.single-select, .orange.focus.dateinput.date, .orange.button:hover, .filepicker .orange.icon:hover, .orange.colorinput:hover, .orange.single-select:hover, .orange.dateinput.date:hover, .orange.light.popup, .orange.light.colorpicker, .orange.light.menulist, .orange.light.calendar, .orange.light.popup.disabled, .orange.light.disabled.colorpicker, .orange.light.disabled.menulist, .orange.light.disabled.calendar, .orange.checkbox.focus:before, .orange.checkbox:hover:before, .orange.light.checkbox:before, .orange.light.checkbox.disabled:hover:before, .orange.light.checkbox.readonly:hover:before, .orange.light.radio.checked.disabled:after, .slider:hover .orange.knob, .slider.focus .orange.knob, .slider.disabled:hover .orange.light.knob, .slider.readonly:hover .orange.light.knob, .slider .orange.light.knob, .stepper.disabled .orange.light.up:hover, .disabled.dateinput.time .orange.light.up:hover, .stepper.disabled .orange.light.down:hover, .disabled.dateinput.time .orange.light.down:hover, .stepper.readonly .orange.light.up:hover, .readonly.dateinput.time .orange.light.up:hover, .stepper.readonly .orange.light.down:hover, .readonly.dateinput.time .orange.light.down:hover, .stepper .orange.light.up, .dateinput.time .orange.light.up, .stepper .orange.light.down, .dateinput.time .orange.light.down, .stepper .orange.up:hover, .dateinput.time .orange.up:hover, .stepper .orange.down:hover, .dateinput.time .orange.down:hover, .colorpicker.disabled .orange.radio.checked:after, .calendar.disabled a.orange.today, .calendar.disabled a.orange.today:hover {
       border: 1px solid #ff8b5b;
       background: -moz-linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
       /* FF3.6+ */
@@ -389,7 +407,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.violet.light, .violet.light.button, .filepicker .violet.light.icon, .violet.light.colorinput, .violet.light.single-select, .violet.light.dateinput.date, .violet.light.button.disabled:hover, .filepicker .violet.light.disabled.icon:hover, .violet.light.disabled.colorinput:hover, .violet.light.disabled.single-select:hover, .violet.light.disabled.dateinput.date:hover, .violet.light.button.readonly:hover, .filepicker .violet.light.readonly.icon:hover, .violet.light.readonly.colorinput:hover, .violet.light.readonly.single-select:hover, .violet.light.readonly.dateinput.date:hover, .violet.light.button.disabled.focus, .filepicker .violet.light.disabled.focus.icon, .violet.light.disabled.focus.colorinput, .violet.light.disabled.focus.single-select, .violet.light.disabled.focus.dateinput.date, .violet.button.focus, .filepicker .violet.focus.icon, .violet.focus.colorinput, .violet.focus.single-select, .violet.focus.dateinput.date, .violet.button:hover, .filepicker .violet.icon:hover, .violet.colorinput:hover, .violet.single-select:hover, .violet.dateinput.date:hover, .violet.light.popup, .violet.light.colorpicker, .violet.light.menulist, .violet.light.calendar, .violet.light.popup.disabled, .violet.light.disabled.colorpicker, .violet.light.disabled.menulist, .violet.light.disabled.calendar, .violet.checkbox.focus:before, .violet.checkbox:hover:before, .violet.light.checkbox:before, .violet.light.checkbox.disabled:hover:before, .violet.light.checkbox.readonly:hover:before, .violet.light.radio.checked.disabled:after, .slider:hover .violet.knob, .slider.focus .violet.knob, .slider.disabled:hover .violet.light.knob, .slider.readonly:hover .violet.light.knob, .slider .violet.light.knob, .stepper.disabled .violet.light.up:hover, .disabled.dateinput.time .violet.light.up:hover, .stepper.disabled .violet.light.down:hover, .disabled.dateinput.time .violet.light.down:hover, .stepper.readonly .violet.light.up:hover, .readonly.dateinput.time .violet.light.up:hover, .stepper.readonly .violet.light.down:hover, .readonly.dateinput.time .violet.light.down:hover, .stepper .violet.light.up, .dateinput.time .violet.light.up, .stepper .violet.light.down, .dateinput.time .violet.light.down, .stepper .violet.up:hover, .dateinput.time .violet.up:hover, .stepper .violet.down:hover, .dateinput.time .violet.down:hover {
+    .outset-box.violet.light, .violet.light.button, .filepicker .violet.light.icon, .violet.light.colorinput, .violet.light.single-select, .violet.light.dateinput.date, .violet.light.button.disabled:hover, .filepicker .violet.light.disabled.icon:hover, .violet.light.disabled.colorinput:hover, .violet.light.disabled.single-select:hover, .violet.light.disabled.dateinput.date:hover, .violet.light.button.readonly:hover, .filepicker .violet.light.readonly.icon:hover, .violet.light.readonly.colorinput:hover, .violet.light.readonly.single-select:hover, .violet.light.readonly.dateinput.date:hover, .violet.light.button.disabled.focus, .filepicker .violet.light.disabled.focus.icon, .violet.light.disabled.focus.colorinput, .violet.light.disabled.focus.single-select, .violet.light.disabled.focus.dateinput.date, .violet.button.focus, .filepicker .violet.focus.icon, .violet.focus.colorinput, .violet.focus.single-select, .violet.focus.dateinput.date, .violet.button:hover, .filepicker .violet.icon:hover, .violet.colorinput:hover, .violet.single-select:hover, .violet.dateinput.date:hover, .violet.light.popup, .violet.light.colorpicker, .violet.light.menulist, .violet.light.calendar, .violet.light.popup.disabled, .violet.light.disabled.colorpicker, .violet.light.disabled.menulist, .violet.light.disabled.calendar, .violet.checkbox.focus:before, .violet.checkbox:hover:before, .violet.light.checkbox:before, .violet.light.checkbox.disabled:hover:before, .violet.light.checkbox.readonly:hover:before, .violet.light.radio.checked.disabled:after, .slider:hover .violet.knob, .slider.focus .violet.knob, .slider.disabled:hover .violet.light.knob, .slider.readonly:hover .violet.light.knob, .slider .violet.light.knob, .stepper.disabled .violet.light.up:hover, .disabled.dateinput.time .violet.light.up:hover, .stepper.disabled .violet.light.down:hover, .disabled.dateinput.time .violet.light.down:hover, .stepper.readonly .violet.light.up:hover, .readonly.dateinput.time .violet.light.up:hover, .stepper.readonly .violet.light.down:hover, .readonly.dateinput.time .violet.light.down:hover, .stepper .violet.light.up, .dateinput.time .violet.light.up, .stepper .violet.light.down, .dateinput.time .violet.light.down, .stepper .violet.up:hover, .dateinput.time .violet.up:hover, .stepper .violet.down:hover, .dateinput.time .violet.down:hover, .colorpicker.disabled .violet.radio.checked:after, .calendar.disabled a.violet.today, .calendar.disabled a.violet.today:hover {
       border: 1px solid #9ba0e6;
       background: -moz-linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
       /* FF3.6+ */
@@ -421,7 +439,7 @@
     -webkit-box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.cyan.light, .cyan.light.button, .filepicker .cyan.light.icon, .cyan.light.colorinput, .cyan.light.single-select, .cyan.light.dateinput.date, .cyan.light.button.disabled:hover, .filepicker .cyan.light.disabled.icon:hover, .cyan.light.disabled.colorinput:hover, .cyan.light.disabled.single-select:hover, .cyan.light.disabled.dateinput.date:hover, .cyan.light.button.readonly:hover, .filepicker .cyan.light.readonly.icon:hover, .cyan.light.readonly.colorinput:hover, .cyan.light.readonly.single-select:hover, .cyan.light.readonly.dateinput.date:hover, .cyan.light.button.disabled.focus, .filepicker .cyan.light.disabled.focus.icon, .cyan.light.disabled.focus.colorinput, .cyan.light.disabled.focus.single-select, .cyan.light.disabled.focus.dateinput.date, .cyan.button.focus, .filepicker .cyan.focus.icon, .cyan.focus.colorinput, .cyan.focus.single-select, .cyan.focus.dateinput.date, .cyan.button:hover, .filepicker .cyan.icon:hover, .cyan.colorinput:hover, .cyan.single-select:hover, .cyan.dateinput.date:hover, .cyan.light.popup, .cyan.light.colorpicker, .cyan.light.menulist, .cyan.light.calendar, .cyan.light.popup.disabled, .cyan.light.disabled.colorpicker, .cyan.light.disabled.menulist, .cyan.light.disabled.calendar, .cyan.checkbox.focus:before, .cyan.checkbox:hover:before, .cyan.light.checkbox:before, .cyan.light.checkbox.disabled:hover:before, .cyan.light.checkbox.readonly:hover:before, .cyan.light.radio.checked.disabled:after, .slider:hover .cyan.knob, .slider.focus .cyan.knob, .slider.disabled:hover .cyan.light.knob, .slider.readonly:hover .cyan.light.knob, .slider .cyan.light.knob, .stepper.disabled .cyan.light.up:hover, .disabled.dateinput.time .cyan.light.up:hover, .stepper.disabled .cyan.light.down:hover, .disabled.dateinput.time .cyan.light.down:hover, .stepper.readonly .cyan.light.up:hover, .readonly.dateinput.time .cyan.light.up:hover, .stepper.readonly .cyan.light.down:hover, .readonly.dateinput.time .cyan.light.down:hover, .stepper .cyan.light.up, .dateinput.time .cyan.light.up, .stepper .cyan.light.down, .dateinput.time .cyan.light.down, .stepper .cyan.up:hover, .dateinput.time .cyan.up:hover, .stepper .cyan.down:hover, .dateinput.time .cyan.down:hover {
+    .outset-box.cyan.light, .cyan.light.button, .filepicker .cyan.light.icon, .cyan.light.colorinput, .cyan.light.single-select, .cyan.light.dateinput.date, .cyan.light.button.disabled:hover, .filepicker .cyan.light.disabled.icon:hover, .cyan.light.disabled.colorinput:hover, .cyan.light.disabled.single-select:hover, .cyan.light.disabled.dateinput.date:hover, .cyan.light.button.readonly:hover, .filepicker .cyan.light.readonly.icon:hover, .cyan.light.readonly.colorinput:hover, .cyan.light.readonly.single-select:hover, .cyan.light.readonly.dateinput.date:hover, .cyan.light.button.disabled.focus, .filepicker .cyan.light.disabled.focus.icon, .cyan.light.disabled.focus.colorinput, .cyan.light.disabled.focus.single-select, .cyan.light.disabled.focus.dateinput.date, .cyan.button.focus, .filepicker .cyan.focus.icon, .cyan.focus.colorinput, .cyan.focus.single-select, .cyan.focus.dateinput.date, .cyan.button:hover, .filepicker .cyan.icon:hover, .cyan.colorinput:hover, .cyan.single-select:hover, .cyan.dateinput.date:hover, .cyan.light.popup, .cyan.light.colorpicker, .cyan.light.menulist, .cyan.light.calendar, .cyan.light.popup.disabled, .cyan.light.disabled.colorpicker, .cyan.light.disabled.menulist, .cyan.light.disabled.calendar, .cyan.checkbox.focus:before, .cyan.checkbox:hover:before, .cyan.light.checkbox:before, .cyan.light.checkbox.disabled:hover:before, .cyan.light.checkbox.readonly:hover:before, .cyan.light.radio.checked.disabled:after, .slider:hover .cyan.knob, .slider.focus .cyan.knob, .slider.disabled:hover .cyan.light.knob, .slider.readonly:hover .cyan.light.knob, .slider .cyan.light.knob, .stepper.disabled .cyan.light.up:hover, .disabled.dateinput.time .cyan.light.up:hover, .stepper.disabled .cyan.light.down:hover, .disabled.dateinput.time .cyan.light.down:hover, .stepper.readonly .cyan.light.up:hover, .readonly.dateinput.time .cyan.light.up:hover, .stepper.readonly .cyan.light.down:hover, .readonly.dateinput.time .cyan.light.down:hover, .stepper .cyan.light.up, .dateinput.time .cyan.light.up, .stepper .cyan.light.down, .dateinput.time .cyan.light.down, .stepper .cyan.up:hover, .dateinput.time .cyan.up:hover, .stepper .cyan.down:hover, .dateinput.time .cyan.down:hover, .colorpicker.disabled .cyan.radio.checked:after, .calendar.disabled a.cyan.today, .calendar.disabled a.cyan.today:hover {
       border: 1px solid #7bdbd4;
       background: -moz-linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
       /* FF3.6+ */
@@ -448,7 +466,7 @@
   -moz-text-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.8);
   text-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.8); }
 
-.disabled-text-content, .text.disabled input, .disabled.textarea input, .disabled.stepper input, .disabled.dateinput.time input, .disabled.filepicker input, .text.disabled textarea, .disabled.textarea textarea, .disabled.stepper textarea, .disabled.dateinput.time textarea, .disabled.filepicker textarea, .checkbox.checked.disabled, .checkbox.disabled, .slider.disabled .value, .stepper.disabled .value, .disabled.dateinput.time .value, .filepicker.disabled .value {
+.disabled-text-content, .text.disabled input, .disabled.textarea input, .disabled.stepper input, .disabled.dateinput.time input, .disabled.filepicker input, .text.disabled textarea, .disabled.textarea textarea, .disabled.stepper textarea, .disabled.dateinput.time textarea, .disabled.filepicker textarea, .checkbox.checked.disabled, .checkbox.disabled, .slider.disabled .value, .stepper.disabled .value, .disabled.dateinput.time .value, .filepicker.disabled .value, .calendar.disabled a.today {
   color: #586e75 !important; }
 
 .button, .filepicker .icon, .colorinput, .single-select, .dateinput.date {
@@ -457,7 +475,7 @@
   -o-border-radius: 4px;
   border-radius: 4px; }
 
-.button-text-content, .button, .filepicker .icon, .colorinput, .single-select, .dateinput.date, .popup, .colorpicker, .menulist, .calendar, .menulist .menuitem, .menulist .menu, .calendar th, .calendar td {
+.button-text-content, .button, .filepicker .icon, .colorinput, .single-select, .dateinput.date, .popup, .colorpicker, .menulist, .calendar, .menulist .menuitem, .menulist .menu, .calendar a.today, .calendar table th, .calendar table td {
   color: #002b36; }
 
 .button-content, .button .content, .filepicker .icon .content, .colorinput .content, .single-select .content, .dateinput.date .content {
@@ -467,7 +485,7 @@
   -moz-box-sizing: border-box;
   box-sizing: border-box; }
 
-.button-disabled-text-content, .button.disabled, .filepicker .disabled.icon, .disabled.colorinput, .disabled.single-select, .disabled.dateinput.date, .button.disabled.focus, .filepicker .disabled.focus.icon, .disabled.focus.colorinput, .disabled.focus.single-select, .disabled.focus.dateinput.date, .button.disabled:hover, .filepicker .disabled.icon:hover, .disabled.colorinput:hover, .disabled.single-select:hover, .disabled.dateinput.date:hover, .menulist.disabled .menuitem, .menulist.disabled .menu, .calendar td.blurred, .calendar.disabled td.blurred:hover, .calendar.readonly td.blurred:hover, .calendar.disabled td, .calendar.disabled td:hover {
+.button-disabled-text-content, .button.disabled, .filepicker .disabled.icon, .disabled.colorinput, .disabled.single-select, .disabled.dateinput.date, .button.disabled.focus, .filepicker .disabled.focus.icon, .disabled.focus.colorinput, .disabled.focus.single-select, .disabled.focus.dateinput.date, .button.disabled:hover, .filepicker .disabled.icon:hover, .disabled.colorinput:hover, .disabled.single-select:hover, .disabled.dateinput.date:hover, .menulist.disabled .menuitem, .menulist.disabled .menu, .calendar table td.blurred, .calendar.disabled table td.blurred:hover, .calendar.readonly table td.blurred:hover, .calendar.disabled table td, .calendar.disabled table td:hover {
   color: #586e75 !important;
   -webkit-text-shadow: 0pt 1px 0px rgba(255,255,255, 0.3);
   -moz-text-shadow: 0pt 1px 0px rgba(255,255,255, 0.3);
@@ -497,6 +515,181 @@
   -moz-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px; }
+
+.hue-color {
+  background: #ff0000; }
+
+.white-vertical-ramp {
+  background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, white 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, white));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, white 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, white 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, white 100%);
+  /* IE10+ */
+  background: linear-gradient(top, rgba(255, 255, 255, 0) 0%, white 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff',         endColorstr='#ffffff',         GradientType=0 );
+  /* IE6-9 */ }
+
+.white-horizontal-ramp {
+  background: -moz-linear-gradient(left, white 0%, rgba(255, 255, 255, 0) 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, white), color-stop(100%, rgba(255, 255, 255, 0)));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left, white 0%, rgba(255, 255, 255, 0) 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left, white 0%, rgba(255, 255, 255, 0) 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(left, white 0%, rgba(255, 255, 255, 0) 100%);
+  /* IE10+ */
+  background: linear-gradient(left, white 0%, rgba(255, 255, 255, 0) 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff',         endColorstr='#00ffffff',         GradientType=1 );
+  /* IE6-9 */ }
+
+.black-vertical-ramp {
+  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, black 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, black));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, black 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, black 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, black 100%);
+  /* IE10+ */
+  background: linear-gradient(top, rgba(0, 0, 0, 0) 0%, black 100%);
+  /* W3C */ }
+
+.hue-vertical-ramp {
+  background: #ff3232;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ff3232), color-stop(16%, fuchsia), color-stop(33%, blue), color-stop(50%, aqua), color-stop(67%, lime), color-stop(84%, #fcff00), color-stop(100%, red));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
+  /* IE10+ */
+  background: linear-gradient(top, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
+  /* W3C */ }
+
+.hue-horizontal-ramp {
+  background: #ff3232;
+  /* Old browsers */
+  background: -moz-linear-gradient(left, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #ff3232), color-stop(16%, fuchsia), color-stop(33%, blue), color-stop(50%, aqua), color-stop(67%, lime), color-stop(84%, #fcff00), color-stop(100%, red));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(left, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
+  /* IE10+ */
+  background: linear-gradient(left, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
+  /* W3C */ }
+
+.black-white-vertical-ramp {
+  background: white;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, white 2%, black 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(2%, white), color-stop(100%, black));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, white 2%, black 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, white 2%, black 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, white 2%, black 100%);
+  /* IE10+ */
+  background: linear-gradient(top, white 2%, black 100%);
+  /* W3C */ }
+
+.black-red-vertical-ramp {
+  background: red;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, red 0%, black 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, red), color-stop(100%, black));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, red 0%, black 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, red 0%, black 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, red 0%, black 100%);
+  /* IE10+ */
+  background: linear-gradient(top, red 0%, black 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0000',         endColorstr='#000000',         GradientType=0 );
+  /* IE6-9 */ }
+
+.black-green-vertical-ramp {
+  background: #01ff00;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, #01ff00 0%, black 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #01ff00), color-stop(100%, black));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, #01ff00 0%, black 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, #01ff00 0%, black 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, #01ff00 0%, black 100%);
+  /* IE10+ */
+  background: linear-gradient(top, #01ff00 0%, black 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#01ff00',         endColorstr='#000000',         GradientType=0 );
+  /* IE6-9 */ }
+
+.black-blue-vertical-ramp {
+  background: blue;
+  /* Old browsers */
+  background: -moz-linear-gradient(top, blue 0%, black 100%);
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, blue), color-stop(100%, black));
+  /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, blue 0%, black 100%);
+  /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, blue 0%, black 100%);
+  /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, blue 0%, black 100%);
+  /* IE10+ */
+  background: linear-gradient(top, blue 0%, black 100%);
+  /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0000ff',         endColorstr='#000000',         GradientType=0 );
+  /* IE6-9 */ }
+
+.rgb-bottom {
+  background: transparent url(../img/rgb-patches.png) no-repeat -160px 0px; }
+
+.rgb-up {
+  background: transparent url(../img/rgb-patches.png) no-repeat -160px -160px; }
+
+.grb-bottom {
+  background: transparent url(../img/rgb-patches.png) no-repeat 0px 0px; }
+
+.grb-up {
+  background: transparent url(../img/rgb-patches.png) no-repeat 0px -160px; }
+
+.bgr-bottom {
+  background: transparent url(../img/rgb-patches.png) no-repeat -320px 0px; }
+
+.bgr-up {
+  background: transparent url(../img/rgb-patches.png) no-repeat -320px -160px; }
+
+.white-plain {
+  background: white; }
+
+.black-plain {
+  background: black; }
 
 .checkbox {
   width: 40px;
@@ -792,181 +985,6 @@
   left: 0;
   top: 0; }
 
-.hue-color {
-  background: #ff0000; }
-
-.white-vertical-ramp {
-  background: -moz-linear-gradient(top, rgba(255, 255, 255, 0) 0%, white 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(255, 255, 255, 0)), color-stop(100%, white));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, rgba(255, 255, 255, 0) 0%, white 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, rgba(255, 255, 255, 0) 0%, white 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, rgba(255, 255, 255, 0) 0%, white 100%);
-  /* IE10+ */
-  background: linear-gradient(top, rgba(255, 255, 255, 0) 0%, white 100%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=0 );
-  /* IE6-9 */ }
-
-.white-horizontal-ramp {
-  background: -moz-linear-gradient(left, white 0%, rgba(255, 255, 255, 0) 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%, white), color-stop(100%, rgba(255, 255, 255, 0)));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(left, white 0%, rgba(255, 255, 255, 0) 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(left, white 0%, rgba(255, 255, 255, 0) 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(left, white 0%, rgba(255, 255, 255, 0) 100%);
-  /* IE10+ */
-  background: linear-gradient(left, white 0%, rgba(255, 255, 255, 0) 100%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#00ffffff',GradientType=1 );
-  /* IE6-9 */ }
-
-.black-vertical-ramp {
-  background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, black 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, rgba(0, 0, 0, 0)), color-stop(100%, black));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, black 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, rgba(0, 0, 0, 0) 0%, black 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, rgba(0, 0, 0, 0) 0%, black 100%);
-  /* IE10+ */
-  background: linear-gradient(top, rgba(0, 0, 0, 0) 0%, black 100%);
-  /* W3C */ }
-
-.hue-vertical-ramp {
-  background: #ff3232;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ff3232), color-stop(16%, fuchsia), color-stop(33%, blue), color-stop(50%, aqua), color-stop(67%, lime), color-stop(84%, #fcff00), color-stop(100%, red));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
-  /* IE10+ */
-  background: linear-gradient(top, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
-  /* W3C */ }
-
-.hue-horizontal-ramp {
-  background: #ff3232;
-  /* Old browsers */
-  background: -moz-linear-gradient(left, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, right top, color-stop(0%, #ff3232), color-stop(16%, fuchsia), color-stop(33%, blue), color-stop(50%, aqua), color-stop(67%, lime), color-stop(84%, #fcff00), color-stop(100%, red));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(left, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(left, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(left, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
-  /* IE10+ */
-  background: linear-gradient(left, #ff3232 0%, fuchsia 16%, blue 33%, aqua 50%, lime 67%, #fcff00 84%, red 100%);
-  /* W3C */ }
-
-.black-white-vertical-ramp {
-  background: white;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, white 2%, black 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(2%, white), color-stop(100%, black));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, white 2%, black 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, white 2%, black 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, white 2%, black 100%);
-  /* IE10+ */
-  background: linear-gradient(top, white 2%, black 100%);
-  /* W3C */ }
-
-.black-red-vertical-ramp {
-  background: red;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, red 0%, black 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, red), color-stop(100%, black));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, red 0%, black 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, red 0%, black 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, red 0%, black 100%);
-  /* IE10+ */
-  background: linear-gradient(top, red 0%, black 100%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ff0000', endColorstr='#000000',GradientType=0 );
-  /* IE6-9 */ }
-
-.black-green-vertical-ramp {
-  background: #01ff00;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, #01ff00 0%, black 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #01ff00), color-stop(100%, black));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, #01ff00 0%, black 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, #01ff00 0%, black 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, #01ff00 0%, black 100%);
-  /* IE10+ */
-  background: linear-gradient(top, #01ff00 0%, black 100%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#01ff00', endColorstr='#000000',GradientType=0 );
-  /* IE6-9 */ }
-
-.black-blue-vertical-ramp {
-  background: blue;
-  /* Old browsers */
-  background: -moz-linear-gradient(top, blue 0%, black 100%);
-  /* FF3.6+ */
-  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, blue), color-stop(100%, black));
-  /* Chrome,Safari4+ */
-  background: -webkit-linear-gradient(top, blue 0%, black 100%);
-  /* Chrome10+,Safari5.1+ */
-  background: -o-linear-gradient(top, blue 0%, black 100%);
-  /* Opera 11.10+ */
-  background: -ms-linear-gradient(top, blue 0%, black 100%);
-  /* IE10+ */
-  background: linear-gradient(top, blue 0%, black 100%);
-  /* W3C */
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#0000ff', endColorstr='#000000',GradientType=0 );
-  /* IE6-9 */ }
-
-.rgb-bottom {
-  background: transparent url(../img/rgb-patches.png) no-repeat -160px 0px; }
-
-.rgb-up {
-  background: transparent url(../img/rgb-patches.png) no-repeat -160px -160px; }
-
-.grb-bottom {
-  background: transparent url(../img/rgb-patches.png) no-repeat 0px 0px; }
-
-.grb-up {
-  background: transparent url(../img/rgb-patches.png) no-repeat 0px -160px; }
-
-.bgr-bottom {
-  background: transparent url(../img/rgb-patches.png) no-repeat -320px 0px; }
-
-.bgr-up {
-  background: transparent url(../img/rgb-patches.png) no-repeat -320px -160px; }
-
-.white-plain {
-  background: white; }
-
-.black-plain {
-  background: black; }
-
 .colorpicker {
   line-height: 14px;
   margin-top: 4px;
@@ -1116,18 +1134,92 @@
     overflow-x: hidden;
     overflow-y: auto; }
 
-.calendar th {
-  text-align: center !important; }
-.calendar td {
-  font-size: 14px;
-  text-align: center;
-  padding: 3px 6px; }
-  .calendar td:hover {
-    background: #93a1a1;
-    color: #002b36 !important; }
-  .calendar td.selected {
+.calendar {
+  overflow: hidden; }
+  .calendar h3 {
+    margin: 3px;
+    margin-bottom: 0px;
+    text-align: center;
+    background: #586e75;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -o-border-radius: 3px;
+    border-radius: 3px; }
+  .calendar a.prev-month, .calendar a.next-month, .calendar a.next-year, .calendar a.prev-year {
+    display: block;
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    color: #93a1a1;
+    top: 5px; }
+    .calendar a.prev-month:before, .calendar a.next-month:before, .calendar a.next-year:before, .calendar a.prev-year:before {
+      top: 4px;
+      content: ""; }
+  .calendar a.prev-year {
+    left: 4px; }
+    .calendar a.prev-year:before {
+      left: 4px; }
+    .calendar a.prev-year:after {
+      left: 9px;
+      top: 4px;
+      content: ""; }
+  .calendar a.prev-month {
+    left: 22px; }
+    .calendar a.prev-month:before {
+      left: 6px; }
+  .calendar a.next-year {
+    right: 4px; }
+    .calendar a.next-year:before {
+      right: 4px; }
+    .calendar a.next-year:after {
+      right: 9px;
+      top: 4px;
+      content: ""; }
+  .calendar a.next-month {
+    right: 22px; }
+    .calendar a.next-month:before {
+      right: 6px; }
+  .calendar a.today {
+    width: 50px;
+    display: block;
+    margin: 0px 4px 6px 24px;
+    text-align: center;
+    font-size: 14px;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    -o-border-radius: 2px;
+    border-radius: 2px; }
+  .calendar table {
+    padding: 3px;
+    border-spacing: 0px; }
+    .calendar table tr:nth-child(2) td {
+      border-top: 1px solid #586e75; }
+    .calendar table th {
+      text-align: center !important; }
+      .calendar table th.week {
+        font-size: 12px;
+        font-weight: normal;
+        padding: 3px 6px;
+        border-right: 1px solid #586e75; }
+    .calendar table td {
+      font-size: 14px;
+      text-align: center;
+      padding: 3px 0px;
+      width: 24px;
+      height: 24px;
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box; }
+      .calendar table td:hover {
+        background: #93a1a1;
+        color: #002b36 !important; }
+      .calendar table td.selected {
+        background: #93a1a1; }
+        .calendar table td.selected.today {
+          background: #34a0ec; }
+      .calendar table td.today {
+        background: rgba(38, 139, 210, 0.5); }
+  .calendar.disabled table td:hover, .calendar.readonly table td:hover {
+    background: none; }
+  .calendar.disabled table td.selected, .calendar.readonly table td.selected {
     background: #93a1a1; }
-.calendar.disabled td:hover, .calendar.readonly td:hover {
-  background: none; }
-.calendar.disabled td.selected, .calendar.readonly td.selected {
-  background: #93a1a1; }

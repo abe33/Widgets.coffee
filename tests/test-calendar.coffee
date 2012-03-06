@@ -1,6 +1,6 @@
 runTests=()->
 
-    module "calendar test"
+    module "calendar tests"
 
     test "Calendar should provide a mode property", ->
         calendar = new Calendar
@@ -52,12 +52,25 @@ runTests=()->
         table =  calendar.dummy.find "table"
         assertThat table.length, equalTo 1
         assertThat table.find("tr").length, equalTo 6
-        assertThat table.find("tr").first().find("th").length, equalTo 7
+        assertThat table.find("tr").first().find("th").length, equalTo 8
 
         calendar = new Calendar new Date 2011, 9, 15
         table =  calendar.dummy.find "table"
         assertThat table.find("tr").length, equalTo 7
-        assertThat table.find("tr").first().find("th").length, equalTo 7
+        assertThat table.find("tr").first().find("th").length, equalTo 8
+
+    test "Calendar's dummy should contains the week numbers
+          in a row header cell", ->
+
+        calendar = new Calendar new Date 2012, 0, 1
+        table =  calendar.dummy.find "table"
+
+        weeks = [52,1,2,3,4,5]
+        $(table.find("tr")[1..-1]).each (i,o)->
+            tr = $(o)
+            assertThat tr.find("th").text(), equalTo weeks[i]
+            assertThat tr.find("th").hasClass "week"
+
 
     test "The Calendar's table should display the days
           according to its value", ->
@@ -65,11 +78,11 @@ runTests=()->
         calendar = new Calendar d
 
         days = [
-            29, 30, 31, 1,  2,  3,  4,
-            5,  6,  7,  8,  9,  10, 11,
-            12, 13, 14, 15, 16, 17, 18,
-            19, 20, 21, 22, 23, 24, 25,
-            26, 27, 28, 29, 1,  2,  3,
+            30, 31, 1,  2,  3,  4,  5,
+            6,  7,  8,  9,  10, 11, 12,
+            13, 14, 15, 16, 17, 18, 19,
+            20, 21, 22, 23, 24, 25, 26,
+            27, 28, 29, 1,  2,  3,  4,
         ]
 
         calendar.dummy.find("td").each (i,o)->
@@ -81,11 +94,12 @@ runTests=()->
         calendar = new Calendar d
 
         days = [
-            1,  2,  3,  4,  5,  6,  7,
-            8,  9,  10, 11, 12, 13, 14,
-            15, 16, 17, 18, 19, 20, 21,
-            22, 23, 24, 25, 26, 27, 28,
-            29, 30, 31, 1,  2,  3,  4,
+            26, 27, 28, 29, 30, 31, 1,
+            2,  3,  4,  5,  6,  7,  8,
+            9,  10, 11, 12, 13, 14, 15,
+            16, 17, 18, 19, 20, 21, 22,
+            23, 24, 25, 26, 27, 28, 29,
+            30, 31, 1,  2,  3,  4,  5,
         ]
 
         calendar.set "value", new Date 2012, 0, 15
@@ -97,27 +111,295 @@ runTests=()->
         d = new Date 2012, 1, 22
         calendar = new Calendar d
 
-        daysOff = [0,1,2,32,33,34]
+        daysOff = [0,1,31,32,33,34]
 
         calendar.dummy.find("td").each (i,o)->
             if i in daysOff then assertThat $(o).hasClass "blurred"
 
+    test "Setting the mode of the calendar should call updateDummy", ->
 
-    module "calendar date test"
+        updateDummyCalled = false
+
+        class MockCalendar extends Calendar
+            updateDummy:->
+                super()
+                updateDummyCalled = true
+
+        calendar = new MockCalendar
+        updateDummyCalled = false
+
+        calendar.set "mode", "month"
+
+        assertThat updateDummyCalled
+
+    test "The current day should be highlighted", ->
+
+        calendar = new Calendar
+        assertThat calendar.dummy.find("td.today").length, equalTo 1
+
+    test "Clicking on a cell should change the value and update the table", ->
+
+        d = new Date 2012, 1, 22
+        calendar = new Calendar d
+
+        cell = $(calendar.dummy.find("td")[12]).mouseup()
+
+        assertThat $(calendar.dummy.find("td")[12]).hasClass "selected"
+        assertThat calendar.get("value"), dateEquals new Date 2012, 1, 11
+
+    test "Clicking on a cell of a disabled calendar shouldn't
+          change the value", ->
+
+        d = new Date 2012, 1, 22
+        calendar = new Calendar d
+
+        calendar.set "disabled", true
+
+        cell = $(calendar.dummy.find("td")[12]).mouseup()
+
+        assertThat $(calendar.dummy.find("td")[23]).hasClass "selected"
+        assertThat calendar.get("value"), dateEquals new Date 2012, 1, 22
+
+    test "Clicking on a cell of a readonly calendar shouldn't
+          change the value", ->
+
+        d = new Date 2012, 1, 22
+        calendar = new Calendar d
+
+        calendar.set "readonly", true
+
+        cell = $(calendar.dummy.find("td")[12]).mouseup()
+
+        assertThat $(calendar.dummy.find("td")[23]).hasClass "selected"
+        assertThat calendar.get("value"), dateEquals new Date 2012, 1, 22
+
+    test "Calendar should be able to display a month different than the
+          value ones without changing the value", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.display new Date 2012, 1
+
+        days = [
+            30, 31, 1,  2,  3,  4,  5,
+            6,  7,  8,  9,  10, 11, 12,
+            13, 14, 15, 16, 17, 18, 19,
+            20, 21, 22, 23, 24, 25, 26,
+            27, 28, 29, 1,  2,  3,  4,
+        ]
+
+        calendar.dummy.find("td").each (i,o)->
+            assertThat $(o).text(), equalTo days[ i ]
+            if i in [ 0, 1, 31, 32, 33, 34 ]
+                assertThat $(o).hasClass "blurred"
+            else
+                assertThat not $(o).hasClass "blurred"
+
+
+    test "Calendar should provide a button that switch
+          the display on today when clicked", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.dummy.find("a.today").click()
+
+        assertThat calendar.month.month(), equalTo 2
+
+    test "Calendar should provide a header that display the current month", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        assertThat calendar.dummy.find("h3").text(), equalTo "Jan 2012"
+
+    test "Calendar should provide a button that increment
+          the displayed month when clicked", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.dummy.find("a.next-month").click()
+
+        assertThat calendar.month.month(), equalTo 1
+
+    test "Calendar should provide a button that decrement
+          the displayed month when clicked", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.dummy.find("a.prev-month").click()
+
+        assertThat calendar.month.month(), equalTo 11
+
+    test "Calendar should provide a button that increment
+          the displayed year when clicked", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.dummy.find("a.next-year").click()
+
+        assertThat calendar.month.year(), equalTo 2013
+
+    test "Calendar should provide a button that decrement
+          the displayed year when clicked", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.dummy.find("a.prev-year").click()
+
+        assertThat calendar.month.year(), equalTo 2011
+
+    test "Disabled Calendar shouldn't allow to change the display", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.set "disabled", true
+
+        calendar.dummy.find("a.today").click()
+        calendar.dummy.find("a.prev-year").click()
+        calendar.dummy.find("a.prev-year").click()
+        calendar.dummy.find("a.next-year").click()
+        calendar.dummy.find("a.prev-month").click()
+        calendar.dummy.find("a.prev-month").click()
+        calendar.dummy.find("a.next-month").click()
+
+        assertThat calendar.month.year(), equalTo 2012
+        assertThat calendar.month.month(), equalTo 0
+
+    test "Readonly Calendar shouldn't allow to change the display", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.set "readonly", true
+
+        calendar.dummy.find("a.today").click()
+        calendar.dummy.find("a.prev-year").click()
+        calendar.dummy.find("a.prev-year").click()
+        calendar.dummy.find("a.next-year").click()
+        calendar.dummy.find("a.prev-month").click()
+        calendar.dummy.find("a.prev-month").click()
+        calendar.dummy.find("a.next-month").click()
+
+        assertThat calendar.month.year(), equalTo 2012
+        assertThat calendar.month.month(), equalTo 0
+
+    test "Changing the value should dispatch a valueChanged signal", ->
+
+        signalCalled = null
+        signalSource = null
+        signalValue = null
+        calendar = new Calendar
+
+        calendar.valueChanged.add ( widget, value )->
+            signalCalled = true
+            signalSource = widget
+            signalValue = value
+
+        d = new Date 2011, 1, 1
+        calendar.set "value", d
+
+        assertThat signalCalled
+        assertThat signalSource is calendar
+        assertThat signalValue, dateEquals d
+
+    test "A Calendar should be hidden at start", ->
+
+        calendar = new Calendar
+
+        assertThat calendar.dummy.attr("style"), contains "display: none"
+
+    test "A Calendar should respond to a dialogRequested signal
+          by opening itself", ->
+
+        widget = new Widget
+        calendar = new Calendar
+
+        calendar.dialogRequested widget
+
+        assertThat calendar.dummy.attr("style"), contains "display: block"
+        assertThat calendar.caller is widget
+
+    module "calendar date tests"
+
     test "The value of a Calendar should be marked by a selected class", ->
         d = new Date 2012, 1, 22
         calendar = new Calendar d
 
-        assertThat $(calendar.dummy.find("td")[24]).hasClass "selected"
+        assertThat $(calendar.dummy.find("td")[23]).hasClass "selected"
+
+    test "The value of a Calendar shouldn't be marked by a selected class
+          when the year is different", ->
+        d = new Date 2012, 1, 22
+        calendar = new Calendar d
+
+        calendar.display new Date 2011, 1
+
+        assertThat not calendar.dummy.find("td").hasClass "selected"
+
+    module "calendar month tests"
+
+    test "The days in the month value of a Calendar
+          should be marked by a selected class", ->
+        d = new Date 2012, 1, 22
+        calendar = new Calendar d, "month"
+
+        $(calendar.dummy.find("td")[2..30]).each (i,o)->
+            assertThat $(o).hasClass "selected"
+
+    test "The value of a month Calendar shouldn't be marked
+          by a selected class when the year is different", ->
+        d = new Date 2012, 1, 22
+        calendar = new Calendar d, "month"
+
+        calendar.display new Date 2011, 1
+
+        assertThat not calendar.dummy.find("td").hasClass "selected"
+
+    module "calendar week tests"
+
+    test "The days in the week value of a Calendar
+          should be marked by a selected class", ->
+        d = new Date 2012, 1, 22
+        calendar = new Calendar d, "week"
+
+        $(calendar.dummy.find("td")[21..27]).each (i,o)->
+            assertThat $(o).hasClass "selected"
+
+        d = new Date 2011,5,17
+        calendar = new Calendar d, "week"
+
+        $(calendar.dummy.find("td")[14..20]).each (i,o)->
+            assertThat $(o).hasClass "selected"
+
+        d = new Date 2012,2,7
+        calendar = new Calendar d, "week"
+
+        $(calendar.dummy.find("tr")[2]).find("td").each (i,o)->
+            assertThat $(o).hasClass "selected"
+
+    test "The value of a month Calendar shouldn't be marked
+          by a selected class when the year is different", ->
+        d = new Date 2012, 1, 22
+        calendar = new Calendar d, "week"
+
+        calendar.display new Date 2011, 1
+
+        assertThat not calendar.dummy.find("td").hasClass "selected"
 
 
     # some live instances
-    calendar1 = new Calendar
-    calendar2 = new Calendar
-    calendar3 = new Calendar
-
-    calendar2.set "mode", "month"
-    calendar2.set "mode", "week"
+    d = new Date().incrementDate 10
+    # d = new Date 2011,5,17
+    calendar1 = new Calendar d, "date"
+    calendar2 = new Calendar d, "month"
+    calendar3 = new Calendar d, "week"
 
     calendar1.addClasses "dummy"
     calendar2.addClasses "dummy"

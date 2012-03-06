@@ -1,30 +1,6 @@
 # The basic tests for all the utils and widgets are done through
 # the generic function below.
 
-testGenericDateTimeFunctions=( opt )->
-
-    test "#{ opt.validateFunctionName } should return true", ->
-        assertThat opt.validateFunction data for data in opt.validData
-
-    test "#{ opt.validateFunctionName } should return false", ->
-        assertThat not opt.validateFunction data for data in opt.invalidData
-
-    test "#{ opt.toStringFunctionName } should
-         return valid #{ opt.type } string", ->
-        for [ date, string ] in opt.toStringData
-            assertThat( opt.toStringFunction( date ), equalTo string )
-
-    test "#{ opt.fromStringFunctionName } should return valid dates", ->
-        for [ string, date ] in opt.fromStringData
-            assertThat( opt.fromStringFunction( string ), dateEquals date )
-
-    test "#{ opt.type } chaining conversion should always
-          result to the same value", ->
-        assertThat opt.fromStringFunction(
-            opt.toStringFunction(
-                opt.fromStringFunction( opt.reverseData ) ) ),
-            dateEquals opt.fromStringFunction( opt.reverseData )
-
 testGenericDateWidgetBehaviors=( opt )->
 
     test "A #{ opt.className } should allow an input
@@ -148,7 +124,7 @@ testGenericDateWidgetBehaviors=( opt )->
                            step='foo'></input>")[0]
         input = new opt.cls target
 
-        assertThat not isNaN input.get( "date" ).getHours()
+        assertThat not isNaN input.get( "date" ).hours()
         assertThat input.get( "min" ), opt.undefinedMinValueMatcher
         assertThat input.get( "max" ), opt.undefinedMaxValueMatcher
         assertThat input.get( "step" ), opt.undefinedStepValueMatcher
@@ -282,169 +258,6 @@ testGenericDateWidgetBehaviors=( opt )->
 
 $( document ).ready ->
 
-    module "time utils tests"
-
-    testGenericDateTimeFunctions
-        type:"time"
-        validateFunctionName:"isValidTime"
-        validateFunction:isValidTime
-        validData:[ "10", "10:10", "10:10:15", "10:10:15.765" ]
-        invalidData:[ "", "foo", "100:01:2", "2011-16-10T",
-                      "T10:15:75", "::", null ]
-
-        toStringFunctionName:"timeToString"
-        toStringFunction:timeToString
-        toStringData:[ [ new Date( 1970, 0, 1, 10, 16, 52 ),
-                         "10:16:52"  ],
-                       [ new Date( 1970, 0, 1, 0, 0, 0 ),
-                         "00:00:00" ],
-                       [ new Date( 1970, 0, 1, 10, 16, 52, 756 ),
-                         "10:16:52.756" ] ]
-
-        fromStringFunctionName:"timeFromString"
-        fromStringFunction:timeFromString
-        fromStringData:[ [ "10",
-                            new Date 1970, 0, 1, 10             ],
-                         [ "10:16",
-                            new Date 1970, 0, 1, 10, 16         ],
-                         [ "00:00:00",
-                            new Date 1970, 0, 1, 0, 0, 0        ],
-                         [ "10:16:52",
-                            new Date 1970, 0, 1, 10, 16, 52     ],
-                         [ "10:16:52.756",
-                            new Date 1970, 0, 1, 10, 16, 52, 756 ] ]
-
-        reverseData:"10:16:52"
-
-    module "date utils tests"
-
-    testGenericDateTimeFunctions
-        type:"date"
-        validateFunctionName:"isValidDate"
-        validateFunction:isValidDate
-        validData:[ "2011-12-15" ]
-        invalidData:[ "", "foo", "200-12-20", "2000-0-0", "--", null ]
-
-        toStringFunctionName:"dateToString"
-        toStringFunction:dateToString
-        toStringData:[ [ new Date( 1970, 0, 1 ),   "1970-01-01" ],
-                       [ new Date( 2011, 11, 12 ), "2011-12-12" ] ]
-
-        fromStringFunctionName:"dateFromString"
-        fromStringFunction:dateFromString
-        fromStringData:[ [ "2011-12-12", new Date( 2011, 11, 12 ) ],
-                         [ "1970-01-01", new Date( 1970, 0, 1 )   ] ]
-
-        reverseData:"2011-12-12"
-
-    module "month utils tests"
-
-    testGenericDateTimeFunctions
-        type:"month"
-        validateFunctionName:"isValidMonth"
-        validateFunction:isValidMonth
-        validData:[ "2011-12" ]
-        invalidData:[ "", "foo", "200-12-20", "2000-0", "--", null ]
-
-        toStringFunctionName:"monthToString"
-        toStringFunction:monthToString
-        toStringData:[ [ ( new Date 1970, 0 ),  "1970-01" ],
-                       [ ( new Date 2011, 11 ), "2011-12" ] ]
-
-        fromStringFunctionName:"monthFromString"
-        fromStringFunction:monthFromString
-        fromStringData:[ [ "2011-12", new Date( 2011, 11 ) ],
-                         [ "1970-01", new Date( 1970, 0  ) ] ]
-
-        reverseData:"2011-12"
-
-    module "week utils tests"
-
-    testGenericDateTimeFunctions
-        type:"week"
-        validateFunctionName:"isValidWeek"
-        validateFunction:isValidWeek
-        validData:[ "2011-W12", "1970-W07" ]
-        invalidData:[ "", "foo", "200-W1", "20-W00", "-W", null ]
-
-        toStringFunctionName:"weekToString"
-        toStringFunction:weekToString
-        toStringData:[ [ ( new Date 2012, 0, 2 ),  "2012-W01" ],
-                       [ ( new Date 2011, 0, 3 ),  "2011-W01" ],
-                       [ ( new Date 2011, 7, 25 ), "2011-W34" ],
-                       [ ( new Date 2010, 4, 11 ), "2010-W19" ] ]
-
-        fromStringFunctionName:"weekFromString"
-        fromStringFunction:weekFromString
-        fromStringData:[ [ "2012-W01", new Date 2012, 0, 2  ],
-                         [ "2011-W01", new Date 2011, 0, 3  ],
-                         [ "2011-W34", new Date 2011, 7, 22 ],
-                         [ "2010-W19", new Date 2010, 4, 10 ] ]
-
-        reverseData:"2011-W12"
-
-    module "datetime utils tests"
-
-    testGenericDateTimeFunctions
-        type:"datetime"
-        validateFunctionName:"isValidDateTime"
-        validateFunction:isValidDateTime
-        validData:[ "2011-10-10T10:45:32+01:00",
-                    "2011-10-10T10:45:32-02:00",
-                    "2011-10-10T10:45:32.786Z" ]
-        invalidData:[ "", "foo", "2011-10-10", "10:15:75",
-                      "2011-16-10T", "T10:15:75", "-W", null ]
-
-        toStringFunctionName:"datetimeToString"
-        toStringFunction:datetimeToString
-        toStringData:[ [ new Date( 2011, 0, 1, 0, 0, 0 ),
-                        "2011-01-01T00:00:00+01:00"     ],
-                       [ new Date( 2012, 2, 25, 16, 44, 37 ),
-                        "2012-03-25T16:44:37+02:00"     ],
-                       [ new Date( 2012, 2, 25, 16, 44, 37, 756 ),
-                        "2012-03-25T16:44:37.756+02:00" ] ]
-
-        fromStringFunctionName:"datetimeFromString"
-        fromStringFunction:datetimeFromString
-        fromStringData:[ [ "2011-01-01T00:00:00+01:00",
-                            new Date( 2011, 0, 1, 0, 0, 0 )           ],
-                         [ "2012-03-25T16:44:37+02:00",
-                            new Date( 2012, 2, 25, 16, 44, 37 )       ],
-                         [ "2012-03-25T16:44:37.756+02:00",
-                            new Date( 2012, 2, 25, 16, 44, 37, 756 )  ] ]
-
-        reverseData:"2012-03-25T16:44:37+02:00"
-
-    module "datetimelocal utils tests"
-
-    testGenericDateTimeFunctions
-        type:"datetimeLocal"
-        validateFunctionName:"isValidDateTimeLocal"
-        validateFunction:isValidDateTimeLocal
-        validData:[ "2011-10-10T10:45:32", "2011-10-10T10:45:32.786" ]
-        invalidData:[ "", "foo", "2011-10-10", "10:15:75",
-                      "2011-16-10T", "T10:15:75", "-W", null ]
-
-        toStringFunctionName:"datetimeLocalToString"
-        toStringFunction:datetimeLocalToString
-        toStringData:[ [ new Date( 2011, 0, 1, 0, 0, 0 ),
-                         "2011-01-01T00:00:00"     ],
-                       [ new Date( 2012, 2, 25, 16, 44, 37 ),
-                         "2012-03-25T16:44:37"     ],
-                       [ new Date( 2012, 2, 25, 16, 44, 37, 756 ),
-                         "2012-03-25T16:44:37.756" ] ]
-
-        fromStringFunctionName:"datetimeLocalFromString"
-        fromStringFunction:datetimeLocalFromString
-        fromStringData:[ [ "2011-01-01T00:00:00",
-                            new Date( 2011, 0, 1, 0, 0, 0 )           ],
-                         [ "2012-03-25T16:44:37",
-                            new Date( 2012, 2, 25, 16, 44, 37 )       ],
-                         [ "2012-03-25T16:44:37.756",
-                            new Date( 2012, 2, 25, 16, 44, 37, 756 ) ] ]
-
-        reverseData:"2012-03-25T16:44:37"
-
     module "timeinput tests"
 
     testGenericDateWidgetBehaviors
@@ -520,7 +333,7 @@ $( document ).ready ->
     test "When the value in the TimeInput's input is invalid,
           the TimeInput should turn it back to the valid value", ->
 
-        d = timeFromString "11:20"
+        d = Date.timeFromString "11:20"
         input = new TimeInput d
 
         input.dummy.children(".value").val("abcd")
@@ -531,7 +344,7 @@ $( document ).ready ->
 
     test "Pressing the mouse on the minus button should start
           a decrement interval", ->
-        d = timeFromString "11:20"
+        d = Date.timeFromString "11:20"
         input = new TimeInput d
 
         input.dummy.children(".down").mousedown()
@@ -554,7 +367,7 @@ $( document ).ready ->
 
     test "Releasing the mouse outside of the minus button should
           stop the decrement interval", ->
-        d = timeFromString "11:20"
+        d = Date.timeFromString "11:20"
         input = new TimeInput d
 
         input.dummy.children(".down").mousedown()
@@ -567,7 +380,7 @@ $( document ).ready ->
 
     test "Moving the mouse out of the minus button should stop
           the decrement interval", ->
-        d = timeFromString "11:20"
+        d = Date.timeFromString "11:20"
         input = new TimeInput d
 
         input.dummy.children(".down").mousedown()
@@ -579,7 +392,7 @@ $( document ).ready ->
 
     test "Moving the mouse back to the minus button should
           restart the decrement interval", ->
-        d = timeFromString "11:20"
+        d = Date.timeFromString "11:20"
         input = new TimeInput d
 
         input.dummy.children(".down").mousedown()
@@ -592,7 +405,7 @@ $( document ).ready ->
 
     test "Pressing the mouse on the plus button should start
           a increment interval", ->
-        d = timeFromString "11:20"
+        d = Date.timeFromString "11:20"
         input = new TimeInput d
 
         input.dummy.children(".up").mousedown()
@@ -603,7 +416,7 @@ $( document ).ready ->
 
     test "Releasing the mouse on the plus button should stop
           the increment interval", ->
-        d = timeFromString "11:20"
+        d = Date.timeFromString "11:20"
         input = new TimeInput d
 
         input.dummy.children(".up").mousedown()
@@ -615,7 +428,7 @@ $( document ).ready ->
 
     test "Releasing the mouse outside of the plus button should
           stop the increment interval", ->
-        d = timeFromString "11:20"
+        d = Date.timeFromString "11:20"
         input = new TimeInput d
 
         input.dummy.children(".up").mousedown()
@@ -627,7 +440,7 @@ $( document ).ready ->
 
     test "Moving the mouse out of the plus button should stop
           the increment interval", ->
-        d = timeFromString "11:20"
+        d = Date.timeFromString "11:20"
         input = new TimeInput d
 
         input.dummy.children(".up").mousedown()
@@ -639,7 +452,7 @@ $( document ).ready ->
 
     test "Moving the mouse back to the plus button should
           restart the increment interval", ->
-        d = timeFromString "11:20"
+        d = Date.timeFromString "11:20"
         input = new TimeInput d
 
         input.dummy.children(".up").mousedown()
@@ -663,7 +476,7 @@ $( document ).ready ->
                 e.pageY = 0
                 super e
 
-        d = timeFromString "11:20"
+        d = Date.timeFromString "11:20"
         input = new MockTimeInput d
 
         input.dummy.mousedown()
@@ -790,21 +603,21 @@ $( document ).ready ->
         cls:WeekInput
         type:"week"
 
-        defaultDate:new Date 2012, 0, 2, 0
+        defaultDate:Date.weekFromString "2012-W01"
         defaultValue:"2012-W01"
 
         invalidDates:[ null, new Date "foo" ]
         invalidValues:[ null, "foo", "122-50", "1-1-+6" ]
 
-        setDate:new Date 2011, 7, 15, 0
-        setValue:"2011-W33"
+        setDate:Date.weekFromString "2011-W31"
+        setValue:"2011-W31"
 
-        minDate:new Date 2011, 0, 24, 0
+        minDate:Date.weekFromString "2011-W04"
         minValue:"2011-W04"
         valueBelowRange:"2011-W01"
         invalidMinValue:"2014-W35"
 
-        maxDate:new Date 2013, 0, 21, 0
+        maxDate:Date.weekFromString "2013-W04"
         maxValue:"2013-W04"
         valueAboveRange:"2100-W05"
         invalidMaxValue:"2010-W09"
@@ -814,7 +627,7 @@ $( document ).ready ->
         valueNotInStep:"2012-W05"
         snappedValue:"2012-W05"
         singleIncrementValue:"2012-W01"
-        singleDecrementValue:"2012-W01"
+        singleDecrementValue:"2012-W52"
 
         undefinedMinValueMatcher:nullValue()
         undefinedMaxValueMatcher:nullValue()
