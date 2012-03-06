@@ -135,7 +135,7 @@ runTests=()->
     test "The current day should be highlighted", ->
 
         calendar = new Calendar
-        assertThat calendar.dummy.find(".today").length, equalTo 1
+        assertThat calendar.dummy.find("td.today").length, equalTo 1
 
     test "Clicking on a cell should change the value and update the table", ->
 
@@ -191,6 +191,140 @@ runTests=()->
 
         calendar.dummy.find("td").each (i,o)->
             assertThat $(o).text(), equalTo days[ i ]
+            if i in [ 0, 1, 31, 32, 33, 34 ]
+                assertThat $(o).hasClass "blurred"
+            else
+                assertThat not $(o).hasClass "blurred"
+
+
+    test "Calendar should provide a button that switch
+          the display on today when clicked", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.dummy.find("a.today").click()
+
+        assertThat calendar.month.month(), equalTo 2
+
+    test "Calendar should provide a header that display the current month", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        assertThat calendar.dummy.find("h3").text(), equalTo "Jan 2012"
+
+    test "Calendar should provide a button that increment
+          the displayed month when clicked", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.dummy.find("a.next-month").click()
+
+        assertThat calendar.month.month(), equalTo 1
+
+    test "Calendar should provide a button that decrement
+          the displayed month when clicked", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.dummy.find("a.prev-month").click()
+
+        assertThat calendar.month.month(), equalTo 11
+
+    test "Calendar should provide a button that increment
+          the displayed year when clicked", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.dummy.find("a.next-year").click()
+
+        assertThat calendar.month.year(), equalTo 2013
+
+    test "Calendar should provide a button that decrement
+          the displayed year when clicked", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.dummy.find("a.prev-year").click()
+
+        assertThat calendar.month.year(), equalTo 2011
+
+    test "Disabled Calendar shouldn't allow to change the display", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.set "disabled", true
+
+        calendar.dummy.find("a.today").click()
+        calendar.dummy.find("a.prev-year").click()
+        calendar.dummy.find("a.prev-year").click()
+        calendar.dummy.find("a.next-year").click()
+        calendar.dummy.find("a.prev-month").click()
+        calendar.dummy.find("a.prev-month").click()
+        calendar.dummy.find("a.next-month").click()
+
+        assertThat calendar.month.year(), equalTo 2012
+        assertThat calendar.month.month(), equalTo 0
+
+    test "Readonly Calendar shouldn't allow to change the display", ->
+
+        d = new Date 2012, 0, 1
+        calendar = new Calendar d
+
+        calendar.set "readonly", true
+
+        calendar.dummy.find("a.today").click()
+        calendar.dummy.find("a.prev-year").click()
+        calendar.dummy.find("a.prev-year").click()
+        calendar.dummy.find("a.next-year").click()
+        calendar.dummy.find("a.prev-month").click()
+        calendar.dummy.find("a.prev-month").click()
+        calendar.dummy.find("a.next-month").click()
+
+        assertThat calendar.month.year(), equalTo 2012
+        assertThat calendar.month.month(), equalTo 0
+
+    test "Changing the value should dispatch a valueChanged signal", ->
+
+        signalCalled = null
+        signalSource = null
+        signalValue = null
+        calendar = new Calendar
+
+        calendar.valueChanged.add ( widget, value )->
+            signalCalled = true
+            signalSource = widget
+            signalValue = value
+
+        d = new Date 2011, 1, 1
+        calendar.set "value", d
+
+        assertThat signalCalled
+        assertThat signalSource is calendar
+        assertThat signalValue, dateEquals d
+
+    test "A Calendar should be hidden at start", ->
+
+        calendar = new Calendar
+
+        assertThat calendar.dummy.attr("style"), contains "display: none"
+
+    test "A Calendar should respond to a dialogRequested signal
+          by opening itself", ->
+
+        widget = new Widget
+        calendar = new Calendar
+
+        calendar.dialogRequested widget
+
+        assertThat calendar.dummy.attr("style"), contains "display: block"
+        assertThat calendar.caller is widget
 
     module "calendar date tests"
 
@@ -199,6 +333,15 @@ runTests=()->
         calendar = new Calendar d
 
         assertThat $(calendar.dummy.find("td")[23]).hasClass "selected"
+
+    test "The value of a Calendar shouldn't be marked by a selected class
+          when the year is different", ->
+        d = new Date 2012, 1, 22
+        calendar = new Calendar d
+
+        calendar.display new Date 2011, 1
+
+        assertThat not calendar.dummy.find("td").hasClass "selected"
 
     module "calendar month tests"
 
@@ -209,6 +352,15 @@ runTests=()->
 
         $(calendar.dummy.find("td")[2..30]).each (i,o)->
             assertThat $(o).hasClass "selected"
+
+    test "The value of a month Calendar shouldn't be marked
+          by a selected class when the year is different", ->
+        d = new Date 2012, 1, 22
+        calendar = new Calendar d, "month"
+
+        calendar.display new Date 2011, 1
+
+        assertThat not calendar.dummy.find("td").hasClass "selected"
 
     module "calendar week tests"
 
@@ -231,6 +383,15 @@ runTests=()->
 
         $(calendar.dummy.find("tr")[2]).find("td").each (i,o)->
             assertThat $(o).hasClass "selected"
+
+    test "The value of a month Calendar shouldn't be marked
+          by a selected class when the year is different", ->
+        d = new Date 2012, 1, 22
+        calendar = new Calendar d, "week"
+
+        calendar.display new Date 2011, 1
+
+        assertThat not calendar.dummy.find("td").hasClass "selected"
 
 
     # some live instances

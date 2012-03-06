@@ -287,7 +287,8 @@
         right:3px;
         @include borderradius(0 4px 4px 0);
         &:after {
-            @extend .right-arrow;
+            @extend .arrow;
+            @extend .arrow.right;
         }
     }
     .down {
@@ -297,7 +298,8 @@
         @include borderradius(4px 0 0 4px);
 
         &:after {
-            @extend .left-arrow;
+            @extend .arrow;
+            @extend .arrow.left;
             margin-left:-6px;
         }
     }
@@ -343,7 +345,8 @@
         @extend .button;
 
         &:before {
-            @extend .right-arrow;
+            @extend .arrow;
+            @extend .arrow.right;
 
             margin-top:-5px;
             margin-left:-2px;
@@ -585,6 +588,14 @@
 
     padding:0 0 3px 22px;
 
+    &.disabled {
+        .radio.checked {
+            &:after {
+                @extend .outset-box.light;
+            }
+        }
+    }
+
     .gridpicker {
         width:160px;
         height:160px;
@@ -749,7 +760,8 @@
         @include overflow(ellipsis);
     }
     &:before {
-        @extend .down-arrow;
+        @extend .arrow;
+        @extend .arrow.down;
 
         margin-top:-2px;
         right:6px;
@@ -779,7 +791,8 @@
         padding-right:20px;
 
         &:before {
-            @extend .right-arrow;
+            @extend .arrow;
+            @extend .arrow.right;
 
             margin-top:-4px;
             right:2px;
@@ -798,8 +811,95 @@
     }
 }
 .calendar {
+    overflow:hidden;
+
     @extend .widget-common;
     @extend .popup;
+
+
+    h3 {
+        margin:3px;
+        margin-bottom:0px;
+        text-align:center;
+        background:$base01;
+        @include borderradius(3px);
+    }
+    a {
+        &.prev-month, &.next-month, &.next-year, &.prev-year {
+            display:block;
+            position:absolute;
+            width:16px;
+            height:16px;
+            color:$base1;
+            top:5px;
+
+            @extend .no-text;
+            &:before {
+                top:4px;
+                content:"";
+                @extend .chevron;
+            }
+        }
+        &.prev-year {
+            left:4px;
+
+            &:before {
+                left:4px;
+                @extend .chevron.left;
+            }
+            &:after {
+                left:9px;
+                top:4px;
+                content:"";
+                @extend .chevron;
+                @extend .chevron.left;
+            }
+
+        }
+        &.prev-month {
+            left:22px;
+            &:before {
+                left:6px;
+                @extend .chevron.left;
+            }
+        }
+        &.next-year {
+            right:4px;
+            &:before {
+                right:4px;
+                @extend .chevron.right;
+            }
+            &:after {
+                right:9px;
+                top:4px;
+                content:"";
+                @extend .chevron;
+                @extend .chevron.right;
+            }
+        }
+        &.next-month {
+            right:22px;
+            &:before {
+                right:6px;
+                @extend .chevron.right;
+            }
+        }
+        &.today {
+            width:50px;
+            display:block;
+            margin:0px 4px 6px 24px;
+            text-align:center;
+            font-size:14px;
+
+            @extend .outset-box.blue;
+            @extend .button-text-content;
+            @include borderradius(2px);
+
+            &:hover {
+                @extend .outset-box.blue.light;
+            }
+        }
+    }
 
     table {
         padding:3px;
@@ -813,6 +913,7 @@
 
         th {
             text-align:center !important;
+
             @extend .button-text-content;
             @extend .inset-text;
 
@@ -826,10 +927,14 @@
         td {
             font-size:14px;
             text-align:center;
-            padding:3px 6px;
+            padding:3px 0px;
+            width:24px;
+            height:24px;
 
             @extend .button-text-content;
             @extend .inset-text;
+            @include borderbox;
+
             &:hover {
                 background:$widget-button-focus-background;
                 color:$widget-button-color !important;
@@ -849,7 +954,15 @@
             }
         }
     }
+    &.readonly {
+        a.today {
+            &:hover{
+                @extend .outset-box.blue;
+            }
+        }
+    }
     &.disabled, &.readonly {
+
         table {
             td {
                 &:hover {
@@ -865,6 +978,14 @@
         }
     }
     &.disabled {
+        a.today {
+            @extend .disabled-text-content;
+            @extend .outset-box.light;
+
+            &:hover{
+                @extend .outset-box.light;
+            }
+        }
         table {
             td {
                 @extend .button-disabled-text-content;

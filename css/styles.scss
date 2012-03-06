@@ -10,174 +10,176 @@ body {
 }
 
 a {
-	color:$orange1;
+    color:$orange1;
 
-	&:visited {
-		color:$red1;
-	}
-	&.source {
-		color:#333;
-	}
+    &:visited {
+        color:$red1;
+    }
+    &.source {
+        color:#333;
+    }
 }
 h4 {
-	@extend .font;
-	color:$base02;
+    @extend .font;
+    color:$base02;
 }
 
 #qunit-header {
-	margin-top:4px !important;
+    margin-top:4px !important;
 }
 
 td {
-	color:$widget-text-color;
+    color:$widget-text-color;
 }
 
 #popups {
-	th:first-child {
-		width:150px;
-	}
+    th:first-child {
+        width:150px;
+    }
 }
 form{
-	display:inline-block;
+    display:inline-block;
 }
 .float{
-	// float:left;
-	padding-bottom:6px;
-	margin:5px 5px 0px 0px;
-	background:$base02;
-	display:inline-block;
-	vertical-align:top;
+    // float:left;
+    padding-bottom:6px;
+    margin:5px 5px 0px 0px;
+    background:$base02;
+    display:inline-block;
+    vertical-align:top;
 
-	@include borderradius(4px);
+    @include borderradius(4px);
 
+    th {
+        font-weight:normal;
+        font-variant:small-caps;
+        font-weight:normal;
+        text-align:left;
+        color:$widget-text-color;
 
-	th {
-		font-weight:normal;
-		font-variant:small-caps;
-		font-weight:normal;
-		text-align:left;
-		color:$widget-text-color;
+        @include textshadow("0pt 1px 3px rgba(0, 0, 0, 0.8)");
 
-		@include textshadow("0pt 1px 3px rgba(0, 0, 0, 0.8)");
+        &.table-header {
+            text-align:center;
+            background:$widget-text-background;
+            @include borderradius(3px);
+        }
+    }
+    .calendar th {
+        color:$widget-button-color;
+    }
+    .not-standard {
+        background:$orange1;
+        color:$widget-text-focus-color;
+        @include borderradius(3px);
+        text-align:center;
+        padding:6px 0px 7px 0px;
+        margin-top:6px;
+        width:100px;
+        font-size:12px;
+        text-transform:uppercase;
+        @include textshadow("0pt 1px 3px rgba(0, 0, 0, 1)");
+    }
 
-		&.table-header {
-			text-align:center;
-			background:$widget-text-background;
-			@include borderradius(3px);
-		}
-	}
-	.calendar th {
-		color:$widget-button-color;
-	}
-	.not-standard {
-		background:$orange1;
-		color:$widget-text-focus-color;
-		@include borderradius(3px);
-		text-align:center;
-		padding:6px 0px 7px 0px;
-		margin-top:6px;
-		width:100px;
-		font-size:12px;
-		text-transform:uppercase;
-		@include textshadow("0pt 1px 3px rgba(0, 0, 0, 1)");
-	}
-
-	&.dummy {
-		float:none;
-	}
+    &.dummy {
+        float:none;
+    }
 }
 
 .button, .text, .textarea, .colorinput, .single-select,
 .dateinput, .stepper, .slider, .filepicker{
-	width:100px;
+    width:100px;
 }
 .menulist {
-	min-width:100px;
+    min-width:100px;
 }
 .calendar {
-	th {
-		width:auto !important;
-	}
+    th {
+        width:auto !important;
+    }
 }
 
-.colorpicker {
-	&.dummy, &.dummy.focus {
-		display:inline-block !important;
-	}
+.colorpicker, .calendar {
+    &.dummy, &.dummy.focus {
+        display:inline-block !important;
+    }
 }
 
 .text {
 
-	&.a, &.b, &.c
-	{
-		padding-left:10px;
-		width:80px !important;
+    &.a, &.b, &.c
+    {
+        padding-left:10px;
+        width:80px !important;
 
-		&:before {
-			content:"A:";
-			color:$widget-text-color;
-			display:inline;
-			position:absolute;
-			left:2px;
-			top:50%;
-			margin-top:-8px;
-			font-size:0.85em;
-			line-height:18px;
-		}
+        &:before {
+            content:"A:";
+            color:$widget-text-color;
+            display:inline;
+            position:absolute;
+            left:2px;
+            top:50%;
+            margin-top:-8px;
+            font-size:0.85em;
+            line-height:18px;
+        }
 
 
-	}
-	&.a:after {
-		content:"€";
-		color:$base4;
-		display:inline;
-		position:absolute;
-		right:2px;
-		top:50%;
-		margin-top:-10px;
-		font-size:0.9em;
-		line-height:19px;
-	}
-	&.b:before {
-		content:"B:";
-	}
-	&.c:before {
-		content:"C:";
-	}
+    }
+    &.a:after {
+        content:"€";
+        color:$base4;
+        display:inline;
+        position:absolute;
+        right:2px;
+        top:50%;
+        margin-top:-10px;
+        font-size:0.9em;
+        line-height:19px;
+    }
+    &.b:before {
+        content:"B:";
+    }
+    &.c:before {
+        content:"C:";
+    }
 }
 
 .button {
-	&:hover {
-		.icon {
-			background:$green2;
-		}
-	}
-	.icon {
-		display:inline-block;
-		width:16px;
-		height:16px;
-		border:1px solid $base03;
-		background:$green1;
-		vertical-align:sub;
-		position:absolute;
-		right:4px;
-		top:50%;
-		margin-top:-10px;
-		@include borderradius(8px);
+    &:hover {
+        .icon {
+            background:$green2;
+        }
+    }
+    .icon {
+        display:inline-block;
+        width:16px;
+        height:16px;
+        border:1px solid $base03;
+        background:$green1;
+        vertical-align:sub;
+        position:absolute;
+        right:4px;
+        top:50%;
+        margin-top:-10px;
 
-		&:before {
-            @extend .right-arrow;
+        @include borderradius(8px);
 
-            margin-top:-5px;
-            margin-left:-2px;
+        &:before {
+            content:"";
+            @extend .chevron;
+            @extend .chevron.right;
+
+            margin-top:-4px;
+            margin-left:-6px;
             left:50%;
             top:50%;
         }
-	}
+    }
 }
 
 .dummy {
-	position:relative !important;
-	z-index:0 !important;
-	margin:4px 4px 0 0 !important;
+    position:relative !important;
+    z-index:0 !important;
+    margin:4px 4px 0 0 !important;
 }

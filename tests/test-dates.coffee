@@ -627,7 +627,7 @@ $( document ).ready ->
         valueNotInStep:"2012-W05"
         snappedValue:"2012-W05"
         singleIncrementValue:"2012-W01"
-        singleDecrementValue:"2012-W01"
+        singleDecrementValue:"2012-W52"
 
         undefinedMinValueMatcher:nullValue()
         undefinedMaxValueMatcher:nullValue()

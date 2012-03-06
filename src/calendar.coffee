@@ -2,11 +2,14 @@
 
 class Calendar extends Widget
 
-    @DAYS =  ["M","T","W","T","F","S","S",]
+    @DAYS   = ["M","T","W","T","F","S","S",]
+    @MONTHS = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]
 
     constructor:( @value = new Date(), @mode = "date" )->
         super()
         @display @value
+        @dummy.hide()
 
     display:( date )->
         @month = date.firstDateOfMonth()
@@ -16,8 +19,25 @@ class Calendar extends Widget
 
     createDummy:->
         dummy = $ "<span class='calendar'>
+                     <h3></h3>
+                     <a class='prev-year'>Previous Year</a>
+                     <a class='prev-month'>Previous Month</a>
+                     <a class='next-month'>Next Month</a>
+                     <a class='next-year'>Next Year</a>
                      <table></table>
+                     <a class='today'>Today</a>
                    </span>"
+
+        dummy.find("a.today").click (e)=>
+            @display new Date unless @cantInteract()
+        dummy.find("a.prev-year").click (e)=>
+            @display @month.incrementYear -1 unless @cantInteract()
+        dummy.find("a.prev-month").click (e)=>
+            @display @month.incrementMonth -1 unless @cantInteract()
+        dummy.find("a.next-month").click (e)=>
+            @display @month.incrementMonth 1 unless @cantInteract()
+        dummy.find("a.next-year").click (e)=>
+            @display @month.incrementYear 1 unless @cantInteract()
 
         dummy
 
@@ -38,6 +58,9 @@ class Calendar extends Widget
 
             @toggleState td, date
             date.incrementDate 1
+
+        h3 = @dummy.find("h3")
+        h3.text "#{ Calendar.MONTHS[ @month.month() ] } #{ @month.year() }"
 
     updateCells:( value )->
 
@@ -71,22 +94,27 @@ class Calendar extends Widget
     toggleState:( td, date )->
         value = @get("value")
         sameDate = date.date() is value.date()
-        sameMonth = date.month() is value.month()
         sameWeek = date.week() is value.week()
+        sameMonth = date.month() is value.month()
+        sameYear = date.year() is value.year()
+
 
         switch @get("mode")
-            when "date"  then td.addClass "selected" if sameDate and sameMonth
-            when "month" then td.addClass "selected" if sameMonth
-            when "week"  then td.addClass "selected" if sameWeek
+            when "date"
+                td.addClass "selected" if sameDate and sameMonth and sameYear
+            when "month"
+                td.addClass "selected" if sameMonth and sameYear
+            when "week"
+                td.addClass "selected" if sameWeek and sameYear
 
-        td.addClass "blurred" if not sameMonth
+        td.addClass "blurred" if date.month() isnt @month.month()
         td.addClass "today" if date.isToday()
 
 
     #### Properties Accessors
 
     set_value:( property, value )->
-        @[ property ] = value
+        super property, value
         @display value
         value
 
@@ -96,5 +124,11 @@ class Calendar extends Widget
         @[ property ] = value
         @updateDummy()
         value
+
+    #### Signals handler
+
+    dialogRequested:( target )->
+        @caller = target
+        @dummy.show()
 
 @Calendar = Calendar

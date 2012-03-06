@@ -847,7 +847,7 @@ class ColorPicker extends Widget
     # Comfirm the changes to the `ColorInput`. The dialog is hidden
     # a the end of the call.
     comfirmChanges:->
-        @currentTarget.set "value", @get "value"
+        @caller.set "value", @get "value"
         @close()
 
     # Aborts the changes made in the dialog. The dialog is hidden and the
@@ -860,7 +860,7 @@ class ColorPicker extends Widget
         @dummy.hide()
         ( $ document ).unbind "mouseup", @documentDelegate
 
-        @currentTarget.grabFocus()
+        @caller.grabFocus()
 
     #### Properties Accessors
 
@@ -959,10 +959,10 @@ class ColorPicker extends Widget
     # The same `ColorPicker` can work for many `ColorInput`.
     dialogRequested:( colorinput )->
         # We store the `ColorInput` that requested the dialog.
-        @currentTarget = colorinput
+        @caller = colorinput
 
         # The original value is stored for allow a later reset.
-        @originalValue = value = @currentTarget.get "value"
+        @originalValue = value = @caller.get "value"
 
         # The dialog's value is set on the current `ColorInput` value.
         @set "value", value
@@ -975,9 +975,9 @@ class ColorPicker extends Widget
 
         # The dummy is placed in below the `ColorInput` that requested
         # the dialog.
-        @dummy.css("left", @currentTarget.dummy.offset().left)
-              .css("top", @currentTarget.dummy.offset().top +
-                          @currentTarget.dummy.height() )
+        @dummy.css("left", @caller.dummy.offset().left)
+              .css("top", @caller.dummy.offset().top +
+                          @caller.dummy.height() )
               .css("position", "absolute")
               # The dummy is then displayed.
               .show()
