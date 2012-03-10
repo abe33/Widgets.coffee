@@ -35,8 +35,8 @@ $(document).ready ->
         class C
 
         unit = new BuildUnit cls:C, set:
-                                property1:"value 1",
-                                property2:"value 2"
+            property1:"value 1",
+            property2:"value 2"
 
         o = unit.build()
         assertThat o.property1, equalTo "value 1"
