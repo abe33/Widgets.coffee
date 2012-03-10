@@ -157,7 +157,7 @@
                 </tr>
 
                 <tr>
-                <td></td>
+                <th></th>
                 <td><input type="password" value="password" name="password"></td>
                 <td><input type="password" value="password" name="password" readonly></td>
                 <td><input type="password" value="password" name="password" disabled></td>
@@ -169,6 +169,62 @@
                 <td><textarea readonly>Hello</textarea></td>
                 <td><textarea disabled>Hello</textarea></td>
                 </tr>
+
+                <tr>
+                <th>Slider</th>
+                <td><input type="range" value="12" min="10" max="50" step="1" name="oof"></input></td>
+                <td><input type="range" value="23" min="10" max="50" step="1" name="oof" readonly></input></td>
+                <td><input type="range" value="37" min="10" max="50" step="1" name="oof" disabled></input></td>
+                </tr>
+
+                <tr>
+                <th>FilePicker</th>
+                <td><input type="file" name="file"></input></td>
+                <td><input type="file" name="file" readonly></input></td>
+                <td><input type="file" name="file" disabled></input></td>
+                </tr>
+
+                <tr>
+                <th>Stepper</th>
+                <td><input type="number" value="12" min="0" max="255" step="1" name="foo"></input></td>
+                <td><input type="number" value="27" min="0" max="255" step="1" name="foo" readonly></input></td>
+                <td><input type="number" value="49" min="0" max="255" step="1" name="foo" disabled></input></td>
+                </tr>
+
+                <tr>
+                <th>TimeInput</th>
+                <td><input type="time" value="16:25" name="time" min="01:00" max="23:00"></input></td>
+                <td><input type="time" value="16:25" name="time" min="01:00" max="16:45" readonly></input></td>
+                <td><input type="time" value="16:25" name="time" min="01:00" max="18:23" disabled></input></td>
+                </tr>
+
+                <tr>
+                <th>DateInput</th>
+                <td><input type="date" value="2004-05-16" name="date" min="2004-01-01" max="2004-12-31"></input></td>
+                <td><input type="date" value="2004-05-16" name="date" min="2004-01-01" max="2004-12-31" readonly></input></td>
+                <td><input type="date" value="2004-05-16" name="date" min="2004-01-01" max="2004-12-31" disabled></input></td>
+                </tr>
+
+                <tr>
+                <th>MonthInput</th>
+                <td><input type="month" value="2004-01" name="month" min="2000-01" max="2012-12"></input></td>
+                <td><input type="month" value="2004-01" name="month" min="2000-01" max="2012-12" readonly></input></td>
+                <td><input type="month" value="2004-01" name="month" min="2000-01" max="2012-12" disabled></input></td>
+                </tr>
+
+                <tr>
+                <th>WeekInput</th>
+                <td><input type="week" value="2007-W16" name="week" min="2000-W01" max="2012-W12"></input></td>
+                <td><input type="week" value="2007-W16" name="week" min="2000-W01" max="2012-W12" readonly></input></td>
+                <td><input type="week" value="2007-W16" name="week" min="2000-W01" max="2012-W12" disabled></input></td>
+                </tr>
+
+                <!-- <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                </tr> -->
 
                 <tr>
                 <th>SingleSelect</th>
@@ -196,66 +252,10 @@
                 </tr>
 
                 <tr>
-                <th>Stepper</th>
-                <td><input type="number" value="12" min="0" max="255" step="1" name="foo"></input></td>
-                <td><input type="number" value="27" min="0" max="255" step="1" name="foo" readonly></input></td>
-                <td><input type="number" value="49" min="0" max="255" step="1" name="foo" disabled></input></td>
-                </tr>
-
-                <tr>
-                <th>Slider</th>
-                <td><input type="range" value="12" min="10" max="50" step="1" name="oof"></input></td>
-                <td><input type="range" value="23" min="10" max="50" step="1" name="oof" readonly></input></td>
-                <td><input type="range" value="37" min="10" max="50" step="1" name="oof" disabled></input></td>
-                </tr>
-
-                <tr>
                 <th>ColorInput</th>
                 <td><input type="color" value="#859900" name="color"></input></td>
                 <td><input type="color" value="#859900" name="color" readonly></input></td>
                 <td><input type="color" value="#859900" name="color" disabled></input></td>
-                </tr>
-
-                <tr>
-                <th>TimeInput</th>
-                <td><input type="time" value="16:25" name="time" min="01:00" max="23:00"></input></td>
-                <td><input type="time" value="16:25" name="time" min="01:00" max="16:45" readonly></input></td>
-                <td><input type="time" value="16:25" name="time" min="01:00" max="18:23" disabled></input></td>
-                </tr>
-
-                <tr>
-                <th>DateInput</th>
-                <td><input type="date" value="2004-05-16" name="date" min="2004-01-01" max="2004-12-31"></input></td>
-                <td><input type="date" value="2004-05-16" name="date" min="2004-01-01" max="2004-12-31" readonly></input></td>
-                <td><input type="date" value="2004-05-16" name="date" min="2004-01-01" max="2004-12-31" disabled></input></td>
-                </tr>
-
-                <tr>
-                <td>MonthInput</td>
-                <td><input type="month" value="2004-01" name="month" min="2007-12" max="2007-07"></input></td>
-                <td><input type="month" value="2004-01" name="month" min="2007-12" max="2007-07" readonly></input></td>
-                <td><input type="month" value="2004-01" name="month" min="2007-12" max="2007-07" disabled></input></td>
-                </tr>
-
-                <tr>
-                <td>WeekInput</td>
-                <td><input type="week" value="2004-W01" name="week" min="2007-W12" max="2007-W07"></input></td>
-                <td><input type="week" value="2004-W01" name="week" min="2007-W12" max="2007-W07" readonly></input></td>
-                <td><input type="week" value="2004-W01" name="week" min="2007-W12" max="2007-W07" disabled></input></td>
-                </tr>
-
-                <!-- <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                </tr> -->
-
-                <tr>
-                <th>FilePicker</th>
-                <td><input type="file" name="file"></input></td>
-                <td><input type="file" name="file" readonly></input></td>
-                <td><input type="file" name="file" disabled></input></td>
                 </tr>
 
                 <tr>

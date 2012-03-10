@@ -742,10 +742,19 @@ form {
   background: #073642;
   display: inline-block;
   vertical-align: top;
+  border-spacing: 0px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px; }
+  .float td {
+    padding-top: 4px;
+    padding-bottom: 8px;
+    border-top: 1px solid #002b36; }
+    .float td:first-child {
+      padding-left: 5px; }
+  .float tr:nth-child(2) td {
+    border: none; }
   .float th {
     font-weight: normal;
     font-variant: small-caps;
@@ -756,14 +765,14 @@ form {
     -moz-text-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.8);
     text-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.8); }
     .float th.table-header {
-      text-align: center;
-      background: #042029;
-      -webkit-border-radius: 3px;
-      -moz-border-radius: 3px;
-      -o-border-radius: 3px;
-      border-radius: 3px; }
+      text-align: center; }
+    .float th:first-child {
+      padding-right: 5px;
+      padding-left: 5px; }
   .float .calendar th {
     color: #002b36; }
+  .float .calendar td {
+    border: none; }
   .float .not-standard {
     background: #cb4b16;
     color: #bbc4c4;

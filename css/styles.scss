@@ -47,8 +47,24 @@ form{
     background:$base02;
     display:inline-block;
     vertical-align:top;
+    border-spacing:0px;
 
     @include borderradius(4px);
+
+    td {
+        padding-top:4px;
+        padding-bottom:8px;
+        border-top:1px solid $base03;
+
+        &:first-child {
+            padding-left:5px;
+        }
+    }
+    tr:nth-child(2) {
+        td {
+            border:none;
+        }
+    }
 
     th {
         font-weight:normal;
@@ -61,13 +77,21 @@ form{
 
         &.table-header {
             text-align:center;
-            background:$widget-text-background;
-            @include borderradius(3px);
+        }
+        &:first-child {
+            padding-right:5px;
+            padding-left:5px;
         }
     }
-    .calendar th {
-        color:$widget-button-color;
+    .calendar {
+        th {
+            color:$widget-button-color;
+        }
+        td {
+            border:none;
+        }
     }
+
     .not-standard {
         background:$orange1;
         color:$widget-text-focus-color;
