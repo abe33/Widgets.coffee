@@ -35,8 +35,8 @@
 # the widget's value using  a `Date` instance.
 class AbstractDateInputWidget extends Widget
     # Date and time widgets can operate in a range. Their prototype is then
-    # decorated with the `ValueInRange` mixin.
-    @mixins ValueInRange
+    # decorated with the `HasValueInRange` mixin.
+    @mixins HasValueInRange
 
     # Concretes classes must defines these properties before calling
     # the super constructor. The three functions handles the validation
@@ -129,7 +129,7 @@ class AbstractDateInputWidget extends Widget
 
     #### Value Management
 
-    # Overrides of the `ValueInRange` mixin method to support date value.
+    # Overrides of the `HasValueInRange` mixin method to support date value.
     snapToStep:( value )->
         # A `Date` is rounded using its primitive value.
         ms = value.getTime()
@@ -139,7 +139,7 @@ class AbstractDateInputWidget extends Widget
 
         value
 
-    # Overrides of the `ValueInRange` mixin method to support date value.
+    # Overrides of the `HasValueInRange` mixin method to support date value.
     increment:()->
         d    = @get "date"
         step = @get "step"
@@ -147,7 +147,7 @@ class AbstractDateInputWidget extends Widget
         d.setTime ms + step * Date.MILLISECONDS_IN_SECOND
         @set "date", d
 
-    # Overrides of the `ValueInRange` mixin method to support date value.
+    # Overrides of the `HasValueInRange` mixin method to support date value.
     decrement:()->
         d    = @get "date"
         step = @get "step"
@@ -265,6 +265,18 @@ class AbstractDateInputWidget extends Widget
         # adjusted to the new step by calling the `date` setter.
         @set "date", @get "date"
         value
+
+OpenCalendar=
+    constructorHook:->
+        @dialogRequested = new Signal
+        @dialogRequested.add @constructor.calendar.dialogRequested,
+                             @constructor.calendar
+
+    mouseup:(e)->
+        unless @cantInteract()
+            e.stopImmediatePropagation()
+            @dialogRequested.dispatch this
+
 
 # <a name='TimeInput'></a>
 #### TimeInput
@@ -451,13 +463,17 @@ class TimeInput extends AbstractDateInputWidget
 # input3.attach("#dateinput-demos");
 # </script>
 class DateInput extends AbstractDateInputWidget
+
+    @mixins OpenCalendar
+
+    @calendar = new Calendar
+    $(document).ready -> DateInput.calendar.attach "body"
+
     constructor:( target )->
         @supportedType = "date"
         @valueToDate   = Date.dateFromString
         @dateToValue   = Date.dateToString
         @isValidValue  = Date.isValidDate
-
-        @dialogRequested = new Signal
 
         super target
 
@@ -469,12 +485,15 @@ class DateInput extends AbstractDateInputWidget
     updateDummy:->
         @dummy.find(".value").text @get "value"
 
-    mouseup:(e)->
-        @dialogRequested.dispatch this
-
 # <a name='MonthInput'></a>
 #### MonthInput
 class MonthInput extends AbstractDateInputWidget
+
+    @mixins OpenCalendar
+
+    @calendar = new Calendar null, "month"
+    $(document).ready -> MonthInput.calendar.attach "body"
+
     constructor:( target )->
         @supportedType = "month"
         @valueToDate   = Date.monthFromString
@@ -483,9 +502,23 @@ class MonthInput extends AbstractDateInputWidget
 
         super target
 
+    createDummy:->
+        dummy = super()
+        dummy.append "<span class='value'>#{ @get "value" }</span>"
+        dummy
+
+    updateDummy:->
+        @dummy.find(".value").text @get "value"
+
 # <a name='WeekInput'></a>
 #### WeekInput
 class WeekInput extends AbstractDateInputWidget
+
+    @mixins OpenCalendar
+
+    @calendar = new Calendar null, "week"
+    $(document).ready -> WeekInput.calendar.attach "body"
+
     constructor:( target )->
         @supportedType = "week"
         @valueToDate   = Date.weekFromString
@@ -493,6 +526,14 @@ class WeekInput extends AbstractDateInputWidget
         @isValidValue  = Date.isValidWeek
 
         super target
+
+    createDummy:->
+        dummy = super()
+        dummy.append "<span class='value'>#{ @get "value" }</span>"
+        dummy
+
+    updateDummy:->
+        @dummy.find(".value").text @get "value"
 
 # <a name='DateTimeInput'></a>
 #### DateTimeInput

@@ -558,6 +558,44 @@ $( document ).ready ->
         assertThat signalCalled
         assertThat signalSource is input
 
+        DateInput.calendar.close()
+
+    test "Clicking on a disabled DateInput shouldn't
+          trigger a dialogRequested signal", ->
+
+        input = new DateInput new Date 1970, 0, 1
+        input.set "disabled", true
+
+        signalCalled = false
+        signalSource = null
+
+        input.dialogRequested.add ( widget )->
+            signalCalled = true
+
+        input.dummy.mouseup()
+
+        assertThat not signalCalled
+
+        DateInput.calendar.close()
+
+    test "Clicking on a readonly DateInput shouldn't
+          trigger a dialogRequested signal", ->
+
+        input = new DateInput new Date 1970, 0, 1
+        input.set "readonly", true
+
+        signalCalled = false
+        signalSource = null
+
+        input.dialogRequested.add ( widget )->
+            signalCalled = true
+
+        input.dummy.mouseup()
+
+        assertThat not signalCalled
+
+        DateInput.calendar.close()
+
     module "monthinput tests"
 
     testGenericDateWidgetBehaviors
@@ -596,6 +634,79 @@ $( document ).ready ->
         undefinedMaxValueMatcher:nullValue()
         undefinedStepValueMatcher:nullValue()
 
+    test "A MonthInput dummy should contains an span that contains
+          the value", ->
+
+        input = new MonthInput new Date 1970, 0
+
+        text = input.dummy.find(".value")
+
+        assertThat text.length, equalTo 1
+        assertThat text.text(), equalTo "1970-01"
+
+    test "The MonthInput dummy's input should be updated on value change", ->
+
+        input = new MonthInput new Date 1970, 0
+
+        input.set "value", "2004-05"
+        text = input.dummy.find(".value")
+
+        assertThat text.text(), equalTo "2004-05"
+
+    test "Clicking on a MonthInput should trigger a dialogRequested signal", ->
+
+        input = new MonthInput new Date 1970, 0
+
+        signalCalled = false
+        signalSource = null
+
+        input.dialogRequested.add ( widget )->
+            signalCalled = true
+            signalSource = widget
+
+        input.dummy.mouseup()
+
+        assertThat signalCalled
+        assertThat signalSource is input
+
+        MonthInput.calendar.close()
+
+    test "Clicking on a disabled MonthInput shouldn't
+          trigger a dialogRequested signal", ->
+
+        input = new MonthInput new Date 1970, 0
+        input.set "disabled", true
+
+        signalCalled = false
+        signalSource = null
+
+        input.dialogRequested.add ( widget )->
+            signalCalled = true
+
+        input.dummy.mouseup()
+
+        assertThat not signalCalled
+
+        MonthInput.calendar.close()
+
+    test "Clicking on a readonly MonthInput shouldn't
+          trigger a dialogRequested signal", ->
+
+        input = new MonthInput new Date 1970, 0
+        input.set "readonly", true
+
+        signalCalled = false
+        signalSource = null
+
+        input.dialogRequested.add ( widget )->
+            signalCalled = true
+
+        input.dummy.mouseup()
+
+        assertThat not signalCalled
+
+        MonthInput.calendar.close()
+
     module "weekinput tests"
 
     testGenericDateWidgetBehaviors
@@ -632,6 +743,79 @@ $( document ).ready ->
         undefinedMinValueMatcher:nullValue()
         undefinedMaxValueMatcher:nullValue()
         undefinedStepValueMatcher:nullValue()
+
+    test "A WeekInput dummy should contains an span that contains
+          the value", ->
+
+        input = new WeekInput Date.weekFromString "2012-W16"
+
+        text = input.dummy.find(".value")
+
+        assertThat text.length, equalTo 1
+        assertThat text.text(), equalTo "2012-W16"
+
+    test "The WeekInput dummy's input should be updated on value change", ->
+
+        input = new WeekInput Date.weekFromString "2012-W16"
+
+        input.set "value", "2004-W05"
+        text = input.dummy.find(".value")
+
+        assertThat text.text(), equalTo "2004-W05"
+
+    test "Clicking on a WeekInput should trigger a dialogRequested signal", ->
+
+        input = new WeekInput Date.weekFromString "2012-W16"
+
+        signalCalled = false
+        signalSource = null
+
+        input.dialogRequested.add ( widget )->
+            signalCalled = true
+            signalSource = widget
+
+        input.dummy.mouseup()
+
+        assertThat signalCalled
+        assertThat signalSource is input
+
+        WeekInput.calendar.close()
+
+    test "Clicking on a disabled WeekInput shouldn't
+          trigger a dialogRequested signal", ->
+
+        input = new WeekInput Date.weekFromString "2012-W16"
+        input.set "disabled", true
+
+        signalCalled = false
+        signalSource = null
+
+        input.dialogRequested.add ( widget )->
+            signalCalled = true
+
+        input.dummy.mouseup()
+
+        assertThat not signalCalled
+
+        WeekInput.calendar.close()
+
+    test "Clicking on a readonly WeekInput shouldn't
+          trigger a dialogRequested signal", ->
+
+        input = new WeekInput Date.weekFromString "2012-W16"
+        input.set "readonly", true
+
+        signalCalled = false
+        signalSource = null
+
+        input.dialogRequested.add ( widget )->
+            signalCalled = true
+
+        input.dummy.mouseup()
+
+        assertThat not signalCalled
+
+        WeekInput.calendar.close()
 
     module "datetimeinput tests"
 

@@ -2,6 +2,8 @@
 
 class Calendar extends Widget
 
+    @mixins IsDialog
+
     @DAYS   = ["M","T","W","T","F","S","S",]
     @MONTHS = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",
                 "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]
@@ -9,7 +11,6 @@ class Calendar extends Widget
     constructor:( @value = new Date(), @mode = "date" )->
         super()
         @display @value
-        @dummy.hide()
 
     display:( date )->
         @month = date.firstDateOfMonth()
@@ -76,10 +77,8 @@ class Calendar extends Widget
             line = $ "<tr><th class='week'></th></tr>"
             for x in [0..6]
                 cell = $ "<td></td>"
-                cell.bind "mouseup", @cellDelegate=(e)=>
-                    unless @cantInteract()
-                        @set "value",
-                             Date.dateFromString $(e.target).attr "name"
+                cell.bind "mouseup", @cellDelegate =(e)=> @cellSelected e
+
                 line.append cell
             table.append line
 
@@ -90,6 +89,11 @@ class Calendar extends Widget
         Math.ceil( days / 7 ) - 1
 
     #### Selection Management
+    cellSelected:(e)->
+        unless @cantInteract()
+            e.stopImmediatePropagation()
+            @set "value", Date.dateFromString $(e.target).attr "name"
+            @comfirmChanges() if @caller?
 
     toggleState:( td, date )->
         value = @get("value")
@@ -97,7 +101,6 @@ class Calendar extends Widget
         sameWeek = date.week() is value.week()
         sameMonth = date.month() is value.month()
         sameYear = date.year() is value.year()
-
 
         switch @get("mode")
             when "date"
@@ -109,7 +112,6 @@ class Calendar extends Widget
 
         td.addClass "blurred" if date.month() isnt @month.month()
         td.addClass "today" if date.isToday()
-
 
     #### Properties Accessors
 
@@ -125,10 +127,17 @@ class Calendar extends Widget
         @updateDummy()
         value
 
-    #### Signals handler
+    #### Dialog Placeholders
 
-    dialogRequested:( target )->
-        @caller = target
-        @dummy.show()
+    setupDialog:( caller )->
+        @set "value", @originalValue = caller.get "date"
+
+    comfirmChanges:->
+        @caller.set "date", @get "value"
+        @close()
+
+    comfirmChangesOnEnter:->
+        @comfirmChanges()
+
 
 @Calendar = Calendar

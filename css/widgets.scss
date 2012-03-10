@@ -362,7 +362,7 @@
     &.time {
         @extend .stepper;
     }
-    &.date {
+    &.date, &.month, &.week {
         @extend .single-select;
 
     }

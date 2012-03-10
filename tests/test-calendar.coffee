@@ -318,13 +318,149 @@ runTests=()->
     test "A Calendar should respond to a dialogRequested signal
           by opening itself", ->
 
-        widget = new Widget
+        class MockWidget extends Widget
+            createDummy:-> $ "<span></span>"
+
+            get_date:(property)-> new Date
+
+        widget = new MockWidget
         calendar = new Calendar
 
         calendar.dialogRequested widget
 
         assertThat calendar.dummy.attr("style"), contains "display: block"
         assertThat calendar.caller is widget
+
+    test "Calendar should display the caller's value
+          after dialogRequested was triggered", ->
+
+        class MockWidget extends Widget
+            createDummy:-> $ "<span></span>"
+
+            get_date:(property)-> new Date 2012, 1, 22
+
+        d = new Date 2012, 1, 22
+        widget = new MockWidget
+        calendar = new Calendar
+
+        calendar.dialogRequested widget
+
+        assertThat calendar.get("value"), dateEquals d
+
+
+    test "Clicking outside of the widgfet should close it", ->
+
+        class MockWidget extends Widget
+            createDummy:-> $ "<span></span>"
+
+            get_date:(property)-> new Date 2012, 1, 22
+
+        d = new Date 2012, 1, 22
+        widget = new MockWidget
+        calendar = new Calendar
+
+        calendar.dialogRequested widget
+
+        $(document).mouseup()
+
+        assertThat calendar.dummy.attr("style"), contains "display: none"
+
+    test "Clicking on the widgfet shouldn't close it", ->
+
+        class MockWidget extends Widget
+            createDummy:-> $ "<span></span>"
+
+            get_date:(property)-> new Date 2012, 1, 22
+
+        d = new Date 2012, 1, 22
+        widget = new MockWidget
+        calendar = new Calendar
+
+        calendar.dialogRequested widget
+
+        calendar.dummy.mouseup()
+
+        assertThat calendar.dummy.attr("style"), contains "display: block"
+
+    test "Closing the Calendar with a click outside should affect
+          the new value to the caller", ->
+
+        setterCalled = null
+        setterValue = null
+
+        class MockWidget extends Widget
+            createDummy:-> $ "<span></span>"
+
+            get_date:(property)-> new Date 2012, 1, 22
+            set_date:(property, value)->
+                setterCalled = property
+                setterValue = value
+
+        d = new Date 2007, 5, 17
+        widget = new MockWidget
+        calendar = new Calendar
+
+        calendar.dialogRequested widget
+
+        calendar.set "value", d
+
+        $(document).mouseup()
+
+        assertThat setterCalled is "date"
+        assertThat setterValue, dateEquals d
+
+    test "Closing the Calendar with the enter key should affect
+          the new value to the caller", ->
+
+        setterCalled = null
+        setterValue = null
+
+        class MockWidget extends Widget
+            createDummy:-> $ "<span></span>"
+
+            get_date:(property)-> new Date 2012, 1, 22
+            set_date:(property, value)->
+                setterCalled = property
+                setterValue = value
+
+        d = new Date 2007, 5, 17
+        widget = new MockWidget
+        calendar = new Calendar
+
+        calendar.dialogRequested widget
+
+        calendar.set "value", d
+
+        calendar.keydown
+            keyCode:keys.enter
+            ctrlKey:false
+            altKey:false
+            shiftKey:false
+
+        assertThat setterCalled is "date"
+        assertThat setterValue, dateEquals d
+
+    test "Clicking on a table cell should close the dialog", ->
+
+        setterCalled = null
+
+        class MockWidget extends Widget
+            createDummy:-> $ "<span></span>"
+
+            get_date:(property)-> new Date 2012, 1, 22
+            set_date:(property, value)->
+                setterCalled = property
+
+        d = new Date 2007, 5, 17
+        widget = new MockWidget
+        calendar = new Calendar
+
+        calendar.dialogRequested widget
+
+        calendar.dummy.find("td").first().mouseup()
+
+        assertThat setterCalled is "date"
+        assertThat calendar.dummy.attr("style"), contains "display: none"
 
     module "calendar date tests"
 
@@ -361,6 +497,7 @@ runTests=()->
         calendar.display new Date 2011, 1
 
         assertThat not calendar.dummy.find("td").hasClass "selected"
+
 
     module "calendar week tests"
 
