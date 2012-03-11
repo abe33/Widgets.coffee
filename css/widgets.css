@@ -1005,7 +1005,7 @@
     display: block;
     position: absolute;
     width: 12px;
-    height: 81px;
+    height: 79px;
     left: 4px;
     border: 1px solid #839496; }
   .colorpicker .oldColor {
@@ -1047,6 +1047,9 @@
     -moz-border-radius: 4px;
     -o-border-radius: 4px;
     border-radius: 4px; }
+    .colorpicker .text input, .colorpicker .textarea input, .colorpicker .stepper input, .colorpicker .dateinput.time input, .colorpicker .filepicker input {
+      padding: 2px 0px;
+      margin-left: -3px; }
     .colorpicker .text.red, .colorpicker .red.textarea, .colorpicker .red.stepper, .colorpicker .red.dateinput.time, .colorpicker .red.filepicker {
       margin-top: 5px; }
     .colorpicker .text.red, .colorpicker .red.textarea, .colorpicker .red.stepper, .colorpicker .red.dateinput.time, .colorpicker .red.filepicker, .colorpicker .text.green, .colorpicker .green.textarea, .colorpicker .green.stepper, .colorpicker .green.dateinput.time, .colorpicker .green.filepicker, .colorpicker .text.blue, .colorpicker .blue.textarea, .colorpicker .blue.stepper, .colorpicker .blue.dateinput.time, .colorpicker .blue.filepicker, .colorpicker .text.hue, .colorpicker .hue.textarea, .colorpicker .hue.stepper, .colorpicker .hue.dateinput.time, .colorpicker .hue.filepicker, .colorpicker .text.saturation, .colorpicker .saturation.textarea, .colorpicker .saturation.stepper, .colorpicker .saturation.dateinput.time, .colorpicker .saturation.filepicker, .colorpicker .text.value, .colorpicker .value.textarea, .colorpicker .value.stepper, .colorpicker .value.dateinput.time, .colorpicker .value.filepicker {
@@ -1058,7 +1061,7 @@
       .colorpicker .text.red.focus, .colorpicker .red.focus.textarea, .colorpicker .red.focus.stepper, .colorpicker .red.focus.dateinput.time, .colorpicker .red.focus.filepicker, .colorpicker .text.green.focus, .colorpicker .green.focus.textarea, .colorpicker .green.focus.stepper, .colorpicker .green.focus.dateinput.time, .colorpicker .green.focus.filepicker, .colorpicker .text.blue.focus, .colorpicker .blue.focus.textarea, .colorpicker .blue.focus.stepper, .colorpicker .blue.focus.dateinput.time, .colorpicker .blue.focus.filepicker, .colorpicker .text.hue.focus, .colorpicker .hue.focus.textarea, .colorpicker .hue.focus.stepper, .colorpicker .hue.focus.dateinput.time, .colorpicker .hue.focus.filepicker, .colorpicker .text.saturation.focus, .colorpicker .saturation.focus.textarea, .colorpicker .saturation.focus.stepper, .colorpicker .saturation.focus.dateinput.time, .colorpicker .saturation.focus.filepicker, .colorpicker .text.value.focus, .colorpicker .value.focus.textarea, .colorpicker .value.focus.stepper, .colorpicker .value.focus.dateinput.time, .colorpicker .value.focus.filepicker {
         background-color: #002b36; }
     .colorpicker .text.red, .colorpicker .red.textarea, .colorpicker .red.stepper, .colorpicker .red.dateinput.time, .colorpicker .red.filepicker, .colorpicker .text.green, .colorpicker .green.textarea, .colorpicker .green.stepper, .colorpicker .green.dateinput.time, .colorpicker .green.filepicker, .colorpicker .text.blue, .colorpicker .blue.textarea, .colorpicker .blue.stepper, .colorpicker .blue.dateinput.time, .colorpicker .blue.filepicker, .colorpicker .text.hue, .colorpicker .hue.textarea, .colorpicker .hue.stepper, .colorpicker .hue.dateinput.time, .colorpicker .hue.filepicker, .colorpicker .text.saturation, .colorpicker .saturation.textarea, .colorpicker .saturation.stepper, .colorpicker .saturation.dateinput.time, .colorpicker .saturation.filepicker, .colorpicker .text.value, .colorpicker .value.textarea, .colorpicker .value.stepper, .colorpicker .value.dateinput.time, .colorpicker .value.filepicker, .colorpicker .text.hex, .colorpicker .hex.textarea, .colorpicker .hex.stepper, .colorpicker .hex.dateinput.time, .colorpicker .hex.filepicker {
-      width: 40px;
+      width: 42px;
       padding-left: 15px;
       line-height: 14px; }
       .colorpicker .text.red input, .colorpicker .red.textarea input, .colorpicker .red.stepper input, .colorpicker .red.dateinput.time input, .colorpicker .red.filepicker input, .colorpicker .text.green input, .colorpicker .green.textarea input, .colorpicker .green.stepper input, .colorpicker .green.dateinput.time input, .colorpicker .green.filepicker input, .colorpicker .text.blue input, .colorpicker .blue.textarea input, .colorpicker .blue.stepper input, .colorpicker .blue.dateinput.time input, .colorpicker .blue.filepicker input, .colorpicker .text.hue input, .colorpicker .hue.textarea input, .colorpicker .hue.stepper input, .colorpicker .hue.dateinput.time input, .colorpicker .hue.filepicker input, .colorpicker .text.saturation input, .colorpicker .saturation.textarea input, .colorpicker .saturation.stepper input, .colorpicker .saturation.dateinput.time input, .colorpicker .saturation.filepicker input, .colorpicker .text.value input, .colorpicker .value.textarea input, .colorpicker .value.stepper input, .colorpicker .value.dateinput.time input, .colorpicker .value.filepicker input, .colorpicker .text.hex input, .colorpicker .hex.textarea input, .colorpicker .hex.stepper input, .colorpicker .hex.dateinput.time input, .colorpicker .hex.filepicker input {
@@ -1099,7 +1102,8 @@
       width: 53px; }
       .colorpicker .text.hex input, .colorpicker .hex.textarea input, .colorpicker .hex.stepper input, .colorpicker .hex.dateinput.time input, .colorpicker .hex.filepicker input {
         font-size: 14px;
-        line-height: 16px; }
+        line-height: 16px;
+        margin-left: 0px; }
       .colorpicker .text.hex:before, .colorpicker .hex.textarea:before, .colorpicker .hex.stepper:before, .colorpicker .hex.dateinput.time:before, .colorpicker .hex.filepicker:before {
         content: "#";
         text-indent: 2px;

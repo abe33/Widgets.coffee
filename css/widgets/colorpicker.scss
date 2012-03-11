@@ -123,7 +123,7 @@
         display:block;
         position:absolute;
         width:12px;
-        height:81px;
+        height:79px;
         left:4px;
         border:1px solid $widget-button-border;
     }
@@ -172,6 +172,11 @@
 
         @include borderradius( 4px );
 
+        input{
+            padding:2px 0px;
+            margin-left:-3px;
+        }
+
         &.red {
             margin-top:5px;
         }
@@ -184,7 +189,7 @@
             }
         }
         &.red, &.green, &.blue, &.hue, &.saturation, &.value, &.hex {
-            width:40px;
+            width:42px;
             padding-left:15px;
             line-height:14px;
             input {
@@ -250,6 +255,7 @@
             input {
                 font-size:14px;
                 line-height:16px;
+                margin-left:0px;
             }
             &:before {
                 content:"#";
