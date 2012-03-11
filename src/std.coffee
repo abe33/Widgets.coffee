@@ -138,7 +138,7 @@ Date::timeEquals=( date, milliseconds=false )->
 # Returns true if the current date is today.
 Date::isToday=-> @dateEquals new Date
 
-#### Time conversion
+#### Time Conversion
 
 # Match if the passed-in string is a valid time string.
 # The following strings are considered as valid :
@@ -298,7 +298,7 @@ Date.datetimeToString=( date )->
       "#{ sign }#{ fill hours }:#{ fill minutes }"
     ].join ""
 
-#### DateTimeLocal conversion
+#### DateTimeLocal Conversion
 
 Date.dateTimeLocalRE= ->
     /// ^

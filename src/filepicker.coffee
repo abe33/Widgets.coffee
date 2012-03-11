@@ -47,7 +47,7 @@ class FilePicker extends Widget
         # The target is hidden when the widget is either readonly or disabled.
         if @cantInteract() then @hideTarget()
 
-    #### Target management
+    #### Target Management
 
     # The target for a `FilePicker` must be an input with the type `file`.
     checkTarget:( target )->
@@ -64,7 +64,7 @@ class FilePicker extends Widget
         @setValueLabel if @jTarget.val()? then @jTarget.val() else "Browse"
         @dummy.attr "title", @jTarget.val()
 
-    #### Dummy management
+    #### Dummy Management
 
     # The dummy for a `FilePicker` is a `span` with a `filepicker` class on it.
     createDummy:->

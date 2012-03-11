@@ -8,6 +8,7 @@
 # * [HasValueInRange](HasValueInRange)
 # * [FocusProvidedByChild](FocusProvidedByChild)
 # * [HasChild](HasChild)
+# * [DropDownPopup](DropDownPopup)
 
 # <a name="HasValueInRange"></a>
 ## HasValueInRange
@@ -32,7 +33,7 @@ HasValueInRange=
         # The `step` property represent the gap between legible values.
         @step = null
 
-        #### Keyboard controls
+        #### Keyboard Controls
 
         # Use the `Up` or `Left` arrows on the keyboard to increment
         # the value by the amount of the `step` property.
@@ -110,7 +111,7 @@ HasValueInRange=
         clearInterval @intervalId
         @intervalId = -1
 
-    #### Events handlers
+    #### Events Handlers
 
     # Using the mouse wheel, the value is either incremented
     # or decremented according to the event's delta.
@@ -140,7 +141,7 @@ FocusProvidedByChild=
         @focusProvider.bind @focusRelatedEvents, (e)=>
             @[e.type].apply this, arguments
 
-    #### Focus management
+    #### Focus Management
 
     # There's no need for the dummy to be able to receive the focus. So
     # the dummy will never have the `tabindex` attribute set.
@@ -150,7 +151,7 @@ FocusProvidedByChild=
     grabFocus:->
         @focusProvider.focus()
 
-    #### Events handling
+    #### Events Handling
 
     # Since focus related events will be provided by another object,
     # the events that the widget will receive from its dummy is reduced.
@@ -187,7 +188,7 @@ HasChild=
         # `children` property.
         @children = []
 
-    #### Children management
+    #### Children Management
 
     # Use the `add` method to add child to this container.
     add:( child )->
@@ -228,33 +229,36 @@ HasChild=
         if e.target is @dummy[0]
             @super "focus", e
 
-#
-IsDialog=
+
+# <a name="DropDownPopup"></a>
+## DropDownPopup
+
+# A  `DropDownPopup` widget is a widget which display is triggered
+# by and bound to another widget.
+DropDownPopup=
     constructorHook:->
-        # A dialog is hidden at creation.
+        # A drop down popup is hidden at creation.
         @dummy.hide()
 
         # Using the `Enter` key while editing a color comfirm the edit
-        # and close the dialog.
+        # and close the drop down popup.
         @registerKeyDownCommand keystroke( keys.enter ), @comfirmChangesOnEnter
         # Using the `Escape` ket while editing abort the current edit
-        # and close the dialog.
+        # and close the drop down popup.
         @registerKeyDownCommand keystroke( keys.escape ), @abortChanges
 
-    dialogRequested:( caller )->
-        @caller = caller
-        @setupDialog caller
-        @open()
+    #### Display Management
 
+    # Handles the *opening* of the popup.
     open:->
-        # The dialog register itself to catch clicks done outside of it.
-        # When it occurs the dialog will close itself and call the
-        # `comfirmChanges` method.
+        # The drop down popup register itself to catch clicks done
+        # outside of it. When it occurs the drop down popup will close
+        # itself and call the `comfirmChanges` method.
         $(document).bind "mouseup", @documentDelegate=(e)=>
             @comfirmChanges()
 
         # The dummy is placed below the widget that requested
-        # the dialog.
+        # the drop down popup.
         @dummy.css("left", @caller.dummy.offset().left )
               .css("top",  @caller.dummy.offset().top +
                            @caller.dummy.height() )
@@ -262,25 +266,41 @@ IsDialog=
               # The dummy is then displayed.
               .show()
 
-        # At the end of the request the dialog gets the focus.
+        # At the end of the request the drop down popup gets the focus.
         @grabFocus()
 
-    # Hides the dummy of this dialog.
+    # Hides the dummy of this drop down popup.
     close:->
         @dummy.hide()
         $(document).unbind "mouseup", @documentDelegate
 
         @caller.grabFocus()
 
+    #### Signals Handlers
+
+    # Receive a signal from a `caller` object that need the drop down popup
+    # to appear.
+    dialogRequested:( caller )->
+        @caller = caller
+        @setupDialog caller
+        @open()
+
+    #### Events Handlers
+
+    # Prevents the click on the dummy to bubble to the `document` object.
     mouseup:(e)-> e.stopImmediatePropagation()
 
+    #### Placeholder Functions
+
+    # Placeholder functions that you can overrides to implements the concrete
+    # comfirmation/cancelation routines of your widget.
     abortChanges:-> @close()
     comfirmChanges:->
     comfirmChangesOnEnter:->
     setupDialog:( caller )->
 
 
-@IsDialog             = IsDialog
+@DropDownPopup        = DropDownPopup
 @HasChild             = HasChild
 @HasValueInRange      = HasValueInRange
 @FocusProvidedByChild = FocusProvidedByChild

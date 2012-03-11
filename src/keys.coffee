@@ -33,7 +33,7 @@ keystroke = (keyCode, modifiers)->
         KeyStroke.instances["#{keyCode}-#{modifiers}"] = new KeyStroke keyCode,
                                                                        modifiers
 
-##### KeyStroke class
+#### KeyStroke
 
 # The `KeyStroke` class isn't meant to be instanciated manually,
 # use the `keystroke` function instead.
@@ -80,6 +80,8 @@ class KeyStroke
                 break
 
         a.join "+"
+
+#### Constants
 
 # A list of keys codes and modifiers values.
 keys =

@@ -41,14 +41,14 @@ class TextArea extends Widget
 
         @valueIsObsolete = false
 
-    #### Target management
+    #### Target Management
 
     # The target for a `TextArea` must be a `textarea` node.
     checkTarget:(target)->
         unless @isTag target, "textarea"
             throw new Error "TextArea only allow textarea nodes as target"
 
-    #### Dummy management
+    #### Dummy Management
 
     # The dummy for a `TextArea` is a `span` with a `textarea` class on it.
     createDummy:->
@@ -57,7 +57,7 @@ class TextArea extends Widget
         @focusProvider = @jTarget
         dummy
 
-    #### Events handling
+    #### Events Handling
 
     # When the user types some text in the target, the widget's
     # value is marked as obsolete.

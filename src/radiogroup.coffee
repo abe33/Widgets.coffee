@@ -29,7 +29,7 @@
 class RadioGroup
 
     constructor:( radios... )->
-        #### RadioGroup signals
+        #### RadioGroup Signals
 
         # The `selectionChanged` signal is dispatched when the selection
         # of the current radio group has changed.
@@ -47,7 +47,7 @@ class RadioGroup
         @radios = []
         @add radio for radio in radios
 
-    #### Radios management
+    #### Radios Management
 
     # Adds a `Radio` in this group unless this radio is already
     # registered.
@@ -120,7 +120,7 @@ class RadioGroup
             @selectionChanged.dispatch this, oldSelectedRadio, @selectedRadio
 
 
-    #### Radio signals listeners
+    #### Radio Signals Listeners
 
     # Listen to the `checkedChanged` signal of the radio.
     #

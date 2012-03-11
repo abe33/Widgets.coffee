@@ -71,14 +71,14 @@ class Button extends Widget
         if @hasTarget and @jTarget.attr("type") is "reset"
             @jTarget.click (e)-> e.preventDefault()
 
-        #### Keyboard controls
+        #### Keyboard Controls
 
         # Both the `Enter` and `Space` keys can be used instead
         # of the click to trigger the button.
         @registerKeyDownCommand keystroke(keys.space), @click
         @registerKeyDownCommand keystroke(keys.enter), @click
 
-    #### Target management
+    #### Target Management
 
     # The target for a button must an input with one of the following types:
     # `button`, `reset` or `submit`.
@@ -119,7 +119,7 @@ class Button extends Widget
 
         if property in [ "value", "action" ] then @updateContent()
 
-    #### Events handler
+    #### Events Handler
 
     # Catch clicks on the button.
     click:(e)->

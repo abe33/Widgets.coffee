@@ -12,7 +12,7 @@ class Widget extends Module
         # be verified in the `checkTarget` method.
         if target? then @checkTarget target
 
-        #### Widget signals
+        #### Widget Signals
 
         # The `propertyChanged` signal is dispatched when a call
         # to the `set` method is performed.
@@ -59,7 +59,7 @@ class Widget extends Module
         @detached        = new Signal
 
 
-        #### Widget's target related properties.
+        #### Widget Target Related Properties.
 
         # The `jTarget` property contains the `jQuery` object
         # for the target. However, if `target` is `null`,
@@ -152,7 +152,7 @@ class Widget extends Module
 
         super()
 
-    #### Properties accessors
+    #### Properties Accessors
     #
     # Properties of a widgets can be accessed either directly
     # or through the `get` and `set` methods of the widget.
@@ -281,7 +281,7 @@ class Widget extends Module
 
         @[ property ] = value
 
-    #### Target management
+    #### Target Management
 
     # Verify that the passed-in target is valid and throw an error
     # if itsn't the case.
@@ -322,7 +322,7 @@ class Widget extends Module
     # A placeholder for the target's change event.
     targetChange:( e )->
 
-    #### Dummy management
+    #### Dummy Management
 
     # Returns `true` when the widget is not in a state that allow
     # a change to the value with a user interaction.
@@ -463,7 +463,7 @@ class Widget extends Module
 
     keypress:( e )-> true
 
-    #### Focus management
+    #### Focus Management
 
     # Set the focusable state of the dummy.
     # It simply toggle the `tabindex` attributes
@@ -479,7 +479,7 @@ class Widget extends Module
     # Remove the focus from this widget.
     releaseFocus:-> @dummy.blur() if @hasDummy
 
-    #### Keyboard shortcuts management
+    #### Keyboard Shortcuts Management
 
     # Register the passed-in function to be triggered
     # when the keystroke `ks` is matched on `keydown`.
@@ -544,7 +544,7 @@ class Widget extends Module
             else @jTarget.removeAttr property
         value
 
-    #### Miscelaneous functions
+    #### Miscelaneous Functions
 
     # Returns the string representation of this widget.
     toString:-> @stringify()

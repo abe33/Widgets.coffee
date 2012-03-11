@@ -316,7 +316,7 @@ class TimeInput extends AbstractDateInputWidget
         # The default `step` for a time input is one minute.
         super target, 60
 
-    #### Dummy management
+    #### Dummy Management
 
     # The dummy of a `TimeInput` is the same as the `Stepper`'s' one,
     # one text input, and two additional buttons to increment or
@@ -393,7 +393,7 @@ class TimeInput extends AbstractDateInputWidget
         if @get "disabled" then @focusProvider.attr "disabled", "disabled"
         else @focusProvider.removeAttr "disabled"
 
-    #### Events handlers
+    #### Events Handlers
 
     # Catch changes made to the text input content, validates it, and
     # affect it as the new value if validated.

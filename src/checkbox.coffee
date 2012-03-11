@@ -39,7 +39,7 @@ class CheckBox extends Widget
     constructor:(target)->
         super target
 
-        #### Checkbox signals
+        #### Checkbox Signals
 
         # The `checkedChanged` signal is dispatched when the `checked`
         # property of the widget is modified.
@@ -73,7 +73,7 @@ class CheckBox extends Widget
         # The `checked` property is mapped to a state on the dummy.
         @dummyStates = [ "checked", "disabled", "readonly", "required" ]
 
-        #### Keyboard controls
+        #### Keyboard Controls
 
         # Use the `enter` or `space` key to toggle the
         #  checkbox with the keyboard.
@@ -83,7 +83,7 @@ class CheckBox extends Widget
         @updateStates()
         @hideTarget()
 
-    #### Target management
+    #### Target Management
 
     # The target for a `CheckBox` must be an `input` with a type `checkbox`.
     checkTarget:( target )->
@@ -91,7 +91,7 @@ class CheckBox extends Widget
             throw new Error """CheckBox target must be an input
                                with a checkbox type"""
 
-    #### Properties accessors
+    #### Properties Accessors
 
     # Setting the `checked` property also affect the `value` property.
     set_checked:( property, value )->
@@ -114,14 +114,14 @@ class CheckBox extends Widget
         @updateValue @get("checked"), value
         @[ property ] = value
 
-    #### Dummy management
+    #### Dummy Management
 
     # The dummy for the checkbox is just a `<span>` element
     # with a `checkbox` class.
     createDummy:->
         $ "<span class='checkbox'></span>"
 
-    #### Checked state management
+    #### Checked State Management
 
     # Toggle the state of the checkbox.
     toggle:->
@@ -146,7 +146,7 @@ class CheckBox extends Widget
         @set "value", if checked then values[0] else values[1]
         @valueSetProgrammatically = false
 
-    #### Dummy events handlers
+    #### Dummy Events Handlers
 
     # Toggle the checkbox on a user click.
     click:(e)->

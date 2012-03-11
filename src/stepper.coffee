@@ -37,7 +37,7 @@ class Stepper extends NumericWidget
 
         @updateDummy @get("value"), @get("min"), @get("max"), @get("step")
 
-    #### Target management
+    #### Target Management
 
     # The target for a `Stepper` must be an input with the type `number`.
     checkTarget:( target )->
@@ -45,7 +45,7 @@ class Stepper extends NumericWidget
             throw new Error """Stepper target must be an input
                                with a number type"""
 
-    #### Dummy management
+    #### Dummy Management
 
     # The dummy for a stepper widget is a span containing :
     #

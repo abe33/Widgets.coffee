@@ -2,7 +2,7 @@
 
 class Calendar extends Widget
 
-    @mixins IsDialog
+    @mixins DropDownPopup
 
     @DAYS   = ["M","T","W","T","F","S","S",]
     @MONTHS = [ "Jan", "Feb", "Mar", "Apr", "May", "Jun",

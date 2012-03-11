@@ -37,7 +37,7 @@ class NumericWidget extends Widget
         # Target is hidden if provided.
         @hideTarget()
 
-    #### Value manipulation
+    #### Value Manipulation
 
     snapToStep:( value )->
         step = @get "step"
@@ -51,7 +51,7 @@ class NumericWidget extends Widget
     decrement:->
         @set "value", @get("value") - @get("step")
 
-    #### Dummy management
+    #### Dummy Management
 
     createDummy:->
         $ "<span></span>"
@@ -64,7 +64,7 @@ class NumericWidget extends Widget
     # widget's properties change.
     updateDummy:( value, min, max, step )->
 
-    #### Properties accessors
+    #### Properties Accessors
 
     # When setting the `value` property, the passed-in
     # new value is first cleaned to fit in the widget's

@@ -224,7 +224,7 @@ class ColorInput extends Widget
     constructor:( target )->
         super target
 
-        #### ColorInput signals
+        #### ColorInput Signals
 
         # The `dialogRequested` signal is dispatched when the widget
         # is activated through a click or a keyboard input.
@@ -257,14 +257,14 @@ class ColorInput extends Widget
 
         @hideTarget()
 
-        #### Keyboard controls
+        #### Keyboard Controls
 
         # Both the `Enter` and `Space` keys can be used instead
         # of the click to display the dialog.
         @registerKeyDownCommand keystroke(keys.space), @click
         @registerKeyDownCommand keystroke(keys.enter), @click
 
-    #### Target management
+    #### Target Management
 
     # Color inputs only allow input with a `color` type
     # as target.
@@ -272,7 +272,7 @@ class ColorInput extends Widget
         unless @isInputWithType target, "color"
             throw new Error "ColorInput's target should be a color input"
 
-    #### Dummy management
+    #### Dummy Management
 
     # The `ColorInput` dummy contains an additional `span` used
     # to display the current color of this widget.
@@ -302,7 +302,7 @@ class ColorInput extends Widget
             colorPreview.attr "style",
                               "background: #{value}; color: #{textColor};"
 
-    #### Properties accessors
+    #### Properties Accessors
 
     # The `color` setter takes an object such as :
     #
@@ -338,7 +338,7 @@ class ColorInput extends Widget
 
         super property, value
 
-    #### Events handling
+    #### Events Handling
 
     # Clicking on a color picker dispatch a dialog request signal.
     click:(e)->
@@ -392,7 +392,7 @@ class SquarePicker extends Widget
         @xLocked = false
         @yLocked = false
 
-    #### Axis locks
+    #### Axis Locks
     #
     # The widget's cursor can be locked either on the X axis
     # or on the Y axis.
@@ -414,7 +414,7 @@ class SquarePicker extends Widget
     unlockY:->
         @yLocked = false
 
-    #### Dummy management
+    #### Dummy Management
 
     # The cursor for the widget is a `span` indide
     # the dummy.
@@ -449,7 +449,7 @@ class SquarePicker extends Widget
         cursor.css "left", "#{left}px"
         cursor.css "top", "#{top}px"
 
-    #### Properties accessors
+    #### Properties Accessors
 
     # Sets the value of the horizontal range.
     set_rangeX:( property, value )->
@@ -532,7 +532,7 @@ class SquarePicker extends Widget
         # that the `min` value is lower than the `max` value.
         min? and max? and not isNaN( min ) and not isNaN( max ) and min < max
 
-    #### Cursor dragging
+    #### Cursor Dragging
     # Pressing the mouse over the widget starts a drag gesture.
     mousedown:(e)->
         unless @cantInteract()
@@ -603,7 +603,7 @@ class SquarePicker extends Widget
 # </script>
 class ColorPicker extends Widget
 
-    @mixins HasChild, IsDialog
+    @mixins HasChild, DropDownPopup
 
     constructor:->
         super()
@@ -808,7 +808,7 @@ class ColorPicker extends Widget
          # And the `span` meant to display the original value is updated.
         @dummy.children(".oldColor").attr "style", "background: #{value};"
 
-    #### Comfirmation and Cancelation
+    #### Comfirmation And Cancelation
 
     # Handles the changes comfirmation with the `Enter` key.
     comfirmChangesOnEnter:->
@@ -852,7 +852,7 @@ class ColorPicker extends Widget
         @fromHex value
         super property, value
 
-    #### Internal modification methods
+    #### Internal Modification Methods
 
     # Sets the widget's model with an hexadecimal color.
     # The `#` prefix is optional.
@@ -890,7 +890,7 @@ class ColorPicker extends Widget
 
         @invalidate()
 
-    #### Signal handlers
+    #### Signal Handlers
 
     # Catches the change made to the `RadioGroup` selection
     # and affect the corresponding edit mode.
@@ -922,7 +922,7 @@ class ColorPicker extends Widget
 
                 when "hex"        then @fromHex value
 
-## Color manipulation modes
+## Color Manipulation Modes
 
 #<a name="AbstractMode"></a>
 #### AbstractMode
@@ -966,7 +966,7 @@ class AbstractMode
         @dialog.squarePicker.dummy.prepend $ s
 
 #<a name="HSV"></a>
-#### HSV mode
+#### HSV Mode
 
 # The `HSVMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `hue` component and the square
@@ -1024,7 +1024,7 @@ class HSVMode extends AbstractMode
             @updateDialog h, s, v
 
 #<a name="SHV"></a>
-#### SHV mode
+#### SHV Mode
 
 # The `SHVMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `saturation` component and the square
@@ -1077,7 +1077,7 @@ class SHVMode extends AbstractMode
             @updateDialog h, s, v
 
 #<a name="VHS"></a>
-#### VHS mode
+#### VHS Mode
 
 # The `VHSMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `value` component and the square
@@ -1130,7 +1130,7 @@ class VHSMode extends AbstractMode
             @updateDialog h, s, v
 
 #<a name="RGB"></a>
-#### RGB mode
+#### RGB Mode
 
 # The `RGBMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `red` component and the square
@@ -1182,7 +1182,7 @@ class RGBMode extends AbstractMode
             @updateDialog r, g, b
 
 #<a name="GRB"></a>
-#### GRB mode
+#### GRB Mode
 
 # The `RGBMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `green` component and the square
@@ -1234,7 +1234,7 @@ class GRBMode extends AbstractMode
             @updateDialog r, g, b
 
 #<a name="BGR"></a>
-#### BGR mode
+#### BGR Mode
 
 # The `RGBMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `blue` component and the square

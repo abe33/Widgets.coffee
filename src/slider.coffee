@@ -40,7 +40,7 @@ class Slider extends NumericWidget
     constructor:( target )->
         super target
 
-        #### Dragging properties
+        #### Dragging Properties
 
         # The `draggingKnob` property is a boolean that indicates
         # whether the user is currently dragging the knob or not.
@@ -68,14 +68,14 @@ class Slider extends NumericWidget
         , this
 
 
-    #### Target management
+    #### Target Management
 
     # The target for a `Slider` must be an input with the type `range`.
     checkTarget:( target )->
         unless @isInputWithType target, "range"
             throw new Error "Slider target must be an input with a range type"
 
-    #### Mouse controls
+    #### Mouse Controls
     #
     # The knob child of the slider can be dragged to modify
     # the slider's value.
@@ -171,7 +171,7 @@ class Slider extends NumericWidget
             # as the knob do.
             @handleKnobMouseDown e
 
-    #### Dummy management
+    #### Dummy Management
 
     # The dummy of the `Slider` widget is a parent `<span>` with
     # a `slider` class and three `<span>` child to represent respectively
