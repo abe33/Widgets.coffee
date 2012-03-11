@@ -1,0 +1,11 @@
+.dateinput {
+    @extend .widget-common;
+
+    &.time {
+        @extend .stepper;
+    }
+    &.date, &.month, &.week {
+        @extend .single-select;
+
+    }
+}

@@ -1,0 +1,82 @@
+.slider {
+    @extend .widget-common;
+
+    &:hover {
+        .knob {
+            @extend .outset-box.light;
+        }
+    }
+    &.focus {
+        .knob {
+            @extend .outset-box.light;
+        }
+        .track {
+            background-color:$widget-text-focus-background;
+        }
+        .value {
+            color:$widget-text-focus-color;
+        }
+    }
+    &.disabled, &.readonly {
+        &:hover {
+            .knob {
+                @extend .outset-box;
+            }
+        }
+    }
+    &.disabled {
+        .value {
+            @extend .disabled-text-content;
+        }
+    }
+    .track {
+        position:absolute;
+        z-index:0;
+        height:20px;
+        display:block;
+        width:100%;
+
+        @extend .inset-box;
+        @include borderradius(9px);
+    }
+    .knob {
+        position:relative;
+        z-index:1;
+        width:40px;
+        height:10px;
+        display:block;
+        margin-left:3px;
+        margin-top:3px;
+        margin-right:5px;
+
+        @extend .outset-box;
+        @include borderradius(6px);
+    }
+    .value {
+        display:inline-block;
+        position:relative;
+        color:$widget-text-color;
+        padding:2px;
+        background:$widget-text-background;
+        width:26px;
+
+        text-align:center;
+
+        @include borderradius(3px);
+        margin-top:10px;
+
+        &:before {
+            content:"";
+            position:absolute;
+            display:block;
+            width:0px;
+            height:1px;
+            border:1px solid $widget-text-background;
+            border-color:transparent transparent $widget-text-background transparent;
+            border-width:4px;
+            margin-left:-4px;
+            left:50%;
+            top:-9px;
+        }
+    }
+}
