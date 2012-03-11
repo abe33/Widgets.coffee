@@ -57,8 +57,7 @@ class Button extends Widget
                     action = arg
                 else
                     target = arg
-            when 2
-                [ target, action ] = args
+            when 2 then [ target, action ] = args
 
         super target
 
@@ -68,6 +67,9 @@ class Button extends Widget
         # Initialize the button's content with the provided data.
         @updateContent()
         @hideTarget()
+
+        if @hasTarget and @jTarget.attr("type") is "reset"
+            @jTarget.click (e)-> e.preventDefault()
 
         #### Keyboard controls
 

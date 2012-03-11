@@ -89,15 +89,15 @@
                 }
             }];
 
-            $("input,textarea,select").widgets();
+            $("form").widgets();
 
             var l = builds.length;
             var i = 0;
             for(i;i<l;i++){
                 var tb = new TableBuilder( builds[i] );
                 var t = tb.build();
-                $("form").after("<a name='"+ builds[i].title +"'></a>");
-                $("form").after(t);
+                $("form").first().after("<a name='"+ builds[i].title +"'></a>");
+                $("form").first().after(t);
             }
         });
     </script>
@@ -299,6 +299,7 @@
 
 
     </form>
+<form>
 <table class="float" id="accentize">
     <tr><th colspan="2" class="table-header">Accentize</th></tr>
     <tr>
@@ -330,5 +331,5 @@
         <td><input type="text" value="Text" class='violet'></input></td>
     </tr>
 </table>
-
+</form>
 </body>

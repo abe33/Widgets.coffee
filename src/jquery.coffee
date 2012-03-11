@@ -65,6 +65,7 @@ class WidgetPlugin
     # The `process` method receive a query set and loop through the
     # elements.
     process:( queryset )->
+        widgets = []
         queryset.each ( i, o )=>
             target = $ o
 
@@ -93,6 +94,7 @@ class WidgetPlugin
                     # with the plugin as context and the element
                     # as argument
                     widget = processor.call this, o
+                    widgets.push widget
 
                     # The produced widget is then inserted in the DOM
                     # after its target.
@@ -109,6 +111,8 @@ class WidgetPlugin
 
                     # Once a processor matched, the loop is breaked.
                     break
+
+        return widgets
 
     #### Matching Utilities
 
@@ -137,6 +141,7 @@ class WidgetPlugin
         ( o )-> @isInputWithType.apply this, [ o ].concat types
 
 #### Plugin Setup
+
 
 # An instance of the plugin class is available as a property of the `$`
 # object.
@@ -216,12 +221,10 @@ radioProcessor=( o )->
     # For all radios that have a name, a `RadioGroup` stored with
     # the radios name is created and filled with the `Radio` widgets.
     if name?
-        unless $.widgetPlugin.radiogroups? then $.widgetPlugin.radiogroups = {}
-        groups = $.widgetPlugin.radiogroups
+        @radiogroups = {} unless @radiogroups?
+        @radiogroups[ name ] = new RadioGroup unless @radiogroups[ name ]?
 
-        unless groups[ name ]? then groups[ name ] = new RadioGroup
-        group = groups[ name ]
-
+        group = @radiogroups[ name ]
         group.add widget
 
     widget
@@ -230,4 +233,33 @@ $.widgetPlugin.register "radio",
                         $.widgetPlugin.inputWithType("radio"),
                         radioProcessor
 
+formProcessor=(o)->
+    @forms = [] unless @forms?
+
+    form = $(o)
+    resetButton = null
+    submitButton = null
+    widgets = form.find("input, textarea, select").widgets()
+
+    for widget in widgets
+        if widget.jTarget.attr("type") is "reset" and not widget.cantInteract()
+            resetButton = widget
+
+        if widget.jTarget.attr("type") is "submit" and
+           not widget.cantInteract()
+            submitButton = widget
+
+    if resetButton then resetButton.dummy.click =>
+        widget.reset() for widget in widgets when widget not instanceof Button
+
+    @forms.push
+        method:form.attr "method"
+        action:form.attr "action"
+        widgets:widgets
+        resetButton:resetButton
+        submitButton:submitButton
+
+    null
+
+$.widgetPlugin.register "form", "form", formProcessor
 

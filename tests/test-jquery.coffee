@@ -354,3 +354,96 @@ $( document ).ready ->
         target.children().widgets()
 
         assertThat target.children(".single-select").length, equalTo 1
+
+    test "When a child is a form, the plugin should create a specific
+         object and process its form elements children", ->
+
+        target = $("<form method='post' action='/action'>
+                        <input type='text'></input>
+                        <input type='submit'></input>
+                        <input type='reset'></input>
+                    </form>")
+
+        target.widgets()
+
+        assertThat target.find(".text").length, equalTo 1
+        assertThat target.find(".button").length, equalTo 2
+        assertThat $.widgetPlugin.forms.length, equalTo 1
+
+        formObject = $.widgetPlugin.forms[0]
+
+        assertThat formObject.method is "post"
+        assertThat formObject.action is "/action"
+        assertThat formObject.widgets.length, equalTo 3
+
+        assertThat formObject.widgets[0] instanceof TextInput
+        assertThat formObject.widgets[1] instanceof Button
+        assertThat formObject.widgets[2] instanceof Button
+
+        assertThat formObject.submitButton is formObject.widgets[1]
+        assertThat formObject.resetButton is formObject.widgets[2]
+
+        delete $.widgetPlugin.forms
+
+    test "Forms with a reset button, when clicked, should call reset
+          on all the value widgets", ->
+
+        assertThatValueNotChanged=(w,v)->
+            assertThat w.get("value"), equalTo v
+            assertThat w.jTarget.attr("value"), equalTo v
+
+        target = $("<form method='post' action='/action'>
+                        <input type='text' value='foo'></input>
+                        <input type='number' value='0'></input>
+                        <input type='range' value='50'></input>
+                        <input type='color' value='#112233'></input>
+                        <input type='date' value='2012-05-24'></input>
+                        <input type='time' value='16:45:00'></input>
+                        <input type='month' value='2012-05'></input>
+                        <input type='week' value='2016-W05'></input>
+                        <textarea>value</textarea>
+                        <select>
+                            <option selected>foo</option>
+                            <option>bar</option>
+                            <option>rab</option>
+                        </select>
+                        <input type='reset'></input>
+                    </form>")
+
+        target.widgets()
+        formObject = $.widgetPlugin.forms[0]
+
+        [   text,   number, range,
+            color,  date,   time,
+            month,  week,   textarea,
+            select, reset
+        ] = formObject.widgets
+
+        text.set     "value", "bar"
+        number.set   "value", 12
+        range.set    "value", 12
+        color.set    "value", "#445566"
+        date.set     "value", "2007-11-05"
+        time.set     "value", "16:04:45"
+        month.set    "value", "2017-12"
+        week.set     "value", "2014-W25"
+        textarea.set "value", "textarea"
+        select.set   "value", "bar"
+
+        reset.dummy.click()
+
+        assertThatValueNotChanged text,     "foo"
+        assertThatValueNotChanged number,   0
+        assertThatValueNotChanged range,    50
+        assertThatValueNotChanged color,    "#112233"
+        assertThatValueNotChanged date,     "2012-05-24"
+        assertThatValueNotChanged time,     "16:45:00"
+        assertThatValueNotChanged month,    "2012-05"
+        assertThatValueNotChanged week,     "2016-W05"
+        assertThatValueNotChanged textarea, "value"
+        assertThatValueNotChanged select,   "foo"
+
+        delete $.widgetPlugin.forms
+
+
+
