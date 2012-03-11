@@ -66,6 +66,7 @@
     vertical-align:bottom;
 
     @extend .font;
+    @include borderbox;
 
     &.disabled, &.readonly {
         @include opacity(0.5,50);

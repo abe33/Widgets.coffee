@@ -12,6 +12,7 @@
 #
 #  * [AbstractDateInputWidget](#AbstractDateInputWidget)
 #  * [OpenCalendar](#OpenCalendar)
+#  * [HasDateAndTime](#HasDateAndTime)
 #
 # The supported dates and time modes and their corresponding widgets are :
 #
@@ -284,6 +285,17 @@ OpenCalendar=
         @dialogRequested.add @constructor.calendar.dialogRequested,
                              @constructor.calendar
 
+    # Creates the dummy that will contains the widget's value in
+    # a `span` with the class `value`.
+    createDummy:->
+        dummy = @super "createDummy"
+        dummy.append "<span class='value'>#{ @get "value" }</span>"
+        dummy
+
+    # Updates the `span` that contains the value.
+    updateDummy:->
+        @dummy.find(".value").text @get "value"
+
     # Clicking on the widget will trigger the `dialogRequested` signal
     # unless it can't interact.
     # The propagation of the event is stopped to prevent the document
@@ -292,6 +304,50 @@ OpenCalendar=
         unless @cantInteract()
             e.stopImmediatePropagation()
             @dialogRequested.dispatch this
+
+
+# <a name='HasDateAndTime'></a>
+## HasDateAndTime
+
+# This mixin provides the composition of a `DateInput` and a `TimeInput`
+# as child of the widget. Each component of the widget value is handled
+# by these components.
+HasDateAndTime=
+    constructorHook:->
+        @add @dateInput = new DateInput
+        @add @timeInput = new TimeInput
+
+        @dateInput.valueChanged.add @dateChanged, this
+        @timeInput.valueChanged.add @timeChanged, this
+
+    createDummy:-> @super "createDummy"
+
+    updateDummy:->
+        @super "updateDummy"
+
+        @datetimeSetProgramatically = true
+        @dateInput.set "date", @get("date").clone()
+        @timeInput.set "date", @get("date").clone()
+        @datetimeSetProgramatically = false
+
+    dateChanged:( widget )->
+        return if @datetimeSetProgramatically
+
+        v = widget.get "date"
+        d = @get "date"
+        d.year( v.year() ).month( v.month() ).date( v.date() )
+
+        @set "date", d
+
+    timeChanged:( widget )->
+        return if @datetimeSetProgramatically
+
+        v = widget.get "date"
+        d = @get "date"
+        d.hours( v.hours() ).minutes( v.minutes() ).seconds( v.seconds() )
+
+        @set "date", d
+
 
 # <a name='TimeInput'></a>
 ## TimeInput
@@ -314,11 +370,13 @@ OpenCalendar=
 # input3.attach("#timeinput-demos");
 # </script>
 class TimeInput extends AbstractDateInputWidget
-    # The `TimeWidget` is displayed as a stepper
+    # The `TimeWidget` is displayed as a spinner
     # with a text input that allow to input directly
     # a time. In that case the focus is provided
     # by the text input.
-    @mixins FocusProvidedByChild
+    @mixins HasFocusProvidedByChild, Spinner
+
+    spinnerDummyClass:"dateinput time"
 
     # Setup the concrete function for validation and conversion
     # of the `AbstractDateInputWidget` class.
@@ -333,80 +391,11 @@ class TimeInput extends AbstractDateInputWidget
 
     #### Dummy Management
 
-    # The dummy of a `TimeInput` is the same as the `Stepper`'s' one,
-    # one text input, and two additional buttons to increment or
-    # decrement the value.
-    createDummy:->
-        dummy = super()
-        dummy.append $ """<input type='text' class='value widget-done'></input>
-                        <span class='down'></span>
-                        <span class='up'></span>"""
-
-        # The focus isValidValue provided by the text input.
-        @focusProvider = dummy.find "input"
-
-        # Gets references to the buttons for setup.
-        down = dummy.find(".down")
-        up = dummy.find(".up")
-
-        # Pressing on the buttons starts an increment or decrement
-        # interval according to the pressed button.
-        buttonsMousedown = (e)=>
-            e.stopImmediatePropagation()
-
-            @mousePressed = true
-
-            # The function that start and end the interval
-            # are stored locally according to the pressed button.
-            switch e.target
-                when down[0]
-                    startFunction = @startDecrement
-                    endFunction   = @endDecrement
-                when up[0]
-                    startFunction = @startIncrement
-                    endFunction   = @endIncrement
-
-            # Initiate the interval.
-            startFunction.call this
-            # And register a callback to stop the interval on `mouseup`.
-            $(document).bind "mouseup", @documentDelegate = (e)=>
-                @mousePressed = false
-                endFunction.call this
-                $(document).unbind "mouseup", @documentDelegate
-
-        down.bind "mousedown", buttonsMousedown
-        up.bind "mousedown", buttonsMousedown
-
-        # When the mouse go out of the button while
-        # an interval is runnung, the interval is stopped.
-        down.bind "mouseout", =>
-            if @incrementInterval isnt -1 then @endDecrement()
-        up.bind "mouseout", =>
-            if @incrementInterval isnt -1 then @endIncrement()
-
-        # Until the mouse came back over the button.
-        down.bind "mouseover", =>
-            if @mousePressed then @startDecrement()
-        up.bind "mouseover", =>
-            if @mousePressed then @startIncrement()
-
-        dummy
-
     # The displayed value for a `TimeInput` is the time in the
     # format `hh:mm`, neither the seconds nor the milliseconds
     # are displayed.
     updateDummy:->
         @dummy.find("input").val @get("value").split(":")[0..1].join(":")
-
-    # The states of the widget is reflected on the widget's input.
-    updateStates:->
-        super()
-
-        if @get "readonly" then @focusProvider.attr "readonly", "readonly"
-        else @focusProvider.removeAttr "readonly"
-
-        if @get "disabled" then @focusProvider.attr "disabled", "disabled"
-        else @focusProvider.removeAttr "disabled"
 
     #### Events Handlers
 
@@ -416,48 +405,13 @@ class TimeInput extends AbstractDateInputWidget
         value = @focusProvider.val()
         if @isValidValue value then @set "value", value else @updateDummy()
 
-
-    input:(e)->
-
-    # Releasing the mouse over the widget will force the focus on the
-    # input. That way, clicking on the increment and decrement button
-    # will also give the focus to the widget.
-    mouseup:->
-        if @get "disabled" then return true
-
-        @grabFocus()
-
-        if @dragging
-            $(document).unbind "mousemove", @documentMouseMoveDelegate
-            $(document).unbind "mouseup",   @documentMouseUpDelegate
-            @dragging = false
-
-        true
-
-    # The `TimeInput` allow to drag the mouse vertically to change the value.
-    mousedown:(e)->
-        if @cantInteract() then return true
-
-        @dragging = true
-        @pressedY = e.pageY
-
-        $(document).bind "mousemove",
-                         @documentMouseMoveDelegate =( e )=> @mousemove e
-        $(document).bind "mouseup",
-                         @documentMouseUpDelegate   =( e )=> @mouseup e
-
     # The value is changed on the basis that a move of 1 pixel change the value
     # of the amount of `step`.
-    mousemove:(e)->
-        if @dragging
-            y = e.pageY
-            dif = @pressedY - y
-            ms = @get("date").valueOf()
-            step = @get "step"
+    drag:( dif )->
+        ms = @get("date").valueOf()
+        step = @get "step"
 
-            @set "date", new Date ms + dif * step * Date.MILLISECONDS_IN_SECOND
-            @pressedY = y
-
+        @set "date", new Date ms + dif * step * Date.MILLISECONDS_IN_SECOND
 
 # <a name='DateInput'></a>
 ## DateInput
@@ -498,16 +452,6 @@ class DateInput extends AbstractDateInputWidget
         @isValidValue  = Date.isValidDate
 
         super target
-    # Creates the dummy that will contains the widget's value in
-    # a `span` with the class `value`.
-    createDummy:->
-        dummy = super()
-        dummy.append "<span class='value'>#{ @get "value" }</span>"
-        dummy
-
-    # Updates the `span` that contains the value.
-    updateDummy:->
-        @dummy.find(".value").text @get "value"
 
 # <a name='MonthInput'></a>
 ## MonthInput
@@ -549,17 +493,6 @@ class MonthInput extends AbstractDateInputWidget
 
         super target
 
-    # Creates the dummy that will contains the widget's value in
-    # a `span` with the class `value`.
-    createDummy:->
-        dummy = super()
-        dummy.append "<span class='value'>#{ @get "value" }</span>"
-        dummy
-
-    # Updates the `span` that contains the value.
-    updateDummy:->
-        @dummy.find(".value").text @get "value"
-
 # <a name='WeekInput'></a>
 ## WeekInput
 
@@ -599,21 +532,32 @@ class WeekInput extends AbstractDateInputWidget
         @isValidValue  = Date.isValidWeek
 
         super target
-    # Creates the dummy that will contains the widget's value in
-    # a `span` with the class `value`.
-    createDummy:->
-        dummy = super()
-        dummy.append "<span class='value'>#{ @get "value" }</span>"
-        dummy
-
-    # Updates the `span` that contains the value.
-    updateDummy:->
-        @dummy.find(".value").text @get "value"
 
 # <a name='DateTimeInput'></a>
 ## DateTimeInput
+
+# The `DateTimeInput` handles the form input of type `date`.
+#
+# Here some live instances :
+# <div id="datetimeinput-demos"></div>
+#
+# <script type='text/javascript'>
+# var input1 = new DateTimeInput();
+# var input2 = new DateTimeInput();
+# var input3 = new DateTimeInput();
+#
+# input2.set( "readonly", true );
+# input3.set( "disabled", true );
+#
+# input1.attach("#datetimeinput-demos");
+# input2.attach("#datetimeinput-demos");
+# input3.attach("#datetimeinput-demos");
+# </script>
 class DateTimeInput extends AbstractDateInputWidget
-    constructor:( target )->
+
+    @mixins HasChildren, HasDateAndTime
+
+    constructor:( target = new Date )->
         @supportedType = "datetime"
         @valueToDate   = Date.datetimeFromString
         @dateToValue   = Date.datetimeToString
@@ -623,7 +567,28 @@ class DateTimeInput extends AbstractDateInputWidget
 
 # <a name='DateTimeLocalInput'></a>
 ## DateTimeLocalInput
+
+# The `DateTimeLocalInput` handles the form input of type `date`.
+#
+# Here some live instances :
+# <div id="datetimelocalinput-demos"></div>
+#
+# <script type='text/javascript'>
+# var input1 = new DateTimeLocalInput();
+# var input2 = new DateTimeLocalInput();
+# var input3 = new DateTimeLocalInput();
+#
+# input2.set( "readonly", true );
+# input3.set( "disabled", true );
+#
+# input1.attach("#datetimelocalinput-demos");
+# input2.attach("#datetimelocalinput-demos");
+# input3.attach("#datetimelocalinput-demos");
+# </script>
 class DateTimeLocalInput extends AbstractDateInputWidget
+
+    @mixins HasChildren, HasDateAndTime
+
     constructor:( target )->
         @supportedType = "datetime-local"
         @valueToDate   = Date.datetimeLocalFromString

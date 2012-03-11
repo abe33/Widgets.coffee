@@ -33,7 +33,7 @@
 # </script>
 class FilePicker extends Widget
 
-    @mixins FocusProvidedByChild
+    @mixins HasFocusProvidedByChild
 
     constructor:(target)->
 

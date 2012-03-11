@@ -34,7 +34,7 @@ input2.attach("#livedemos");
 input3.attach("#livedemos");
 </script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nb">TextInput</span> <span class="k">extends</span> <span class="nb">Widget</span>
 
-    <span class="py">@mixins</span> <span class="nb">FocusProvidedByChild</span>
+    <span class="py">@mixins</span> <span class="nb">HasFocusProvidedByChild</span>
 
     <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>The <code>target</code> is mandatory in the <code>TextInput</code> constructor so a default
 target is created when nothing is passed to the constructor.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">unless</span> <span class="nx">target</span><span class="o">?</span> <span class="k">then</span> <span class="nv">target </span><span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;input type=&#39;text&#39;&gt;&lt;/input&gt;&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>

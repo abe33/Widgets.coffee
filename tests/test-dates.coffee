@@ -854,6 +854,45 @@ $( document ).ready ->
         undefinedMaxValueMatcher:nullValue()
         undefinedStepValueMatcher:nullValue()
 
+    test "DateTimeInput should compose a DateInput and a TimeInput
+          as children", ->
+
+        input = new DateTimeInput
+
+        assertThat input.children.length, equalTo 2
+        assertThat input.dummy.children().length, equalTo 2
+
+    test "Changing the value on the widget should change the value
+          of its children accordingly", ->
+
+        input = new DateTimeInput
+
+        input.set "value", "2011-08-15T08:35:00+02:00"
+
+        assertThat input.dateInput.get("value"), equalTo "2011-08-15"
+        assertThat input.timeInput.get("value"), equalTo "08:35:00"
+
+    test "Changing the value of the inner date input should update
+          the DateTimeLocalInput value", ->
+
+        input = new DateTimeInput
+        input.set "value", "2011-08-15T08:35:00+02:00"
+
+        input.dateInput.set "value", "2016-03-25"
+
+        assertThat input.get("value"), equalTo "2016-03-25T08:35:00+01:00"
+
+    test "Changing the value of the inner time input should update
+          the DateTimeLocalInput value", ->
+
+        input = new DateTimeInput
+        input.set "value", "2011-08-15T08:35:00+02:00"
+
+        input.timeInput.set "value", "16:25:00"
+
+        assertThat input.get("value"), equalTo "2011-08-15T16:25:00+02:00"
+
+
     module "datetimelocalinput tests"
 
     testGenericDateWidgetBehaviors
@@ -890,4 +929,42 @@ $( document ).ready ->
         undefinedMinValueMatcher:nullValue()
         undefinedMaxValueMatcher:nullValue()
         undefinedStepValueMatcher:nullValue()
+
+    test "DateTimeLocalInput should compose a DateInput and a TimeInput
+          as children", ->
+
+        input = new DateTimeLocalInput
+
+        assertThat input.children.length, equalTo 2
+        assertThat input.dummy.children().length, equalTo 2
+
+    test "Changing the value on the widget should change the value
+          of its children accordingly", ->
+
+        input = new DateTimeLocalInput
+
+        input.set "value", "2011-08-15T08:35:00"
+
+        assertThat input.dateInput.get("value"), equalTo "2011-08-15"
+        assertThat input.timeInput.get("value"), equalTo "08:35:00"
+
+    test "Changing the value of the inner date input should update
+          the DateTimeLocalInput value", ->
+
+        input = new DateTimeLocalInput
+        input.set "value", "2011-08-15T08:35:00"
+
+        input.dateInput.set "value", "2016-03-25"
+
+        assertThat input.get("value"), equalTo "2016-03-25T08:35:00"
+
+    test "Changing the value of the inner time input should update
+          the DateTimeLocalInput value", ->
+
+        input = new DateTimeLocalInput
+        input.set "value", "2011-08-15T08:35:00"
+
+        input.timeInput.set "value", "16:25:00"
+
+        assertThat input.get("value"), equalTo "2011-08-15T16:25:00"
 

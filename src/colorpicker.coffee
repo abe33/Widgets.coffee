@@ -603,7 +603,7 @@ class SquarePicker extends Widget
 # </script>
 class ColorPicker extends Widget
 
-    @mixins HasChild, DropDownPopup
+    @mixins HasChildren, DropDownPopup
 
     constructor:->
         super()

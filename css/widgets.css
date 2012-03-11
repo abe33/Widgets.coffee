@@ -49,7 +49,10 @@
   position: relative;
   line-height: 20px;
   font-size: 16px;
-  vertical-align: bottom; }
+  vertical-align: bottom;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box; }
   .widget-common.disabled, .disabled.text, .disabled.textarea, .disabled.stepper, .disabled.dateinput.time, .disabled.filepicker, .disabled.button, .filepicker .disabled.icon, .disabled.colorinput, .disabled.single-select, .disabled.dateinput.date, .disabled.dateinput.month, .disabled.dateinput.week, .disabled.checkbox, .disabled.radio, .disabled.slider, .disabled.dateinput, .disabled.gridpicker, .disabled.colorpicker, .disabled.menulist, .disabled.calendar, .widget-common.readonly, .readonly.text, .readonly.textarea, .readonly.stepper, .readonly.dateinput.time, .readonly.filepicker, .readonly.button, .filepicker .readonly.icon, .readonly.colorinput, .readonly.single-select, .readonly.dateinput.date, .readonly.dateinput.month, .readonly.dateinput.week, .readonly.checkbox, .readonly.radio, .readonly.slider, .readonly.dateinput, .readonly.gridpicker, .readonly.colorpicker, .readonly.menulist, .readonly.calendar {
     opacity: 0.5;
     filter: alpha(opacity=50);

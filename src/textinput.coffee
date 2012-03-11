@@ -33,7 +33,7 @@
 # </script>
 class TextInput extends Widget
 
-    @mixins FocusProvidedByChild
+    @mixins HasFocusProvidedByChild
 
     constructor:( target )->
 

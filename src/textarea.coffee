@@ -29,7 +29,7 @@
 # </script>
 class TextArea extends Widget
 
-    @mixins FocusProvidedByChild
+    @mixins HasFocusProvidedByChild
 
     constructor:(target)->
 
