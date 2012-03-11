@@ -1,4 +1,4 @@
-@mixin borderradius($options)
+ @mixin borderradius($options)
 {
     -webkit-border-radius:#{$options};
        -moz-border-radius:#{$options};
@@ -90,5 +90,5 @@
     // border:1px solid transparentize($cb, 0.5);
     @include boxshadow("0pt 1px 0pt rgba(255, 255, 255, 0.15),
                         0pt 2px 1px 0px #{ $cs } inset,
-                        0pt 2px 7px 0px #{ transparentize( $cs, 0.2 ) } inset");
+                        0pt 2px 4px 0px #{ transparentize( $cs, 0.2 ) } inset");
 }

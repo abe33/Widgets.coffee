@@ -4,8 +4,8 @@
 # Both the `Slider` and `Stepper` classes extends the `NumericWidget` class.
 class NumericWidget extends Widget
 
-    # Ranges management is provided by the `ValueInRange` mixin.
-    @mixins ValueInRange
+    # Ranges management is provided by the `HasValueInRange` mixin.
+    @mixins HasValueInRange
 
     constructor:(target)->
 

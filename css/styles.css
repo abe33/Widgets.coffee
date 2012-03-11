@@ -1,32 +1,27 @@
 @import url("http://fonts.googleapis.com/css?family=Homenaje");
-code {
-  background: #002b36 !important;
-  border: 1px solid #042029 !important;
-  color: #93a1a1; }
-
 .docs {
-  background: #073642 !important;
+  background: #a6b0b0 !important;
+  color: #586e75;
   font-family: 'Palatino Linotype','Book Antiqua',Palatino,FreeSerif,serif;
   font-size: 14px; }
-  .docs pre {
-    color: #93a1a1;
-    background: #042029 !important;
-    border: 1px solid #001921 !important; }
-    .docs pre code {
-      background: none !important;
-      border: none !important; }
+  .docs code, .docs pre {
+    background: #93a1a1 !important;
+    border: 1px solid #839496 !important;
+    color: #073642; }
+  .docs pre code {
+    background: none !important;
+    border: none !important; }
   .docs h1, .docs h2, .docs h3, .docs h4, .docs h5, .docs h6 {
-    color: #bbc4c4;
-    -webkit-text-shadow: 0pt 1px 3px rgba(0, 0, 0, 1);
-    -moz-text-shadow: 0pt 1px 3px rgba(0, 0, 0, 1);
-    text-shadow: 0pt 1px 3px rgba(0, 0, 0, 1); }
+    color: #002b36; }
   .docs h1:first-letter {
-    color: #859900; }
+    color: #77822f; }
   .docs h3:first-letter {
-    color: #268bd2; }
+    color: #2d74a6; }
 
 #container {
-  color: #839496; }
+  color: #839496;
+  background: #a6b0b0 !important;
+  overflow: hidden; }
   #container #background {
     background: #042029;
     border-left: 2px solid #888; }
@@ -203,26 +198,44 @@ code {
   font-size: 18px;
   font-family: 'Homenaje', sans-serif; }
 
-.arrow, .down-arrow, .up-arrow, .left-arrow, .right-arrow, .button .icon:before {
+.no-text {
+  text-indent: -9999px; }
+
+.arrow {
   content: "";
   position: absolute;
   display: block;
   width: 0px;
   height: 0px;
-  border: 1px solid #002b36;
-  border-width: 5px; }
+  border: 5px solid #002b36; }
+  .arrow.down {
+    border-color: #002b36 transparent transparent transparent; }
+  .arrow.up {
+    border-color: transparent transparent #002b36 transparent; }
+  .arrow.left {
+    border-color: transparent #002b36 transparent transparent; }
+  .arrow.right {
+    border-color: transparent transparent transparent #002b36; }
 
-.down-arrow {
-  border-color: #002b36 transparent transparent transparent; }
-
-.up-arrow {
-  border-color: transparent transparent #002b36 transparent; }
-
-.left-arrow {
-  border-color: transparent #002b36 transparent transparent; }
-
-.right-arrow, .button .icon:before {
-  border-color: transparent transparent transparent #002b36; }
+.chevron, .button .icon:before {
+  width: 4px;
+  height: 4px;
+  position: absolute;
+  display: block;
+  border: 2px solid #002b36;
+  -webkit-transform: rotate(-45deg);
+  -moz-transform: rotate(-45deg);
+  -ms-transform: rotate(-45deg);
+  -o-transform: rotate(-45deg);
+  transform: rotate(-45deg); }
+  .chevron.down, .button .down.icon:before {
+    border-color: transparent transparent #002b36 #002b36; }
+  .chevron.up, .button .up.icon:before {
+    border-color: #002b36 #002b36 transparent transparent; }
+  .chevron.left, .button .left.icon:before {
+    border-color: #002b36 transparent transparent #002b36; }
+  .chevron.right, .button .right.icon:before, .button .icon:before {
+    border-color: transparent #002b36 #002b36 transparent; }
 
 .widget-common, .button, .text {
   display: inline-block;
@@ -263,93 +276,93 @@ code {
 
 .inset-box, .text {
   background: #042029;
-  -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-  -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-  box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+  -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+  -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+  box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.light, .light.text, .text.focus {
     background-color: #002b36; }
   .inset-box.white, .white.text {
     background: #657b83;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.white.light, .white.light.text, .white.text.focus {
       background: #93a1a1;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.red, .red.text {
     background: #dc322f;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.red.light, .red.light.text, .red.text.focus {
       background: #fe5c4d;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.orange, .orange.text {
     background: #cb4b16;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.orange.light, .orange.light.text, .orange.text.focus {
       background: #e66a36;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.yellow, .yellow.text {
     background: #b58900;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.yellow.light, .yellow.light.text, .yellow.text.focus {
       background: #cfa521;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.green, .green.text {
     background: #859900;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.green.light, .green.light.text, .green.text.focus {
       background: #a9bf1b;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.cyan, .cyan.text {
     background: #2aa198;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.cyan.light, .cyan.light.text, .cyan.text.focus {
       background: #4ccac1;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.blue, .blue.text {
     background: #268bd2;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.blue.light, .blue.light.text, .blue.text.focus {
       background: #34a0ec;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.violet, .violet.text {
     background: #6c71c4;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.violet.light, .violet.light.text, .violet.text.focus {
       background: #8389eb;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
 
-.outset-box, .button, .button.disabled:hover, .button.readonly:hover, .button.disabled.focus, .popup {
+.outset-box, .button, .button.disabled:hover, .button.readonly:hover, .button.disabled.focus, .popup, .popup.disabled {
   border: 1px solid #839496;
   background: -moz-linear-gradient(top, #839496 0%, #657b83 100%);
   /* FF3.6+ */
@@ -365,7 +378,7 @@ code {
   -webkit-box-shadow: 0pt 2px 0px 0px #586e75,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
   -moz-box-shadow: 0pt 2px 0px 0px #586e75,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
   box-shadow: 0pt 2px 0px 0px #586e75,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.light, .light.button, .light.button.disabled:hover, .light.button.readonly:hover, .light.button.disabled.focus, .button.focus, .button:hover, .light.popup {
+  .outset-box.light, .light.button, .light.button.disabled:hover, .light.button.readonly:hover, .light.button.disabled.focus, .button.focus, .button:hover, .light.popup, .light.popup.disabled {
     border: 1px solid #a6b0b0;
     background: -moz-linear-gradient(top, #a6b0b0 0%, #93a1a1 100%);
     /* FF3.6+ */
@@ -381,7 +394,7 @@ code {
     -webkit-box-shadow: 0pt 2px 0px 0px #839496,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #839496,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #839496,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.dark, .dark.button, .dark.button.disabled:hover, .dark.button.readonly:hover, .dark.button.disabled.focus, .dark.popup {
+  .outset-box.dark, .dark.button, .dark.button.disabled:hover, .dark.button.readonly:hover, .dark.button.disabled.focus, .dark.popup, .dark.popup.disabled {
     border: 1px solid #073642;
     background: -moz-linear-gradient(top, #073642 0%, #002b36 100%);
     /* FF3.6+ */
@@ -397,7 +410,7 @@ code {
     -webkit-box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.dark.light, .dark.light.button, .dark.light.button.disabled:hover, .dark.light.button.readonly:hover, .dark.light.button.disabled.focus, .dark.button.focus, .dark.button:hover, .dark.light.popup {
+    .outset-box.dark.light, .dark.light.button, .dark.light.button.disabled:hover, .dark.light.button.readonly:hover, .dark.light.button.disabled.focus, .dark.button.focus, .dark.button:hover, .dark.light.popup, .dark.light.popup.disabled {
       border: 1px solid #0b4959;
       background: -moz-linear-gradient(top, #0b4959 0%, #073642 100%);
       /* FF3.6+ */
@@ -413,7 +426,7 @@ code {
       -webkit-box-shadow: 0pt 2px 0px 0px #002b36,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #002b36,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #002b36,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.red, .red.button, .red.button.disabled:hover, .red.button.readonly:hover, .red.button.disabled.focus, .red.popup {
+  .outset-box.red, .red.button, .red.button.disabled:hover, .red.button.readonly:hover, .red.button.disabled.focus, .red.popup, .red.popup.disabled {
     border: 1px solid #fe5c4d;
     background: -moz-linear-gradient(top, #fe5c4d 0%, #dc322f 100%);
     /* FF3.6+ */
@@ -429,7 +442,7 @@ code {
     -webkit-box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.red.light, .red.light.button, .red.light.button.disabled:hover, .red.light.button.readonly:hover, .red.light.button.disabled.focus, .red.button.focus, .red.button:hover, .red.light.popup {
+    .outset-box.red.light, .red.light.button, .red.light.button.disabled:hover, .red.light.button.readonly:hover, .red.light.button.disabled.focus, .red.button.focus, .red.button:hover, .red.light.popup, .red.light.popup.disabled {
       border: 1px solid #ff8377;
       background: -moz-linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
       /* FF3.6+ */
@@ -445,7 +458,7 @@ code {
       -webkit-box-shadow: 0pt 2px 0px 0px #dc322f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #dc322f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #dc322f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.green, .green.button, .green.button.disabled:hover, .green.button.readonly:hover, .green.button.disabled.focus, .green.popup {
+  .outset-box.green, .green.button, .green.button.disabled:hover, .green.button.readonly:hover, .green.button.disabled.focus, .green.popup, .green.popup.disabled {
     border: 1px solid #a9bf1b;
     background: -moz-linear-gradient(top, #a9bf1b 0%, #859900 100%);
     /* FF3.6+ */
@@ -461,7 +474,7 @@ code {
     -webkit-box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.green.light, .green.light.button, .green.light.button.disabled:hover, .green.light.button.readonly:hover, .green.light.button.disabled.focus, .green.button.focus, .green.button:hover, .green.light.popup {
+    .outset-box.green.light, .green.light.button, .green.light.button.disabled:hover, .green.light.button.readonly:hover, .green.light.button.disabled.focus, .green.button.focus, .green.button:hover, .green.light.popup, .green.light.popup.disabled {
       border: 1px solid #cadf44;
       background: -moz-linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
       /* FF3.6+ */
@@ -477,7 +490,7 @@ code {
       -webkit-box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.blue, .blue.button, .blue.button.disabled:hover, .blue.button.readonly:hover, .blue.button.disabled.focus, .blue.popup {
+  .outset-box.blue, .blue.button, .blue.button.disabled:hover, .blue.button.readonly:hover, .blue.button.disabled.focus, .blue.popup, .blue.popup.disabled {
     border: 1px solid #34a0ec;
     background: -moz-linear-gradient(top, #34a0ec 0%, #268bd2 100%);
     /* FF3.6+ */
@@ -493,7 +506,7 @@ code {
     -webkit-box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.blue.light, .blue.light.button, .blue.light.button.disabled:hover, .blue.light.button.readonly:hover, .blue.light.button.disabled.focus, .blue.button.focus, .blue.button:hover, .blue.light.popup {
+    .outset-box.blue.light, .blue.light.button, .blue.light.button.disabled:hover, .blue.light.button.readonly:hover, .blue.light.button.disabled.focus, .blue.button.focus, .blue.button:hover, .blue.light.popup, .blue.light.popup.disabled {
       border: 1px solid #57afec;
       background: -moz-linear-gradient(top, #57afec 0%, #34a0ec 100%);
       /* FF3.6+ */
@@ -509,7 +522,7 @@ code {
       -webkit-box-shadow: 0pt 2px 0px 0px #268bd2,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #268bd2,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #268bd2,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.yellow, .yellow.button, .yellow.button.disabled:hover, .yellow.button.readonly:hover, .yellow.button.disabled.focus, .yellow.popup {
+  .outset-box.yellow, .yellow.button, .yellow.button.disabled:hover, .yellow.button.readonly:hover, .yellow.button.disabled.focus, .yellow.popup, .yellow.popup.disabled {
     border: 1px solid #cfa521;
     background: -moz-linear-gradient(top, #cfa521 0%, #b58900 100%);
     /* FF3.6+ */
@@ -525,7 +538,7 @@ code {
     -webkit-box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.yellow.light, .yellow.light.button, .yellow.light.button.disabled:hover, .yellow.light.button.readonly:hover, .yellow.light.button.disabled.focus, .yellow.button.focus, .yellow.button:hover, .yellow.light.popup {
+    .outset-box.yellow.light, .yellow.light.button, .yellow.light.button.disabled:hover, .yellow.light.button.readonly:hover, .yellow.light.button.disabled.focus, .yellow.button.focus, .yellow.button:hover, .yellow.light.popup, .yellow.light.popup.disabled {
       border: 1px solid #f7ca3b;
       background: -moz-linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
       /* FF3.6+ */
@@ -541,7 +554,7 @@ code {
       -webkit-box-shadow: 0pt 2px 0px 0px #b58900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #b58900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #b58900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.orange, .orange.button, .orange.button.disabled:hover, .orange.button.readonly:hover, .orange.button.disabled.focus, .orange.popup {
+  .outset-box.orange, .orange.button, .orange.button.disabled:hover, .orange.button.readonly:hover, .orange.button.disabled.focus, .orange.popup, .orange.popup.disabled {
     border: 1px solid #e66a36;
     background: -moz-linear-gradient(top, #e66a36 0%, #cb4b16 100%);
     /* FF3.6+ */
@@ -557,7 +570,7 @@ code {
     -webkit-box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.orange.light, .orange.light.button, .orange.light.button.disabled:hover, .orange.light.button.readonly:hover, .orange.light.button.disabled.focus, .orange.button.focus, .orange.button:hover, .orange.light.popup {
+    .outset-box.orange.light, .orange.light.button, .orange.light.button.disabled:hover, .orange.light.button.readonly:hover, .orange.light.button.disabled.focus, .orange.button.focus, .orange.button:hover, .orange.light.popup, .orange.light.popup.disabled {
       border: 1px solid #ff8b5b;
       background: -moz-linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
       /* FF3.6+ */
@@ -573,7 +586,7 @@ code {
       -webkit-box-shadow: 0pt 2px 0px 0px #cb4b16,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #cb4b16,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #cb4b16,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.violet, .violet.button, .violet.button.disabled:hover, .violet.button.readonly:hover, .violet.button.disabled.focus, .violet.popup {
+  .outset-box.violet, .violet.button, .violet.button.disabled:hover, .violet.button.readonly:hover, .violet.button.disabled.focus, .violet.popup, .violet.popup.disabled {
     border: 1px solid #8389eb;
     background: -moz-linear-gradient(top, #8389eb 0%, #6c71c4 100%);
     /* FF3.6+ */
@@ -589,7 +602,7 @@ code {
     -webkit-box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.violet.light, .violet.light.button, .violet.light.button.disabled:hover, .violet.light.button.readonly:hover, .violet.light.button.disabled.focus, .violet.button.focus, .violet.button:hover, .violet.light.popup {
+    .outset-box.violet.light, .violet.light.button, .violet.light.button.disabled:hover, .violet.light.button.readonly:hover, .violet.light.button.disabled.focus, .violet.button.focus, .violet.button:hover, .violet.light.popup, .violet.light.popup.disabled {
       border: 1px solid #9ba0e6;
       background: -moz-linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
       /* FF3.6+ */
@@ -605,7 +618,7 @@ code {
       -webkit-box-shadow: 0pt 2px 0px 0px #6c71c4,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       -moz-box-shadow: 0pt 2px 0px 0px #6c71c4,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
       box-shadow: 0pt 2px 0px 0px #6c71c4,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-  .outset-box.cyan, .cyan.button, .cyan.button.disabled:hover, .cyan.button.readonly:hover, .cyan.button.disabled.focus, .cyan.popup {
+  .outset-box.cyan, .cyan.button, .cyan.button.disabled:hover, .cyan.button.readonly:hover, .cyan.button.disabled.focus, .cyan.popup, .cyan.popup.disabled {
     border: 1px solid #4ccac1;
     background: -moz-linear-gradient(top, #4ccac1 0%, #2aa198 100%);
     /* FF3.6+ */
@@ -621,7 +634,7 @@ code {
     -webkit-box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     -moz-box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
     box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
-    .outset-box.cyan.light, .cyan.light.button, .cyan.light.button.disabled:hover, .cyan.light.button.readonly:hover, .cyan.light.button.disabled.focus, .cyan.button.focus, .cyan.button:hover, .cyan.light.popup {
+    .outset-box.cyan.light, .cyan.light.button, .cyan.light.button.disabled:hover, .cyan.light.button.readonly:hover, .cyan.light.button.disabled.focus, .cyan.button.focus, .cyan.button:hover, .cyan.light.popup, .cyan.light.popup.disabled {
       border: 1px solid #7bdbd4;
       background: -moz-linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
       /* FF3.6+ */
@@ -699,7 +712,7 @@ code {
   border-radius: 4px; }
 
 body {
-  background: #073642; }
+  background: #a6b0b0 !important; }
 
 a {
   color: #cb4b16; }
@@ -709,7 +722,7 @@ a {
     color: #333; }
 
 h4 {
-  color: #a6b0b0; }
+  color: #073642; }
 
 #qunit-header {
   margin-top: 4px !important; }
@@ -720,16 +733,40 @@ td {
 #popups th:first-child {
   width: 150px; }
 
+form {
+  display: inline-block; }
+
 .float {
-  float: left;
-  padding-bottom: 6px;
-  padding-left: 4px;
   margin: 5px 5px 0px 0px;
   background: #073642;
+  display: inline-block;
+  vertical-align: top;
+  border-spacing: 0px;
   -webkit-border-radius: 4px;
   -moz-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px; }
+  .float sub {
+    color: #cb4b16;
+    text-transform: uppercase;
+    font-size: 10px; }
+  .float td, .float th {
+    position: relative;
+    padding-top: 4px;
+    padding-bottom: 8px;
+    border-top: 1px solid rgba(88, 110, 117, 0.3);
+    border-bottom: 1px solid #002b36; }
+    .float td:first-child, .float th:first-child {
+      padding-left: 5px; }
+  .float tr:first-child td, .float tr:first-child th {
+    border-top: none; }
+  .float tr:last-child td, .float tr:last-child th {
+    border-bottom: none; }
+  .float td.type {
+    color: #859900;
+    font-family: monospace;
+    padding: 5px;
+    font-size: 12px; }
   .float th {
     font-weight: normal;
     font-variant: small-caps;
@@ -739,10 +776,15 @@ td {
     -webkit-text-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.8);
     -moz-text-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.8);
     text-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.8); }
-    .float th[colspan] {
+    .float th.table-header {
       text-align: center; }
+    .float th:first-child {
+      padding-right: 5px;
+      padding-left: 5px; }
   .float .calendar th {
     color: #002b36; }
+  .float .calendar td, .float .calendar th {
+    border: none; }
   .float .not-standard {
     background: #cb4b16;
     color: #bbc4c4;
@@ -772,7 +814,7 @@ td {
 .calendar th {
   width: auto !important; }
 
-.colorpicker.dummy, .colorpicker.dummy.focus {
+.colorpicker.dummy, .colorpicker.dummy.focus, .calendar.dummy, .calendar.dummy.focus {
   display: inline-block !important; }
 
 .text.a, .text.b, .text.c {
@@ -821,8 +863,9 @@ td {
   -o-border-radius: 8px;
   border-radius: 8px; }
   .button .icon:before {
-    margin-top: -5px;
-    margin-left: -2px;
+    content: "";
+    margin-top: -4px;
+    margin-left: -6px;
     left: 50%;
     top: 50%; }
 

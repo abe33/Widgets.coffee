@@ -80,12 +80,12 @@ class Widget extends Module
         # Default properties's values are retreived from the target or set to
         # `undefined` if there's no target specified.
 
-        @disabled = @booleanFromAttribute "disabled"
-        @readonly = @booleanFromAttribute "readonly"
-        @required = @booleanFromAttribute "required"
-        @value    = @valueFromAttribute   "value"
-        @name     = @valueFromAttribute   "name"
-        @id       = null
+        @disabled ?= @booleanFromAttribute "disabled"
+        @readonly ?= @booleanFromAttribute "readonly"
+        @required ?= @booleanFromAttribute "required"
+        @value    ?= @valueFromAttribute   "value"
+        @name     ?= @valueFromAttribute   "name"
+        @id       ?= null
 
         # Dummy creation is done in the `createDummy` method.
         @dummy = @createDummy()
@@ -326,8 +326,7 @@ class Widget extends Module
 
     # Returns `true` when the widget is not in a state that allow
     # a change to the value with a user interaction.
-    cantInteract:->
-        @get("readonly") or @get("disabled")
+    cantInteract:-> @get("readonly") or @get("disabled")
 
     # A placeholder for dummy creation.
     # The method must return the dummy jQuery object.
@@ -388,16 +387,13 @@ class Widget extends Module
 
     # Append the widget's dummy to the passed-in target.
     # The `target` can be either a string or a `jQuery` object.
-    attach:( target )->
-        @handleDOMInsertion target, "append"
+    attach:( target )-> @handleDOMInsertion target, "append"
 
     # Insert the widget's dummy before the passed-in `target`.
-    before:( target )->
-        @handleDOMInsertion target, "before"
+    before:( target )-> @handleDOMInsertion target, "before"
 
     # Insert the widget's dummy after the passed-in `target`.
-    after:( target )->
-        @handleDOMInsertion target, "after"
+    after:( target )-> @handleDOMInsertion target, "after"
 
     # Handles the insertion of the widget's dummy in the DOM.
     handleDOMInsertion:( target, action )->
@@ -419,8 +415,7 @@ class Widget extends Module
             @[e.type].apply this, arguments
 
     # Unregister all the events from the dummy.
-    unregisterFromDummyEvents:->
-        @dummy.unbind @supportedEvents
+    unregisterFromDummyEvents:-> @dummy.unbind @supportedEvents
 
     # The list of the dummy's events supported by the widget.
     # All these events are catched by the methods with
@@ -461,15 +456,12 @@ class Widget extends Module
         true
 
     # Trigger the command registered with the `keydown` event if any.
-    keydown:( e )->
-        @triggerKeyDownCommand e
+    keydown:( e )-> @triggerKeyDownCommand e
 
     # Trigger the command registered with the `keyup` event if any.
-    keyup:( e )->
-        @triggerKeyUpCommand e
+    keyup:( e )-> @triggerKeyUpCommand e
 
-    keypress:( e )->
-        true
+    keypress:( e )-> true
 
     #### Focus management
 
@@ -482,12 +474,10 @@ class Widget extends Module
             else @dummy.removeAttr "tabindex"
 
     # Place the focus on this widget.
-    grabFocus:->
-        if @hasDummy then @dummy.focus()
+    grabFocus:-> @dummy.focus() if @hasDummy
 
     # Remove the focus from this widget.
-    releaseFocus:->
-        if @hasDummy then @dummy.blur()
+    releaseFocus:-> @dummy.blur() if @hasDummy
 
     #### Keyboard shortcuts management
 
@@ -503,13 +493,11 @@ class Widget extends Module
 
     # Returns `yes` if the passed-in keystroke have been associated
     # with a command for this widget's `keydown` event.
-    hasKeyDownCommand:( ks )->
-        ks of @keyDownCommands
+    hasKeyDownCommand:( ks )-> ks of @keyDownCommands
 
     # Returns `yes` if the passed-in keystroke have been associated
     # with a command for this widget's `keyup` event.
-    hasKeyUpCommand:( ks )->
-        ks of @keyUpCommands
+    hasKeyUpCommand:( ks )-> ks of @keyUpCommands
 
     # Takes a keyboard event object and trigger
     # the corresponding command on a `keydown`.

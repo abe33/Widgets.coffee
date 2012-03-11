@@ -2,3 +2,4 @@
 *.sublime-project
 .sass-cache
 .tmp
+lint.results

@@ -7,6 +7,9 @@
     font-size:18px;
     font-family:'Homenaje', sans-serif;
 }
+.no-text {
+    text-indent:-9999px;
+}
 
 .arrow {
     content:"";
@@ -14,24 +17,42 @@
     display:block;
     width:0px;
     height:0px;
-    border:1px solid $base03;
-    border-width:5px;
+    border:5px solid $base03;
+
+    &.down {
+        border-color:$base03 transparent transparent transparent;
+    }
+    &.up {
+        border-color:transparent transparent $base03 transparent;
+    }
+    &.left {
+        border-color:transparent $base03 transparent transparent;
+    }
+    &.right {
+        border-color:transparent transparent transparent $base03;
+    }
 }
-.down-arrow {
-    @extend .arrow;
-    border-color:$base03 transparent transparent transparent;
-}
-.up-arrow {
-    @extend .arrow;
-    border-color:transparent transparent $base03 transparent;
-}
-.left-arrow {
-    @extend .arrow;
-    border-color:transparent $base03 transparent transparent;
-}
-.right-arrow {
-    @extend .arrow;
-    border-color:transparent transparent transparent $base03;
+.chevron {
+    width:4px;
+    height:4px;
+    position:absolute;
+    display:block;
+    border:2px solid $base03;
+
+    @include transform("rotate(-45deg)");
+
+    &.down {
+        border-color:transparent transparent $base03 $base03;
+    }
+    &.up {
+        border-color:$base03 $base03 transparent transparent ;
+    }
+    &.left {
+        border-color:$base03 transparent transparent $base03;
+    }
+    &.right {
+        border-color:transparent $base03 $base03 transparent ;
+    }
 }
 
 
@@ -285,4 +306,8 @@
     @extend .outset-box;
     @extend .button-text-content;
     @include borderradius(4px);
+
+    &.disabled {
+        @extend .outset-box;
+    }
 }

@@ -5,22 +5,22 @@
 #
 # The file contains the following definitions:
 #
-# * [ValueInRange](ValueInRange)
+# * [HasValueInRange](HasValueInRange)
 # * [FocusProvidedByChild](FocusProvidedByChild)
 # * [HasChild](HasChild)
 
-# <a name="ValueInRange"></a>
-## ValueInRange
+# <a name="HasValueInRange"></a>
+## HasValueInRange
 
-# ValueInRange provides a coherent behavior accross the widgets
+# HasValueInRange provides a coherent behavior accross the widgets
 # which value can be constrained in a range through the `min`,
 # `max` and `step` attributes of their respective targets.
 #
-# The `ValueInRange` mixin doesn't provides any setters for the
+# The `HasValueInRange` mixin doesn't provides any setters for the
 # `min`, `max` and `step` properties. The class that receive the
 # mixin should define them to ensure bounds validity and value
 # collision.
-ValueInRange=
+HasValueInRange=
     # The constructor hook initialize the shared properties and
     # creates the keyboard bindings for trigger increment and
     # decrement intervals.
@@ -228,8 +228,60 @@ HasChild=
         if e.target is @dummy[0]
             @super "focus", e
 
+#
+IsDialog=
+    constructorHook:->
+        # A dialog is hidden at creation.
+        @dummy.hide()
 
+        # Using the `Enter` key while editing a color comfirm the edit
+        # and close the dialog.
+        @registerKeyDownCommand keystroke( keys.enter ), @comfirmChangesOnEnter
+        # Using the `Escape` ket while editing abort the current edit
+        # and close the dialog.
+        @registerKeyDownCommand keystroke( keys.escape ), @abortChanges
+
+    dialogRequested:( caller )->
+        @caller = caller
+        @setupDialog caller
+        @open()
+
+    open:->
+        # The dialog register itself to catch clicks done outside of it.
+        # When it occurs the dialog will close itself and call the
+        # `comfirmChanges` method.
+        $(document).bind "mouseup", @documentDelegate=(e)=>
+            @comfirmChanges()
+
+        # The dummy is placed below the widget that requested
+        # the dialog.
+        @dummy.css("left", @caller.dummy.offset().left )
+              .css("top",  @caller.dummy.offset().top +
+                           @caller.dummy.height() )
+              .css("position", "absolute")
+              # The dummy is then displayed.
+              .show()
+
+        # At the end of the request the dialog gets the focus.
+        @grabFocus()
+
+    # Hides the dummy of this dialog.
+    close:->
+        @dummy.hide()
+        $(document).unbind "mouseup", @documentDelegate
+
+        @caller.grabFocus()
+
+    mouseup:(e)-> e.stopImmediatePropagation()
+
+    abortChanges:-> @close()
+    comfirmChanges:->
+    comfirmChangesOnEnter:->
+    setupDialog:( caller )->
+
+
+@IsDialog             = IsDialog
 @HasChild             = HasChild
-@ValueInRange         = ValueInRange
+@HasValueInRange      = HasValueInRange
 @FocusProvidedByChild = FocusProvidedByChild
 

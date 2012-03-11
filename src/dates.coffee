@@ -12,35 +12,12 @@
 #
 # The supported dates and time modes and their corresponding widgets are :
 #
-# * [time](#time)                   :[TimeInput](#TimeInput)
-# * [date](#date)                   :[DateInput](#DateInput)
-# * [month](#month)                 :[MonthInput](#MonthInput)
-# * [week](#week)                   :[WeekInput](#WeekInput)
-# * [datetime](#datetime)           :[DateTimeInput](#DateTimeInput)
-# * [datetime-local](#datetime-loca):[DateTimeLocalInput](#DateTimeLocalInput)
-
-#### Utilities
-
-# A group of *"constants"* for basic time and dates computations.
-MILLISECONDS_IN_SECOND = 1000
-MILLISECONDS_IN_MINUTE = MILLISECONDS_IN_SECOND * 60
-MILLISECONDS_IN_HOUR   = MILLISECONDS_IN_MINUTE * 60
-MILLISECONDS_IN_DAY    = MILLISECONDS_IN_HOUR * 24
-MILLISECONDS_IN_WEEK   = MILLISECONDS_IN_DAY * 7
-
-# Cast the `value` into an integer.
-# In case the passed-in `value` cannot be casted in an
-# integer, the function return the value of `0`
-safeInt=( value )->
-    n = parseInt value
-    unless isNaN n then n else 0
-
-# Fills the string `s` with `0` until its length is
-# equal to the length `l`.
-fill=( s, l = 2 )->
-    s = String s
-    s = "0#{s}" while s.length < l
-    s
+# * [TimeInput](#TimeInput)
+# * [DateInput](#DateInput)
+# * [MonthInput](#MonthInput)
+# * [WeekInput](#WeekInput)
+# * [DateTimeInput](#DateTimeInput)
+# * [DateTimeLocalInput](#DateTimeLocalInput)
 
 #### Abstract
 #
@@ -55,11 +32,11 @@ fill=( s, l = 2 )->
 #
 # The date widgets provides an additional `date` property,
 # accessible through a property accessor, that allow to manipulate
-# the widget's value using a `Date` instance.
+# the widget's value using  a `Date` instance.
 class AbstractDateInputWidget extends Widget
     # Date and time widgets can operate in a range. Their prototype is then
-    # decorated with the `ValueInRange` mixin.
-    @mixins ValueInRange
+    # decorated with the `HasValueInRange` mixin.
+    @mixins HasValueInRange
 
     # Concretes classes must defines these properties before calling
     # the super constructor. The three functions handles the validation
@@ -109,23 +86,23 @@ class AbstractDateInputWidget extends Widget
 
         # Step is step before any other operation. As `min`
         # `max` and `value` must respect that step.
-        @.step  = if isNaN step then defaultStep else step
+        @step  = if isNaN step then defaultStep else step
 
         # If a valid `min` bounds is defined, the value is snapped
         # according to the `step` property before being its affectation.
         if min?
             minDate = @snapToStep @valueToDate min
-            @.min = @dateToValue minDate
+            @min = @dateToValue minDate
         # If a valid `max` bounds is defined, the value is snapped
         # according to the `step` property before being its affectation.
         if max?
             maxDate = @snapToStep @valueToDate max
-            @.max = @dateToValue maxDate
+            @max = @dateToValue maxDate
 
         # The value of the widget is then adjusted itself to the step
         # and range defined previously.
-        @.date  = @fitToRange date, minDate, maxDate
-        @.value = @dateToValue date
+        @date  = @fitToRange date, minDate, maxDate
+        @value = @dateToValue date
 
         # To avoid infinite loops and unnecessary conversion, locks
         # are defined for the `date` and `value` setters.
@@ -152,30 +129,30 @@ class AbstractDateInputWidget extends Widget
 
     #### Value Management
 
-    # Overrides of the `ValueInRange` mixin method to support date value.
+    # Overrides of the `HasValueInRange` mixin method to support date value.
     snapToStep:( value )->
         # A `Date` is rounded using its primitive value.
         ms = value.getTime()
         step = @get "step"
         if step?
-            value.setTime ms - ( ms % ( step * MILLISECONDS_IN_SECOND ) )
+            value.setTime ms - ( ms % ( step * Date.MILLISECONDS_IN_SECOND ) )
 
         value
 
-    # Overrides of the `ValueInRange` mixin method to support date value.
+    # Overrides of the `HasValueInRange` mixin method to support date value.
     increment:()->
         d    = @get "date"
         step = @get "step"
         ms   = d.valueOf()
-        d.setTime ms + step * MILLISECONDS_IN_SECOND
+        d.setTime ms + step * Date.MILLISECONDS_IN_SECOND
         @set "date", d
 
-    # Overrides of the `ValueInRange` mixin method to support date value.
+    # Overrides of the `HasValueInRange` mixin method to support date value.
     decrement:()->
         d    = @get "date"
         step = @get "step"
         ms   = d.valueOf()
-        d.setTime ms - step * MILLISECONDS_IN_SECOND
+        d.setTime ms - step * Date.MILLISECONDS_IN_SECOND
         @set "date", d
 
     #### Dummy Management
@@ -194,7 +171,7 @@ class AbstractDateInputWidget extends Widget
     # Only valid dates are allowed. Invalid dates are easily
     # identifiable as all their getters will return `NaN`.
     set_date:( property, value )->
-        if not value? or isNaN value.getDate() then return @get "date"
+        if not value? or isNaN value.date() then return @get "date"
 
         min = @get "min"
         max = @get "max"
@@ -289,54 +266,17 @@ class AbstractDateInputWidget extends Widget
         @set "date", @get "date"
         value
 
-# <a name='time'></a>
-## Time
+OpenCalendar=
+    constructorHook:->
+        @dialogRequested = new Signal
+        @dialogRequested.add @constructor.calendar.dialogRequested,
+                             @constructor.calendar
 
-# Match if the passed-in string is a valid time string.
-# The following strings are considered as valid :
-# `10`, `10:15`, `10:15:40` or `10:15:40.768`
-isValidTime=( value )->
-    unless value? then return false
-    (/// ^
-        [\d]{2}                 # Hours are required
-        (:[\d]{2}               # Minutes are optional
-            (:[\d]{2}           # Seconds as well
-                (\.[\d]{1,4})?  # Milliseconds too
-            )?                  # End Seconds
-        )?                      # End Minutes
-    $ ///).test value
+    mouseup:(e)->
+        unless @cantInteract()
+            e.stopImmediatePropagation()
+            @dialogRequested.dispatch this
 
-# Converts a time string into a `Date` object where the time properties,
-# hours, minutes, seconds and milliseconds, are sets with the provided
-# datas or `0`.
-timeFromString=( string )->
-    [ hours, min, sec ] = string.split ":"
-    [ sec, ms ] = if sec? then sec.split "." else [ 0, 0 ]
-
-    # UTC dates start at 1:00 AM so we have to remove one hour.
-    time = safeInt( hours - 1 ) * MILLISECONDS_IN_HOUR   +
-           safeInt( min )       * MILLISECONDS_IN_MINUTE +
-           safeInt( sec )       * MILLISECONDS_IN_SECOND +
-           safeInt( ms )
-
-    d = new Date time
-    d
-
-# Converts a `Date` object in a string such as `10:15:40`.
-# If the milliseconds count is different than `0` then the
-# output will look as `10:15:40.768`.
-timeToString=( date )->
-    h  = date.getHours()
-    m  = date.getMinutes()
-    s  = date.getSeconds()
-    ms = date.getMilliseconds()
-
-    time ="#{ fill h }:#{ fill m }:#{ fill s }"
-
-    if ms isnt 0
-        time += ".#{ ms }"
-
-    time
 
 # <a name='TimeInput'></a>
 #### TimeInput
@@ -369,9 +309,9 @@ class TimeInput extends AbstractDateInputWidget
     # of the `AbstractDateInputWidget` class.
     constructor:( target )->
         @supportedType = "time"
-        @valueToDate   = timeFromString
-        @dateToValue   = timeToString
-        @isValidValue  = isValidTime
+        @valueToDate   = Date.timeFromString
+        @dateToValue   = Date.timeToString
+        @isValidValue  = Date.isValidTime
 
         # The default `step` for a time input is one minute.
         super target, 60
@@ -500,35 +440,9 @@ class TimeInput extends AbstractDateInputWidget
             ms = @get("date").valueOf()
             step = @get "step"
 
-            @set "date", new Date ms + dif * step * MILLISECONDS_IN_SECOND
+            @set "date", new Date ms + dif * step * Date.MILLISECONDS_IN_SECOND
             @pressedY = y
 
-
-# <a name='date'></a>
-## Date
-
-# A valid date is a string such as `2012-12-29`.
-isValidDate=( value )->
-    unless value? then return false
-    (/// ^
-        [\d]{4}-   # Year
-        [\d]{2}-   # Month
-        [\d]{2}    # Day of the month
-    $ ///).test value
-
-# A valid date string can be passed directly to the `Date` constructor.
-dateFromString=( string )->
-    d = new Date string
-    # Hours may vary when constructing a `Date` from a date string.
-    # The returned date's hours are then reset to `0`.
-    d.setHours 0
-    d
-
-dateToString=( date )->
-    [ "#{ fill date.getFullYear(), 4 }",
-      "#{ fill date.getMonth() + 1   }",
-      "#{ fill date.getDate()        }",
-    ].join "-"
 
 # <a name='DateInput'></a>
 #### DateInput
@@ -549,13 +463,17 @@ dateToString=( date )->
 # input3.attach("#dateinput-demos");
 # </script>
 class DateInput extends AbstractDateInputWidget
+
+    @mixins OpenCalendar
+
+    @calendar = new Calendar
+    $(document).ready -> DateInput.calendar.attach "body"
+
     constructor:( target )->
         @supportedType = "date"
-        @valueToDate   = dateFromString
-        @dateToValue   = dateToString
-        @isValidValue  = isValidDate
-
-        @dialogRequested = new Signal
+        @valueToDate   = Date.dateFromString
+        @dateToValue   = Date.dateToString
+        @isValidValue  = Date.isValidDate
 
         super target
 
@@ -567,195 +485,66 @@ class DateInput extends AbstractDateInputWidget
     updateDummy:->
         @dummy.find(".value").text @get "value"
 
-    mouseup:(e)->
-        @dialogRequested.dispatch this
-
-# <a name='month'></a>
-## Month
-
-isValidMonth=( value )->
-    unless value? then return false
-    (/// ^
-        [\d]{4}-   # Year
-        [\d]{2}    # Month
-    $ ///).test value
-
-monthFromString=( string )->
-    d = new Date string
-    # Hours may vary when constructing a `Date`.
-    # The returned date's hours are then reset to `0`.
-    d.setHours 0
-    d
-
-monthToString=( date )->
-    "#{ fill date.getFullYear(), 4 }-#{ fill ( date.getMonth() + 1 ) }"
-
 # <a name='MonthInput'></a>
 #### MonthInput
 class MonthInput extends AbstractDateInputWidget
+
+    @mixins OpenCalendar
+
+    @calendar = new Calendar null, "month"
+    $(document).ready -> MonthInput.calendar.attach "body"
+
     constructor:( target )->
         @supportedType = "month"
-        @valueToDate   = monthFromString
-        @dateToValue   = monthToString
-        @isValidValue  = isValidMonth
+        @valueToDate   = Date.monthFromString
+        @dateToValue   = Date.monthToString
+        @isValidValue  = Date.isValidMonth
 
         super target
 
-# <a name='week'></a>
-## Week
+    createDummy:->
+        dummy = super()
+        dummy.append "<span class='value'>#{ @get "value" }</span>"
+        dummy
 
-isValidWeek=( value )->
-    unless value? then return false
-    (/// ^
-        [\d]{4}    # Year
-        -W         # Week separator
-        [\d]{2}    # Week number prefixed with W
-    $ ///).test value
-
-# Converts a string such as `2011-W09` into a `Date` object
-# that represent the first day of the corresponding week, even
-# if it's not in the same year.
-weekFromString=( string )->
-    [ year, week ] = ( parseInt s for s in string.split "-W" )
-
-    getWeekDate year, week
-
-weekToString=( date )->
-    start = findFirstWeekFirstDay date.getFullYear()
-    dif   = date.valueOf() - start.valueOf()
-    week  = Math.round ( dif / MILLISECONDS_IN_WEEK ) + 1
-    "#{ fill date.getFullYear(), 4 }-W#{ fill week }"
-
-# Returns a `Date` that is the first day of the first week of the year.
-# In fact, the returned `Date` can represent a day that is not in `year`
-# as a year can start in the middle of a week.
-findFirstWeekFirstDay=( year )->
-    d = new Date year, 0, 1, 0
-    day = d.getDay()
-
-    if day is 0 then day = 7
-
-    if day > 3
-        new Date year, 0, 7 - day + 2, 0
-    else
-        new Date year, 0, 2 - day, 0
-
-getWeekDate=( year, week )->
-    start = findFirstWeekFirstDay year
-    date = new Date start.valueOf() + MILLISECONDS_IN_WEEK * ( week - 1 )
-    date.setHours 0
-    date.setMinutes 0
-    date.setSeconds 0
-    date.setMilliseconds 0
-    date
+    updateDummy:->
+        @dummy.find(".value").text @get "value"
 
 # <a name='WeekInput'></a>
 #### WeekInput
 class WeekInput extends AbstractDateInputWidget
+
+    @mixins OpenCalendar
+
+    @calendar = new Calendar null, "week"
+    $(document).ready -> WeekInput.calendar.attach "body"
+
     constructor:( target )->
         @supportedType = "week"
-        @valueToDate   = weekFromString
-        @dateToValue   = weekToString
-        @isValidValue  = isValidWeek
+        @valueToDate   = Date.weekFromString
+        @dateToValue   = Date.weekToString
+        @isValidValue  = Date.isValidWeek
 
         super target
 
+    createDummy:->
+        dummy = super()
+        dummy.append "<span class='value'>#{ @get "value" }</span>"
+        dummy
 
-# <a name='datetime'></a>
-## DateTime
-
-isValidDateTime=( value )->
-    unless value? then return false
-    (/// ^
-        [\d]{4}-       # Year
-        [\d]{2}-       # Month
-        [\d]{2}        # Day of the Month
-        T              # Start time token
-        [\d]{2}:       # Hours
-        [\d]{2}:       # Minutes
-        [\d]{2}        # Seconds
-        (\.[\d]{1,4})? # Optionnal milliseconds
-        (              # Mandatory terminator
-            Z|         # Either Z,
-            (\+|\-)+   # +XX:XX or -XX:XX
-            [\d]{2}:
-            [\d]{2}
-        )
-    $ ///).test value
-
-datetimeFromString=( string )->
-    new Date string
-
-datetimeToString=( date )->
-    offset = date.getTimezoneOffset()
-    sign = "-"
-    if offset < 0
-        sign = "+"
-        offset *= -1
-
-    minutes = offset % 60
-    hours = ( offset - minutes ) / 60
-    [ "#{ dateToString date }T",
-      "#{ timeToString date }",
-      "#{ sign }#{ fill hours }:#{ fill minutes }"
-    ].join ""
+    updateDummy:->
+        @dummy.find(".value").text @get "value"
 
 # <a name='DateTimeInput'></a>
 #### DateTimeInput
 class DateTimeInput extends AbstractDateInputWidget
     constructor:( target )->
         @supportedType = "datetime"
-        @valueToDate   = datetimeFromString
-        @dateToValue   = datetimeToString
-        @isValidValue  = isValidDateTime
+        @valueToDate   = Date.datetimeFromString
+        @dateToValue   = Date.datetimeToString
+        @isValidValue  = Date.isValidDateTime
 
         super target
-
-# <a name='datetime-local'></a>
-## DateTimeLocal
-validationRegexp= ->
-    /// ^
-        ([\d]{4})-     # Year
-        ([\d]{2})-     # Month
-        ([\d]{2})      # Day of the Month
-        T              # Start time token
-        ([\d]{2}):     # Hours
-        ([\d]{2}):     # Minutes
-        ([\d]{2})      # Seconds
-        (\.[\d]{1,3})? # Optionnal milliseconds
-    $ ///
-
-isValidDateTimeLocal=( value )->
-    unless value? then return false
-    validationRegexp().test value
-
-datetimeLocalFromString=( string )->
-    # Passing the date string directly in the constructor is valid,
-    # however the behavior in chrome and firefox are quite different,
-    # chrome consider that the passed-in date has an offset of `0`
-    # and the convert it to the current local offset when firefox
-    # consider the datestring as in the current local offset.
-    # In consequences, The date will differ between the two browsers
-    # of the amount of the current local offset.
-    #
-    # The `Date` will be created by parsing the string with the validation
-    # regex and pass each value as an argument in the `Date` constructor.
-
-    [ match, year, month,
-      day, hours, minutes,
-      seconds, milliseconds ] = validationRegexp().exec string
-
-    pI = parseInt
-    new Date pI( year    , 10 ),
-             pI( month   , 10 ) - 1,
-             pI( day     , 10 ),
-             pI( hours   , 10 ),
-             pI( minutes , 10 ),
-             pI( seconds , 10 )
-             if milliseconds? then pI milliseconds.replace(".", ""), 10 else 0
-
-datetimeLocalToString=( date )->
-    "#{ dateToString date }T#{ timeToString date }"
 
 # <a name='DateTimeLocalInput'></a>
 # FIX Find a way to fix the opera issue
@@ -763,35 +552,11 @@ datetimeLocalToString=( date )->
 class DateTimeLocalInput extends AbstractDateInputWidget
     constructor:( target )->
         @supportedType = "datetime-local"
-        @valueToDate   = datetimeLocalFromString
-        @dateToValue   = datetimeLocalToString
-        @isValidValue  = isValidDateTimeLocal
+        @valueToDate   = Date.datetimeLocalFromString
+        @dateToValue   = Date.datetimeLocalToString
+        @isValidValue  = Date.isValidDateTimeLocal
 
         super target
-
-@isValidTime = isValidTime
-@timeToString = timeToString
-@timeFromString = timeFromString
-
-@isValidDate = isValidDate
-@dateToString = dateToString
-@dateFromString = dateFromString
-
-@isValidMonth = isValidMonth
-@monthToString = monthToString
-@monthFromString = monthFromString
-
-@isValidWeek = isValidWeek
-@weekToString = weekToString
-@weekFromString = weekFromString
-
-@isValidDateTime = isValidDateTime
-@datetimeToString = datetimeToString
-@datetimeFromString = datetimeFromString
-
-@isValidDateTimeLocal = isValidDateTimeLocal
-@datetimeLocalToString = datetimeLocalToString
-@datetimeLocalFromString = datetimeLocalFromString
 
 @TimeInput = TimeInput
 @DateInput = DateInput

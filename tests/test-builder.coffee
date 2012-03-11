@@ -9,7 +9,7 @@ $(document).ready ->
             constructor:->
                 constructorCalled = true
 
-        unit = new BuildUnit A
+        unit = new BuildUnit cls:A
         o = unit.build()
 
         assertThat constructorCalled
@@ -24,7 +24,7 @@ $(document).ready ->
             constructor:->
                 constructorArgs = (a for a in arguments)
 
-        unit = new BuildUnit B, args
+        unit = new BuildUnit cls:B, args:args
         o = unit.build()
 
         assertThat constructorArgs, array.apply null, args
@@ -34,7 +34,9 @@ $(document).ready ->
 
         class C
 
-        unit = new BuildUnit C, null, property1:"value 1", property2:"value 2"
+        unit = new BuildUnit cls:C, set:
+            property1:"value 1",
+            property2:"value 2"
 
         o = unit.build()
         assertThat o.property1, equalTo "value 1"
@@ -47,7 +49,7 @@ $(document).ready ->
         cellCalled = false
         cellArg = null
 
-        unit = new BuildUnit D, null, null, (arg)->
+        unit = new BuildUnit cls:D, callback:(arg)->
             cellCalled = true
             cellArg = arg
 
@@ -180,7 +182,7 @@ $(document).ready ->
 
     # Some live demos
     states = [ null, "readonly", "disabled" ]
-    colors = [ null, "green", "blue" ]
+    colors = [ null, "blue", "green" ]
     colHeaderLabels = [ "Normal", "Blue", "Green" ]
     rowHeaderLabels = [ "Normal", "Readonly", "Disabled" ]
 
@@ -191,10 +193,11 @@ $(document).ready ->
         rows:3
         cols:3
         tableClass:"float dummy"
-        columnHeaders:(opts)-> rowHeaderLabels[opts.col]
-        rowHeaders:(opts)-> colHeaderLabels[opts.row]
+        columnHeaders:(opts)-> colHeaderLabels[opts.col]
+        rowHeaders:(opts)-> rowHeaderLabels[opts.row]
         cells:(opts)->
             opts.widget.addClasses colors[ opts.col ] if colors[ opts.col ]?
             opts.widget.set states[ opts.row ], true if states[ opts.row ]?
 
+    $("#qunit-header").before "<h4>TableBuilder</h4>"
     $("#qunit-header").before table.build()

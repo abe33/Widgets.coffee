@@ -123,30 +123,12 @@ hsv2rgb = ( h, s, v )->
         # According to the dominant color we affect
         # the values to each component.
         switch dominant
-            when 0
-                r = v
-                g = comp3
-                b = comp1
-            when 1
-                r = comp2
-                g = v
-                b = comp1
-            when 2
-                r = comp1
-                g = v
-                b = comp3
-            when 3
-                r = comp1
-                g = comp2
-                b = v
-            when 4
-                r = comp3
-                g = comp1
-                b = v
-            else
-                r = v
-                g = comp1
-                b = comp2
+            when 0 then [ r, g, b ] = [ v, comp3, comp1 ]
+            when 1 then [ r, g, b ] = [ comp2, v, comp1 ]
+            when 2 then [ r, g, b ] = [ comp1, v, comp3 ]
+            when 3 then [ r, g, b ] = [ comp1, comp2, v ]
+            when 4 then [ r, g, b ] = [ comp3, comp1, v ]
+            else        [ r, g, b ] = [ v, comp1, comp2 ]
 
         # And each component is normalized to fit in the
         # `0-255`.
@@ -621,7 +603,7 @@ class SquarePicker extends Widget
 # </script>
 class ColorPicker extends Widget
 
-    @mixins HasChild
+    @mixins HasChild, IsDialog
 
     constructor:->
         super()
@@ -669,17 +651,6 @@ class ColorPicker extends Widget
 
         # The default mode is the [HSV](#HSV) mode.
         @set "mode", @editModes[ 3 ]
-
-
-        # A `ColorPicker` is hidden at creation.
-        @dummy.hide()
-
-        # Using the `Enter` key while editing a color comfirm the edit
-        # and close the dialog.
-        @registerKeyDownCommand keystroke( keys.enter ), @comfirmChangesOnEnter
-        # Using the `Escape` ket while editing abort the current edit
-        # and close the dialog.
-        @registerKeyDownCommand keystroke( keys.escape ), @abortChanges
 
     #### Dummy Management
 
@@ -788,7 +759,7 @@ class ColorPicker extends Widget
         rnd = Math.round
 
         # The color's components are stored in individual variables.
-        { r:r, g:g, b:b, h:h, s:s, v:v } = @model
+        { r, g, b, h, s, v } = @model
 
         # The hexadecimal form is produced from the current red,
         # green and blue.
@@ -827,10 +798,20 @@ class ColorPicker extends Widget
     updateInput:( input, value )->
         input.set "value", value
 
+    setupDialog:( colorinput )->
+        # The original value is stored for allow a later reset.
+        @originalValue = value = @caller.get "value"
+
+        # The dialog's value is set on the current `ColorInput` value.
+        @set "value", value
+
+         # And the `span` meant to display the original value is updated.
+        @dummy.children(".oldColor").attr "style", "background: #{value};"
+
     #### Comfirmation and Cancelation
 
     # Handles the changes comfirmation with the `Enter` key.
-    comfirmChangesOnEnter:()->
+    comfirmChangesOnEnter:->
         # If the command is triggered when on of the children inputs
         # has changes that haven't trigger a `change` event, the
         # widgets prevent the comfirmation to allow the submission
@@ -847,20 +828,8 @@ class ColorPicker extends Widget
     # Comfirm the changes to the `ColorInput`. The dialog is hidden
     # a the end of the call.
     comfirmChanges:->
-        @currentTarget.set "value", @get "value"
+        @caller.set "value", @get "value"
         @close()
-
-    # Aborts the changes made in the dialog. The dialog is hidden and the
-    # `ColorInput` value is remained unchanged.
-    abortChanges:->
-        @close()
-
-    # Hides the dummy of this `ColorPicker`.
-    close:->
-        @dummy.hide()
-        ( $ document ).unbind "mouseup", @documentDelegate
-
-        @currentTarget.grabFocus()
 
     #### Properties Accessors
 
@@ -939,7 +908,7 @@ class ColorPicker extends Widget
         # But if the lock is activated the function will not proceed.
         unless @inputValueSetProgrammatically
 
-            { r:r, g:g, b:b, h:h, s:s, v:v } = @model
+            { r, g, b, h, s, v } = @model
 
             # According to the component the widget's value is changed.
             switch component
@@ -952,54 +921,6 @@ class ColorPicker extends Widget
                 when "value"      then @fromHSV h, s, value
 
                 when "hex"        then @fromHex value
-
-    # When a user click on a `ColorInput`, a `dialogRequested` signal
-    # is dispatched and the `ColorPicker` that listen to it will catch it.
-    #
-    # The same `ColorPicker` can work for many `ColorInput`.
-    dialogRequested:( colorinput )->
-        # We store the `ColorInput` that requested the dialog.
-        @currentTarget = colorinput
-
-        # The original value is stored for allow a later reset.
-        @originalValue = value = @currentTarget.get "value"
-
-        # The dialog's value is set on the current `ColorInput` value.
-        @set "value", value
-
-        # The dialog register itself to catch clicks done outside of it.
-        # When it occurs the dialog will close itself and affect the value
-        # to the `ColorInput` that have made the initial request.
-        ( $ document ).bind "mouseup", @documentDelegate = (e)=>
-            @mouseup e
-
-        # The dummy is placed in below the `ColorInput` that requested
-        # the dialog.
-        @dummy.css("left", @currentTarget.dummy.offset().left)
-              .css("top", @currentTarget.dummy.offset().top +
-                          @currentTarget.dummy.height() )
-              .css("position", "absolute")
-              # The dummy is then displayed.
-              .show()
-              # And the `span` meant to display the original value is updated.
-              .children(".oldColor").attr "style", "background: #{value};"
-
-        # At the end of the request the widget gets the focus.
-        @grabFocus()
-
-    #### Events handlers
-
-    # Catch all clicks done on the widget or outside.
-    mouseup:(e)->
-        w = @dummy.width()
-        h = @dummy.height()
-
-        x = e.pageX - @dummy.offset().left
-        y = e.pageY - @dummy.offset().top
-
-        # Clicking outside the widget will comfirm the changes
-        # to the `ColorInput`.
-        unless 0 <= x <= w and 0 <= y <= h then @comfirmChanges()
 
 ## Color manipulation modes
 
@@ -1066,7 +987,7 @@ class HSVMode extends AbstractMode
 
     update:( model )->
         if model?
-            { h:h, s:s, v:v } = model
+            { h, s, v } = model
             [r,g,b] = hsv2rgb h, 100, 100
 
             @valuesSetProgrammatically = true
@@ -1123,7 +1044,7 @@ class SHVMode extends AbstractMode
                       </span>"
 
     update:( model )->
-        { h:h, s:s, v:v } = model
+        { h, s, v } = model
         opacity = 1-( s / 100 )
 
         @valuesSetProgrammatically = true
@@ -1176,7 +1097,7 @@ class VHSMode extends AbstractMode
                       </span>"
 
     update:( model )->
-        { h:h, s:s, v:v } = model
+        { h, s, v } = model
         opacity = 1-( v / 100 )
 
         @valuesSetProgrammatically = true
@@ -1228,7 +1149,7 @@ class RGBMode extends AbstractMode
                       </span>"
 
     update:( model )->
-        { r:r, g:g, b:b } = model
+        { r, g, b } = model
         opacity = r / 255
 
         @valuesSetProgrammatically = true
@@ -1280,7 +1201,7 @@ class GRBMode extends AbstractMode
                       </span>"
 
     update:( model )->
-        { r:r, g:g, b:b } = model
+        { r, g, b } = model
         opacity = g / 255
 
         @valuesSetProgrammatically = true
@@ -1315,7 +1236,6 @@ class GRBMode extends AbstractMode
 #<a name="BGR"></a>
 #### BGR mode
 
-
 # The `RGBMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `blue` component and the square
 # picker edit the `green` and `red`.
@@ -1333,7 +1253,7 @@ class BGRMode extends AbstractMode
                       </span>"
 
     update:( model )->
-        { r:r, g:g, b:b } = model
+        { r, g, b } = model
         opacity = b / 255
 
         @valuesSetProgrammatically = true
@@ -1369,8 +1289,7 @@ class BGRMode extends AbstractMode
 # for `ColorInput` instances.
 ColorInput.defaultListener = new ColorPicker
 
-$( document ).ready ->
-    ColorInput.defaultListener.attach "body"
+$( document ).ready -> ColorInput.defaultListener.attach "body"
 
 @rgb2hsv           = rgb2hsv
 @hsv2rgb           = hsv2rgb

@@ -1,16 +1,14 @@
 
-code {
-    background:$base03 !important;
-    border:1px solid $base04 !important;
-    color:$base1;
-}
-
 .docs {
-    background:$base02 !important;
+    background:$base2 !important;
+    color:$base01;
+    // background:$base02 !important;
+    code, pre {
+        background:$base1 !important;
+        border:1px solid $base0 !important;
+        color:$base02;
+    }
     pre {
-          color:$base1;
-          background:$base04 !important;
-          border:1px solid $base05 !important;
           code {
               background:none !important;
               border:none !important;
@@ -19,26 +17,30 @@ code {
     font-family:'Palatino Linotype','Book Antiqua',Palatino,FreeSerif,serif;
     font-size:14px;
     h1, h2, h3, h4, h5, h6 {
-        color:$widget-text-focus-color;
-        @include textshadow("0pt 1px 3px rgba(0, 0, 0, 1)");
+        color:$base03;
+        &:first-letter {
+            // @include textshadow("0pt 1px 3px rgba(0, 0, 0, 1)");
+            // @include textborder($base02);
+        }
     }
     h1:first-letter {
-        color:$green1;
+        color:$green0;
     }
     h3:first-letter {
-        color:$blue1;
+        color:$blue0;
     }
 }
 
 #container {
     color:$base0;
+    background:$base2 !important;
+    overflow:hidden;
     #background {
         background:#042029;
         border-left:2px solid #888;
     }
     td, th {
         &.code {
-
 
             border-left:2px solid #888;
             background-color:#042029;
