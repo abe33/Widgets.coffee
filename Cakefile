@@ -78,7 +78,7 @@ compilationUnits=
                   "radio", "radiogroup" ]
         test:"test-colorpicker"
     'jquery':
-        depends:allFiles[0..-2]
+        depends:allFiles[0..-3]
         test:"test-jquery"
     'builder':
         depends:[ "std", "keys", "module", "mixins", "widgets", "button" ]
