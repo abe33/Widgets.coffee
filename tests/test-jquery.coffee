@@ -380,8 +380,10 @@ $( document ).ready ->
         assertThat formObject.widgets[1] instanceof Button
         assertThat formObject.widgets[2] instanceof Button
 
-        assertThat formObject.submitButton is formObject.widgets[1]
-        assertThat formObject.resetButton is formObject.widgets[2]
+        assertThat formObject.submitButtons.length, equalTo 1
+        assertThat formObject.submitButtons[0] is formObject.widgets[1]
+        assertThat formObject.resetButtons.length, equalTo 1
+        assertThat formObject.resetButtons[0] is formObject.widgets[2]
 
         delete $.widgetPlugin.forms
 

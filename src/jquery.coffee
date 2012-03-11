@@ -237,27 +237,29 @@ formProcessor=(o)->
     @forms = [] unless @forms?
 
     form = $(o)
-    resetButton = null
-    submitButton = null
+    resetButtons = []
+    submitButtons = []
+
     widgets = form.find("input, textarea, select").widgets()
 
-    for widget in widgets
-        if widget.jTarget.attr("type") is "reset" and not widget.cantInteract()
-            resetButton = widget
-
-        if widget.jTarget.attr("type") is "submit" and
-           not widget.cantInteract()
-            submitButton = widget
-
-    if resetButton then resetButton.dummy.click =>
+    reset=->
         widget.reset() for widget in widgets when widget not instanceof Button
+
+    for widget in widgets
+        if widget.jTarget.attr("type") is "reset"
+            resetButtons.push widget
+            widget.set "action",
+                display:widget.jTarget.attr("value"),
+                action:reset
+
+        submitButtons.push widget if widget.jTarget.attr("type") is "submit"
 
     @forms.push
         method:form.attr "method"
         action:form.attr "action"
         widgets:widgets
-        resetButton:resetButton
-        submitButton:submitButton
+        resetButtons:resetButtons
+        submitButtons:submitButtons
 
     null
 
