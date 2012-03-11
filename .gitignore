@@ -3,3 +3,8 @@
 .sass-cache
 .tmp
 lint.results
+css/colors.css
+css/common.css
+css/docco.css
+css/mixins.css
+css/widgets/*.css
