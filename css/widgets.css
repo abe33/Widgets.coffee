@@ -81,91 +81,91 @@
 
 .inset-box, .text, .textarea, .stepper, .dateinput.time, .filepicker, .checkbox, .radio, .slider .track {
   background: #042029;
-  -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-  -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-  box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+  -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+  -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+  box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.light, .light.text, .light.textarea, .light.stepper, .light.dateinput.time, .light.filepicker, .text.focus, .focus.textarea, .focus.stepper, .focus.dateinput.time, .focus.filepicker, .light.checkbox, .light.radio, .slider .light.track {
     background-color: #002b36; }
   .inset-box.white, .white.text, .white.textarea, .white.stepper, .white.dateinput.time, .white.filepicker, .white.checkbox, .checkbox.checked.disabled, .white.radio, .slider .white.track {
     background: #657b83;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.white.light, .white.light.text, .white.light.textarea, .white.light.stepper, .white.light.dateinput.time, .white.light.filepicker, .white.text.focus, .white.focus.textarea, .white.focus.stepper, .white.focus.dateinput.time, .white.focus.filepicker, .white.light.checkbox, .light.checkbox.checked.disabled, .white.light.radio, .slider .white.light.track {
       background: #93a1a1;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.red, .red.text, .red.textarea, .red.stepper, .red.dateinput.time, .red.filepicker, .red.checkbox, .red.radio, .slider .red.track {
     background: #dc322f;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.red.light, .red.light.text, .red.light.textarea, .red.light.stepper, .red.light.dateinput.time, .red.light.filepicker, .red.text.focus, .red.focus.textarea, .red.focus.stepper, .red.focus.dateinput.time, .red.focus.filepicker, .red.light.checkbox, .red.light.radio, .slider .red.light.track {
       background: #fe5c4d;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.orange, .orange.text, .orange.textarea, .orange.stepper, .orange.dateinput.time, .orange.filepicker, .orange.checkbox, .orange.radio, .slider .orange.track {
     background: #cb4b16;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.orange.light, .orange.light.text, .orange.light.textarea, .orange.light.stepper, .orange.light.dateinput.time, .orange.light.filepicker, .orange.text.focus, .orange.focus.textarea, .orange.focus.stepper, .orange.focus.dateinput.time, .orange.focus.filepicker, .orange.light.checkbox, .orange.light.radio, .slider .orange.light.track {
       background: #e66a36;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.yellow, .yellow.text, .yellow.textarea, .yellow.stepper, .yellow.dateinput.time, .yellow.filepicker, .yellow.checkbox, .yellow.radio, .slider .yellow.track {
     background: #b58900;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.yellow.light, .yellow.light.text, .yellow.light.textarea, .yellow.light.stepper, .yellow.light.dateinput.time, .yellow.light.filepicker, .yellow.text.focus, .yellow.focus.textarea, .yellow.focus.stepper, .yellow.focus.dateinput.time, .yellow.focus.filepicker, .yellow.light.checkbox, .yellow.light.radio, .slider .yellow.light.track {
       background: #cfa521;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.green, .green.text, .green.textarea, .green.stepper, .green.dateinput.time, .green.filepicker, .green.checkbox, .green.radio, .slider .green.track {
     background: #859900;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.green.light, .green.light.text, .green.light.textarea, .green.light.stepper, .green.light.dateinput.time, .green.light.filepicker, .green.text.focus, .green.focus.textarea, .green.focus.stepper, .green.focus.dateinput.time, .green.focus.filepicker, .green.light.checkbox, .green.light.radio, .slider .green.light.track {
       background: #a9bf1b;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.cyan, .cyan.text, .cyan.textarea, .cyan.stepper, .cyan.dateinput.time, .cyan.filepicker, .cyan.checkbox, .cyan.radio, .slider .cyan.track {
     background: #2aa198;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.cyan.light, .cyan.light.text, .cyan.light.textarea, .cyan.light.stepper, .cyan.light.dateinput.time, .cyan.light.filepicker, .cyan.text.focus, .cyan.focus.textarea, .cyan.focus.stepper, .cyan.focus.dateinput.time, .cyan.focus.filepicker, .cyan.light.checkbox, .cyan.light.radio, .slider .cyan.light.track {
       background: #4ccac1;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.blue, .blue.text, .blue.textarea, .blue.stepper, .blue.dateinput.time, .blue.filepicker, .blue.checkbox, .checkbox.checked, .blue.radio, .slider .blue.track {
     background: #268bd2;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.blue.light, .blue.light.text, .blue.light.textarea, .blue.light.stepper, .blue.light.dateinput.time, .blue.light.filepicker, .blue.text.focus, .blue.focus.textarea, .blue.focus.stepper, .blue.focus.dateinput.time, .blue.focus.filepicker, .blue.light.checkbox, .light.checkbox.checked, .blue.light.radio, .slider .blue.light.track {
       background: #34a0ec;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.violet, .violet.text, .violet.textarea, .violet.stepper, .violet.dateinput.time, .violet.filepicker, .violet.checkbox, .violet.radio, .slider .violet.track {
     background: #6c71c4;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.violet.light, .violet.light.text, .violet.light.textarea, .violet.light.stepper, .violet.light.dateinput.time, .violet.light.filepicker, .violet.text.focus, .violet.focus.textarea, .violet.focus.stepper, .violet.focus.dateinput.time, .violet.focus.filepicker, .violet.light.checkbox, .violet.light.radio, .slider .violet.light.track {
       background: #8389eb;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
 
 .outset-box, .button, .filepicker .icon, .colorinput, .single-select, .dateinput.date, .dateinput.month, .dateinput.week, .button.disabled:hover, .filepicker .disabled.icon:hover, .disabled.colorinput:hover, .disabled.single-select:hover, .disabled.dateinput.date:hover, .disabled.dateinput.month:hover, .disabled.dateinput.week:hover, .button.readonly:hover, .filepicker .readonly.icon:hover, .readonly.colorinput:hover, .readonly.single-select:hover, .readonly.dateinput.date:hover, .readonly.dateinput.month:hover, .readonly.dateinput.week:hover, .button.disabled.focus, .filepicker .disabled.focus.icon, .disabled.focus.colorinput, .disabled.focus.single-select, .disabled.focus.dateinput.date, .disabled.focus.dateinput.month, .disabled.focus.dateinput.week, .popup, .colorpicker, .menulist, .calendar, .popup.disabled, .disabled.colorpicker, .disabled.menulist, .disabled.calendar, .checkbox:before, .checkbox.disabled:hover:before, .checkbox.readonly:hover:before, .radio.checked.disabled:after, .slider.disabled:hover .knob, .slider.readonly:hover .knob, .slider .knob, .stepper.disabled .up:hover, .disabled.dateinput.time .up:hover, .stepper.disabled .down:hover, .disabled.dateinput.time .down:hover, .stepper.readonly .up:hover, .readonly.dateinput.time .up:hover, .stepper.readonly .down:hover, .readonly.dateinput.time .down:hover, .stepper .up, .dateinput.time .up, .stepper .down, .dateinput.time .down {
   border: 1px solid #839496;

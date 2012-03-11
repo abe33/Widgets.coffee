@@ -96,6 +96,7 @@
             for(i;i<l;i++){
                 var tb = new TableBuilder( builds[i] );
                 var t = tb.build();
+                $("form").after("<a name='"+ builds[i].title +"'></a>");
                 $("form").after(t);
             }
         });
@@ -111,168 +112,180 @@
 
     <form target="./index.html">
         <table id='form' class='float'>
-            <thead>
-                <tr><th colspan="4" class="table-header">HTML Form Substitution</th></tr>
-                <tr><th></th><th>Normal</th><th>Read-only</th><th>Disabled</th></tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>Radio</th>
-                    <td>
-                       <input type="radio" name="group1" checked></input>
-                       <input type="radio" name="group1"></input>
-                    </td>
-                    <td>
-                      <input type="radio" name="group2" checked readonly></input>
-                      <input type="radio" name="group2" readonly></input>
-                    </td>
-                    <td>
-                      <input type="radio" name="group3" checked disabled></input>
-                      <input type="radio" name="group3" disabled></input>
-                    </td>
-                </tr>
-                <tr>
-                <th>CheckBox</th>
+            <tr><th colspan="5" class="table-header">HTML Form Substitution</th></tr>
+            <tr><th></th><th>Input Type</th><th>Normal</th><th>Read-only</th><th>Disabled</th></tr>
+            <tr>
+                <th>Radio</th>
+                <td class='type'>"radio"</td>
                 <td>
-                    <input type="checkbox" name="done"></input>
-                    <input type="checkbox" name="done" checked></input>
+                   <input type="radio" name="group1" checked></input>
+                   <input type="radio" name="group1"></input>
                 </td>
                 <td>
-                    <input type="checkbox" name="done" readonly></input>
-                    <input type="checkbox" name="done" readonly checked></input>
+                  <input type="radio" name="group2" checked readonly></input>
+                  <input type="radio" name="group2" readonly></input>
                 </td>
                 <td>
-                    <input type="checkbox" name="done" disabled></input>
-                    <input type="checkbox" name="done" disabled checked></input>
+                  <input type="radio" name="group3" checked disabled></input>
+                  <input type="radio" name="group3" disabled></input>
                 </td>
-                </tr>
+            </tr>
+            <tr>
+            <th>CheckBox</th>
+            <td class='type'>"checkbox"</td>
+            <td>
+                <input type="checkbox" name="done"></input>
+                <input type="checkbox" name="done" checked></input>
+            </td>
+            <td>
+                <input type="checkbox" name="done" readonly></input>
+                <input type="checkbox" name="done" readonly checked></input>
+            </td>
+            <td>
+                <input type="checkbox" name="done" disabled></input>
+                <input type="checkbox" name="done" disabled checked></input>
+            </td>
+            </tr>
 
-                <tr>
-                <th>TextInput</th>
-                <td><input type="text" value="A text field" name="name"></input>
-                </td>
-                <td><input type="text" value="A text field" name="name" readonly></input>
-                </td>
-                <td><input type="text" value="A text field" name="name" disabled></input></td>
-                </tr>
+            <tr>
+            <th style='border-bottom:none;'>TextInput</th>
+            <td class='type'>"text"</td>
+            <td><input type="text" value="A text field" name="name"></input>
+            </td>
+            <td><input type="text" value="A text field" name="name" readonly></input>
+            </td>
+            <td><input type="text" value="A text field" name="name" disabled></input></td>
+            </tr>
 
-                <tr>
-                <th></th>
-                <td><input type="password" value="password" name="password"></td>
-                <td><input type="password" value="password" name="password" readonly></td>
-                <td><input type="password" value="password" name="password" disabled></td>
-                </tr>
+            <tr>
+            <th style='border-top:none;'></th>
+            <td class='type'>"password"</td>
+            <td><input type="password" value="password" name="password"></td>
+            <td><input type="password" value="password" name="password" readonly></td>
+            <td><input type="password" value="password" name="password" disabled></td>
+            </tr>
 
-                <tr>
-                <th>TextArea</th>
-                <td><textarea>Hello</textarea></td>
-                <td><textarea readonly>Hello</textarea></td>
-                <td><textarea disabled>Hello</textarea></td>
-                </tr>
+            <tr>
+            <th>TextArea</th>
+            <td></td>
+            <td><textarea>Hello</textarea></td>
+            <td><textarea readonly>Hello</textarea></td>
+            <td><textarea disabled>Hello</textarea></td>
+            </tr>
 
-                <tr>
-                <th>Slider</th>
-                <td><input type="range" value="12" min="10" max="50" step="1" name="oof"></input></td>
-                <td><input type="range" value="23" min="10" max="50" step="1" name="oof" readonly></input></td>
-                <td><input type="range" value="37" min="10" max="50" step="1" name="oof" disabled></input></td>
-                </tr>
+            <tr>
+            <th>Slider</th>
+            <td class='type'>"range"</td>
+            <td><input type="range" value="12" min="10" max="50" step="1" name="oof"></input></td>
+            <td><input type="range" value="23" min="10" max="50" step="1" name="oof" readonly></input></td>
+            <td><input type="range" value="37" min="10" max="50" step="1" name="oof" disabled></input></td>
+            </tr>
 
-                <tr>
-                <th>FilePicker</th>
-                <td><input type="file" name="file"></input></td>
-                <td><input type="file" name="file" readonly></input></td>
-                <td><input type="file" name="file" disabled></input></td>
-                </tr>
+            <tr>
+            <th>FilePicker</th>
+            <td class='type'>"file"</td>
+            <td><input type="file" name="file"></input></td>
+            <td><input type="file" name="file" readonly></input></td>
+            <td><input type="file" name="file" disabled></input></td>
+            </tr>
 
-                <tr>
-                <th>Stepper</th>
-                <td><input type="number" value="12" min="0" max="255" step="1" name="foo"></input></td>
-                <td><input type="number" value="27" min="0" max="255" step="1" name="foo" readonly></input></td>
-                <td><input type="number" value="49" min="0" max="255" step="1" name="foo" disabled></input></td>
-                </tr>
+            <tr>
+            <th>Stepper</th>
+            <td class='type'>"number"</td>
+            <td><input type="number" value="12" min="0" max="255" step="1" name="foo"></input></td>
+            <td><input type="number" value="27" min="0" max="255" step="1" name="foo" readonly></input></td>
+            <td><input type="number" value="49" min="0" max="255" step="1" name="foo" disabled></input></td>
+            </tr>
 
-                <tr>
-                <th>TimeInput</th>
-                <td><input type="time" value="16:25" name="time" min="01:00" max="23:00"></input></td>
-                <td><input type="time" value="16:25" name="time" min="01:00" max="16:45" readonly></input></td>
-                <td><input type="time" value="16:25" name="time" min="01:00" max="18:23" disabled></input></td>
-                </tr>
+            <tr>
+            <th>TimeInput</th>
+            <td class='type'>"time"</td>
+            <td><input type="time" value="16:25" name="time" min="01:00" max="23:00"></input></td>
+            <td><input type="time" value="16:25" name="time" min="01:00" max="16:45" readonly></input></td>
+            <td><input type="time" value="16:25" name="time" min="01:00" max="18:23" disabled></input></td>
+            </tr>
 
-                <tr>
-                <th>DateInput</th>
-                <td><input type="date" value="2004-05-16" name="date" min="2004-01-01" max="2004-12-31"></input></td>
-                <td><input type="date" value="2004-05-16" name="date" min="2004-01-01" max="2004-12-31" readonly></input></td>
-                <td><input type="date" value="2004-05-16" name="date" min="2004-01-01" max="2004-12-31" disabled></input></td>
-                </tr>
+            <tr>
+            <th>DateInput</th>
+            <td class='type'>"date"</td>
+            <td><input type="date" value="2004-05-16" name="date" min="2004-01-01" max="2004-12-31"></input></td>
+            <td><input type="date" value="2004-05-16" name="date" min="2004-01-01" max="2004-12-31" readonly></input></td>
+            <td><input type="date" value="2004-05-16" name="date" min="2004-01-01" max="2004-12-31" disabled></input></td>
+            </tr>
 
-                <tr>
-                <th>MonthInput</th>
-                <td><input type="month" value="2004-01" name="month" min="2000-01" max="2012-12"></input></td>
-                <td><input type="month" value="2004-01" name="month" min="2000-01" max="2012-12" readonly></input></td>
-                <td><input type="month" value="2004-01" name="month" min="2000-01" max="2012-12" disabled></input></td>
-                </tr>
+            <tr>
+            <th>MonthInput</th>
+            <td class='type'>"month"</td>
+            <td><input type="month" value="2004-01" name="month" min="2000-01" max="2012-12"></input></td>
+            <td><input type="month" value="2004-01" name="month" min="2000-01" max="2012-12" readonly></input></td>
+            <td><input type="month" value="2004-01" name="month" min="2000-01" max="2012-12" disabled></input></td>
+            </tr>
 
-                <tr>
-                <th>WeekInput</th>
-                <td><input type="week" value="2007-W16" name="week" min="2000-W01" max="2012-W12"></input></td>
-                <td><input type="week" value="2007-W16" name="week" min="2000-W01" max="2012-W12" readonly></input></td>
-                <td><input type="week" value="2007-W16" name="week" min="2000-W01" max="2012-W12" disabled></input></td>
-                </tr>
+            <tr>
+            <th>WeekInput</th>
+            <td class='type'>"week"</td>
+            <td><input type="week" value="2007-W16" name="week" min="2000-W01" max="2012-W12"></input></td>
+            <td><input type="week" value="2007-W16" name="week" min="2000-W01" max="2012-W12" readonly></input></td>
+            <td><input type="week" value="2007-W16" name="week" min="2000-W01" max="2012-W12" disabled></input></td>
+            </tr>
 
-                <!-- <tr>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
-                </tr> -->
+            <!-- <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            </tr> -->
 
-                <tr>
-                <th>SingleSelect</th>
-                <td><select name="select">
-                    <option selected>Item 1</option>
-                    <option>Item 2</option>
-                    <option>Long Item 3</option>
-                    <optgroup label="Group 1">
-                        <option>Item 4</option>
-                        <option>Item 5</option>
-                        <option>Item 6</option>
-                    </optgroup>
-                </select></td>
-                <td><div class='not-standard'>not standard</div></td>
-                <td><select name="select" disabled>
-                    <option selected>Item 1</option>
-                    <option>Item 2</option>
-                    <option>Long Item 3</option>
-                    <optgroup label="Group 1">
-                        <option>Item 4</option>
-                        <option>Item 5</option>
-                        <option>Item 6</option>
-                    </optgroup>
-                </select></td>
-                </tr>
+            <tr>
+            <th>SingleSelect</th>
+            <td></td>
+            <td><select name="select">
+                <option selected>Item 1</option>
+                <option>Item 2</option>
+                <option>Long Item 3</option>
+                <optgroup label="Group 1">
+                    <option>Item 4</option>
+                    <option>Item 5</option>
+                    <option>Item 6</option>
+                </optgroup>
+            </select></td>
+            <td><div class='not-standard'>not standard</div></td>
+            <td><select name="select" disabled>
+                <option selected>Item 1</option>
+                <option>Item 2</option>
+                <option>Long Item 3</option>
+                <optgroup label="Group 1">
+                    <option>Item 4</option>
+                    <option>Item 5</option>
+                    <option>Item 6</option>
+                </optgroup>
+            </select></td>
+            </tr>
 
-                <tr>
-                <th>ColorInput</th>
-                <td><input type="color" value="#859900" name="color"></input></td>
-                <td><input type="color" value="#859900" name="color" readonly></input></td>
-                <td><input type="color" value="#859900" name="color" disabled></input></td>
-                </tr>
+            <tr>
+            <th>ColorInput</th>
+            <td class='type'>"color"</td>
+            <td><input type="color" value="#859900" name="color"></input></td>
+            <td><input type="color" value="#859900" name="color" readonly></input></td>
+            <td><input type="color" value="#859900" name="color" disabled></input></td>
+            </tr>
 
-                <tr>
-                <th>Buttons</th>
-                <td><input type="button" value="Button" onclick="console.log('input clicked');"></input></td>
-                <td><input type="button" value="Button" onclick="console.log('input clicked');" readonly></input></td>
-                <td><input type="button" value="Button" onclick="console.log('input clicked');" disabled></input></td>
-                </tr>
+            <tr>
+            <th style='border-bottom:none;'>Buttons</th>
+            <td class='type'>"button"</td>
+            <td><input type="button" value="Button" onclick="console.log('input clicked');"></input></td>
+            <td><input type="button" value="Button" onclick="console.log('input clicked');" readonly></input></td>
+            <td><input type="button" value="Button" onclick="console.log('input clicked');" disabled></input></td>
+            </tr>
 
-                <tr>
-                <th></th>
-                <td><input type="submit" value="Submit"></input></td>
-                <td><input type="submit" value="Submit" readonly></input></td>
-                <td><input type="submit" value="Submit" disabled></input></td>
-                </tr>
+            <tr>
+            <th style='border-top:none;'></th>
+            <td class='type'>"submit"</td>
+            <td><input type="submit" value="Submit"></input></td>
+            <td><input type="submit" value="Submit" readonly></input></td>
+            <td><input type="submit" value="Submit" disabled></input></td>
+            </tr>
 
-            </tbody>
         </table>
 
 

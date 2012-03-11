@@ -276,91 +276,91 @@
 
 .inset-box, .text {
   background: #042029;
-  -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-  -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-  box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+  -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+  -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+  box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.light, .light.text, .text.focus {
     background-color: #002b36; }
   .inset-box.white, .white.text {
     background: #657b83;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.white.light, .white.light.text, .white.text.focus {
       background: #93a1a1;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.red, .red.text {
     background: #dc322f;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.red.light, .red.light.text, .red.text.focus {
       background: #fe5c4d;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.orange, .orange.text {
     background: #cb4b16;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.orange.light, .orange.light.text, .orange.text.focus {
       background: #e66a36;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.yellow, .yellow.text {
     background: #b58900;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.yellow.light, .yellow.light.text, .yellow.text.focus {
       background: #cfa521;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.green, .green.text {
     background: #859900;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.green.light, .green.light.text, .green.text.focus {
       background: #a9bf1b;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.cyan, .cyan.text {
     background: #2aa198;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.cyan.light, .cyan.light.text, .cyan.text.focus {
       background: #4ccac1;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.blue, .blue.text {
     background: #268bd2;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.blue.light, .blue.light.text, .blue.text.focus {
       background: #34a0ec;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.violet, .violet.text {
     background: #6c71c4;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.violet.light, .violet.light.text, .violet.text.focus {
       background: #8389eb;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 7px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
 
 .outset-box, .button, .button.disabled:hover, .button.readonly:hover, .button.disabled.focus, .popup, .popup.disabled {
   border: 1px solid #839496;
@@ -737,7 +737,6 @@ form {
   display: inline-block; }
 
 .float {
-  padding-bottom: 6px;
   margin: 5px 5px 0px 0px;
   background: #073642;
   display: inline-block;
@@ -747,14 +746,27 @@ form {
   -moz-border-radius: 4px;
   -o-border-radius: 4px;
   border-radius: 4px; }
-  .float td {
+  .float sub {
+    color: #cb4b16;
+    text-transform: uppercase;
+    font-size: 10px; }
+  .float td, .float th {
+    position: relative;
     padding-top: 4px;
     padding-bottom: 8px;
-    border-top: 1px solid #002b36; }
-    .float td:first-child {
+    border-top: 1px solid rgba(88, 110, 117, 0.3);
+    border-bottom: 1px solid #002b36; }
+    .float td:first-child, .float th:first-child {
       padding-left: 5px; }
-  .float tr:nth-child(2) td {
-    border: none; }
+  .float tr:first-child td, .float tr:first-child th {
+    border-top: none; }
+  .float tr:last-child td, .float tr:last-child th {
+    border-bottom: none; }
+  .float td.type {
+    color: #859900;
+    font-family: monospace;
+    padding: 5px;
+    font-size: 12px; }
   .float th {
     font-weight: normal;
     font-variant: small-caps;
@@ -771,7 +783,7 @@ form {
       padding-left: 5px; }
   .float .calendar th {
     color: #002b36; }
-  .float .calendar td {
+  .float .calendar td, .float .calendar th {
     border: none; }
   .float .not-standard {
     background: #cb4b16;
