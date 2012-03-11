@@ -1,7 +1,12 @@
 
+
+td.docs, th.docs {
+    overflow-x:auto !important;
+}
 .docs {
     background:$base2 !important;
     color:$base01;
+    overflow:auto !important;
     // background:$base02 !important;
     code, pre {
         background:$base1 !important;
@@ -34,7 +39,6 @@
 #container {
     color:$base0;
     background:$base2 !important;
-    overflow:hidden;
     #background {
         background:#042029;
         border-left:2px solid #888;

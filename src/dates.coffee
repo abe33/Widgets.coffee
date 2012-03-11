@@ -10,14 +10,17 @@
 # The `dates.coffee` file contains all the widgets that handles date and time
 # related inputs.
 #
+#  * [AbstractDateInputWidget](#AbstractDateInputWidget)
+#  * [OpenCalendar](#OpenCalendar)
+#
 # The supported dates and time modes and their corresponding widgets are :
 #
-# * [TimeInput](#TimeInput)
-# * [DateInput](#DateInput)
-# * [MonthInput](#MonthInput)
-# * [WeekInput](#WeekInput)
-# * [DateTimeInput](#DateTimeInput)
-# * [DateTimeLocalInput](#DateTimeLocalInput)
+#  * [TimeInput](#TimeInput)
+#  * [DateInput](#DateInput)
+#  * [MonthInput](#MonthInput)
+#  * [WeekInput](#WeekInput)
+#  * [DateTimeInput](#DateTimeInput)
+#  * [DateTimeLocalInput](#DateTimeLocalInput)
 
 #### Abstract
 #
@@ -25,7 +28,8 @@
 # as top level functions to allow them to be tested and then
 # used in tests to validates widgets outputs.
 
-#### AbstractDateInputWidget
+# <a name='AbstractDateInputWidget'></a>
+## AbstractDateInputWidget
 
 # All widgets that implements support for one of the html
 # date and time inputs extends the `AbstractDateInputWidget` class.
@@ -266,20 +270,31 @@ class AbstractDateInputWidget extends Widget
         @set "date", @get "date"
         value
 
+# <a name='OpenCalendar'></a>
+## OpenCalendar
+
+# This mixin provides the basic behavior for date widgets
+# that need to open a `Calendar` to edit their value.
 OpenCalendar=
+    # `OpenCalendar` objects provide a `dialogRequested`
+    # signal that is automatically binded to an instance
+    # of `Calendar` attached to the class.
     constructorHook:->
         @dialogRequested = new Signal
         @dialogRequested.add @constructor.calendar.dialogRequested,
                              @constructor.calendar
 
+    # Clicking on the widget will trigger the `dialogRequested` signal
+    # unless it can't interact.
+    # The propagation of the event is stopped to prevent the document
+    # to catch the event and closing the dialog instantly.
     mouseup:(e)->
         unless @cantInteract()
             e.stopImmediatePropagation()
             @dialogRequested.dispatch this
 
-
 # <a name='TimeInput'></a>
-#### TimeInput
+## TimeInput
 
 # The `TimeInput` handles the form input of type `time`.
 #
@@ -445,8 +460,10 @@ class TimeInput extends AbstractDateInputWidget
 
 
 # <a name='DateInput'></a>
-#### DateInput
+## DateInput
 
+# The `DateInput` handles the form input of type `date`.
+#
 # Here some live instances :
 # <div id="dateinput-demos"></div>
 #
@@ -464,11 +481,16 @@ class TimeInput extends AbstractDateInputWidget
 # </script>
 class DateInput extends AbstractDateInputWidget
 
+    # Clicking on a `DateInput` open a `Calendar` object
+    # in `date` mode.
     @mixins OpenCalendar
 
+    # The `Calendar` instance for the `DateInput` class.
     @calendar = new Calendar
     $(document).ready -> DateInput.calendar.attach "body"
 
+    # Setup the concrete function for validation and conversion
+    # of the `AbstractDateInputWidget` class.
     constructor:( target )->
         @supportedType = "date"
         @valueToDate   = Date.dateFromString
@@ -476,24 +498,49 @@ class DateInput extends AbstractDateInputWidget
         @isValidValue  = Date.isValidDate
 
         super target
-
+    # Creates the dummy that will contains the widget's value in
+    # a `span` with the class `value`.
     createDummy:->
         dummy = super()
         dummy.append "<span class='value'>#{ @get "value" }</span>"
         dummy
 
+    # Updates the `span` that contains the value.
     updateDummy:->
         @dummy.find(".value").text @get "value"
 
 # <a name='MonthInput'></a>
-#### MonthInput
+## MonthInput
+
+# The `MonthInput` handles the form input of type `month`.
+#
+# Here some live instances :
+# <div id="monthinput-demos"></div>
+#
+# <script type='text/javascript'>
+# var input1 = new MonthInput();
+# var input2 = new MonthInput();
+# var input3 = new MonthInput();
+#
+# input2.set( "readonly", true );
+# input3.set( "disabled", true );
+#
+# input1.attach("#monthinput-demos");
+# input2.attach("#monthinput-demos");
+# input3.attach("#monthinput-demos");
+# </script>
 class MonthInput extends AbstractDateInputWidget
 
+    # Clicking on a `MonthInput` open a `Calendar` object
+    # in `month` mode.
     @mixins OpenCalendar
 
+    # The `Calendar` instance for the `MonthInput` class.
     @calendar = new Calendar null, "month"
     $(document).ready -> MonthInput.calendar.attach "body"
 
+    # Setup the concrete function for validation and conversion
+    # of the `AbstractDateInputWidget` class.
     constructor:( target )->
         @supportedType = "month"
         @valueToDate   = Date.monthFromString
@@ -502,23 +549,49 @@ class MonthInput extends AbstractDateInputWidget
 
         super target
 
+    # Creates the dummy that will contains the widget's value in
+    # a `span` with the class `value`.
     createDummy:->
         dummy = super()
         dummy.append "<span class='value'>#{ @get "value" }</span>"
         dummy
 
+    # Updates the `span` that contains the value.
     updateDummy:->
         @dummy.find(".value").text @get "value"
 
 # <a name='WeekInput'></a>
-#### WeekInput
+## WeekInput
+
+# The `WeekInput` handles the form input of type `week`.
+#
+# Here some live instances :
+# <div id="weekinput-demos"></div>
+#
+# <script type='text/javascript'>
+# var input1 = new WeekInput();
+# var input2 = new WeekInput();
+# var input3 = new WeekInput();
+#
+# input2.set( "readonly", true );
+# input3.set( "disabled", true );
+#
+# input1.attach("#weekinput-demos");
+# input2.attach("#weekinput-demos");
+# input3.attach("#weekinput-demos");
+# </script>
 class WeekInput extends AbstractDateInputWidget
 
+    # Clicking on a `WeekInput` open a `Calendar` object
+    # in `week` mode.
     @mixins OpenCalendar
 
+    # The `Calendar` instance for the `WeekInput` class.
     @calendar = new Calendar null, "week"
     $(document).ready -> WeekInput.calendar.attach "body"
 
+    # Setup the concrete function for validation and conversion
+    # of the `AbstractDateInputWidget` class.
     constructor:( target )->
         @supportedType = "week"
         @valueToDate   = Date.weekFromString
@@ -526,17 +599,19 @@ class WeekInput extends AbstractDateInputWidget
         @isValidValue  = Date.isValidWeek
 
         super target
-
+    # Creates the dummy that will contains the widget's value in
+    # a `span` with the class `value`.
     createDummy:->
         dummy = super()
         dummy.append "<span class='value'>#{ @get "value" }</span>"
         dummy
 
+    # Updates the `span` that contains the value.
     updateDummy:->
         @dummy.find(".value").text @get "value"
 
 # <a name='DateTimeInput'></a>
-#### DateTimeInput
+## DateTimeInput
 class DateTimeInput extends AbstractDateInputWidget
     constructor:( target )->
         @supportedType = "datetime"
@@ -547,8 +622,7 @@ class DateTimeInput extends AbstractDateInputWidget
         super target
 
 # <a name='DateTimeLocalInput'></a>
-# FIX Find a way to fix the opera issue
-#### DateTimeLocalInput
+## DateTimeLocalInput
 class DateTimeLocalInput extends AbstractDateInputWidget
     constructor:( target )->
         @supportedType = "datetime-local"

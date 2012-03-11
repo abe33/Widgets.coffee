@@ -37,7 +37,7 @@ slider3.set( "disabled", true );
 slider1.attach("#livedemos");
 slider2.attach("#livedemos");
 slider3.attach("#livedemos");
-</script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">Slider</span> <span class="k">extends</span> <span class="nx">NumericWidget</span>
+</script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nb">Slider</span> <span class="k">extends</span> <span class="nb">NumericWidget</span>
     <span class="py">constructor</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span>
         <span class="k">super</span> <span class="nx">target</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>Dragging Properties</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>The <code>draggingKnob</code> property is a boolean that indicates
 whether the user is currently dragging the knob or not.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="py">@draggingKnob</span> <span class="o">=</span> <span class="kc">false</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>The position of the mouse is stored during drag operation.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="py">@lastMouseX</span> <span class="o">=</span> <span class="mi">0</span>
@@ -136,6 +136,6 @@ value.</p>             </td>             <td class="code">               <div cl
         <span class="k">else</span>
             <span class="nx">val</span><span class="p">.</span><span class="nx">css</span> <span class="s">&quot;left&quot;</span><span class="p">,</span> <span class="s">&quot;auto&quot;</span>
 
-<span class="py">@Slider</span> <span class="o">=</span> <span class="nx">Slider</span>
+<span class="py">@Slider</span> <span class="o">=</span> <span class="nb">Slider</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

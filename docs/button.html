@@ -23,7 +23,7 @@ button3.set( "disabled", true );
 button1.attach("#livedemos");
 button2.attach("#livedemos");
 button3.attach("#livedemos");
-</script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">Button</span> <span class="k">extends</span> <span class="nx">Widget</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>The <code>Button</code> constructor can be called both with an target input:</p>
+</script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nb">Button</span> <span class="k">extends</span> <span class="nb">Widget</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>The <code>Button</code> constructor can be called both with an target input:</p>
 
 <pre><code>button = new Button target
 </code></pre>
@@ -93,6 +93,6 @@ to force a refresh of the button's content.</p>             </td>             <t
         <span class="nv">action </span><span class="o">=</span> <span class="py">@get</span> <span class="s">&quot;action&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>Both the action and the target are triggered on a click.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">if</span> <span class="nx">action</span><span class="o">?</span> <span class="k">then</span> <span class="nx">action</span><span class="p">.</span><span class="nx">action</span><span class="p">()</span>
         <span class="k">if</span> <span class="py">@hasTarget</span> <span class="k">then</span> <span class="py">@jTarget</span><span class="p">.</span><span class="nx">click</span><span class="p">()</span>
 
-<span class="py">@Button</span> <span class="o">=</span> <span class="nx">Button</span>
+<span class="py">@Button</span> <span class="o">=</span> <span class="nb">Button</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

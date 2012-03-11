@@ -28,7 +28,7 @@ checkbox3.set( "disabled", true );
 checkbox1.attach("#livedemos");
 checkbox2.attach("#livedemos");
 checkbox3.attach("#livedemos");
-</script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">CheckBox</span> <span class="k">extends</span> <span class="nx">Widget</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Defines the types that is allowed for a checkbox's <code>target</code>.</p>
+</script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nb">CheckBox</span> <span class="k">extends</span> <span class="nb">Widget</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Defines the types that is allowed for a checkbox's <code>target</code>.</p>
 
 <p><code>CheckBox</code> and its descendants are dedicated to work with
 a unique type of inputs. This property allow to define the
@@ -43,7 +43,7 @@ property of the widget is modified.</p>
 <ul>
 <li><code>widget</code>    : The widget that was modified.</li>
 <li><code>checked</code>   : The new value for this widget's checked property.</li>
-</ul>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="py">@checkedChanged</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Signal</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h3>Shared Properties</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>The <code>values</code> property stores a tuple of two values that will be used
+</ul>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="py">@checkedChanged</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">Signal</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h3>Shared Properties</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>The <code>values</code> property stores a tuple of two values that will be used
 to fill the <code>value</code> property according to the current state.</p>
 
 <p>For instance :</p>
@@ -91,6 +91,6 @@ and the <code>checked</code> state of the widget.</p>             </td>         
 when the widget is not disabled.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="k">unless</span> <span class="py">@get</span> <span class="s">&quot;disabled&quot;</span>
             <span class="py">@grabFocus</span><span class="p">()</span>
 
-<span class="py">@CheckBox</span> <span class="o">=</span> <span class="nx">CheckBox</span>
+<span class="py">@CheckBox</span> <span class="o">=</span> <span class="nb">CheckBox</span>
 
 </pre></div>             </td>           </tr>                </tbody>     </table>   </div> </body> </html> 

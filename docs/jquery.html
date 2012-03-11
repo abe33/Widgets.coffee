@@ -5,7 +5,7 @@ query set.</p>
 <p>The replacement mecanic itself is handled by an instance
 of the <code>WidgetPlugin</code> class.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">widgets</span><span class="o">:-&gt;</span>
         <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">process</span> <span class="nx">$</span> <span class="k">this</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h1>WidgetPlugin</h1>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>The <code>WidgetPlugin</code> class provides controls over the replacement
-of HTML elements by Widgets.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nx">WidgetPlugin</span>
+of HTML elements by Widgets.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nb">WidgetPlugin</span>
     <span class="py">constructor</span><span class="o">:-&gt;</span>
         <span class="py">@processors</span> <span class="o">=</span> <span class="p">{}</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h3>Processors Management</h3>
 
@@ -70,8 +70,8 @@ is used instead.</p>             </td>             <td class="code">            
                             <span class="nx">widget</span><span class="p">.</span><span class="nx">attach</span> <span class="nx">parent</span></pre></div>             </td>           </tr>                               <tr id="section-17">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-17">&#182;</a>               </div>               <p>Once a processor matched, the loop is breaked.</p>             </td>             <td class="code">               <div class="highlight"><pre>                    <span class="k">break</span>
 
         <span class="k">return</span> <span class="nx">widgets</span></pre></div>             </td>           </tr>                               <tr id="section-18">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-18">&#182;</a>               </div>               <h3>Matching Utilities</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-19">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-19">&#182;</a>               </div>               <p>Returns <code>true</code> if the passed-in argument is a <code>HTMLElement</code> instance.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">isElement</span><span class="o">:</span><span class="p">(</span><span class="nx">o</span><span class="p">)</span><span class="o">-&gt;</span>
-        <span class="k">if</span> <span class="k">typeof</span> <span class="nx">HTMLElement</span> <span class="o">is</span> <span class="s">&quot;object&quot;</span>
-            <span class="nx">o</span> <span class="k">instanceof</span> <span class="nx">HTMLElement</span>
+        <span class="k">if</span> <span class="k">typeof</span> <span class="nb">HTMLElement</span> <span class="o">is</span> <span class="s">&quot;object&quot;</span>
+            <span class="nx">o</span> <span class="k">instanceof</span> <span class="nb">HTMLElement</span>
         <span class="k">else</span>
             <span class="k">typeof</span> <span class="nx">o</span> <span class="o">is</span> <span class="s">&quot;object&quot;</span> <span class="o">and</span>
             <span class="nx">o</span><span class="p">.</span><span class="nx">nodeType</span> <span class="o">is</span> <span class="mi">1</span> <span class="o">and</span>
@@ -82,75 +82,75 @@ with a type attribute contains in <code>types</code>.</p>             </td>     
         <span class="py">@isTag</span><span class="p">(</span> <span class="nx">o</span><span class="p">,</span> <span class="s">&quot;input&quot;</span> <span class="p">)</span> <span class="o">and</span> <span class="nx">$</span><span class="p">(</span> <span class="nx">o</span> <span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">)</span> <span class="k">in</span> <span class="nx">types</span></pre></div>             </td>           </tr>                               <tr id="section-22">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-22">&#182;</a>               </div>               <p>Returns a function that will match an element with the
 <code>isInputWithType</code> function.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">inputWithType</span><span class="o">:</span><span class="p">(</span> <span class="nx">types</span><span class="p">...</span> <span class="p">)</span><span class="o">-&gt;</span>
         <span class="p">(</span> <span class="nx">o</span> <span class="p">)</span><span class="o">-&gt;</span> <span class="py">@isInputWithType</span><span class="p">.</span><span class="nx">apply</span> <span class="k">this</span><span class="p">,</span> <span class="p">[</span> <span class="nx">o</span> <span class="p">].</span><span class="nx">concat</span> <span class="nx">types</span></pre></div>             </td>           </tr>                               <tr id="section-23">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-23">&#182;</a>               </div>               <h3>Plugin Setup</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-24">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-24">&#182;</a>               </div>               <p>An instance of the plugin class is available as a property of the <code>$</code>
-object.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">$.widgetPlugin </span><span class="o">=</span> <span class="k">new</span> <span class="nx">WidgetPlugin</span></pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <p>Default processors for the plugin handles most of the HTML5 form elements.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;textarea&quot;</span><span class="p">,</span>
+object.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">$.widgetPlugin </span><span class="o">=</span> <span class="k">new</span> <span class="nb">WidgetPlugin</span></pre></div>             </td>           </tr>                               <tr id="section-25">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-25">&#182;</a>               </div>               <p>Default processors for the plugin handles most of the HTML5 form elements.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;textarea&quot;</span><span class="p">,</span>
                                  <span class="s">&quot;textarea&quot;</span><span class="p">,</span>
-                                  <span class="nx">TextArea</span>
+                                  <span class="nb">TextArea</span>
 
 <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;select&quot;</span><span class="p">,</span>
                                  <span class="s">&quot;select&quot;</span><span class="p">,</span>
-                                 <span class="nx">SingleSelect</span>
+                                 <span class="nb">SingleSelect</span>
 
 <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;textinput&quot;</span><span class="p">,</span>
                                  <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">inputWithType</span><span class="p">(</span> <span class="s">&quot;text&quot;</span><span class="p">,</span>
                                                                <span class="s">&quot;password&quot;</span><span class="p">),</span>
-                                 <span class="nx">TextInput</span>
+                                 <span class="nb">TextInput</span>
 
 <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;button&quot;</span><span class="p">,</span>
                                   <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">inputWithType</span><span class="p">(</span> <span class="s">&quot;button&quot;</span><span class="p">,</span>
                                                                 <span class="s">&quot;reset&quot;</span><span class="p">,</span>
                                                                 <span class="s">&quot;submit&quot;</span> <span class="p">),</span>
-                                  <span class="nx">Button</span>
+                                  <span class="nb">Button</span>
 
 <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;range&quot;</span><span class="p">,</span>
                                  <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">inputWithType</span><span class="p">(</span> <span class="s">&quot;range&quot;</span> <span class="p">),</span>
-                                 <span class="nx">Slider</span>
+                                 <span class="nb">Slider</span>
 
 <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;number&quot;</span><span class="p">,</span>
                                  <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">inputWithType</span><span class="p">(</span><span class="s">&quot;number&quot;</span><span class="p">),</span>
-                                 <span class="nx">Stepper</span>
+                                 <span class="nb">Stepper</span>
 
 <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;checkbox&quot;</span><span class="p">,</span>
                                   <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">inputWithType</span><span class="p">(</span><span class="s">&quot;checkbox&quot;</span><span class="p">),</span>
-                                  <span class="nx">CheckBox</span>
+                                  <span class="nb">CheckBox</span>
 
 <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;color&quot;</span><span class="p">,</span>
                                  <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">inputWithType</span><span class="p">(</span><span class="s">&quot;color&quot;</span><span class="p">),</span>
-                                 <span class="nx">ColorInput</span>
+                                 <span class="nb">ColorInput</span>
 
 <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;file&quot;</span><span class="p">,</span>
                                  <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">inputWithType</span><span class="p">(</span><span class="s">&quot;file&quot;</span><span class="p">),</span>
-                                 <span class="nx">FilePicker</span>
+                                 <span class="nb">FilePicker</span>
 
 <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;time&quot;</span><span class="p">,</span>
                                  <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">inputWithType</span><span class="p">(</span><span class="s">&quot;time&quot;</span><span class="p">),</span>
-                                 <span class="nx">TimeInput</span>
+                                 <span class="nb">TimeInput</span>
 
 <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;date&quot;</span><span class="p">,</span>
                                  <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">inputWithType</span><span class="p">(</span><span class="s">&quot;date&quot;</span><span class="p">),</span>
-                                 <span class="nx">DateInput</span>
+                                 <span class="nb">DateInput</span>
 
 <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;month&quot;</span><span class="p">,</span>
                                  <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">inputWithType</span><span class="p">(</span><span class="s">&quot;month&quot;</span><span class="p">),</span>
-                                 <span class="nx">MonthInput</span>
+                                 <span class="nb">MonthInput</span>
 
 <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;week&quot;</span><span class="p">,</span>
                                  <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">inputWithType</span><span class="p">(</span><span class="s">&quot;week&quot;</span><span class="p">),</span>
-                                 <span class="nx">WeekInput</span>
+                                 <span class="nb">WeekInput</span>
 
 <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;datetime&quot;</span><span class="p">,</span>
                                  <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">inputWithType</span><span class="p">(</span><span class="s">&quot;datetime&quot;</span><span class="p">),</span>
-                                 <span class="nx">DateTimeInput</span>
+                                 <span class="nb">DateTimeInput</span>
 
 <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">registerWidgetFor</span> <span class="s">&quot;datetime-local&quot;</span><span class="p">,</span>
                                  <span class="nx">$</span><span class="p">.</span><span class="nx">widgetPlugin</span><span class="p">.</span><span class="nx">inputWithType</span><span class="p">(</span>
                                      <span class="s">&quot;datetime-local&quot;</span><span class="p">),</span>
-                                 <span class="nx">DateTimeLocalInput</span></pre></div>             </td>           </tr>                               <tr id="section-26">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-26">&#182;</a>               </div>               <p>The radio input are a special case since each radio that have the same name
+                                 <span class="nb">DateTimeLocalInput</span></pre></div>             </td>           </tr>                               <tr id="section-26">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-26">&#182;</a>               </div>               <p>The radio input are a special case since each radio that have the same name
 are part of a group.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="nv">radioProcessor</span><span class="o">=</span><span class="p">(</span> <span class="nx">o</span> <span class="p">)</span><span class="o">-&gt;</span>
-    <span class="nv">widget </span><span class="o">=</span> <span class="k">new</span> <span class="nx">Radio</span> <span class="nx">o</span>
+    <span class="nv">widget </span><span class="o">=</span> <span class="k">new</span> <span class="nb">Radio</span> <span class="nx">o</span>
     <span class="nv">name </span><span class="o">=</span> <span class="nx">widget</span><span class="p">.</span><span class="nx">get</span> <span class="s">&quot;name&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-27">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-27">&#182;</a>               </div>               <p>For all radios that have a name, a <code>RadioGroup</code> stored with
 the radios name is created and filled with the <code>Radio</code> widgets.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">if</span> <span class="nx">name</span><span class="o">?</span>
         <span class="py">@radiogroups</span> <span class="o">=</span> <span class="p">{}</span> <span class="k">unless</span> <span class="py">@radiogroups</span><span class="o">?</span>
-        <span class="py">@radiogroups</span><span class="p">[</span> <span class="nx">name</span> <span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">RadioGroup</span> <span class="k">unless</span> <span class="py">@radiogroups</span><span class="p">[</span> <span class="nx">name</span> <span class="p">]</span><span class="o">?</span>
+        <span class="py">@radiogroups</span><span class="p">[</span> <span class="nx">name</span> <span class="p">]</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">RadioGroup</span> <span class="k">unless</span> <span class="py">@radiogroups</span><span class="p">[</span> <span class="nx">name</span> <span class="p">]</span><span class="o">?</span>
 
         <span class="nv">group </span><span class="o">=</span> <span class="py">@radiogroups</span><span class="p">[</span> <span class="nx">name</span> <span class="p">]</span>
         <span class="nx">group</span><span class="p">.</span><span class="nx">add</span> <span class="nx">widget</span>
@@ -173,7 +173,7 @@ the default behavior, instead, the buttons in a form will receive
 a custom action that call the <code>reset</code> method on all the widgets
 the forms, excepted the <code>Button</code> instances (they don't have a value
 to reset).</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">reset</span><span class="o">=-&gt;</span>
-        <span class="nx">widget</span><span class="p">.</span><span class="nx">reset</span><span class="p">()</span> <span class="k">for</span> <span class="nx">widget</span> <span class="k">in</span> <span class="nx">widgets</span> <span class="k">when</span> <span class="nx">widget</span> <span class="o">not</span> <span class="k">instanceof</span> <span class="nx">Button</span></pre></div>             </td>           </tr>                               <tr id="section-31">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-31">&#182;</a>               </div>               <p>Looping through all the widgets to find the reset and submit buttons
+        <span class="nx">widget</span><span class="p">.</span><span class="nx">reset</span><span class="p">()</span> <span class="k">for</span> <span class="nx">widget</span> <span class="k">in</span> <span class="nx">widgets</span> <span class="k">when</span> <span class="nx">widget</span> <span class="o">not</span> <span class="k">instanceof</span> <span class="nb">Button</span></pre></div>             </td>           </tr>                               <tr id="section-31">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-31">&#182;</a>               </div>               <p>Looping through all the widgets to find the reset and submit buttons
 and affect it to their respective array.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">for</span> <span class="nx">widget</span> <span class="k">in</span> <span class="nx">widgets</span>
         <span class="nx">submitButtons</span><span class="p">.</span><span class="nx">push</span> <span class="nx">widget</span> <span class="k">if</span> <span class="nx">widget</span><span class="p">.</span><span class="nx">jTarget</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;type&quot;</span><span class="p">)</span> <span class="o">is</span> <span class="s">&quot;submit&quot;</span>
 
