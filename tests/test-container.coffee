@@ -1,10 +1,10 @@
 $( document ).ready ->
 
-    module "container tests"
+  module "container tests"
 
-    testHasChildMixin
-        cls:Container
-        className:"Container"
+  testHasChildMixin
+    cls:Container
+    className:"Container"
 
 
 
