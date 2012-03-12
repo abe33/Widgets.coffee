@@ -281,91 +281,91 @@ td.docs, th.docs {
 
 .inset-box {
   background: #042029;
-  -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-  -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-  box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+  -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+  -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+  box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.light {
     background-color: #002b36; }
   .inset-box.white {
     background: #657b83;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.white.light {
       background: #93a1a1;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.red {
     background: #dc322f;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.red.light {
       background: #fe5c4d;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.orange {
     background: #cb4b16;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.orange.light {
       background: #e66a36;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.yellow {
     background: #b58900;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.yellow.light {
       background: #cfa521;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.green {
     background: #859900;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.green.light {
       background: #a9bf1b;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.cyan {
     background: #2aa198;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.cyan.light {
       background: #4ccac1;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.blue {
     background: #268bd2;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.blue.light {
       background: #34a0ec;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
   .inset-box.violet {
     background: #6c71c4;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
     .inset-box.violet.light {
       background: #8389eb;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #000a0e inset, 0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
 
 .outset-box, .popup, .popup.disabled {
   border: 1px solid #839496;
@@ -375,9 +375,9 @@ td.docs, th.docs {
   background: -o-linear-gradient(top, #839496 0%, #657b83 100%);
   background: -ms-linear-gradient(top, #839496 0%, #657b83 100%);
   background: linear-gradient(top, #839496 0%, #657b83 100%);
-  -webkit-box-shadow: 0pt 2px 0px 0px #586e75,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0pt 2px 0px 0px #586e75,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-  box-shadow: 0pt 2px 0px 0px #586e75,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+  -webkit-box-shadow: 0pt 2px 0px 0px #586e75, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0pt 2px 0px 0px #586e75, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0pt 2px 0px 0px #586e75, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.light, .light.popup, .light.popup.disabled {
     border: 1px solid #a6b0b0;
     background: -moz-linear-gradient(top, #a6b0b0 0%, #93a1a1 100%);
@@ -386,9 +386,9 @@ td.docs, th.docs {
     background: -o-linear-gradient(top, #a6b0b0 0%, #93a1a1 100%);
     background: -ms-linear-gradient(top, #a6b0b0 0%, #93a1a1 100%);
     background: linear-gradient(top, #a6b0b0 0%, #93a1a1 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #839496,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #839496,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #839496,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #839496, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #839496, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #839496, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.dark, .dark.popup, .dark.popup.disabled {
     border: 1px solid #073642;
     background: -moz-linear-gradient(top, #073642 0%, #002b36 100%);
@@ -397,9 +397,9 @@ td.docs, th.docs {
     background: -o-linear-gradient(top, #073642 0%, #002b36 100%);
     background: -ms-linear-gradient(top, #073642 0%, #002b36 100%);
     background: linear-gradient(top, #073642 0%, #002b36 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #042029,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #042029,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #042029,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #042029, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #042029, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #042029, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.dark.light, .dark.light.popup, .dark.light.popup.disabled {
       border: 1px solid #0b4959;
       background: -moz-linear-gradient(top, #0b4959 0%, #073642 100%);
@@ -408,9 +408,9 @@ td.docs, th.docs {
       background: -o-linear-gradient(top, #0b4959 0%, #073642 100%);
       background: -ms-linear-gradient(top, #0b4959 0%, #073642 100%);
       background: linear-gradient(top, #0b4959 0%, #073642 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #002b36,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #002b36,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #002b36,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #002b36, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #002b36, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #002b36, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.red, .red.popup, .red.popup.disabled {
     border: 1px solid #fe5c4d;
     background: -moz-linear-gradient(top, #fe5c4d 0%, #dc322f 100%);
@@ -419,9 +419,9 @@ td.docs, th.docs {
     background: -o-linear-gradient(top, #fe5c4d 0%, #dc322f 100%);
     background: -ms-linear-gradient(top, #fe5c4d 0%, #dc322f 100%);
     background: linear-gradient(top, #fe5c4d 0%, #dc322f 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #a82927,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #a82927,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #a82927,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #a82927, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #a82927, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #a82927, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.red.light, .red.light.popup, .red.light.popup.disabled {
       border: 1px solid #ff8377;
       background: -moz-linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
@@ -430,9 +430,9 @@ td.docs, th.docs {
       background: -o-linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
       background: -ms-linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
       background: linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #dc322f,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #dc322f,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #dc322f,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #dc322f, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #dc322f, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #dc322f, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.green, .green.popup, .green.popup.disabled {
     border: 1px solid #a9bf1b;
     background: -moz-linear-gradient(top, #a9bf1b 0%, #859900 100%);
@@ -441,9 +441,9 @@ td.docs, th.docs {
     background: -o-linear-gradient(top, #a9bf1b 0%, #859900 100%);
     background: -ms-linear-gradient(top, #a9bf1b 0%, #859900 100%);
     background: linear-gradient(top, #a9bf1b 0%, #859900 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #77822f,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #77822f,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #77822f,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #77822f, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #77822f, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #77822f, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.green.light, .green.light.popup, .green.light.popup.disabled {
       border: 1px solid #cadf44;
       background: -moz-linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
@@ -452,9 +452,9 @@ td.docs, th.docs {
       background: -o-linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
       background: -ms-linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
       background: linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #859900,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #859900,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #859900,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #859900, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #859900, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #859900, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.blue, .blue.popup, .blue.popup.disabled {
     border: 1px solid #34a0ec;
     background: -moz-linear-gradient(top, #34a0ec 0%, #268bd2 100%);
@@ -463,9 +463,9 @@ td.docs, th.docs {
     background: -o-linear-gradient(top, #34a0ec 0%, #268bd2 100%);
     background: -ms-linear-gradient(top, #34a0ec 0%, #268bd2 100%);
     background: linear-gradient(top, #34a0ec 0%, #268bd2 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #2d74a6,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #2d74a6,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #2d74a6,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #2d74a6, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #2d74a6, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #2d74a6, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.blue.light, .blue.light.popup, .blue.light.popup.disabled {
       border: 1px solid #57afec;
       background: -moz-linear-gradient(top, #57afec 0%, #34a0ec 100%);
@@ -474,9 +474,9 @@ td.docs, th.docs {
       background: -o-linear-gradient(top, #57afec 0%, #34a0ec 100%);
       background: -ms-linear-gradient(top, #57afec 0%, #34a0ec 100%);
       background: linear-gradient(top, #57afec 0%, #34a0ec 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #268bd2,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #268bd2,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #268bd2,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #268bd2, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #268bd2, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #268bd2, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.yellow, .yellow.popup, .yellow.popup.disabled {
     border: 1px solid #cfa521;
     background: -moz-linear-gradient(top, #cfa521 0%, #b58900 100%);
@@ -485,9 +485,9 @@ td.docs, th.docs {
     background: -o-linear-gradient(top, #cfa521 0%, #b58900 100%);
     background: -ms-linear-gradient(top, #cfa521 0%, #b58900 100%);
     background: linear-gradient(top, #cfa521 0%, #b58900 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #8e7014,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #8e7014,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #8e7014,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #8e7014, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #8e7014, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #8e7014, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.yellow.light, .yellow.light.popup, .yellow.light.popup.disabled {
       border: 1px solid #f7ca3b;
       background: -moz-linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
@@ -496,9 +496,9 @@ td.docs, th.docs {
       background: -o-linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
       background: -ms-linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
       background: linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #b58900,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #b58900,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #b58900,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #b58900, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #b58900, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #b58900, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.orange, .orange.popup, .orange.popup.disabled {
     border: 1px solid #e66a36;
     background: -moz-linear-gradient(top, #e66a36 0%, #cb4b16 100%);
@@ -507,9 +507,9 @@ td.docs, th.docs {
     background: -o-linear-gradient(top, #e66a36 0%, #cb4b16 100%);
     background: -ms-linear-gradient(top, #e66a36 0%, #cb4b16 100%);
     background: linear-gradient(top, #e66a36 0%, #cb4b16 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #a23d13,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #a23d13,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #a23d13,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #a23d13, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #a23d13, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #a23d13, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.orange.light, .orange.light.popup, .orange.light.popup.disabled {
       border: 1px solid #ff8b5b;
       background: -moz-linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
@@ -518,9 +518,9 @@ td.docs, th.docs {
       background: -o-linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
       background: -ms-linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
       background: linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #cb4b16,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #cb4b16,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #cb4b16,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #cb4b16, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #cb4b16, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #cb4b16, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.violet, .violet.popup, .violet.popup.disabled {
     border: 1px solid #8389eb;
     background: -moz-linear-gradient(top, #8389eb 0%, #6c71c4 100%);
@@ -529,9 +529,9 @@ td.docs, th.docs {
     background: -o-linear-gradient(top, #8389eb 0%, #6c71c4 100%);
     background: -ms-linear-gradient(top, #8389eb 0%, #6c71c4 100%);
     background: linear-gradient(top, #8389eb 0%, #6c71c4 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #4a5a94,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #4a5a94,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #4a5a94,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #4a5a94, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #4a5a94, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #4a5a94, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.violet.light, .violet.light.popup, .violet.light.popup.disabled {
       border: 1px solid #9ba0e6;
       background: -moz-linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
@@ -540,9 +540,9 @@ td.docs, th.docs {
       background: -o-linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
       background: -ms-linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
       background: linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #6c71c4,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #6c71c4,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #6c71c4,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #6c71c4, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #6c71c4, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #6c71c4, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.cyan, .cyan.popup, .cyan.popup.disabled {
     border: 1px solid #4ccac1;
     background: -moz-linear-gradient(top, #4ccac1 0%, #2aa198 100%);
@@ -551,9 +551,9 @@ td.docs, th.docs {
     background: -o-linear-gradient(top, #4ccac1 0%, #2aa198 100%);
     background: -ms-linear-gradient(top, #4ccac1 0%, #2aa198 100%);
     background: linear-gradient(top, #4ccac1 0%, #2aa198 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #3a8882,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #3a8882,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #3a8882,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #3a8882, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #3a8882, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #3a8882, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.cyan.light, .cyan.light.popup, .cyan.light.popup.disabled {
       border: 1px solid #7bdbd4;
       background: -moz-linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
@@ -562,9 +562,9 @@ td.docs, th.docs {
       background: -o-linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
       background: -ms-linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
       background: linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #2aa198,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #2aa198,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #2aa198,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #2aa198, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #2aa198, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #2aa198, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
 
 .text-content {
   color: #839496;

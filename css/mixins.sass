@@ -74,10 +74,10 @@
 @mixin outset-box( $c1, $c2, $cs )
   border: 1px solid $c2
   @include vgradient($c2,$c1)
-  @include boxshadow("0pt 2px 0px 0px #{$cs},0pt 4px 4px 0px rgba(0, 0, 0, 0.5)")
+  @include boxshadow("0pt 2px 0px 0px #{$cs}, 0pt 4px 4px 0px rgba(0, 0, 0, 0.5)")
 
 @mixin inset-box($c,$cb,$cs)
   background: $c
   // border: 1px solid transparentize($cb, 0.5)
-  @include boxshadow("0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset")
+  @include boxshadow("0pt 1px 0pt rgba(255, 255, 255, 0.15), 0pt 2px 1px 0px #{ $cs } inset, 0pt 2px 4px 0px #{ transparentize( $cs, 0.2 )} inset")
 
