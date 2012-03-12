@@ -1,0 +1,83 @@
+@mixin borderradius($options)
+
+  -webkit-border-radius: #{$options}
+  -moz-border-radius: #{$options}
+  -o-border-radius: #{$options}
+  border-radius: #{$options}
+
+@mixin opacity($op,$opie)
+  opacity: $op
+  filter: alpha(opacity=$opie)
+  -ms-filter: "alpha(opacity=" + $opie + ")"
+  -khtml-opacity: $op
+  -moz-opacity: $op
+
+@mixin transform($trans)
+  -webkit-transform: #{$trans}
+  -moz-transform: #{$trans}
+  -ms-transform: #{$trans}
+  -o-transform: #{$trans}
+  transform: #{$trans}
+
+@mixin transition($trans)
+  -webkit-transition: #{$trans}
+  -moz-transition: #{$trans}
+  -o-transition: #{$trans}
+  transition: #{$trans}
+
+@mixin boxshadow($options)
+  -webkit-box-shadow: #{$options}
+  -moz-box-shadow: #{$options}
+  box-shadow: #{$options}
+
+@mixin textshadow($options)
+  -webkit-text-shadow: #{$options}
+  -moz-text-shadow: #{$options}
+  text-shadow: #{$options}
+
+@mixin overflow($options)
+  -o-text-overflow: $options
+  -ms-text-overflow: $options
+  text-overflow: $options
+
+
+@mixin textborder($color)
+  -webkit-text-shadow: 1px 0px 0 $color, -1px 0px 0 $color, 0px 1px 0 $color,                       0px -1px 0 $color
+
+  -moz-text-shadow: 1px 0px 0 $color, -1px 0px 0 $color, 0px 1px 0 $color, 0px -1px 0 $color
+
+  text-shadow: 1px 0px 0 $color,-1px 0px 0 $color,0px 1px 0 $color,0px -1px 0 $color
+
+@mixin borderbox()
+  -webkit-box-sizing: border-box
+  -moz-box-sizing: border-box
+  box-sizing: border-box
+
+
+@mixin hgradient($start-color,$end-color)
+  background: -moz-linear-gradient(left, $start-color 0%, $end-color 100%)
+  /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, right top, color-stop(0%,$start-color), color-stop(100%,$end-color)) /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(left, $start-color 0%,$end-color 100%) /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(left, $start-color 0%,$end-color 100%) /* Opera 11.10+ */
+  background: -ms-linear-gradient(left, $start-color 0%,$end-color 100%) /* IE10+ */
+  background: linear-gradient(left, $start-color 0%,$end-color 100%)
+
+@mixin vgradient($start-color,$end-color)
+  background: -moz-linear-gradient(top, $start-color 0%, $end-color 100%) /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,$start-color), color-stop(100%,$end-color)) /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top, $start-color 0%,$end-color 100%) /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top, $start-color 0%,$end-color 100%) /* Opera 11.10+ */
+  background: -ms-linear-gradient(top, $start-color 0%,$end-color 100%) /* IE10+ */
+  background: linear-gradient(top, $start-color 0%,$end-color 100%)
+
+@mixin outset-box( $c1, $c2, $cs )
+  border: 1px solid $c2
+  @include vgradient($c2,$c1)
+  @include boxshadow("0pt 2px 0px 0px #{$cs},0pt 4px 4px 0px rgba(0, 0, 0, 0.5)")
+
+@mixin inset-box($c,$cb,$cs)
+  background: $c
+  // border: 1px solid transparentize($cb, 0.5)
+  @include boxshadow("0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset")
+

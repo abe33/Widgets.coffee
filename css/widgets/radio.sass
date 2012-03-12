@@ -1,0 +1,39 @@
+.radio
+
+  width: 20px
+  height: 20px
+
+  @extend .widget-common
+  @extend .inset-box
+  @include borderradius(20px)
+
+  &:after
+    content: ""
+
+
+  &.checked
+    &:after
+      width: 14px
+      height: 12px
+      position: absolute
+      display: block
+      left: 2px
+      top: 2px
+
+      @extend .outset-box.blue
+      @include borderradius(20px)
+
+    &.disabled
+      &:after
+        @extend .outset-box
+
+        width: 14px
+        height: 12px
+        position: absolute
+        display: block
+
+        @include borderradius(20px)
+
+
+
+

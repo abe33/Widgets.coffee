@@ -1,0 +1,76 @@
+
+.checkbox
+
+  width: 40px
+  height: 24px
+  background: $widget-text-background
+
+  @extend .widget-common
+  @extend .text-content
+  @extend .inset-box
+  @include borderradius(5px)
+  @include transition("background 0.3s ease-out")
+
+  &.focus
+    &:before
+      @extend .outset-box.light
+
+
+  &:hover:before
+    @extend .outset-box.light
+
+
+  &:before
+    content: ""
+    width: 16px
+    height: 16px
+    position: absolute
+    z-index: 1
+    left: 1px
+    top: 2px
+
+    @extend .outset-box
+    @include borderradius(4px)
+    @include transition("left 0.4s ease-out")
+
+  &:after
+    content: "off"
+    position: absolute
+    font-size: .9em
+    width: 20px
+    display: block
+    text-align: center
+    right: 1px
+    top: 1px
+    font-size: 14px
+    line-height: 22px
+
+
+  &.checked
+    color: $base02
+    @extend .inset-box.blue
+
+    &:before
+      left: 20px
+
+    &:after
+      content: "on"
+      right: 20px
+
+    &.disabled
+      @extend .disabled-text-content
+      @extend .inset-box.white
+      &:after
+        color: $base0
+
+
+
+  &.disabled, &.readonly
+    &:hover:before
+      @extend .outset-box
+
+
+  &.disabled
+    @extend .disabled-text-content
+
+

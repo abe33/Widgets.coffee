@@ -1,0 +1,51 @@
+.filepicker
+
+  height: 24px
+  overflow: hidden
+
+  @extend .text
+
+  &.disabled
+    .value
+      @extend .disabled-text-content
+
+
+  input
+    opacity: 0
+    cursor: pointer
+    position: absolute
+    right: 0
+    top: 0
+    width: auto !important
+
+  .value
+    @extend .text-content
+    margin-left: 2px
+    top: 3px
+    margin-right: 18px
+    overflow: hidden
+    white-space: nowrap
+    text-overflow: ellipsis
+    position: relative
+
+
+  .icon
+    top: -1px
+    right: -1px
+    width: 14px
+    height: 14px
+    position: absolute
+
+    @extend .button
+
+    &:before
+      @extend .arrow
+      @extend .arrow.right
+
+      margin-top: -5px
+      margin-left: -2px
+      left: 50%
+      top: 50%
+
+
+

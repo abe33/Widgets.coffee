@@ -6,8 +6,12 @@ td.docs, th.docs {
   background: #a6b0b0 !important;
   color: #586e75;
   overflow: auto !important;
-  font-family: 'Palatino Linotype','Book Antiqua',Palatino,FreeSerif,serif;
-  font-size: 14px; }
+  font-family: "Palatino Linotype", "Book Antiqua", Palatino, FreeSerif, serif;
+  font-size: 14px;
+  h1: first-letter;
+    h1-color: #77822f;
+  h3: first-letter;
+    h3-color: #2d74a6; }
   .docs code, .docs pre {
     background: #93a1a1 !important;
     border: 1px solid #839496 !important;
@@ -17,21 +21,16 @@ td.docs, th.docs {
     border: none !important; }
   .docs h1, .docs h2, .docs h3, .docs h4, .docs h5, .docs h6 {
     color: #002b36; }
-  .docs h1:first-letter {
-    color: #77822f; }
-  .docs h3:first-letter {
-    color: #2d74a6; }
 
 #container {
   color: #839496;
   background: #a6b0b0 !important; }
   #container #background {
     background: #042029;
-    border-left: 2px solid #888; }
+    border-left: 2px solid #888888; }
   #container td.code, #container th.code {
-    border-left: 2px solid #888;
+    border-left: 2px solid #888888;
     background-color: #042029;
-    /*background-color:#073642;*/
     color: #93a1a1; }
     #container td.code .bp, #container th.code .bp {
       color: #999999; }
@@ -127,7 +126,7 @@ td.docs, th.docs {
       color: #268bd2 !important;
       font-weight: bold !important; }
     #container td.code .ni, #container th.code .ni {
-      color: #800080; }
+      color: purple; }
     #container td.code .nl, #container th.code .nl {
       color: #859900 !important; }
     #container td.code .nn, #container th.code .nn {
@@ -138,9 +137,9 @@ td.docs, th.docs {
       color: #268bd2 !important;
       font-weight: bold !important; }
     #container td.code .nv, #container th.code .nv {
-      color: #93A1A1 !important; }
+      color: #93a1a1 !important; }
     #container td.code .nx, #container th.code .nx {
-      color: #93A1A1 !important; }
+      color: #93a1a1 !important; }
     #container td.code .n, #container th.code .n {
       color: #268bd2 !important; }
     #container td.code .ow, #container th.code .ow {
@@ -157,20 +156,20 @@ td.docs, th.docs {
     #container td.code .s2, #container th.code .s2 {
       color: #2aa198 !important; }
     #container td.code .sb, #container th.code .sb {
-      color: #d14; }
+      color: #dd1144; }
     #container td.code .sc, #container th.code .sc {
-      color: #d14; }
+      color: #dd1144; }
     #container td.code .sd, #container th.code .sd {
       color: #2aa198 !important; }
     #container td.code .se, #container th.code .se {
       color: #dc322f !important; }
     #container td.code .sh, #container th.code .sh {
-      color: #d14; }
+      color: #dd1144; }
     #container td.code .si, #container th.code .si {
       color: #cb4b16 !important;
       font-weight: normal !important; }
     #container td.code .sr, #container th.code .sr {
-      color: #ff0000 !important; }
+      color: red !important; }
     #container td.code .src, #container th.code .src {
       color: #cb4b16 !important; }
     #container td.code .sre, #container th.code .sre {
@@ -182,11 +181,11 @@ td.docs, th.docs {
     #container td.code .ss, #container th.code .ss {
       color: #990073; }
     #container td.code .sx, #container th.code .sx {
-      color: #d14; }
+      color: #dd1144; }
     #container td.code .s, #container th.code .s {
       color: #2aa198 !important; }
     #container td.code .vc, #container th.code .vc {
-      color: #008080; }
+      color: teal; }
     #container td.code .vg, #container th.code .vg {
       color: #268bd2 !important; }
     #container td.code .vi, #container th.code .vi {
@@ -199,7 +198,7 @@ td.docs, th.docs {
 
 .font, .widget-common, .text-content, body, h4 {
   font-size: 18px;
-  font-family: 'Homenaje', sans-serif; }
+  font-family: "Homenaje", sans-serif; }
 
 .no-text {
   text-indent: -9999px; }
@@ -282,380 +281,290 @@ td.docs, th.docs {
 
 .inset-box {
   background: #042029;
-  -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-  -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-  box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+  -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+  -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+  box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
   .inset-box.light {
     background-color: #002b36; }
   .inset-box.white {
     background: #657b83;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
     .inset-box.white.light {
       background: #93a1a1;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
   .inset-box.red {
     background: #dc322f;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
     .inset-box.red.light {
       background: #fe5c4d;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
   .inset-box.orange {
     background: #cb4b16;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
     .inset-box.orange.light {
       background: #e66a36;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
   .inset-box.yellow {
     background: #b58900;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
     .inset-box.yellow.light {
       background: #cfa521;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
   .inset-box.green {
     background: #859900;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
     .inset-box.green.light {
       background: #a9bf1b;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
   .inset-box.cyan {
     background: #2aa198;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
     .inset-box.cyan.light {
       background: #4ccac1;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
   .inset-box.blue {
     background: #268bd2;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
     .inset-box.blue.light {
       background: #34a0ec;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
   .inset-box.violet {
     background: #6c71c4;
-    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+    -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+    box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
     .inset-box.violet.light {
       background: #8389eb;
-      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset;
-      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),                         0pt 2px 1px 0px #000a0e inset,                         0pt 2px 4px 0px rgba(0, 10, 14, 0.8) inset; }
+      -webkit-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      -moz-box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset;
+      box-shadow: 0pt 1px 0pt rgba(255, 255, 255, 0.15),0pt 2px 1px 0px # $cs  inset, 0pt 2px 4px 0px # transparentize( $cs, 0.2 )  inset; }
 
 .outset-box, .popup, .popup.disabled {
   border: 1px solid #839496;
   background: -moz-linear-gradient(top, #839496 0%, #657b83 100%);
-  /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #839496), color-stop(100%, #657b83));
-  /* Chrome,Safari4+ */
   background: -webkit-linear-gradient(top, #839496 0%, #657b83 100%);
-  /* Chrome10+,Safari5.1+ */
   background: -o-linear-gradient(top, #839496 0%, #657b83 100%);
-  /* Opera 11.10+ */
   background: -ms-linear-gradient(top, #839496 0%, #657b83 100%);
-  /* IE10+ */
   background: linear-gradient(top, #839496 0%, #657b83 100%);
-  -webkit-box-shadow: 0pt 2px 0px 0px #586e75,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-  -moz-box-shadow: 0pt 2px 0px 0px #586e75,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-  box-shadow: 0pt 2px 0px 0px #586e75,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+  -webkit-box-shadow: 0pt 2px 0px 0px #586e75,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0pt 2px 0px 0px #586e75,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+  box-shadow: 0pt 2px 0px 0px #586e75,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.light, .light.popup, .light.popup.disabled {
     border: 1px solid #a6b0b0;
     background: -moz-linear-gradient(top, #a6b0b0 0%, #93a1a1 100%);
-    /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #a6b0b0), color-stop(100%, #93a1a1));
-    /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top, #a6b0b0 0%, #93a1a1 100%);
-    /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, #a6b0b0 0%, #93a1a1 100%);
-    /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #a6b0b0 0%, #93a1a1 100%);
-    /* IE10+ */
     background: linear-gradient(top, #a6b0b0 0%, #93a1a1 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #839496,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #839496,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #839496,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #839496,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #839496,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #839496,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.dark, .dark.popup, .dark.popup.disabled {
     border: 1px solid #073642;
     background: -moz-linear-gradient(top, #073642 0%, #002b36 100%);
-    /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #073642), color-stop(100%, #002b36));
-    /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top, #073642 0%, #002b36 100%);
-    /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, #073642 0%, #002b36 100%);
-    /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #073642 0%, #002b36 100%);
-    /* IE10+ */
     background: linear-gradient(top, #073642 0%, #002b36 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #042029,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #042029,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #042029,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #042029,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.dark.light, .dark.light.popup, .dark.light.popup.disabled {
       border: 1px solid #0b4959;
       background: -moz-linear-gradient(top, #0b4959 0%, #073642 100%);
-      /* FF3.6+ */
       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #0b4959), color-stop(100%, #073642));
-      /* Chrome,Safari4+ */
       background: -webkit-linear-gradient(top, #0b4959 0%, #073642 100%);
-      /* Chrome10+,Safari5.1+ */
       background: -o-linear-gradient(top, #0b4959 0%, #073642 100%);
-      /* Opera 11.10+ */
       background: -ms-linear-gradient(top, #0b4959 0%, #073642 100%);
-      /* IE10+ */
       background: linear-gradient(top, #0b4959 0%, #073642 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #002b36,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #002b36,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #002b36,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #002b36,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #002b36,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #002b36,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.red, .red.popup, .red.popup.disabled {
     border: 1px solid #fe5c4d;
     background: -moz-linear-gradient(top, #fe5c4d 0%, #dc322f 100%);
-    /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fe5c4d), color-stop(100%, #dc322f));
-    /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top, #fe5c4d 0%, #dc322f 100%);
-    /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, #fe5c4d 0%, #dc322f 100%);
-    /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #fe5c4d 0%, #dc322f 100%);
-    /* IE10+ */
     background: linear-gradient(top, #fe5c4d 0%, #dc322f 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #a82927,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #a82927,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #a82927,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #a82927,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.red.light, .red.light.popup, .red.light.popup.disabled {
       border: 1px solid #ff8377;
       background: -moz-linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
-      /* FF3.6+ */
       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ff8377), color-stop(100%, #fe5c4d));
-      /* Chrome,Safari4+ */
       background: -webkit-linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
-      /* Chrome10+,Safari5.1+ */
       background: -o-linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
-      /* Opera 11.10+ */
       background: -ms-linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
-      /* IE10+ */
       background: linear-gradient(top, #ff8377 0%, #fe5c4d 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #dc322f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #dc322f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #dc322f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #dc322f,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #dc322f,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #dc322f,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.green, .green.popup, .green.popup.disabled {
     border: 1px solid #a9bf1b;
     background: -moz-linear-gradient(top, #a9bf1b 0%, #859900 100%);
-    /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #a9bf1b), color-stop(100%, #859900));
-    /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top, #a9bf1b 0%, #859900 100%);
-    /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, #a9bf1b 0%, #859900 100%);
-    /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #a9bf1b 0%, #859900 100%);
-    /* IE10+ */
     background: linear-gradient(top, #a9bf1b 0%, #859900 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #77822f,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #77822f,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #77822f,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #77822f,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.green.light, .green.light.popup, .green.light.popup.disabled {
       border: 1px solid #cadf44;
       background: -moz-linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
-      /* FF3.6+ */
       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #cadf44), color-stop(100%, #a9bf1b));
-      /* Chrome,Safari4+ */
       background: -webkit-linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
-      /* Chrome10+,Safari5.1+ */
       background: -o-linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
-      /* Opera 11.10+ */
       background: -ms-linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
-      /* IE10+ */
       background: linear-gradient(top, #cadf44 0%, #a9bf1b 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #859900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #859900,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #859900,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #859900,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.blue, .blue.popup, .blue.popup.disabled {
     border: 1px solid #34a0ec;
     background: -moz-linear-gradient(top, #34a0ec 0%, #268bd2 100%);
-    /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #34a0ec), color-stop(100%, #268bd2));
-    /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top, #34a0ec 0%, #268bd2 100%);
-    /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, #34a0ec 0%, #268bd2 100%);
-    /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #34a0ec 0%, #268bd2 100%);
-    /* IE10+ */
     background: linear-gradient(top, #34a0ec 0%, #268bd2 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #2d74a6,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #2d74a6,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #2d74a6,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #2d74a6,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.blue.light, .blue.light.popup, .blue.light.popup.disabled {
       border: 1px solid #57afec;
       background: -moz-linear-gradient(top, #57afec 0%, #34a0ec 100%);
-      /* FF3.6+ */
       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #57afec), color-stop(100%, #34a0ec));
-      /* Chrome,Safari4+ */
       background: -webkit-linear-gradient(top, #57afec 0%, #34a0ec 100%);
-      /* Chrome10+,Safari5.1+ */
       background: -o-linear-gradient(top, #57afec 0%, #34a0ec 100%);
-      /* Opera 11.10+ */
       background: -ms-linear-gradient(top, #57afec 0%, #34a0ec 100%);
-      /* IE10+ */
       background: linear-gradient(top, #57afec 0%, #34a0ec 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #268bd2,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #268bd2,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #268bd2,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #268bd2,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #268bd2,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #268bd2,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.yellow, .yellow.popup, .yellow.popup.disabled {
     border: 1px solid #cfa521;
     background: -moz-linear-gradient(top, #cfa521 0%, #b58900 100%);
-    /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #cfa521), color-stop(100%, #b58900));
-    /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top, #cfa521 0%, #b58900 100%);
-    /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, #cfa521 0%, #b58900 100%);
-    /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #cfa521 0%, #b58900 100%);
-    /* IE10+ */
     background: linear-gradient(top, #cfa521 0%, #b58900 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #8e7014,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #8e7014,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #8e7014,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #8e7014,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.yellow.light, .yellow.light.popup, .yellow.light.popup.disabled {
       border: 1px solid #f7ca3b;
       background: -moz-linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
-      /* FF3.6+ */
       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f7ca3b), color-stop(100%, #cfa521));
-      /* Chrome,Safari4+ */
       background: -webkit-linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
-      /* Chrome10+,Safari5.1+ */
       background: -o-linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
-      /* Opera 11.10+ */
       background: -ms-linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
-      /* IE10+ */
       background: linear-gradient(top, #f7ca3b 0%, #cfa521 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #b58900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #b58900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #b58900,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #b58900,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #b58900,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #b58900,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.orange, .orange.popup, .orange.popup.disabled {
     border: 1px solid #e66a36;
     background: -moz-linear-gradient(top, #e66a36 0%, #cb4b16 100%);
-    /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e66a36), color-stop(100%, #cb4b16));
-    /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top, #e66a36 0%, #cb4b16 100%);
-    /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, #e66a36 0%, #cb4b16 100%);
-    /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #e66a36 0%, #cb4b16 100%);
-    /* IE10+ */
     background: linear-gradient(top, #e66a36 0%, #cb4b16 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #a23d13,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #a23d13,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #a23d13,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #a23d13,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.orange.light, .orange.light.popup, .orange.light.popup.disabled {
       border: 1px solid #ff8b5b;
       background: -moz-linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
-      /* FF3.6+ */
       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ff8b5b), color-stop(100%, #e66a36));
-      /* Chrome,Safari4+ */
       background: -webkit-linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
-      /* Chrome10+,Safari5.1+ */
       background: -o-linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
-      /* Opera 11.10+ */
       background: -ms-linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
-      /* IE10+ */
       background: linear-gradient(top, #ff8b5b 0%, #e66a36 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #cb4b16,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #cb4b16,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #cb4b16,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #cb4b16,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #cb4b16,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #cb4b16,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.violet, .violet.popup, .violet.popup.disabled {
     border: 1px solid #8389eb;
     background: -moz-linear-gradient(top, #8389eb 0%, #6c71c4 100%);
-    /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #8389eb), color-stop(100%, #6c71c4));
-    /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top, #8389eb 0%, #6c71c4 100%);
-    /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, #8389eb 0%, #6c71c4 100%);
-    /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #8389eb 0%, #6c71c4 100%);
-    /* IE10+ */
     background: linear-gradient(top, #8389eb 0%, #6c71c4 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #4a5a94,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #4a5a94,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #4a5a94,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #4a5a94,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.violet.light, .violet.light.popup, .violet.light.popup.disabled {
       border: 1px solid #9ba0e6;
       background: -moz-linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
-      /* FF3.6+ */
       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9ba0e6), color-stop(100%, #8389eb));
-      /* Chrome,Safari4+ */
       background: -webkit-linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
-      /* Chrome10+,Safari5.1+ */
       background: -o-linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
-      /* Opera 11.10+ */
       background: -ms-linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
-      /* IE10+ */
       background: linear-gradient(top, #9ba0e6 0%, #8389eb 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #6c71c4,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #6c71c4,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #6c71c4,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #6c71c4,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #6c71c4,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #6c71c4,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
   .outset-box.cyan, .cyan.popup, .cyan.popup.disabled {
     border: 1px solid #4ccac1;
     background: -moz-linear-gradient(top, #4ccac1 0%, #2aa198 100%);
-    /* FF3.6+ */
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #4ccac1), color-stop(100%, #2aa198));
-    /* Chrome,Safari4+ */
     background: -webkit-linear-gradient(top, #4ccac1 0%, #2aa198 100%);
-    /* Chrome10+,Safari5.1+ */
     background: -o-linear-gradient(top, #4ccac1 0%, #2aa198 100%);
-    /* Opera 11.10+ */
     background: -ms-linear-gradient(top, #4ccac1 0%, #2aa198 100%);
-    /* IE10+ */
     background: linear-gradient(top, #4ccac1 0%, #2aa198 100%);
-    -webkit-box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    -moz-box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-    box-shadow: 0pt 2px 0px 0px #3a8882,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+    -webkit-box-shadow: 0pt 2px 0px 0px #3a8882,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: 0pt 2px 0px 0px #3a8882,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+    box-shadow: 0pt 2px 0px 0px #3a8882,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
     .outset-box.cyan.light, .cyan.light.popup, .cyan.light.popup.disabled {
       border: 1px solid #7bdbd4;
       background: -moz-linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
-      /* FF3.6+ */
       background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7bdbd4), color-stop(100%, #4ccac1));
-      /* Chrome,Safari4+ */
       background: -webkit-linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
-      /* Chrome10+,Safari5.1+ */
       background: -o-linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
-      /* Opera 11.10+ */
       background: -ms-linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
-      /* IE10+ */
       background: linear-gradient(top, #7bdbd4 0%, #4ccac1 100%);
-      -webkit-box-shadow: 0pt 2px 0px 0px #2aa198,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      -moz-box-shadow: 0pt 2px 0px 0px #2aa198,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
-      box-shadow: 0pt 2px 0px 0px #2aa198,                         0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
+      -webkit-box-shadow: 0pt 2px 0px 0px #2aa198,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      -moz-box-shadow: 0pt 2px 0px 0px #2aa198,0pt 4px 4px 0px rgba(0, 0, 0, 0.5);
+      box-shadow: 0pt 2px 0px 0px #2aa198,0pt 4px 4px 0px rgba(0, 0, 0, 0.5); }
 
 .text-content {
   color: #839496;
@@ -686,7 +595,7 @@ a {
   a:visited {
     color: #dc322f; }
   a.source {
-    color: #333; }
+    color: #333333; }
 
 h4 {
   color: #073642; }
@@ -788,7 +697,7 @@ form {
   padding-left: 10px;
   width: 80px !important; }
   .text.a:before, .text.b:before, .text.c:before {
-    content: "A:";
+    content: "A: ";
     color: #839496;
     display: inline;
     position: absolute;
@@ -808,9 +717,9 @@ form {
   font-size: 0.9em;
   line-height: 19px; }
 .text.b:before {
-  content: "B:"; }
+  content: "B: "; }
 .text.c:before {
-  content: "C:"; }
+  content: "C: "; }
 
 .button:hover .icon {
   background: #a9bf1b; }

@@ -1,0 +1,186 @@
+.calendar
+  overflow: hidden
+
+  @extend .widget-common
+  @extend .popup
+
+
+  h3
+    margin: 3px
+    margin-bottom: 0px
+    text-align: center
+    background: $base01
+    @include borderradius(3px)
+
+  a
+    &.prev-month, &.next-month, &.next-year, &.prev-year
+      display: block
+      position: absolute
+      width: 16px
+      height: 16px
+      color: $base1
+      top: 5px
+
+      @extend .no-text
+      &:before
+        top: 4px
+        content: ""
+        @extend .chevron
+
+
+    &.prev-year
+      left: 4px
+
+      &:before
+        left: 4px
+        @extend .chevron.left
+
+      &:after
+        left: 9px
+        top: 4px
+        content: ""
+        @extend .chevron
+        @extend .chevron.left
+
+
+
+    &.prev-month
+      left: 22px
+      &:before
+        left: 6px
+        @extend .chevron.left
+
+
+    &.next-year
+      right: 4px
+      &:before
+        right: 4px
+        @extend .chevron.right
+
+      &:after
+        right: 9px
+        top: 4px
+        content: ""
+        @extend .chevron
+        @extend .chevron.right
+
+
+    &.next-month
+      right: 22px
+      &:before
+        right: 6px
+        @extend .chevron.right
+
+
+    &.today
+      width: 50px
+      display: block
+      margin: 0px 4px 6px 24px
+      text-align: center
+      font-size: 14px
+
+      @extend .outset-box.blue
+      @extend .button-text-content
+      @include borderradius(2px)
+
+      &:hover
+        @extend .outset-box.blue.light
+
+
+
+
+  table
+    padding: 3px
+    border-spacing: 0px
+
+    tr:nth-child(2)
+      td
+        border-top: 1px solid $base01
+
+
+
+    th
+      text-align: center !important
+
+      @extend .button-text-content
+      @extend .inset-text
+
+      &.week
+        font-size: 12px
+        font-weight: normal
+        padding: 3px 6px
+        border-right: 1px solid $base01
+
+
+    td
+      font-size: 14px
+      text-align: center
+      padding: 3px 0px
+      width: 24px
+      height: 24px
+
+      @extend .button-text-content
+      @extend .inset-text
+      @include borderbox
+
+      &:hover
+        background: $widget-button-focus-background
+        color: $widget-button-color !important
+
+
+      &.selected
+        background: $widget-button-focus-background
+        &.today
+          background: $blue2
+
+
+      &.blurred
+        @extend .button-disabled-text-content
+
+      &.today
+        background: transparentize($blue1, 0.5)
+
+
+
+  &.readonly
+    a.today
+      &:hover
+        @extend .outset-box.blue
+
+
+
+  &.disabled, &.readonly
+
+    table
+      td
+        &:hover
+          background: none
+
+        &.blurred:hover
+          @extend .button-disabled-text-content
+
+        &.selected
+          background: $widget-button-focus-background
+
+
+
+
+  &.disabled
+    a.today
+      @extend .disabled-text-content
+      @extend .outset-box.light
+
+      &:hover
+        @extend .outset-box.light
+
+
+    table
+      td
+        @extend .button-disabled-text-content
+        &:hover
+          @extend .button-disabled-text-content
+
+
+
+
+
