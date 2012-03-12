@@ -33,68 +33,68 @@
 # </script>
 class TextInput extends Widget
 
-    @mixins HasFocusProvidedByChild
+  @mixins HasFocusProvidedByChild
 
-    constructor:( target )->
+  constructor:( target )->
 
-        # The `target` is mandatory in the `TextInput` constructor so a default
-        # target is created when nothing is passed to the constructor.
-        unless target? then target = $("<input type='text'></input>")[0]
+    # The `target` is mandatory in the `TextInput` constructor so a default
+    # target is created when nothing is passed to the constructor.
+    target = $("<input type='text'></input>")[0] unless target?
 
-        super target
+    super target
 
-        @maxlength = @valueFromAttribute "maxlength"
+    @maxlength = @valueFromAttribute "maxlength"
 
-        @valueIsObsolete = false
+    @valueIsObsolete = false
 
-    #### Target management
+  #### Target management
 
-    # The target for a `TextInput` must be an input with the
-    # type `text` or `password`.
-    checkTarget:( target )->
-        unless @isInputWithType target, "text", "password"
-            throw new Error "TextInput must have an input text as target"
+  # The target for a `TextInput` must be an input with the
+  # type `text` or `password`.
+  checkTarget:( target )->
+    unless @isInputWithType target, "text", "password"
+      throw new Error "TextInput must have an input text as target"
 
-    #### Dummy management
+  #### Dummy management
 
-    # The dummy for a `TextInput` is a `span` with a `text` class on it.
-    createDummy:->
-        dummy = $ "<span class='text'></span>"
+  # The dummy for a `TextInput` is a `span` with a `text` class on it.
+  createDummy:->
+    dummy = $ "<span class='text'></span>"
 
-        # The target of the widget is appended to the dummy.
-        dummy.append @jTarget
-        @focusProvider = @jTarget
+    # The target of the widget is appended to the dummy.
+    dummy.append @jTarget
+    @focusProvider = @jTarget
 
-        dummy
+    dummy
 
-    #### Properties accessors
+  #### Properties accessors
 
-    # Handles the `maxlength` attribute of the target.
-    set_maxlength:( property, value )->
-        if value?
-            @jTarget.attr "maxlength", value
-        else
-            @jTarget.removeAttr "maxlength"
-        @[ property ] = value
+  # Handles the `maxlength` attribute of the target.
+  set_maxlength:( property, value )->
+    if value?
+      @jTarget.attr "maxlength", value
+    else
+      @jTarget.removeAttr "maxlength"
+    @[ property ] = value
 
-    #### Events handling
+  #### Events handling
 
-    # When the user types some text in the target, the widget's
-    # value is marked as obsolete.
-    input:(e)->
-        @valueIsObsolete = true
+  # When the user types some text in the target, the widget's
+  # value is marked as obsolete.
+  input:(e)->
+    @valueIsObsolete = true
 
-    # When the `change` event occurs, the content of the
-    # target is saved as the new widget's value and the obsolete
-    # flag is set to `false`.
-    #
-    # The flag is unset after the value's affectation, and since
-    # a `valueChanged` signal is dispatched, the `valueIsObsolete`
-    # property allow a listener to know if the change done to the
-    # widget was done by a user input.
-    change:(e)->
-        @set "value", @valueFromAttribute "value"
-        @valueIsObsolete = false
-        false
+  # When the `change` event occurs, the content of the
+  # target is saved as the new widget's value and the obsolete
+  # flag is set to `false`.
+  #
+  # The flag is unset after the value's affectation, and since
+  # a `valueChanged` signal is dispatched, the `valueIsObsolete`
+  # property allow a listener to know if the change done to the
+  # widget was done by a user input.
+  change:(e)->
+    @set "value", @valueFromAttribute "value"
+    @valueIsObsolete = false
+    false
 
 @TextInput = TextInput

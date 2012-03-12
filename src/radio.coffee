@@ -30,19 +30,19 @@
 # </script>
 class Radio extends CheckBox
 
-    # The target for a `Radio` must be an input with the type `radio`.
-    checkTarget:( target )->
-        unless @isInputWithType target, "radio"
-            throw new Error "Radio target must be an input with a radio type"
+  # The target for a `Radio` must be an input with the type `radio`.
+  checkTarget:( target )->
+    unless @isInputWithType target, "radio"
+      throw new Error "Radio target must be an input with a radio type"
 
-    # The dummy for the radio is just a `<span>` element
-    # with a `radio` class.
-    createDummy:->
-        $ "<span class='radio'></span>"
+  # The dummy for the radio is just a `<span>` element
+  # with a `radio` class.
+  createDummy:->
+    $ "<span class='radio'></span>"
 
-    # Toggle is unidirectionnal. The only way to
-    # uncheck a radio is by code.
-    toggle:->
-        unless @get "checked" then super()
+  # Toggle is unidirectionnal. The only way to
+  # uncheck a radio is by code.
+  toggle:->
+    super() unless @get "checked"
 
 @Radio = Radio

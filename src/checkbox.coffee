@@ -29,132 +29,129 @@
 # </script>
 class CheckBox extends Widget
 
-    # Defines the types that is allowed for a checkbox's `target`.
+  # Defines the types that is allowed for a checkbox's `target`.
+  #
+  # `CheckBox` and its descendants are dedicated to work with
+  # a unique type of inputs. This property allow to define the
+  # type of allowed inputs for the class.
+  targetType:"checkbox"
+
+  constructor:(target)->
+    super target
+
+    #### Checkbox Signals
+
+    # The `checkedChanged` signal is dispatched when the `checked`
+    # property of the widget is modified.
     #
-    # `CheckBox` and its descendants are dedicated to work with
-    # a unique type of inputs. This property allow to define the
-    # type of allowed inputs for the class.
-    targetType:"checkbox"
+    # *Callback arguments*
+    #
+    #  * `widget`    : The widget that was modified.
+    #  * `checked`   : The new value for this widget's checked property.
+    @checkedChanged = new Signal
 
-    constructor:(target)->
-        super target
+    #### Shared Properties
 
-        #### Checkbox Signals
+    # The `values` property stores a tuple of two values that will be used
+    # to fill the `value` property according to the current state.
+    #
+    # For instance :
+    #
+    #     checkbox = new CheckBox
+    #     checkbox.set "values", [ "on", "off" ]
+    #     console.log checkbox.get "value"
+    #
+    # Will output `off`.
+    @values = [ true, false ]
 
-        # The `checkedChanged` signal is dispatched when the `checked`
-        # property of the widget is modified.
-        #
-        # *Callback arguments*
-        #
-        #  * `widget`    : The widget that was modified.
-        #  * `checked`   : The new value for this widget's checked property.
-        @checkedChanged = new Signal
+    # The `checked` property reflect the `checked` attribute of the target.
+    @checked = @booleanFromAttribute("checked", false)
 
-        #### Shared Properties
+    # The initial `checked` value is saved for a possible reset.
+    @targetInitialChecked = @get "checked"
 
-        # The `values` property stores a tuple of two values that will be used
-        # to fill the `value` property according to the current state.
-        #
-        # For instance :
-        #
-        #     checkbox = new CheckBox
-        #     checkbox.set "values", [ "on", "off" ]
-        #     console.log checkbox.get "value"
-        #
-        # Will output `off`.
-        @values = [ true, false ]
+    # The `checked` property is mapped to a state on the dummy.
+    @dummyStates = [ "checked", "disabled", "readonly", "required" ]
 
-        # The `checked` property reflect the `checked` attribute of the target.
-        @checked = @booleanFromAttribute("checked", false)
+    #### Keyboard Controls
 
-        # The initial `checked` value is saved for a possible reset.
-        @targetInitialChecked = @get "checked"
+    # Use the `enter` or `space` key to toggle the
+    #  checkbox with the keyboard.
+    @registerKeyUpCommand keystroke( keys.enter ), @actionToggle
+    @registerKeyUpCommand keystroke( keys.space ), @actionToggle
 
-        # The `checked` property is mapped to a state on the dummy.
-        @dummyStates = [ "checked", "disabled", "readonly", "required" ]
+    @updateStates()
+    @hideTarget()
 
-        #### Keyboard Controls
+  #### Target Management
 
-        # Use the `enter` or `space` key to toggle the
-        #  checkbox with the keyboard.
-        @registerKeyUpCommand keystroke( keys.enter ), @actionToggle
-        @registerKeyUpCommand keystroke( keys.space ), @actionToggle
+  # The target for a `CheckBox` must be an `input` with a type `checkbox`.
+  checkTarget:( target )->
+    unless @isInputWithType target, "checkbox"
+      throw new Error """CheckBox target must be an input
+                 with a checkbox type"""
 
-        @updateStates()
-        @hideTarget()
+  #### Properties Accessors
 
-    #### Target Management
+  # Setting the `checked` property also affect the `value` property.
+  set_checked:( property, value )->
+    @[ property ] = value
+    @updateValue value, @get("values")
+    @booleanToAttribute property, value
+    @checkedChanged.dispatch this, value
 
-    # The target for a `CheckBox` must be an `input` with a type `checkbox`.
-    checkTarget:( target )->
-        unless @isInputWithType target, "checkbox"
-            throw new Error """CheckBox target must be an input
-                               with a checkbox type"""
+  # Overrides the default behavior for the `value` setter.
+  # Changing the `value` also modify the `checked` attribute
+  # unless the setter was called internally.
+  set_value:( property, value )->
+    @set "checked", value is @get("values")[0] unless @valueSetProgrammatically
+    super property, value
 
-    #### Properties Accessors
+  # The `value` property is automatically updated when the `values`
+  # change.
+  set_values:( property, value )->
+    @updateValue @get("checked"), value
+    @[ property ] = value
 
-    # Setting the `checked` property also affect the `value` property.
-    set_checked:( property, value )->
-        @[ property ] = value
-        @updateValue value, @get("values")
-        @booleanToAttribute property, value
-        @checkedChanged.dispatch this, value
+  #### Dummy Management
 
-    # Overrides the default behavior for the `value` setter.
-    # Changing the `value` also modify the `checked` attribute
-    # unless the setter was called internally.
-    set_value:( property, value )->
-        unless @valueSetProgrammatically
-            @set "checked", value is @get("values")[0]
-        super property, value
+  # The dummy for the checkbox is just a `<span>` element
+  # with a `checkbox` class.
+  createDummy:->
+    $("<span class='checkbox'></span>")
 
-    # The `value` property is automatically updated when the `values`
-    # change.
-    set_values:( property, value )->
-        @updateValue @get("checked"), value
-        @[ property ] = value
+  #### Checked State Management
 
-    #### Dummy Management
+  # Toggle the state of the checkbox.
+  toggle:->
+    @set "checked", not @get "checked"
 
-    # The dummy for the checkbox is just a `<span>` element
-    # with a `checkbox` class.
-    createDummy:->
-        $ "<span class='checkbox'></span>"
+  # Use to toggle the state on a user action, with care
+  # to the state of the widget.
+  actionToggle:->
+    @toggle() unless @get("readonly") or @get("disabled")
 
-    #### Checked State Management
+  # The `reset` function operate on both the `value`
+  # and the `checked` state of the widget.
+  reset:->
+    super()
+    @set "checked", @targetInitialChecked
 
-    # Toggle the state of the checkbox.
-    toggle:->
-        @set "checked", not @get "checked"
+  # Update the `value` property according to the passed-in
+  # `checked` state and `values`.
+  updateValue:( checked, values )->
+    @valueSetProgrammatically = true
+    @set "value", if checked then values[0] else values[1]
+    @valueSetProgrammatically = false
 
-    # Use to toggle the state on a user action, with care
-    # to the state of the widget.
-    actionToggle:->
-        unless @get("readonly") or @get("disabled")
-            @toggle()
+  #### Dummy Events Handlers
 
-    # The `reset` function operate on both the `value`
-    # and the `checked` state of the widget.
-    reset:->
-        super()
-        @set "checked", @targetInitialChecked
+  # Toggle the checkbox on a user click.
+  click:(e)->
+    @actionToggle()
 
-    # Update the `value` property according to the passed-in
-    # `checked` state and `values`.
-    updateValue:( checked, values )->
-        @valueSetProgrammatically = true
-        @set "value", if checked then values[0] else values[1]
-        @valueSetProgrammatically = false
-
-    #### Dummy Events Handlers
-
-    # Toggle the checkbox on a user click.
-    click:(e)->
-        @actionToggle()
-
-        # Grabing the focus on a click is only allowed
-        # when the widget is not disabled.
-        unless @get "disabled"
-            @grabFocus()
+    # Grabing the focus on a click is only allowed
+    # when the widget is not disabled.
+    @grabFocus() unless @get "disabled"
 
 @CheckBox = CheckBox
