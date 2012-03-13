@@ -314,37 +314,48 @@ OpenCalendar=
 # as child of the widget. Each component of the widget value is handled
 # by these components.
 HasDateAndTime=
+  # Two children are created at creation. The first is a `DateInput`
+  # that will allow to edit and display the date part of a `datetime`
+  # or `datetime-local` input. The second child is a `TimeInput` which
+  # will handle the time edition.
   constructorHook:->
     @add @dateInput = new DateInput
     @add @timeInput = new TimeInput
-
+    # The widget listen to both children `valueChanged` signal.
     @dateInput.valueChanged.add @dateChanged, this
     @timeInput.valueChanged.add @timeChanged, this
 
-  createDummy:-> @super "createDummy"
-
+  # The update of the widget's dummy consist in updating its two
+  # children's value.
   updateDummy:->
     @super "updateDummy"
 
+    # The update of this widgets value by its children is prevented
+    # by a lock before affecting the values.
     @datetimeSetProgramatically = true
     @dateInput.set "date", @get("date").clone()
     @timeInput.set "date", @get("date").clone()
     @datetimeSetProgramatically = false
 
+  # Receive the `valueChanged` signal of the `DateInput` child.
   dateChanged:( widget )->
+    # The function returns instantly if the widget is locked.
     return if @datetimeSetProgramatically
 
     v = widget.get "date"
     d = @get "date"
+    # Only the date part of the current widget's `date` is updated.
     d.year( v.year() ).month( v.month() ).date( v.date() )
 
     @set "date", d
-
+  # Receive the `valueChanged` signal of the `TimeInput` child.
   timeChanged:( widget )->
+    # The function returns instantly if the widget is locked.
     return if @datetimeSetProgramatically
 
     v = widget.get "date"
     d = @get "date"
+    # Only the time part of the current widget's `date` is updated.
     d.hours( v.hours() ).minutes( v.minutes() ).seconds( v.seconds() )
 
     @set "date", d

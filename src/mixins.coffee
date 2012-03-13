@@ -340,16 +340,10 @@ HasChildren=
       # parent at the end of the call.
       child.parent = null
 
-  # The dummy for a `Container` is a single `span` with
-  # a `container` class on it.
-  createDummy:->
-    $("<span class='container'></span>")
-
   # Focus on the widget is prevented if the focus target
   # is one of its children.
   focus:(e)->
     @super "focus", e if e.target is @dummy[0]
-
 
 # <a name="DropDownPopup"></a>
 ## DropDownPopup

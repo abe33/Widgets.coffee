@@ -143,16 +143,16 @@ Date::isToday=-> @dateEquals new Date
 # Match if the passed-in string is a valid time string.
 # The following strings are considered as valid :
 # `10`, `10:15`, `10:15:40` or `10:15:40.768`
-Date.isValidTime=( value )->
-  unless value? then return false
+Date.isValidTime=( string )->
+  return false unless string?
   (/// ^
-    [\d]{2}                 # Hours are required
-    (:[\d]{2}               # Minutes are optional
-      (:[\d]{2}           # Seconds as well
+    [\d]{2}             # Hours are required
+    (:[\d]{2}           # Minutes are optional
+      (:[\d]{2}         # Seconds as well
         (\.[\d]{1,4})?  # Milliseconds too
-      )?                  # End Seconds
-    )?                      # End Minutes
-  $ ///).test value
+      )?                # End Seconds
+    )?                  # End Minutes
+  $ ///).test string
 
 # Converts a time string into a `Date` object where the time properties,
 # hours, minutes, seconds and milliseconds, are sets with the provided
@@ -172,7 +172,7 @@ Date.timeFromString=( string )->
 
 # Converts a `Date` object in a string such as `10:15:40`.
 # If the milliseconds count is different than `0` then the
-# output will look as `10:15:40.768`.
+# output will look like `10:15:40.768`.
 Date.timeToString=( date )->
   h  = date.hours()
   m  = date.minutes()
@@ -180,22 +180,19 @@ Date.timeToString=( date )->
   ms = date.milliseconds()
 
   time ="#{ fill h }:#{ fill m }:#{ fill s }"
-
-  if ms isnt 0
-    time += ".#{ ms }"
-
+  time += ".#{ ms }" if ms isnt 0
   time
 
 #### Date Conversion
 
 # A valid date is a string such as `2012-12-29`.
-Date.isValidDate=( value )->
-  unless value? then return false
+Date.isValidDate=( string )->
+  unless string? then return false
   (/// ^
     [\d]{4}-   # Year
     [\d]{2}-   # Month
     [\d]{2}    # Day of the month
-  $ ///).test value
+  $ ///).test string
 
 # A valid date string can be passed directly to the `Date` constructor.
 Date.dateFromString=( string )->
@@ -205,21 +202,22 @@ Date.dateFromString=( string )->
   d.setHours 0
   d
 
+# Converts a `Date` object in a string such as `2007-05-22`.
 Date.dateToString=( date )->
-  [ "#{ fill date.year(), 4   }",
-    "#{ fill date.month() + 1 }",
-    "#{ fill date.date()      }",
-  ].join "-"
+  "#{ fill date.year(), 4 }-#{ fill date.month() + 1 }-#{ fill date.date() }"
 
 #### Month Conversion
 
-Date.isValidMonth=( value )->
-  unless value? then return false
+# A valid month is a string such as `2011-02`.
+Date.isValidMonth=( string )->
+  return false unless string?
   (/// ^
     [\d]{4}-   # Year
     [\d]{2}    # Month
-  $ ///).test value
+  $ ///).test string
 
+# Creates a new `Date` that correspond to the first day
+# of the passed-in string.
 Date.monthFromString=( string )->
   d = new Date string
   # Hours may vary when constructing a `Date`.
@@ -227,18 +225,20 @@ Date.monthFromString=( string )->
   d.setHours 0
   d
 
+# Converts a `Date` object in a string such as `2007-05`.
 Date.monthToString=( date )->
   "#{ fill date.year(), 4 }-#{ fill ( date.month() + 1 ) }"
 
 #### Week Conversion
 
-Date.isValidWeek=( value )->
-  unless value? then return false
+# A valid week is a string such as `2012-W16`.
+Date.isValidWeek=( string )->
+  return false unless string?
   (/// ^
     [\d]{4}    # Year
     -W         # Week separator
     [\d]{2}    # Week number prefixed with W
-  $ ///).test value
+  $ ///).test string
 
 # Converts a string such as `2011-W09` into a `Date` object
 # that represent the first day of the corresponding week, even
@@ -248,22 +248,22 @@ Date.weekFromString=( string )->
 
   Date.getWeekDate year, week
 
+# Converts a `Date` object in a string such as `2011-W15`.
+# The week correspond to the week the passed-in date was in.
 Date.weekToString=( date )->
   "#{ fill date.year(), 4 }-W#{ fill date.week() }"
 
+# Returns the first day of the passed-in week of the specified year.
 Date.getWeekDate=( year, week )->
   start = Date.findFirstWeekFirstDay year
-  date = new Date start.valueOf() + Date.MILLISECONDS_IN_WEEK * ( week - 1 )
-  date.setHours 0
-  date.setMinutes 0
-  date.setSeconds 0
-  date.setMilliseconds 0
-  date
+  date = new Date start.stringOf() + Date.MILLISECONDS_IN_WEEK * ( week - 1 )
+  date.hours(0).minutes(0).seconds(0).milliseconds(0)
 
 #### DateTime Conversion
 
-Date.isValidDateTime=( value )->
-  unless value? then return false
+# A valid datetime is a string such as `2016-05-12T18:55:34.765+02:00`.
+Date.isValidDateTime=( string )->
+  return false unless string?
   (/// ^
     [\d]{4}-       # Year
     [\d]{2}-       # Month
@@ -274,32 +274,39 @@ Date.isValidDateTime=( value )->
     [\d]{2}        # Seconds
     (\.[\d]{1,4})? # Optionnal milliseconds
     (              # Mandatory terminator
-      Z|         # Either Z,
-      (\+|\-)+   # +XX:XX or -XX:XX
+      Z|           # Either Z or
+      (\+|\-){1}   # +XX:XX or -XX:XX
       [\d]{2}:
       [\d]{2}
     )
-  $ ///).test value
+  $ ///).test string
 
-Date.datetimeFromString=( string )->
-  new Date string
+# Converts a string such as `2016-05-12T18:55:34.765+02:00`
+# in the corresponding `Date` object.
+Date.datetimeFromString=( string )-> new Date string
 
+# Converts a `Date` object in a string such as `2016-05-12T18:55:34.765+02:00`.
 Date.datetimeToString=( date )->
+  # Stores that function in shorter local variable
+  # to inline the output string.
+  dts = Date.dateToString
+  tts = Date.timeToString
+
+  # Here the `Date` object for you. The time zone offset is written
+  # as `+02:00` and the `Date.getTimezoneOffset` function return `-120`.
   offset = date.getTimezoneOffset()
   sign = "-"
-  if offset < 0
-    sign = "+"
-    offset *= -1
+  # That mean that the plus sign appear when `offset < 0`.
+  [ sign, offset ] = [ "+", offset * -1 ] if offset < 0
 
   minutes = offset % 60
   hours = ( offset - minutes ) / 60
-  [ "#{ Date.dateToString date }T",
-    "#{ Date.timeToString date }",
-    "#{ sign }#{ fill hours }:#{ fill minutes }"
-  ].join ""
+  "#{ dts date }T#{ tts date }#{ sign }#{ fill hours }:#{ fill minutes }"
 
 #### DateTimeLocal Conversion
 
+# The validation expression will also serve to parse each
+# components of a local datetime.
 Date.dateTimeLocalRE= ->
   /// ^
     ([\d]{4})-     # Year
@@ -312,22 +319,24 @@ Date.dateTimeLocalRE= ->
     (\.[\d]{1,3})? # Optionnal milliseconds
   $ ///
 
-Date.isValidDateTimeLocal=( value )->
-  unless value? then return false
-  Date.dateTimeLocalRE().test value
+# A valid local datetime is a string such as `2016-05-12T18:55:34.765+02:00`.
+Date.isValidDateTimeLocal=( string )->
+  return false unless string?
+  Date.dateTimeLocalRE().test string
 
+# Converts the passed-in string in a `Date` object.
+#
+# Passing the date string directly in the constructor is valid,
+# however the behavior in chrome and firefox are quite different,
+# chrome consider that the passed-in date has an offset of `0`
+# and the convert it to the current local offset when firefox
+# consider the datestring as in the current local offset.
+# In consequences, The date will differ between the two browsers
+# of the amount of the current local offset.
 Date.datetimeLocalFromString=( string )->
-  # Passing the date string directly in the constructor is valid,
-  # however the behavior in chrome and firefox are quite different,
-  # chrome consider that the passed-in date has an offset of `0`
-  # and the convert it to the current local offset when firefox
-  # consider the datestring as in the current local offset.
-  # In consequences, The date will differ between the two browsers
-  # of the amount of the current local offset.
-  #
+
   # The `Date` will be created by parsing the string with the validation
   # regex and pass each value as an argument in the `Date` constructor.
-
   [ match, year, month,
     day, hours, minutes,
     seconds, milliseconds ] = Date.dateTimeLocalRE().exec string
@@ -343,7 +352,6 @@ Date.datetimeLocalFromString=( string )->
 
 Date.datetimeLocalToString=( date )->
   "#{ Date.dateToString date }T#{ Date.timeToString date }"
-
 
 ## Utilities
 
