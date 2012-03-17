@@ -105,7 +105,12 @@ join=( dir, contents, inFile, callback )->
 
   options = ['--join', inFile, '--compile' ].concat files
 
-  run 'coffee', options, callback
+  run 'coffee', options, ->
+    run 'uglifyjs', [
+      "-nm",
+      "-o", inFile.replace(".js",".min.js"),
+      inFile,
+    ], callback
 
 testTask=(file)->
   task "test:#{file}", "Compiles and runs tests for the #{file} file", ->
@@ -141,6 +146,15 @@ task 'test:all', 'Compiles and runs all the tests', ->
       console.log "all tests generated"
 
       run 'firefox', [ ".tmp/test-tmp.html" ]
+
+task 'sass', 'Compiles the widgets stylesheet', ->
+  run 'sass', [
+    "css/widgets.sass:css/widgets.css",
+    "--style","compressed" ]
+
+  run 'sass', [
+    "css/styles.sass:css/styles.css",
+    "--style","compressed" ]
 
 task 'build', """Compiles the javascript sources
                  and generates the documentation""", ->
@@ -190,9 +204,9 @@ testTmp = """
     <script type="text/javascript"
             src="../depends/signals.js"></script>
     <script type="text/javascript"
-            src="./widgets.js"></script>
+            src="./widgets.min.js"></script>
     <script type="text/javascript"
-            src="./test-widgets.js"></script>
+            src="./test-widgets.min.js"></script>
     <style>
         #qunit-tests .value { font-weight:bold; }
         h4 {  margin-top:4px; margin-bottom:4px; }
