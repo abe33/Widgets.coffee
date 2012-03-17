@@ -99,6 +99,16 @@
                 $("form").first().after("<a name='"+ builds[i].title +"'></a>");
                 $("form").first().after(t);
             }
+            var input = new TextInput();
+            var button = new Button({
+                display:"<b>Say Hello!</b>",
+                action:function(){
+                    alert( input.get("value") + " said: Hello World!" );
+                }
+            });
+
+            input.attach("body");
+            button.attach("body");
         });
     </script>
     <style type="text/css">
