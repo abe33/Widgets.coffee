@@ -256,7 +256,7 @@ Date.weekToString=( date )->
 # Returns the first day of the passed-in week of the specified year.
 Date.getWeekDate=( year, week )->
   start = Date.findFirstWeekFirstDay year
-  date = new Date start.stringOf() + Date.MILLISECONDS_IN_WEEK * ( week - 1 )
+  date = new Date start.valueOf() + Date.MILLISECONDS_IN_WEEK * ( week - 1 )
   date.hours(0).minutes(0).seconds(0).milliseconds(0)
 
 #### DateTime Conversion
