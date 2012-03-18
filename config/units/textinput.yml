@@ -1,0 +1,9 @@
+depends:[
+  "signals"
+  "std"
+  "keys"
+  "module"
+  "mixins"
+  "widgets"
+]
+test:"test-textinput"

@@ -1,0 +1,10 @@
+depends:[
+  "signals"
+  "std"
+  "keys"
+  "module"
+  "mixins"
+  "widgets"
+  "calendar"
+]
+test:"test-dates"

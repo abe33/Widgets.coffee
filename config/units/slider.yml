@@ -1,0 +1,10 @@
+depends:[
+  "signals",
+  "std",
+  "keys",
+  "module",
+  "mixins",
+  "widgets",
+  "numeric-widget"
+]
+test:"test-slider"

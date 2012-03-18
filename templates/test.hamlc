@@ -1,0 +1,22 @@
+!!!
+%html
+  %head
+    %title="#{ @title } Tests"
+
+    %meta{ charset: "UTF-8" }
+
+    - styles = [ "../css/styles.css", "../css/widgets.css", "../depends/qunit.css" ]
+    - for style in styles
+      %link{ rel: "stylesheet", href: style, media:"screen" }
+
+    - scripts = [ "../depends/qunit.js", "../depends/jquery-1.6.1.min.js", "../depends/jquery.mousewheel.js" , "../depends/hamcrest.min.js", "./widgets.js", "./test-widgets.js" ]
+    - for script in scripts
+      %script{ type: "text/javascript", src: script }
+
+  %body
+    %h1#qunit-header= "#{ @title } Tests"
+    %h2#qunit-banner
+    #qunit-testrunner-toolbar
+    %h2#qunit-userAgent
+    %ol#qunit-tests
+    #qunit-fixture= "test markup"

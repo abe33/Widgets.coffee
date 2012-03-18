@@ -59,8 +59,6 @@ Every widgets provides the following signals:
 
 ### Dependencies
 
- * [signals.coffee][1]: Provides the Signal class.
- * [jQuery][2]: Widgets are available as a jQuery plugin and make use of it.
+ * [jQuery][1]: Widgets are available as a jQuery plugin and make use of it.
 
-[1]: http://github.com/abe33/CoffeeScript-Signal
-[2]: http://http://jquery.com/
+[1]: http://http://jquery.com/

@@ -1,89 +1,20 @@
+# <link rel="stylesheet" href="../css/styles.css" media="screen">
+
 fs            = require 'fs'
 {print}       = require 'util'
 {spawn, exec} = require 'child_process'
 
-allFiles = [
-  "std",        "keys",       "mixins",         "module",   "widgets",
-  "container",  "button",     "textinput",      "textarea", "checkbox",
-  "radio",      "radiogroup", "numeric-widget", "slider",   "stepper",
-  "filepicker", "menus",      "selects",        "calendar", "dates",
-  "colorpicker","jquery",     "builder"
-]
+# Allow verbose print
+option '-v', '--verbose', 'Enable verbose output mode'
 
-allTestsDependencies = [ "test-helpers" ]
-compilationUnits=
-  'std':
-    depends:[]
-    test:"test-std"
-  'keys':
-    depends:[]
-    test:"test-keys"
-  'widgets':
-    depends:[ "std", "keys", "module", "mixins" ]
-    test:"test-widgets"
-  'container':
-    depends:[ "std", "keys", "module", "mixins", "widgets" ]
-    test:"test-container"
-  'button':
-    depends:[ "std", "keys", "module", "mixins", "widgets" ]
-    test:"test-button"
-  'textinput':
-    depends:[ "std", "keys", "module", "mixins", "widgets" ]
-    test:"test-textinput"
-  'textarea':
-    depends:[ "std", "keys", "module", "mixins", "widgets" ]
-    test:"test-textarea"
-  'checkbox':
-    depends:[ "std", "keys", "module", "mixins", "widgets" ]
-    test:"test-checkbox"
-  'radio':
-    depends:[ "std", "keys", "module", "mixins", "widgets",
-              "checkbox" ]
-    test:"test-radio"
-  'radiogroup':
-    depends:[ "std", "keys", "module", "mixins", "widgets",
-              "checkbox", "radio" ]
-    test:"test-radiogroup"
-  'numeric-widget':
-    depends:[ "std", "keys", "module", "mixins", "widgets" ]
-    test:"test-numeric-widget"
-  'slider':
-    depends:[ "std", "keys", "module", "mixins", "widgets",
-              "numeric-widget" ]
-    test:"test-slider"
-  'stepper':
-    depends:[ "std", "keys", "module", "mixins", "widgets",
-              "numeric-widget" ]
-    test:"test-stepper"
-  'filepicker':
-    depends:[ "std", "keys", "module", "mixins", "widgets" ]
-    test:"test-filepicker"
-  'menus':
-    depends:[ "std", "keys", "module", "mixins", "widgets" ]
-    test:"test-menus"
-  'selects':
-    depends:[ "std", "keys", "module", "mixins", "widgets",
-              "menus" ]
-    test:"test-selects"
-  'calendar':
-    depends:[ "std", "keys", "module", "mixins", "widgets" ]
-    test:"test-calendar"
-  'dates':
-    depends:[ "std", "keys", "module", "mixins", "widgets",
-              "calendar" ]
-    test:"test-dates"
-  'colorpicker':
-    depends:[ "std", "keys", "module", "mixins", "widgets",
-              "container", "textinput", "checkbox",
-              "radio", "radiogroup" ]
-    test:"test-colorpicker"
-  'jquery':
-    depends:allFiles[0..-3]
-    test:"test-jquery"
-  'builder':
-    depends:[ "std", "keys", "module", "mixins", "widgets", "button" ]
-    test:"test-builder"
+TestDependencies = [ "test-helpers" ]
+Units = fs.readdirSync('config/units').map (o,i)-> o.replace ".yml", ""
+Sources = fs.readFileSync('config/sources', 'utf-8').split /\s+/g
+Sources.pop() if Sources[ Sources.length-1 ] is ''
 
+## Helpers
+
+#### Batch
 class Batch
   constructor:( @commands )->
     @iterator = -1
@@ -94,59 +25,121 @@ class Batch
         @run()
       @iterator += 1
 
-run=( command, options, callback )->
+#### Functions
+
+eat=(s)-> s.replace /\s+/g, " "
+
+exist=(path)->
+  try
+    fs.lstatSync path
+    return true
+  catch e
+    return false
+
+loadConfig=(file,callback)->
+  coffee = spawn 'coffee', ['-p','-c','-b',file]
+  coffee.stdout.on 'data',( data )->
+    o = eval data.toString()
+    callback? o
+
+run=(command, options, callback)->
   exe = spawn command, options
   exe.stdout.on 'data', ( data )-> print data.toString()
   exe.stderr.on 'data', ( data )-> print data.toString()
   exe.on 'exit', ( status )-> callback?()
 
-join=( dir, contents, inFile, callback )->
+bundleRun=(command, options, callback)->
+  run "./node_modules/.bin/#{command}", options, callback
+
+join=(dir, contents, inFile, callback)->
   files = ( "#{dir}/#{file}.coffee" for file in contents )
 
   options = ['--join', inFile, '--compile' ].concat files
 
   run 'coffee', options, ->
-    run 'uglifyjs', [
+    bundleRun 'uglifyjs', [
       "-nm",
       "-o", inFile.replace(".js",".min.js"),
       inFile,
     ], callback
 
+hamlcompile=(template, output, context, callback)->
+  fs.mkdirSync ".tmp" unless exist ".tmp"
+
+  fs.readFile template, (err,data)->
+    hamlc = require 'haml-coffee'
+    tmpl = hamlc.compile data.toString()
+    fs.writeFile output, tmpl(context), callback
+
 testTask=(file)->
-  task "test:#{file}", "Compiles and runs tests for the #{file} file", ->
-    src = ".tmp/widgets.js"
-    test = ".tmp/test-widgets.js"
+  task "test:#{file}", "Compiles and runs tests for the #{file} file", (opts)->
+    hamlcompile "templates/test.hamlc",".tmp/test-tmp.html",{ title:file }, ->
+      loadConfig "config/units/#{file}.yml", (config)->
+        src = ".tmp/widgets.js"
+        test = ".tmp/test-widgets.js"
 
-    join "src", compilationUnits[ file ].depends.concat( file ), src, ->
-      console.log "#{file} sources compiled"
+        join "src", config.depends.concat( file ), src, ->
+          console.log "#{file} sources compiled" if opts.verbose
 
-      join "tests",
-           allTestsDependencies.concat( compilationUnits[ file ].test ),
-           test, ->
-             console.log "#{file} tests compiled"
+          join "test",
+               TestDependencies.concat( config.test ),
+               test, ->
+                 console.log "#{file} tests compiled" if opts.verbose
 
-             run 'firefox', [ ".tmp/test-tmp.html" ]
+                 run 'gnome-open', [ ".tmp/test-tmp.html" ]
 
-lint=( file, callback )->
+lint=(file, callback)->
   console.log "> Do '#{file}' has lints ?"
-  run 'coffeelint', [ "-f", "lint.json", file ], callback
+  bundleRun 'coffeelint', [ "-f", "lint.json", file ], callback
 
-lintCommand=( file )-> ( callback )-> lint file, callback
+lintCommand=(file)-> (callback)-> lint file, callback
 
-# Creates a test task by compilation units.
-testTask file for file of compilationUnits
+## Tasks Definition
 
-task 'test:all', 'Compiles and runs all the tests', ->
-  file = ".tmp/widgets.js"
-  join "src", allFiles, file, ->
-    console.log "all sources generated"
-    allTests = ( compilationUnits[file].test for file of compilationUnits )
-    file = ".tmp/test-widgets.js"
-    join "tests", allTestsDependencies.concat( allTests ), file, ->
-      console.log "all tests generated"
+task 'install', 'Installs the dependencies defined in the Nemfile', (options)->
+  nem = fs.readFileSync 'config/nem.coffee'
+  nemfile = fs.readFileSync 'Nemfile'
 
-      run 'firefox', [ ".tmp/test-tmp.html" ]
+  run 'coffee', [ '-e', "#{ nem }\n#{ nemfile }" ]
 
+# Generates one task per tests unit.
+testTask file for file in Units
+
+# Defines a task that runs the whole test suite.
+task 'test', 'Compiles and runs all the tests', (options)->
+  hamlcompile "templates/test.hamlc",".tmp/test-tmp.html",{ title:"All" }, ->
+    file = ".tmp/widgets.js"
+    join "src", Sources, file, ->
+      console.log "all sources generated" if options.verbose
+      allTests = ( "test-#{file}" for file in Units )
+      file = ".tmp/test-widgets.js"
+      join "test", TestDependencies.concat( allTests ), file, ->
+        console.log "all tests generated" if options.verbose
+
+        run 'gnome-open', [ ".tmp/test-tmp.html" ]
+
+# Defines a task that generates the documentation and compiles
+# the output javascript files.
+task 'build', eat("Compiles the javascript sources
+                   and generates the documentation"), ->
+  invoke "compile"
+  invoke "docs"
+
+# Defines a task that compiles the output javascript files.
+task 'compile', 'Compiles the javascript sources', (options)->
+  file = "lib/widgets.js"
+  join "src", Sources, file, ->
+    console.log "#{file} generated" if options.verbose
+
+# Defines a task that generates the documentation.
+task 'docs', 'Generate annotated source code with Docco', ->
+  run 'cp', [ 'Cakefile', '.tmp/Cakefile.coffee' ], ->
+    files = ( "src/#{file}.coffee" for file in Sources )
+    files.push ".tmp/Cakefile.coffee"
+    bundleRun 'docco', files, ->
+      run 'rm', [ ".tmp/Cakefile.coffee" ]
+
+# Defines a task that compile the sass stylesheets.
 task 'sass', 'Compiles the widgets stylesheet', ->
   run 'sass', [
     "css/widgets.sass:css/widgets.css",
@@ -156,79 +149,19 @@ task 'sass', 'Compiles the widgets stylesheet', ->
     "css/styles.sass:css/styles.css",
     "--style","compressed" ]
 
-task 'build', """Compiles the javascript sources
-                 and generates the documentation""", ->
-  invoke "build:lib"
-  invoke "docs"
+# Defines a task that compiles a demo file and open it in a browser.
+task 'demo', eat("Creates a demo file in the .tmp directory and then
+                  run it in a browser"), ->
+  hamlcompile "templates/demo.hamlc", ".tmp/demo.html", {}, ->
+    run 'coffee', ['-o','.tmp','--compile','demos/demo.coffee' ], ->
+      run 'gnome-open', [ ".tmp/demo.html" ]
 
-task 'build:lib', 'Compiles the javascript sources', ->
-  file = "lib/widgets.js"
-  join "src", allFiles, file, ->
-    console.log "#{file} generated"
-
-task 'docs', 'Generate annotated source code with Docco', ->
-  files = ( "src/#{file}.coffee" for file in allFiles )
-  run 'docco', files
-
+# Runs all files through coffeelint.
 task 'lint', 'Lint the widgets', ->
 
-  files = [ "Cakefile", "tests/#{allTestsDependencies[0]}.coffee" ]
-
-  files.push "src/#{file}.coffee" for file in allFiles
-  files.push "tests/#{test}.coffee" for k, { test } of compilationUnits
+  files = [ "Cakefile", "test/#{TestDependencies[0]}.coffee" ]
+  files.push "src/#{file}.coffee" for file in Sources
+  files.push "test/test-#{file}.coffee" for file in Units
 
   batch = new Batch ( lintCommand file for file in files )
   batch.run()
-
-  # lint files[0], ->
-  #     console.log "this is the end"
-  #     lint files[1]
-
-testTmp = """
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8" />
-    <title>Widgets Tests</title>
-    <link rel="stylesheet" href="../css/styles.css" media="screen">
-    <link rel="stylesheet" href="../css/widgets.css" media="screen">
-    <link rel="stylesheet" href="../depends/qunit.css" media="screen">
-    <script type="text/javascript"
-            src="../depends/qunit.js"></script>
-    <script type="text/javascript"
-            src="../depends/jquery-1.6.1.min.js"></script>
-    <script type="text/javascript"
-            src="../depends/jquery.mousewheel.js"></script>
-    <script type="text/javascript"
-            src="../depends/hamcrest.min.js"></script>
-    <script type="text/javascript"
-            src="../depends/signals.js"></script>
-    <script type="text/javascript"
-            src="./widgets.min.js"></script>
-    <script type="text/javascript"
-            src="./test-widgets.min.js"></script>
-    <style>
-        #qunit-tests .value { font-weight:bold; }
-        h4 {  margin-top:4px; margin-bottom:4px; }
-    </style>
-  </head>
-  <body>
-    <h1 id="qunit-header">Widgets Tests</h1>
-    <h2 id="qunit-banner"></h2>
-    <div id="qunit-testrunner-toolbar"></div>
-    <h2 id="qunit-userAgent"></h2>
-    <ol id="qunit-tests"></ol>
-    <div id="qunit-fixture">test markup</div>
-  </body>
-</html>
-"""
-
-try
-  fs.lstatSync ".tmp"
-catch e
-  fs.mkdirSync ".tmp"
-
-try
-  fs.lstatSync ".tmp/test-tmp.html"
-catch e
-  fs.writeFileSync ".tmp/test-tmp.html", testTmp

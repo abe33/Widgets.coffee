@@ -1,0 +1,14 @@
+depends:[
+  "signals"
+  "std"
+  "keys"
+  "module"
+  "mixins"
+  "widgets"
+  "container"
+  "textinput"
+  "checkbox"
+  "radio"
+  "radiogroup"
+]
+test:"test-colorpicker"

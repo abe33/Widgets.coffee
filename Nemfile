@@ -1,0 +1,6 @@
+
+npm 'docco'
+npm 'haml-coffee'
+npm 'uglify-js'
+npm 'coffeelint'
+# npm 'sass'

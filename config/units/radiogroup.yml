@@ -1,0 +1,11 @@
+depends:[
+  "signals"
+  "std"
+  "keys"
+  "module"
+  "mixins"
+  "widgets"
+  "checkbox"
+  "radio"
+]
+test:"test-radiogroup"
