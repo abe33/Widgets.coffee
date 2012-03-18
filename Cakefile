@@ -1,5 +1,22 @@
 # <link rel="stylesheet" href="../css/styles.css" media="screen">
 
+# The following tasks are available:
+#
+#  * `install`: Installs the dependencies listed in the `Nemfile` through npm.
+#  * `docs`: Generates the documentation with `docco`.
+#  * `sass`: Generates the stylesheets with `sass`.
+#  * `lint`: Lint files with `coffeelint`.
+#  * `compile:<file-name>`: Compiles all the sources files listed in the
+#    corresponding `yml` file in `config/lib`. The output files are available
+#    in the `lib` folder. A minified version of the file is provided through
+#    `uglifyjs`.
+#  * `demo:<demo-name>`: Compiles and runs one of the demos available as `yml`
+#    files in the `config/demos` directory.
+#  * `test:<test-name>`: Compiles and runs the test for `<test-name>`,
+#    `<test-name>` being the name of any `yml` file in the `config/units`
+#    folder (without dir path nor extensions).
+
+# Global requires
 fs      = require 'fs'
 {print} = require 'util'
 {spawn} = require 'child_process'
@@ -7,43 +24,12 @@ fs      = require 'fs'
 # Allow verbose output when running tasks.
 option '-v', '--verbose', 'Enable verbose output mode'
 
+## Helper Functions
+
+# Removes the `yml` extension from a file name.
 cleanYml=(o,i)-> o.replace ".yml", ""
 
-# Files in the `test` folder to be included for each tests.
-TestDependencies = [ "test/test-helpers" ]
-# Each `yml` file in the `config/units` folder is granted
-# as a test unit compilation configuration.
-TestUnits = fs.readdirSync('config/units').map cleanYml
-# Each `yml` file in the `config/demos` folder is granted
-# as a demo compilation configuration.
-Demos = fs.readdirSync('config/demos').map cleanYml
-# Each `yml` file in the `config/lib` folder is granted
-# as a lib compilation configuration.
-LibFiles = fs.readdirSync('config/lib').map cleanYml
-
-## Helpers
-
-#### Queue
-
-# The `Queue` class allow to run an array of commands
-# one after the other. A command is simply function
-# that takes a callback function as only argument.
-class Queue
-  # Constructs the queue with the passed-in commands.
-  constructor:(@commands)->
-    @iterator = 0
-
-  # Starts the queue process.
-  run:->
-    # While there's still a command to process.
-    if @iterator < @commands.length
-      # The command is executed with a callback that'll let the queue continue.
-      @commands[ @iterator ] => @run()
-      @iterator += 1
-
-#### Functions
-
-# Eats extra spaces in a string, used for tasks description.
+# Eats extra spaces in a string, used for long tasks description.
 eat=(s)-> s.replace /\s+/g, " "
 
 # Returns `true` if the passed-in `path` exists.
@@ -101,133 +87,224 @@ ensureTmp=(options)->
     fs.mkdirSync ".tmp"
     console.log ".tmp directory created" if options.verbose
 
+#### Test Task Generator
+
+# Files to be included for each tests.
+TestDependencies = [ "test/test-helpers" ]
+
 # Defines a test tast for the `unit` configuration file.
 testTask=(unit)->
   task "test:#{unit}", "Compiles and runs tests for the #{unit} unit", (opts)->
-    #
+    # Generated files are placed in the `.tmp` folder.
     ensureTmp opts
-    hamlcompile "templates/test.hamlc",".tmp/test-tmp.html",{ title:unit }, ->
+
+    # Prepares the tests runner generation.
+    hamlc = "templates/test.hamlc"
+    html = ".tmp/test-#{unit}.html"
+    context =
+      title:unit
+      test:unit
+
+    # Generates the test runner.
+    hamlcompile hamlc, html, context, ->
+      # Load the specified test configuration.
       loadConfig "config/units/#{unit}.yml", (config)->
-        if opts.verbose
-          console.log "Compilation configuration: "
-          console.log config
+        console.log "Compilation configuration: ", config if opts.verbose
 
-        lib = ".tmp/widgets.js"
-        test = ".tmp/test-widgets.js"
+        # Prepares the test compilation.
+        lib = ".tmp/#{unit}.js"
+        test = ".tmp/test-#{unit}.js"
 
+        # Compiles the code to be tested.
         join [].concat(config.source), lib, ->
           console.log "#{unit} sources compiled" if opts.verbose
 
+          # Compiles the tests.
           join TestDependencies.concat( config.test ), test, ->
             console.log "#{unit} tests compiled" if opts.verbose
 
-            run 'gnome-open', [ ".tmp/test-tmp.html" ]
+            # Launch the test runner.
+            run 'gnome-open', [ ".tmp/test-#{unit}.html" ]
 
+#### Compilation Task Generator
+
+# Defines a compilation task that takes all the source files defined
+# in the specified configuration file and generates a javascript file
+# with the name of the configuration file.
 libTask=(unit)->
   task "compile:#{unit}", "Compiles the #{unit}.js file", (opts)->
+    # Loads the configuration file.
     loadConfig "config/lib/#{unit}.yml", (config)->
-      if opts.verbose
-        console.log "Compilation configuration: "
-        console.log config
+      console.log "Compilation configuration: ", config if opts.verbose
+      # Compiles the file.
       join [].concat(config.source), "lib/#{unit}.js", ->
         console.log "#{unit} sources compiled" if opts.verbose
+
+#### Demo Task Generator
 
 # Defines a task that compiles a demo file and open it in a browser.
 demoTask=(unit)->
   task "demo:#{unit}", eat("Creates a demo file in the .tmp directory and then
                             run it in a browser"), (opts)->
+    # Generated files are placed in the `.tmp` folder.
     ensureTmp opts
 
+    # Loads the configuration file.
     loadConfig "config/demos/#{unit}.yml", (config)->
-      if opts.verbose
-        console.log "Compilation configuration: "
-        console.log config
+      console.log "Compilation configuration: ", config if opts.verbose
+
+      # Prepares the demo compilation.
       output="#{unit}.js"
       options = ['--join',".tmp/#{output}",'--compile' ].concat config.source
 
+      # Compiles the demo files.
       run 'coffee', options, ->
         console.log "#{unit} sources compiled" if opts.verbose
+
+        # Prepares the demo html file generation.
         hamlc = "templates/#{ config.template }.hamlc"
         html = ".tmp/#{unit}.html"
         context = demo:output
+
+        # Generates the demo html file.
         hamlcompile hamlc, html, context, ->
           console.log "#{html} generated" if opts.verbose
+
+          # Opens the file.
           run 'gnome-open', [ ".tmp/#{unit}.html" ]
 
-lint=(file, callback)->
-  console.log "> Do '#{file}' has lints ?"
-  bundleRun 'coffeelint', [ "-f", "lint.json", file ], callback
+## Tasks Definitions
 
-lintCommand=(file)-> (callback)-> lint file, callback
+#### cake install
 
+# Installs all the dependencies listed in the `Nemfile`.
+task 'install', 'Installs the dependencies defined in the Nemfile', (options)->
+
+  # The content of the `config/nem.coffee` file is inserted before
+  # the `Nemfile` content to provides the `npm` function declaration.
+  nem = fs.readFileSync 'config/nem.coffee'
+  nemfile = fs.readFileSync 'Nemfile'
+  source = "#{ nem }\n#{ nemfile }"
+
+  # The produced source code is then executed by `coffee`.
+  run 'coffee', [ '-e', source ]
+
+#### cake docs
+
+# Creates a copy of the passed in `file` with a `.coffee` extension
+# to allow `docco` to generates documentation for that file. The path
+# to the generated file is passed to the callback function.
 doccoCopy=(file,callback)->
   copy = ".tmp/#{ file.split("/").pop() }.coffee"
   run 'cp', [ file, copy ], callback copy
 
-## Tasks Definition
-
-# Installs
-task 'install', 'Installs the dependencies defined in the Nemfile', (options)->
-  nem = fs.readFileSync 'config/nem.coffee'
-  nemfile = fs.readFileSync 'Nemfile'
-
-  run 'coffee', [ '-e', "#{ nem }\n#{ nemfile }" ]
-
 # Defines a task that generates the documentation.
 task 'docs', 'Generate annotated source code with Docco', (options)->
+  # Some files that don't have the `coffee` extension will be cloned
+  # and placed in the `.tmp` folder with the `coffee` extension.
   ensureTmp options
 
+  # Load the configuration file.
   loadConfig "config/docs.yml", (config)->
+
+    # Prepares the documentation generation.
     sources = config.source
     files=[]
+    # Files that don't have the `coffee` extensions will be cloned and
+    # will be stored in the `.tmp` dir, and removed at the end of the task.
     generated=[]
+
+    # Iterates over a file and verify that it have the `coffee` extension.
+    # If not, the file is cloned, renamed and moved to the `.tmp` folder.
     next=(callback)->
+      # As long as there's files in the array.
       if sources.length
         file = sources.pop()
+        # If the file don't have any extension, `exist` will return `true`.
         if exist file
+          # Then a copy of the file is placed in `.tmp`.
           doccoCopy file, (copy)->
             if options.verbose
               console.log "tmp copy #{copy} created for #{file}"
+            # And the generated file is stored in the corresponding array.
             generated.push copy
             files.push copy
+            # Continues to the next file.
             next callback
         else
+          # Stores the file woth the coffee extension.
           files.push "#{file}.coffee"
           next callback
-      else
-        callback files
+      # Returns the files array in the callback.
+      else callback files
 
+    # Run the iterations.
     next (files)->
+      # Generates the documentation for all the files
+      # in the configuration file.
       bundleRun 'docco', files, ->
+        # Removes all the temporary files.
         run 'rm', [file] for file in generated
         console.log "generated files cleaned" if options.verbose
 
+#### cake sass
+
 # Defines a task that compile the sass stylesheets.
 task 'sass', 'Compiles the widgets stylesheet', ->
-  run 'sass', [
-    "css/widgets.sass:css/widgets.css",
-    "--style","compressed" ]
+  loadConfig "config/sass.yml", (config)->
+    for file in config.source
+      run 'sass', ["#{file}.sass:#{file}.css","--style","compressed" ]
 
-  run 'sass', [
-    "css/styles.sass:css/styles.css",
-    "--style","compressed" ]
+#### cake lint
 
-# Runs all files through coffeelint.
+# The `Queue` class allow to run an array of commands
+# one after the other. A command is simply function
+# that takes a callback function as only argument.
+class Queue
+  # Constructs the queue with the passed-in commands.
+  constructor:(@commands)->
+    @iterator = 0
+
+  # Starts the queue process.
+  run:->
+    # While there's still a command to process.
+    if @iterator < @commands.length
+      # The command is executed with a callback that'll
+      # let the queue continue.
+      @commands[ @iterator ] => @run()
+      @iterator += 1
+
+# Generates a command function that lint the specified `file`.
+lint=(file)-> (callback)->
+  console.log "> Do '#{file}' has lints ?"
+  bundleRun 'coffeelint', [ "-f", "config/lint.json", file ], callback
+
+# Runs all files defined in `config/lint.yml` through `coffeelint`.
 task 'lint', 'Lint the widgets sources files', ->
   loadConfig "config/lint.yml", (config)->
     files = []
     for file in config.source
       files.push if exist file then file else "#{file}.coffee"
 
-    batch = new Queue ( lintCommand file for file in files )
-    batch.run()
+    # Creates the `Queue` and process it.
+    queue = new Queue ( lint file for file in files )
+    queue.run()
 
-# Generates one task per compilation unit.
-libTask file for file in LibFiles
+#### cake compile:config
 
-# Generates one task per compilation unit.
-demoTask file for file in Demos
+# Each `yml` file in the `config/lib` folder will be available
+# as a compilation task.
+libTask file for file in fs.readdirSync('config/lib').map cleanYml
 
-# Generates one task per compilation unit.
-testTask file for file in TestUnits
+#### cake demo:config
+
+# Each `yml` file in the `config/demos` folder will be available
+# as a demo task.
+demoTask file for file in fs.readdirSync('config/demos').map cleanYml
+
+#### cake test:config
+
+# Each `yml` file in the `config/units` folder will be available
+# as a test task.
+testTask file for file in fs.readdirSync('config/units').map cleanYml
 

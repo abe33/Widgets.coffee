@@ -5,11 +5,24 @@
 
     %meta{ charset: "UTF-8" }
 
-    - styles = [ "../css/styles.css", "../css/widgets.css", "../depends/qunit.css" ]
+    :coffeescript
+      styles = [
+        "../css/styles.css"
+        "../css/widgets.css"
+        "../depends/qunit.css"
+      ]
+      scripts = [
+        "../depends/qunit.js"
+        "../depends/jquery-1.6.1.min.js"
+        "../depends/jquery.mousewheel.js"
+        "../depends/hamcrest.min.js"
+        "./#{ @test }.js"
+        "./test-#{ @test }.js"
+      ]
+
     - for style in styles
       %link{ rel: "stylesheet", href: style, media:"screen" }
 
-    - scripts = [ "../depends/qunit.js", "../depends/jquery-1.6.1.min.js", "../depends/jquery.mousewheel.js" , "../depends/hamcrest.min.js", "./widgets.js", "./test-widgets.js" ]
     - for script in scripts
       %script{ type: "text/javascript", src: script }
 
