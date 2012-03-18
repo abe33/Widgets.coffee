@@ -23,4 +23,3 @@ source:[
   "src/colorpicker"
   "src/jquery"
 ]
-test:"test/test-jquery"

@@ -1,9 +1,10 @@
-depends:[
-  "std"
-  "keys"
-  "module"
-  "mixins"
-  "widgets"
-  "button"
+source:[
+  "src/std"
+  "src/keys"
+  "src/module"
+  "src/mixins"
+  "src/widgets"
+  "src/button"
+  "demos/builder"
 ]
-test:"test-builder"
+test:"test/test-builder"

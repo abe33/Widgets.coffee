@@ -1,0 +1,5 @@
+source:[
+  "demos/builder.coffee"
+  "demos/form.coffee"
+]
+template:"form"

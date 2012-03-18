@@ -1,10 +1,11 @@
-depends:[
-  "signals"
-  "std"
-  "keys"
-  "module"
-  "mixins"
-  "widgets"
-  "menus"
+source:[
+  "src/signals"
+  "src/std"
+  "src/keys"
+  "src/module"
+  "src/mixins"
+  "src/widgets"
+  "src/menus"
+  "src/selects"
 ]
-test:"test-selects"
+test:"test/test-selects"

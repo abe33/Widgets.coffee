@@ -1,9 +1,10 @@
-depends:[
-  "signals"
-  "std"
-  "keys"
-  "module"
-  "mixins"
-  "widgets"
+source:[
+  "src/signals"
+  "src/std"
+  "src/keys"
+  "src/module"
+  "src/mixins"
+  "src/widgets"
+  "src/checkbox"
 ]
-test:"test-checkbox"
+test:"test/test-checkbox"

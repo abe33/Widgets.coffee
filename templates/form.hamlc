@@ -14,7 +14,7 @@
         "../depends/jquery-1.6.1.min.js",
         "../depends/jquery.mousewheel.js" ,
         "../lib/widgets.min.js",
-        "./demo.js"
+        "./#{ @demo }"
       ]
       styles = [
         "../css/styles.css",

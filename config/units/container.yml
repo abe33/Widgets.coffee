@@ -1,9 +1,10 @@
-depends:[
-  "signals"
-  "std"
-  "keys"
-  "module"
-  "mixins"
-  "widgets"
+source:[
+  "src/signals"
+  "src/std"
+  "src/keys"
+  "src/module"
+  "src/mixins"
+  "src/widgets"
+  "src/container"
 ]
-test:"test-container"
+test:"test/test-container"
