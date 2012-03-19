@@ -180,11 +180,11 @@ demoTask=(unit)->
 # Installs all the dependencies listed in the `Nemfile`.
 task 'install', 'Installs the dependencies defined in the Nemfile', (options)->
 
-  # The content of the `config/nem.coffee` file is inserted before
-  # the `Nemfile` content to provides the `npm` function declaration.
+  # The content of the `Nemfile` file is inserted in a placeholder in
+  # the `config/nem.coffee` that contains the `npm` function declaration.
   nem = fs.readFileSync 'config/nem.coffee'
   nemfile = fs.readFileSync 'Nemfile'
-  source = "#{ nem }\n#{ nemfile }"
+  source = nem.toString().replace "#<<NPM_DECLARATION>>", nemfile.toString()
 
   # The produced source code is then executed by `coffee`.
   run 'coffee', [ '-e', source ]
