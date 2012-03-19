@@ -1,7 +1,7 @@
 source:[
   "Cakefile"
   "Nemfile"
-  "config/nem"
+  "src/nem"
   "src/signals"
   "src/std"
   "src/keys"
@@ -27,3 +27,5 @@ source:[
   "src/jquery"
   "demos/builder"
 ]
+headerTemplate:"docs/header"
+builderTemplate:"docs/builder"

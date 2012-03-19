@@ -1,27 +1,5 @@
 # Here some live instances :
-# <div id="livedemos"></div>
-# <link rel="stylesheet" href="../css/styles.css" media="screen">
-# <link rel="stylesheet" href="../css/widgets.css" media="screen">
-#
-# <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
-# <script type='text/javascript' src='../depends/jquery.mousewheel.js'></script>
-# <script type='text/javascript' src='../depends/signals.js'></script>
-# <script type='text/javascript' src='../lib/widgets.js'></script>
-#
-# <script type='text/javascript'>
-# var f = function(){ console.log( "button clicked" ) };
-# var button1 = new Button({ display:"Button <span class='icon'></span>",
-#                            action:f });
-# var button2 = new Button({ display:"Readonly", action:f });
-# var button3 = new Button({ display:"Disabled", action:f });
-#
-# button2.set( "readonly", true );
-# button3.set( "disabled", true );
-#
-# button1.attach("#livedemos");
-# button2.attach("#livedemos");
-# button3.attach("#livedemos");
-# </script>
+#= require button
 class Button extends Widget
 
   # The `Button` constructor can be called both with an target input:

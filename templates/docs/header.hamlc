@@ -1,0 +1,17 @@
+:coffeescript
+  styles = [
+    "../css/styles.css",
+    "../css/widgets.css"
+  ]
+  scripts = [
+    "../depends/jquery-1.6.1.min.js"
+    "../depends/jquery.mousewheel.js"
+    "../lib/widgets.js"
+    "../lib/builder.js"
+  ]
+
+- for style in styles
+  %link{ rel: "stylesheet", href: style, media:"screen" }
+
+- for script in scripts
+  %script{ type: "text/javascript", src: script }

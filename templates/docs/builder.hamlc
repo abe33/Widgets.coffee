@@ -1,0 +1,6 @@
+%div{ id:@container }
+%script{type:"text/javascript"}=
+  var config = #{ @config }
+  var builder = new TableBuilder(config.builder);
+  $("##{@container}").append(builder.build());
+
