@@ -99,7 +99,7 @@ testTask=(unit)->
     ensureTmp opts
 
     # Prepares the tests runner generation.
-    hamlc = "templates/test.hamlc"
+    hamlc = "templates/test/test.hamlc"
     html = ".tmp/test-#{unit}.html"
     context =
       title:unit
@@ -153,9 +153,11 @@ demoTask=(unit)->
     loadConfig "config/demos/#{unit}.yml", (config)->
       console.log "Compilation configuration: ", config if opts.verbose
 
+      sources = ("#{file}.coffee" for file in config.source)
+
       # Prepares the demo compilation.
       output="#{unit}.js"
-      options = ['--join',".tmp/#{output}",'--compile' ].concat config.source
+      options = ['--join',".tmp/#{output}",'--compile' ].concat sources
 
       # Compiles the demo files.
       run 'coffee', options, ->

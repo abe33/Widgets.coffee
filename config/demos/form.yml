@@ -1,5 +1,5 @@
 source:[
-  "demos/builder.coffee"
-  "demos/form.coffee"
+  "demos/builder"
+  "demos/form"
 ]
-template:"form"
+template:"demos/form"
