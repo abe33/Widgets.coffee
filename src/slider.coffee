@@ -3,41 +3,11 @@
 #
 # The `Slider` class extends `NumericWidget` and reuse all
 # the behavior of the base class.
-#
-# Here some live instances :
-# <div id="livedemos"></div>
-# <link rel="stylesheet" href="../css/styles.css" media="screen">
-# <link rel="stylesheet" href="../css/widgets.css" media="screen">
-#
-# <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
-# <script type='text/javascript'
-#         src='../depends/jquery.mousewheel.js'></script>
-# <script type='text/javascript' src='../depends/signals.js'></script>
-# <script type='text/javascript' src='../lib/widgets.js'></script>
-#
-# <script type='text/javascript'>
-# var slider1 = new Slider();
-# var slider2 = new Slider();
-# var slider3 = new Slider();
-#
-# slider1.valueCenteredOnKnob = true;
-# slider2.valueCenteredOnKnob = true;
-# slider3.valueCenteredOnKnob = true;
-#
-# slider1.set("value", 12);
-# slider2.set("value", 45);
-# slider3.set("value", 78);
-#
-# slider2.set( "readonly", true );
-# slider2.set( "checked", true );
-# slider3.set( "disabled", true );
-#
-# slider1.attach("#livedemos");
-# slider2.attach("#livedemos");
-# slider3.attach("#livedemos");
-# </script>
 class Slider extends NumericWidget
-  constructor:( target )->
+  # Here some live instances :
+  #
+  #= require slider
+  constructor:(target)->
     super target
 
     #### Dragging Properties
@@ -71,7 +41,7 @@ class Slider extends NumericWidget
   #### Target Management
 
   # The target for a `Slider` must be an input with the type `range`.
-  checkTarget:( target )->
+  checkTarget:(target)->
     unless @isInputWithType target, "range"
       throw new Error "Slider target must be an input with a range type"
 
@@ -109,12 +79,12 @@ class Slider extends NumericWidget
     knobWidth = knob.width()
 
     # The dragging data is then normalized.
-    normalizedValue = data.x / ( width - knobWidth )
+    normalizedValue = data.x / (width - knobWidth)
 
     # And adjusted to the current range.
     min = @get "min"
     max = @get "max"
-    change = Math.round( normalizedValue * ( max - min ) )
+    change = Math.round(normalizedValue * ( max - min ))
 
     # To finally being added to the `value` property.
     @set "value", @get("value") + change
@@ -194,7 +164,7 @@ class Slider extends NumericWidget
     dummy
 
   # Updates the dummy according to the slider's data.
-  updateDummy:( value, min, max, step )->
+  updateDummy:(value, min, max, step)->
     width     = @dummy.width()
     knob      = @dummy.children ".knob"
     val       = @dummy.children ".value"
@@ -205,7 +175,7 @@ class Slider extends NumericWidget
 
     # The knob left offset is calculated with the current size
     # of the slider and the current size of the knob.
-    knobPos = ( width - knobWidth ) * ( ( value - min ) / ( max - min ) )
+    knobPos = (width - knobWidth ) * ( ( value - min ) / ( max - min ))
     knob.css "left", knobPos
 
     # The `value` child text is updated with the current slider's
@@ -215,7 +185,7 @@ class Slider extends NumericWidget
     # If the `valueCenteredOnKnob` property is `true`, then the
     # `value` child's left offset property is also updated.
     if @valueCenteredOnKnob
-      valPos = ( knobPos + knobWidth / 2 ) - valWidth / 2
+      valPos = (knobPos + knobWidth / 2) - valWidth / 2
       val.css "left", valPos
     else
       val.css "left", "auto"

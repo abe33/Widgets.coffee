@@ -1,5 +1,3 @@
-# <link rel="stylesheet" href="../css/styles.css" media="screen">
-#
 # The `mixins.coffe` file contains the set of mixins that are used
 # by widgets.
 #
@@ -38,33 +36,33 @@ HasValueInRange=
 
     # Use the `Up` or `Left` arrows on the keyboard to increment
     # the value by the amount of the `step` property.
-    @registerKeyDownCommand keystroke( keys.up ), @startIncrement
-    @registerKeyUpCommand   keystroke( keys.up ), @endIncrement
+    @registerKeyDownCommand keystroke(keys.up), @startIncrement
+    @registerKeyUpCommand   keystroke(keys.up), @endIncrement
 
-    @registerKeyDownCommand keystroke( keys.right ), @startIncrement
-    @registerKeyUpCommand   keystroke( keys.right ), @endIncrement
+    @registerKeyDownCommand keystroke(keys.right), @startIncrement
+    @registerKeyUpCommand   keystroke(keys.right), @endIncrement
 
     # Use the `Down` or `Right` arrows on the keyboard to decrement
     # the value by the amount of the `step` property.
-    @registerKeyDownCommand keystroke( keys.down ), @startDecrement
-    @registerKeyUpCommand   keystroke( keys.down ), @endDecrement
+    @registerKeyDownCommand keystroke(keys.down), @startDecrement
+    @registerKeyUpCommand   keystroke(keys.down), @endDecrement
 
-    @registerKeyDownCommand keystroke( keys.left ), @startDecrement
-    @registerKeyUpCommand   keystroke( keys.left ), @endDecrement
+    @registerKeyDownCommand keystroke(keys.left), @startDecrement
+    @registerKeyUpCommand   keystroke(keys.left), @endDecrement
 
   # Ensure that the passed-in `value` match all the constraints
   # defined on the target of the current widget.
   #
   # The returned value should be safely affected to the `value`
   # property.
-  fitToRange:( value, min, max )->
+  fitToRange:(value, min, max)->
     if min? and value < min then value = min
     else if max? and value > max then value = max
 
     @snapToStep value
 
   # Override this method to implement the concrete snapping.
-  snapToStep:( value )-> value
+  snapToStep:(value)-> value
 
   #### Intervals Management
 
@@ -116,7 +114,7 @@ HasValueInRange=
 
   # Using the mouse wheel, the value is either incremented
   # or decremented according to the event's delta.
-  mousewheel:( event, delta, deltaX, deltaY )->
+  mousewheel:(event, delta, deltaX, deltaY)->
     unless @cantInteract()
       if delta > 0 then @increment() else @decrement()
     # `mousewheel` returns `false` to prevent the page to scroll.
@@ -199,8 +197,8 @@ Spinner=
   #### Events Handlers
 
   # Changes made to the input lead to an input validation.
-  change:( e )-> @validateInput()
-  input:( e )->
+  change:(e)-> @validateInput()
+  input:(e)->
 
   # Releasing the mouse over the widget will force the focus on the
   # input. That way, clicking on the increment and decrement button
@@ -241,7 +239,7 @@ Spinner=
   #### Placeholder Functions
 
   validateInput:->
-  drag:( dif )->
+  drag:(dif)->
 
 # <a name="HasFocusProvidedByChild"></a>
 ## HasFocusProvidedByChild
@@ -313,7 +311,7 @@ HasChildren=
   #### Children Management
 
   # Use the `add` method to add child to this container.
-  add:( child )->
+  add:(child)->
     # Only widgets that are not already a child are allowed.
     if child? and child.isWidget and child not in @children
       @children.push child
@@ -326,11 +324,11 @@ HasChildren=
       child.parent = this
 
   # Use the `remove` method to remove a child from this container.
-  remove:( child )->
+  remove:(child)->
     # Only widgets that are already a children of this container
     # can be removed.
     if child? and child in @children
-      @children.splice @children.indexOf( child ), 1
+      @children.splice @children.indexOf(child), 1
 
       # The child's dummy is then detached from the container's dummy.
       child.detach()
@@ -357,10 +355,10 @@ DropDownPopup=
 
     # Using the `Enter` key while editing a color comfirm the edit
     # and close the drop down popup.
-    @registerKeyDownCommand keystroke( keys.enter ), @comfirmChangesOnEnter
+    @registerKeyDownCommand keystroke(keys.enter), @comfirmChangesOnEnter
     # Using the `Escape` ket while editing abort the current edit
     # and close the drop down popup.
-    @registerKeyDownCommand keystroke( keys.escape ), @abortChanges
+    @registerKeyDownCommand keystroke(keys.escape), @abortChanges
 
   #### Display Management
 
@@ -395,7 +393,7 @@ DropDownPopup=
 
   # Receive a signal from a `caller` object that need the drop down popup
   # to appear.
-  dialogRequested:( caller )->
+  dialogRequested:(caller)->
     @caller = caller
     @setupDialog caller
     @open()
@@ -412,7 +410,7 @@ DropDownPopup=
   abortChanges:-> @close()
   comfirmChanges:->
   comfirmChangesOnEnter:->
-  setupDialog:( caller )->
+  setupDialog:(caller)->
 
 
 @Spinner                 = Spinner

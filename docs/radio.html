@@ -2,43 +2,52 @@
 <link rel='stylesheet' href='../css/widgets.css' media='screen'></p>
 
 <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
+
 <script type='text/javascript' src='../depends/jquery.mousewheel.js'></script>
+
 <script type='text/javascript' src='../lib/widgets.js'></script>
+
 <script type='text/javascript' src='../lib/builder.js'></script>
-The `Radio` widget is a kind of `CheckBox` that can
-be only set to true by the user.
 
-They're generaly used in combination with a `RadioGroup`.
+<p>The <code>Radio</code> widget is a kind of <code>CheckBox</code> that can
+be only set to true by the user.</p>
 
-Here some live instances :
-<div id="livedemos"></div>
-<link rel="stylesheet" href="../css/styles.css" media="screen">
-<link rel="stylesheet" href="../css/widgets.css" media="screen">
+<p>They're generaly used in combination with a <code>RadioGroup</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nb">Radio</span> <span class="k">extends</span> <span class="nb">CheckBox</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Here some live instances:</p>
 
-<script type='text/javascript'
-        src='../depends/jquery-1.6.1.min.js'></script>
-<script type='text/javascript'
-        src='../depends/jquery.mousewheel.js'></script>
-<script type='text/javascript' src='../depends/signals.js'></script>
-<script type='text/javascript' src='../lib/widgets.js'></script>
+<div id='radio'></div>
 
 <script type='text/javascript'>
-var radio1 = new Radio();
-var radio2 = new Radio();
-var radio3 = new Radio();
+  var config = ({
+  container: "radio",
+  builder: {
+    title: "Radios",
+    cls: this["Radio"],
+    rows: 2,
+    cols: 3,
+    tableClass: "float dummy",
+    columnHeaders: function(opts) {
+      return ["Normal", "Readonly", "Disabled"][opts.col];
+    },
+    rowHeaders: function(opts) {
+      return ["Normal", "Checked"][opts.row];
+    },
+    cells: function(opts) {
+      var checked, states;
+      states = [null, "readonly", "disabled"];
+      checked = [null, "checked"];
+      if (checked[opts.row] != null) opts.widget.set(checked[opts.row], true);
+      if (states[opts.col] != null) return opts.widget.set(states[opts.col], true);
+    }
+  }
+});
 
-radio2.set( "readonly", true );
-radio2.set( "checked", true );
-radio3.set( "disabled", true );
-
-radio1.attach("#livedemos");
-radio2.attach("#livedemos");
-radio3.attach("#livedemos");
-</script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nb">Radio</span> <span class="k">extends</span> <span class="nb">CheckBox</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>The target for a <code>Radio</code> must be an input with the type <code>radio</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">checkTarget</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span>
+  var builder = new TableBuilder(config.builder);
+  $("#radio").append(builder.build());
+</script>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>The target for a <code>Radio</code> must be an input with the type <code>radio</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">checkTarget</span><span class="o">:</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span><span class="o">-&gt;</span>
     <span class="k">unless</span> <span class="py">@isInputWithType</span> <span class="nx">target</span><span class="p">,</span> <span class="s">&quot;radio&quot;</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span> <span class="s">&quot;Radio target must be an input with a radio type&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>The dummy for the radio is just a <code>&lt;span&gt;</code> element
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span> <span class="s">&quot;Radio target must be an input with a radio type&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>The dummy for the radio is just a <code>&lt;span&gt;</code> element
 with a <code>radio</code> class.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">createDummy</span><span class="o">:-&gt;</span>
-    <span class="nx">$</span> <span class="s">&quot;&lt;span class=&#39;radio&#39;&gt;&lt;/span&gt;&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Toggle is unidirectionnal. The only way to
+    <span class="nx">$</span> <span class="s">&quot;&lt;span class=&#39;radio&#39;&gt;&lt;/span&gt;&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>Toggle is unidirectionnal. The only way to
 uncheck a radio is by code.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">toggle</span><span class="o">:-&gt;</span>
     <span class="k">super</span><span class="p">()</span> <span class="k">unless</span> <span class="py">@get</span> <span class="s">&quot;checked&quot;</span>
 

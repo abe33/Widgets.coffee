@@ -1,7 +1,7 @@
-container:"checkbox"
+container:"radio"
 builder:
-  title:"CheckBoxes"
-  cls:this["CheckBox"]
+  title:"Radios"
+  cls:this["Radio"]
   rows:2
   cols:3
   tableClass:"float dummy"
@@ -12,4 +12,3 @@ builder:
     checked = [ null, "checked" ]
     opts.widget.set checked[ opts.row ], true if checked[ opts.row ]?
     opts.widget.set states[ opts.col ], true if states[ opts.col ]?
-

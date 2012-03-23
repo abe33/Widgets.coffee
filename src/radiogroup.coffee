@@ -1,34 +1,11 @@
 # The `RadioGroup` class handle a set of `Radio` widget.
 # Only one `Radio` can be checked at one time in a `RadioGroup`.
-#
-# Here a live instance :
-# <div id="livedemos"></div>
-# <link rel="stylesheet" href="../css/styles.css" media="screen">
-# <link rel="stylesheet" href="../css/widgets.css" media="screen">
-#
-# <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
-# <script type='text/javascript'
-#         src='../depends/jquery.mousewheel.js'></script>
-# <script type='text/javascript' src='../depends/signals.js'></script>
-# <script type='text/javascript' src='../lib/widgets.js'></script>
-#
-# <script type='text/javascript'>
-# var radio1 = new Radio();
-# var radio2 = new Radio();
-# var radio3 = new Radio();
-#
-# var group = new RadioGroup( radio1, radio2, radio3 );
-#
-# radio3.set( "checked", true );
-# radio3.set( "disabled", true );
-#
-# radio1.attach("#livedemos");
-# radio2.attach("#livedemos");
-# radio3.attach("#livedemos");
-# </script>
 class RadioGroup
+  # Here a live instance :
+  #
+  #= require radiogroup
 
-  constructor:( radios... )->
+  constructor:(radios...)->
     #### RadioGroup Signals
 
     # The `selectionChanged` signal is dispatched when the selection
@@ -51,7 +28,7 @@ class RadioGroup
 
   # Adds a `Radio` in this group unless this radio is already
   # registered.
-  add:( radio )->
+  add:(radio)->
     unless @contains radio
       @radios.push radio
 
@@ -64,17 +41,17 @@ class RadioGroup
       @selectedRadio = radio if radio.get "checked"
 
   # Removes a radio from this group.
-  remove:( radio )->
+  remove:(radio)->
     if @contains radio
-      @radios.splice @indexOf( radio ), 1
+      @radios.splice @indexOf(radio), 1
       radio.checkedChanged.remove @radioCheckedChanged, this
 
   # Returns `true` if the passed-in `radio` is registered in this group.
-  contains:( radio )->
+  contains:(radio)->
     radio in @radios
 
   # Returns the index of the `radio` in this group.
-  indexOf:( radio )->
+  indexOf:(radio)->
     return i for r, i in @radios when r is radio
     return -1
 
@@ -85,7 +62,7 @@ class RadioGroup
 
   # Set the passed-in `radio` as the selected radio.
   # The previously selected radio is then unchecked.
-  select:( radio )->
+  select:(radio)->
 
     unless radio is @selectedRadio
       # The `checkedSetProgrammatically` flag is set to `true`
@@ -125,7 +102,7 @@ class RadioGroup
   # If the source radio is checked, it became the new selected radio for
   # this group. Otherwise, if it was the selected radio, the `selectedRadio`
   # is set to `null`.
-  radioCheckedChanged:( radio, checked )->
+  radioCheckedChanged:(radio, checked)->
     unless @checkedSetProgrammatically
       if checked then @select radio
       else if radio is @selectedRadio then @selectedRadio = null

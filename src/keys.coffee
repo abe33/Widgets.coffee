@@ -1,5 +1,3 @@
-# <link rel="stylesheet" href="../css/styles.css" media="screen">
-#
 # This file contains the various classes and methods related
 # to key strokes.
 #
@@ -28,7 +26,7 @@ keystroke = (keyCode, modifiers)->
   #     (keystroke keys.a) is (keystroke.keys.a)
   #
   if "#{keyCode}-#{modifiers}" of KeyStroke.instances
-    KeyStroke.instances[ "#{keyCode}-#{modifiers}" ]
+    KeyStroke.instances["#{keyCode}-#{modifiers}"]
   else
     KeyStroke.instances["#{keyCode}-#{modifiers}"] = new KeyStroke keyCode,
                                                                    modifiers
@@ -50,9 +48,9 @@ class KeyStroke
     @modifiers  = modifiers
     # `ctrl` mofifier is stored in the first bit, `shift`
     # in the second and `alt` in the third
-    @ctrl       = ( modifiers & 0x01 ) is 1
-    @shift      = ( ( modifiers >> 1 ) & 0x01 ) is 1
-    @alt        = ( ( modifiers >> 2 ) & 0x01 ) is 1
+    @ctrl       = (modifiers & 0x01) is 1
+    @shift      = (( modifiers >> 1 ) & 0x01) is 1
+    @alt        = (( modifiers >> 2 ) & 0x01) is 1
 
   # Compare the passed-in key event with the current instance.
   match:(e)->

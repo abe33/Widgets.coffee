@@ -237,6 +237,34 @@ $( document ).ready ->
     assertThat target.children("option[selected]").text(), equalTo "foo"
     assertThat select.get("value"), equalTo "foo"
 
+  test "SingleSelect should accept a MenuModel as first argument
+        in the constructor", ->
+
+    select = new SingleSelect new MenuModel {
+      display:"Item 1", value:"value 1"
+    },{
+      display:"Item 2", value:"value 2"
+    }
+
+    assertThat select.model.size(), equalTo 2
+    assertThat select.get("value"), equalTo null
+
+  test "Changing the model should update the SingleSelect value", ->
+
+    select = new SingleSelect
+
+    model = new MenuModel {
+      display:"Item 1", value:"value 1"
+    },{
+      display:"Item 2", value:"value 2"
+    }
+
+    select.set "model", model
+
+    assertThat select.model is model
+    assertThat select.get("value"), equalTo "value 1"
+
+
   test "SingleSelect should provide a MenuList instance
       linked to the model", ->
 
@@ -248,6 +276,48 @@ $( document ).ready ->
 
     assertThat select.menuList, notNullValue()
     assertThat select.menuList.get("model") is select.model
+
+  test "Changing the model should change the model for
+        the inner MenuList", ->
+
+    select = new SingleSelect
+
+    model = new MenuModel {
+      display:"Item 1", value:"value 1"
+    },{
+      display:"Item 2", value:"value 2"
+    }
+
+    select.set "model", model
+    assertThat select.menuList.model is model
+
+  test "Changing the model should fill the action property
+        of items of the new model", ->
+
+    select = new SingleSelect
+
+    model = new MenuModel {
+      display:"Item 1", value:"value 1"
+    },{
+      display:"Item 2", value:"value 2"
+    }
+
+    select.set "model", model
+    assertThat select.model.items[0].action instanceof Function
+    assertThat select.model.items[1].action instanceof Function
+
+  test "Adding an item to the model should fill the action property
+        of the new item", ->
+
+    select = new SingleSelect new MenuModel {
+      display:"Item 1", value:"value 1"
+    },{
+      display:"Item 2", value:"value 2"
+    }
+
+    select.model.add display:"foo", value:"bar"
+
+    assertThat select.model.items[2].action instanceof Function
 
   test "Pressing the mouse on a SingleSelect should display its menuList", ->
 

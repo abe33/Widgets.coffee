@@ -1,4 +1,3 @@
-# <link rel="stylesheet" href="../css/styles.css" media="screen">
 #### Module
 #
 # Modules allow polymorphism through mixins.
@@ -8,7 +7,7 @@
 #
 #     Serializable=
 #       toString:-> ...
-#       fromString:( string )-> ...
+#       fromString:(string)-> ...
 #
 #     Cloneable=
 #       clone:-> ...
@@ -22,7 +21,7 @@ class Module
   #
   #       # rest of the class definition...
   #
-  @mixins:( mixins... )->
+  @mixins:(mixins...)->
     # Calling `super` inside a mixin method that overides
     # a inherited method will fail. To resolve it, a `@super`
     # method is provided on instances. And to avoid issues
@@ -57,7 +56,7 @@ class Module
     this
 
   # Returns a clone of the passed-in object `o`.
-  @copy:( o )->
+  @copy:(o)->
     r = {}
     r[i] = o[i] for i in o if o?
     r
@@ -89,7 +88,7 @@ class Module
 
   # Use `@super "methodName"` in a mixin's function to call the
   # super function of the specified method.
-  super:( method, args... )->
+  super:(method, args...)->
     @__superOf__[method]?[method]?.apply this, args
 
 @Module = Module

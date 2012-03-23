@@ -2,17 +2,22 @@
 
 # The following tasks are available:
 #
-#  * `install`: Installs the dependencies listed in the `Nemfile` through npm.
-#  * `docs`: Generates the documentation with `docco`.
-#  * `sass`: Generates the stylesheets with `sass`.
-#  * `lint`: Lint files with `coffeelint`.
-#  * `compile:<file-name>`: Compiles all the sources files listed in the
-#    corresponding `ymlc` file in `config/lib`. The output files are available
-#    in the `lib` folder. A minified version of the file is provided through
+#  * [`install`](#install): Installs the dependencies listed
+#    in the `Nemfile` through npm.
+#  * [`build`](#build): Builds the lib files, generates the documentation
+#    and compiles the stylesheets.
+#  * [`docs`](#docs): Generates the documentation with `docco`.
+#  * [`sass`](#sass): Generates the stylesheets with `sass`.
+#  * [`lint`](#lint): Lint files with `coffeelint`.
+#  * [`compile:<file-name>`](#compile): Compiles all the sources files
+#    listed in the corresponding `ymlc` file in `config/lib`. The output
+#    files are available in the `lib` folder. A minified version
+#    of the file is provided through
 #    `uglifyjs`.
-#  * `demo:<demo-name>`: Compiles and runs one of the demos available as `ymlc`
+#  * [`demo:<demo-name>`](#demo): Compiles and runs one of the demos
+#    available as `ymlc`
 #    files in the `config/demos` directory.
-#  * `test:<test-name>`: Compiles and runs the test for `<test-name>`,
+#  * [`test:<test-name>`](#test): Compiles and runs the test for `<test-name>`,
 #    `<test-name>` being the name of any `ymlc` file in the `config/test`
 #    folder (without dir path nor extensions).
 
@@ -44,7 +49,8 @@ class Queue
       # let the queue continue.
       @commands[ @iterator ] => @run callback
       @iterator += 1
-    else callback()
+    else callback?()
+
 
 #### Functions
 
@@ -54,7 +60,8 @@ cleanExtension=(o,i)-> o.replace /\..+$/, ""
 # Eats extra spaces in a string, used for long tasks description.
 eat=(s)-> s.replace /\s+/g, " "
 
-comment=(s)-> s.replace /^(.|$)/gm, "# $1"
+comment=(s)->
+  "# #{ s.replace /\n/gm, "\n# "}"
 
 # Returns `true` if the passed-in `path` exists.
 exist=(path)->
@@ -69,14 +76,14 @@ exist=(path)->
 loadConfig=(file, noEval, callback)->
   [ callback, noEval ] = [ noEval, callback ] if noEval instanceof Function
   coffee = spawn 'coffee', ['-p','-c','-b',file]
-  coffee.stderr.on 'data',( data )-> print data
-  coffee.stdout.on 'data',( data )->
-    callback? ( if noEval then data.toString() else eval data.toString() )
+  coffee.stderr.on 'data',(data)-> print data
+  coffee.stdout.on 'data',(data)->
+    callback? (if noEval then data.toString() else eval data.toString())
 
 loadConfigCommand=(file, noEval, configs)-> (callback)->
   loadConfig file, noEval, (config)->
     configs[cleanExtension file] = config
-    callback()
+    callback?()
 
 loadConfigs=(dir, noEval, callback)->
   configs = {}
@@ -94,12 +101,13 @@ loadTemplate=(file,callback)->
 loadTemplateCommand=(file,templates)-> (callback)->
   loadTemplate file, (template)->
     templates[cleanExtension file] = template
-    callback()
+    callback?()
 
 loadTemplates=(dir,callback)->
   templates = {}
   sources = fs.readdirSync dir
-  queue=new Queue (loadTemplateCommand("#{dir}/#{f}",templates) for f in sources)
+  queue=new Queue (
+    loadTemplateCommand("#{dir}/#{f}",templates) for f in sources)
   queue.run -> callback templates
 
 # Runs a command line program.
@@ -108,9 +116,9 @@ loadTemplates=(dir,callback)->
 #       console.log "command exited"
 run=(command, options, callback)->
   exe = spawn command, options
-  exe.stdout.on 'data', ( data )-> print data.toString()
-  exe.stderr.on 'data', ( data )-> print data.toString()
-  exe.on 'exit', ( status )-> callback?()
+  exe.stdout.on 'data', (data)-> print data.toString()
+  exe.stderr.on 'data', (data)-> print data.toString()
+  exe.on 'exit', (status)-> callback?()
 
 # Run a command line program available in the `node_modules` directory.
 bundleRun=(command, options, callback)->
@@ -119,7 +127,7 @@ bundleRun=(command, options, callback)->
 # Joins a bunch of source files to an `output` file.
 join=(sources, output, callback)->
   # The file extension is added to all source files.
-  files = ( "#{file}.coffee" for file in sources )
+  files = ("#{file}.coffee" for file in sources)
 
   # Compiles the main javascript output file.
   run 'coffee', ['--join', output, '--compile' ].concat(files), ->
@@ -144,7 +152,7 @@ ensureTmp=(options)->
 #### Test Task Generator
 
 # Files to be included for each tests.
-TestDependencies = [ "test/test-helpers" ]
+TEST_DEPENDENCIES = [ "test/test-helpers" ]
 
 # Defines a test tast for the `unit` configuration file.
 testTask=(unit)->
@@ -171,28 +179,32 @@ testTask=(unit)->
 
         # Compiles the code to be tested.
         join [].concat(config.source), lib, ->
-          console.log "#{unit} sources compiled" if opts.verbose
+          console.log "#{unit} sources compiled"
 
           # Compiles the tests.
-          join TestDependencies.concat( config.test ), test, ->
-            console.log "#{unit} tests compiled" if opts.verbose
+          join TEST_DEPENDENCIES.concat(config.test), test, ->
+            console.log "#{unit} tests compiled"
 
             # Launch the test runner.
             run 'gnome-open', [ ".tmp/test-#{unit}.html" ]
 
 #### Compilation Task Generator
 
+# Stores all the lib files compilation tasks for the `cake build` task.
+LIB_COMPILATION_TASKS=[]
+
 # Defines a compilation task that takes all the source files defined
 # in the specified configuration file and generates a javascript file
 # with the name of the configuration file.
 libTask=(unit)->
+  LIB_COMPILATION_TASKS.push "compile:#{unit}"
   task "compile:#{unit}", "Compiles the #{unit}.js file", (opts)->
     # Loads the configuration file.
     loadConfig "config/lib/#{unit}.ymlc", (config)->
       console.log "Compilation configuration: ", config if opts.verbose
       # Compiles the file.
       join [].concat(config.source), "lib/#{unit}.js", ->
-        console.log "#{unit} sources compiled" if opts.verbose
+        console.log "#{unit}.js compiled"
 
 #### Demo Task Generator
 
@@ -229,8 +241,9 @@ demoTask=(unit)->
           # Opens the file.
           run 'gnome-open', [ ".tmp/#{unit}.html" ]
 
-## Tasks Definitions
+## Tasks
 
+# <a name="install"></a>
 #### cake install
 
 # Installs all the dependencies listed in the `Nemfile`.
@@ -245,7 +258,29 @@ task 'install', 'Installs the dependencies defined in the Nemfile', (options)->
   # The produced source code is then executed by `coffee`.
   run 'coffee', [ '-e', source ]
 
+# <a name="build"></a>
+#### cake build
+
+task 'build', 'Invoke cake docs, sass and compile', ->
+  invoke 'docs'
+  invoke 'sass'
+  invoke 'compile'
+
+# <a name="docs"></a>
 #### cake docs
+
+# The following expression math rails like require
+# in documentation and extract the token to require.
+#
+# In fact, the token is the base name of a configuration
+# file in `config/docs/demos` that will be used to generate
+# a live demo within the documentation.
+REQUIRE_RE = ///^
+  \s*           # indentation
+  \#=\s*require # rails convention for require
+  \s+
+  ([^\s]+)      # the configuration name
+///gm
 
 # Defines a task that generates the documentation.
 task 'docs', 'Generate annotated source code with Docco', (options)->
@@ -268,7 +303,7 @@ task 'docs', 'Generate annotated source code with Docco', (options)->
 
             matches = []
             source = data.toString()
-            source = source.replace /^#=\s*require\s+([^\s]+)/gm,(match,req)->
+            source = source.replace REQUIRE_RE,(match,req)->
               tpl = templates["templates/#{config.builderTemplate}"]
               if tpl?
                 conf = configs["#{demosConfig}/#{req}"]
@@ -303,6 +338,7 @@ task 'docs', 'Generate annotated source code with Docco', (options)->
             run 'rm', [file] for file in files
             console.log "generated files cleaned" if options.verbose
 
+# <a name="sass"></a>
 #### cake sass
 
 # Defines a task that compile the sass stylesheets.
@@ -311,6 +347,7 @@ task 'sass', 'Compiles the widgets stylesheet', ->
     for file in config.source
       run 'sass', ["#{file}.sass:#{file}.css","--style","compressed" ]
 
+# <a name="lint"></a>
 #### cake lint
 
 # Generates a command function that lint the specified `file`.
@@ -326,8 +363,14 @@ task 'lint', 'Lint the widgets sources files', ->
       files.push if exist file then file else "#{file}.coffee"
 
     # Creates the `Queue` and process it.
-    queue = new Queue ( lint file for file in files )
+    queue = new Queue (lint file for file in files)
     queue.run()
+
+# <a name="compile"></a>
+#### cake compile
+
+task 'compile', 'Compiles all the javascript files from configs', ->
+  invoke libTask for libTask in LIB_COMPILATION_TASKS
 
 #### cake compile:config
 
@@ -335,12 +378,14 @@ task 'lint', 'Lint the widgets sources files', ->
 # as a compilation task.
 libTask file for file in fs.readdirSync('config/lib').map cleanExtension
 
+# <a name="demo"></a>
 #### cake demo:config
 
 # Each `ymlc` file in the `config/demos` folder will be available
 # as a demo task.
 demoTask file for file in fs.readdirSync('config/demos').map cleanExtension
 
+# <a name="test"></a>
 #### cake test:config
 
 # Each `ymlc` file in the `config/test` folder will be available

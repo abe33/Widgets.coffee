@@ -1,5 +1,3 @@
-# <link rel="stylesheet" href="../css/styles.css" media="screen">
-
 $.fn.extend
   # The jQuery `widgets` function performs a replacement
   # of the inputs, selects and textareas in the current
@@ -39,16 +37,16 @@ class WidgetPlugin
   # for the processor.
   # * `processor`: A function that takes a node as argument and that
   # should return a widget instance for the passed-in node.
-  register:( id, match, processor )->
+  register:(id, match, processor)->
     unless processor?
       throw new Error "The processor function can't be null in register"
 
-    @processors[ id ] = [ match, processor ]
+    @processors[id ] = [ match, processor]
 
   # Use the `registerWidgetFor` method to register a Widget class
   # with a match. The registered processor is a simple function that
   # instanciate a widget with the target as argument.
-  registerWidgetFor:( id, match, widget )->
+  registerWidgetFor:(id, match, widget)->
     unless widget?
       throw new Error "The widget class can't be null
                in registerWidgetFor"
@@ -64,9 +62,9 @@ class WidgetPlugin
 
   # The `process` method receive a query set and loop through the
   # elements.
-  process:( queryset )->
+  process:(queryset)->
     widgets = []
-    queryset.each ( i, o )=>
+    queryset.each (i, o)=>
       target = $ o
 
       # HTML elements that have already been processed once
@@ -80,7 +78,7 @@ class WidgetPlugin
 
       # For a given element, each processor are tested
       # against the element.
-      for id, [ match, processor ] of @processors
+      for id, [match, processor] of @processors
 
         # The processor match is tested against the
         # node according to the match type.
@@ -127,18 +125,18 @@ class WidgetPlugin
 
   # Returns `true` if the passed-in argument is a `HTMLElement`
   # with its `nodeName` equal to `tag`.
-  isTag:( o, tag )->
-    @isElement( o ) and o?.nodeName?.toLowerCase() is tag
+  isTag:(o, tag)->
+    @isElement(o) and o?.nodeName?.toLowerCase() is tag
 
   # Returns `true` if the passed-in argument is an `input` node
   # with a type attribute contains in `types`.
-  isInputWithType:( o, types... )->
-    @isTag( o, "input" ) and $( o ).attr("type") in types
+  isInputWithType:(o, types...)->
+    @isTag(o, "input" ) and $( o).attr("type") in types
 
   # Returns a function that will match an element with the
   # `isInputWithType` function.
-  inputWithType:( types... )->
-    ( o )-> @isInputWithType.apply this, [ o ].concat types
+  inputWithType:(types...)->
+    (o)-> @isInputWithType.apply this, [o].concat types
 
 #### Plugin Setup
 
@@ -168,7 +166,7 @@ $.widgetPlugin.registerWidgetFor "button",
                                   Button
 
 $.widgetPlugin.registerWidgetFor "range",
-                                  $.widgetPlugin.inputWithType( "range" ),
+                                  $.widgetPlugin.inputWithType("range"),
                                   Slider
 
 $.widgetPlugin.registerWidgetFor "number",
@@ -214,7 +212,7 @@ $.widgetPlugin.registerWidgetFor "datetime-local",
 
 # The radio input are a special case since each radio that have the same name
 # are part of a group.
-radioProcessor=( o )->
+radioProcessor=(o)->
   widget = new Radio o
   name = widget.get "name"
 
@@ -222,9 +220,9 @@ radioProcessor=( o )->
   # the radios name is created and filled with the `Radio` widgets.
   if name?
     @radiogroups = {} unless @radiogroups?
-    @radiogroups[ name ] = new RadioGroup unless @radiogroups[ name ]?
+    @radiogroups[name ] = new RadioGroup unless @radiogroups[ name]?
 
-    group = @radiogroups[ name ]
+    group = @radiogroups[name]
     group.add widget
 
   widget

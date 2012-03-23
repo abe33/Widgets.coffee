@@ -1,5 +1,3 @@
-# <link rel="stylesheet" href="../css/styles.css" media="screen">
-#
 # The `NumericWidget` class is a base class for number manipulation widget.
 # Both the `Slider` and `Stepper` classes extends the `NumericWidget` class.
 class NumericWidget extends Widget
@@ -39,9 +37,9 @@ class NumericWidget extends Widget
 
   #### Value Manipulation
 
-  snapToStep:( value )->
+  snapToStep:(value)->
     step = @get "step"
-    if step? then value - ( value % step ) else value
+    if step? then value - (value % step) else value
 
   # Increment the value of the amount of the `step` property.
   increment:->
@@ -62,14 +60,14 @@ class NumericWidget extends Widget
   # You should only use the data from the arguments, since
   # the `updateDummy` method can be called before the
   # widget's properties change.
-  updateDummy:( value, min, max, step )->
+  updateDummy:(value, min, max, step)->
 
   #### Properties Accessors
 
   # When setting the `value` property, the passed-in
   # new value is first cleaned to fit in the widget's
   # range of values.
-  set_value:( property, value )->
+  set_value:(property, value)->
     min = @get "min"
     max = @get "max"
     step = @get "step"
@@ -82,13 +80,13 @@ class NumericWidget extends Widget
   #
   # The value is adjusted to the `min` bound if it drop below with
   # the new `min` value.
-  set_min:( property, value )->
+  set_min:(property, value)->
     max = @get "max"
     if value >= max
       return @get property
     else
       value = @snapToStep value
-      @[ property ] = value
+      @[property] = value
       @valueToAttribute property, value
       @set "value", @fitToRange @get( "value"), value, max
       return value
@@ -97,24 +95,24 @@ class NumericWidget extends Widget
   #
   # The value is adjusted to the `max` bound if it climb above with
   # the new `max` value.
-  set_max:( property, value )->
+  set_max:(property, value)->
     min = @get "min"
     if value <= min
       return @get property
     else
       value = @snapToStep value
-      @[ property ] = value
+      @[property] = value
       @valueToAttribute property, value
       @set "value", @fitToRange @get( "value"), min, value
       return value
 
   # Changing the `step` property can alter the `value` property
   # if the current value doesn't snap to the new step grid.
-  set_step:( property, value )->
+  set_step:(property, value)->
     value = null if isNaN value
-    [ min, max ] = [ @get "min", @get "max" ]
+    [min, max ] = [ @get "min", @get "max"]
     @valueToAttribute property, value
-    @[ property ] = value
+    @[property] = value
     @set "value", @fitToRange @get( "value"), min, max
     return value
 

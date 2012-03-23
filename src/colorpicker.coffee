@@ -19,9 +19,9 @@
 
 # Converts a color defined with its red, green and blue channels into
 # an hexadecimal string.
-rgb2hex = ( r, g, b )->
+rgb2hex = (r, g, b)->
   rnd = Math.round
-  value = ( ( rnd( r ) << 16 ) + ( rnd( g ) << 8 ) + rnd( b ) ).toString 16
+  value = (( rnd( r ) << 16 ) + ( rnd( g ) << 8 ) + rnd( b )).toString 16
 
   # The value is filled with `0` to match a length of 6.
   value = "0#{value}" while value.length < 6
@@ -30,19 +30,19 @@ rgb2hex = ( r, g, b )->
 
 # Converts an hexadecimal string such as `#abcdef` into an array
 # with the red, green and blue channels values.
-hex2rgb = ( hex )->
+hex2rgb = (hex)->
   rgb = hex.substr 1
   color = parseInt rgb, 16
 
-  r = ( color >> 16 ) & 0xff
-  g = ( color >> 8 ) & 0xff
+  r = (color >> 16) & 0xff
+  g = (color >> 8) & 0xff
   b = color & 0xff
 
-  [ r, g, b ]
+  [r, g, b]
 
 # Converts a color in the `rgb` color space in an
 # array with the color in the `hsv` color space.
-rgb2hsv = ( r, g, b )->
+rgb2hsv = (r, g, b)->
 
   r = r / 255
   g = g / 255
@@ -65,9 +65,9 @@ rgb2hsv = ( r, g, b )->
     # The lower the delta is in comparison with the value
     # the higher the saturation will be.
     s = delta / v
-    deltaR = ( ( ( v - r ) / 6 ) + ( delta / 2 ) ) / delta
-    deltaG = ( ( ( v - g ) / 6 ) + ( delta / 2 ) ) / delta
-    deltaB = ( ( ( v - b ) / 6 ) + ( delta / 2 ) ) / delta
+    deltaR = (( ( v - r ) / 6 ) + ( delta / 2 )) / delta
+    deltaG = (( ( v - g ) / 6 ) + ( delta / 2 )) / delta
+    deltaB = (( ( v - b ) / 6 ) + ( delta / 2 )) / delta
 
     # In a range from `0` to `1`, full red is at `0` and `1`,
     # full green is at `1/3` and full blue at `2/3`.
@@ -78,9 +78,9 @@ rgb2hsv = ( r, g, b )->
     if r is v
       h = deltaB - deltaG
     else if g is v
-      h = ( 1 / 3 ) + deltaR - deltaB
+      h = (1 / 3) + deltaR - deltaB
     else if b == v
-      h = ( 2 / 3 ) + deltaG - deltaR
+      h = (2 / 3) + deltaG - deltaR
 
     # Hue is then reduced to fit in the `0-1` range.
     h += 1 if h < 0
@@ -88,11 +88,11 @@ rgb2hsv = ( r, g, b )->
 
   # And, finally, hue, saturation and value are normalized
   # to their corresponding range.
-  [ h * 360, s * 100, v * 100 ]
+  [h * 360, s * 100, v * 100]
 
 # Converts a color defined in the `hsv` color space into
 # an array containing the color in the `rgb` color space.
-hsv2rgb = ( h, s, v )->
+hsv2rgb = (h, s, v)->
   # Hue is reduced to the `0-6` range when both saturation
   # and value are reduced to the `0-1`
   h = h / 60
@@ -103,7 +103,7 @@ hsv2rgb = ( h, s, v )->
   # Short circuit when saturation is `0`, all other channels
   # will end up to `0` as well.
   if s is 0
-    return [ rnd v * 255, rnd v * 255, rnd v * 255 ]
+    return [rnd v * 255, rnd v * 255, rnd v * 255]
   else
     # By rounding the hue we obtain the dominant
     # color such as :
@@ -117,39 +117,39 @@ hsv2rgb = ( h, s, v )->
     dominant = Math.floor h
 
     comp1 = v * ( 1 - s)
-    comp2 = v * ( 1 - s * ( h - dominant ) )
-    comp3 = v * ( 1 - s * ( 1 - ( h - dominant ) ) )
+    comp2 = v * (1 - s * ( h - dominant ))
+    comp3 = v * (1 - s * ( 1 - ( h - dominant ) ))
 
     # According to the dominant color we affect
     # the values to each component.
     switch dominant
-      when 0 then [ r, g, b ] = [ v, comp3, comp1 ]
-      when 1 then [ r, g, b ] = [ comp2, v, comp1 ]
-      when 2 then [ r, g, b ] = [ comp1, v, comp3 ]
-      when 3 then [ r, g, b ] = [ comp1, comp2, v ]
-      when 4 then [ r, g, b ] = [ comp3, comp1, v ]
-      else        [ r, g, b ] = [ v, comp1, comp2 ]
+      when 0 then [r, g, b ] = [ v, comp3, comp1]
+      when 1 then [r, g, b ] = [ comp2, v, comp1]
+      when 2 then [r, g, b ] = [ comp1, v, comp3]
+      when 3 then [r, g, b ] = [ comp1, comp2, v]
+      when 4 then [r, g, b ] = [ comp3, comp1, v]
+      else        [r, g, b ] = [ v, comp1, comp2]
 
     # And each component is normalized to fit in the
     # `0-255`.
-    return [ r * 255, g * 255, b * 255 ]
+    return [r * 255, g * 255, b * 255]
 
 # Converts a color in a string into an object with
 # the three channels values as integer between 0 and 255.
-colorObjectFromValue = ( value )->
-  [ r, g, b ] = hex2rgb value
+colorObjectFromValue = (value)->
+  [r, g, b] = hex2rgb value
 
   red:r, green:g, blue:b
 
 # Converts an object with `red`, `green` and `blue` properties
 # to a string with the html representation of the color.
-colorObjectToValue = ( rgb )->
+colorObjectToValue = (rgb)->
   rgb2hex rgb.red, rgb.green, rgb.blue
 
 #### Color Validations
 
 # Validates that the passed-in string is a valid hexadecimal color code.
-isValidValue = ( value )->
+isValidValue = (value)->
   re = /// ^       # nothing allowed before
     \#             # starts with a diese
     [0-9a-fA-F]{6} # must have 6 chars in 0123456789abcdefABCDEF
@@ -158,36 +158,36 @@ isValidValue = ( value )->
   re.test value
 
 # Validates that the passed-in argument is a valid number.
-isValidNumber = ( value )->
-  value? and not isNaN( value )
+isValidNumber = (value)->
+  value? and not isNaN(value)
 
 # Validates that the passed-in argument is a valid hue.
 isValidHue = (value)->
-  ( isValidNumber value ) and 0 <= value <= 360
+  (isValidNumber value) and 0 <= value <= 360
 
 # Validates that the passed-in argument is a valid percentage.
 isValidPercentage = (value)->
-  ( isValidNumber value ) and 0 <= value <= 100
+  (isValidNumber value) and 0 <= value <= 100
 
 # Validates that the passed-in argument is a valid channel value.
-isValidChannel = ( value )->
-  ( isValidNumber value ) and 0 <= value <= 255
+isValidChannel = (value)->
+  (isValidNumber value) and 0 <= value <= 255
 
 # Validates that the passed-in color object is valid.
-isValidColor = ( value )->
+isValidColor = (value)->
   value?                         and
-  ( isValidChannel value.red )   and
-  ( isValidChannel value.green ) and
-  ( isValidChannel value.blue )
+  (isValidChannel value.red)   and
+  (isValidChannel value.green) and
+  (isValidChannel value.blue)
 
 # Validates that the passed-in red green and blue channels form a valid color.
-isValidRGB = ( r, g, b )->
-  ( isValidChannel r ) and ( isValidChannel g ) and ( isValidChannel b )
+isValidRGB = (r, g, b)->
+  (isValidChannel r ) and ( isValidChannel g ) and ( isValidChannel b)
 
 # Validates that the passed-in hue, saturation and value channels
 # form a valid color.
-isValidHSV = ( h, s, v )->
-  ( isValidHue h ) and ( isValidPercentage s ) and ( isValidPercentage v )
+isValidHSV = (h, s, v)->
+  (isValidHue h ) and ( isValidPercentage s ) and ( isValidPercentage v)
 
 # <a name='colorinput'></a>
 ## ColorInput
@@ -208,12 +208,12 @@ isValidHSV = ( h, s, v )->
 # var picker2 = new ColorInput()
 # var picker3 = new ColorInput()
 #
-# picker1.set( "value", "#cbdc1b" )
-# picker2.set( "value", "#66ff99" )
-# picker3.set( "value", "#6699ff" )
+# picker1.set("value", "#cbdc1b")
+# picker2.set("value", "#66ff99")
+# picker3.set("value", "#6699ff")
 #
-# picker2.set( "readonly", true )
-# picker3.set( "disabled", true )
+# picker2.set("readonly", true)
+# picker3.set("disabled", true)
 #
 # picker1.attach("#livedemos")
 # picker2.attach("#livedemos")
@@ -221,7 +221,7 @@ isValidHSV = ( h, s, v )->
 # </script>
 class ColorInput extends Widget
 
-  constructor:( target )->
+  constructor:(target)->
     super target
 
     #### ColorInput Signals
@@ -267,7 +267,7 @@ class ColorInput extends Widget
 
   # Color inputs only allow input with a `color` type
   # as target.
-  checkTarget:( target )->
+  checkTarget:(target)->
     unless @isInputWithType target, "color"
       throw new Error "ColorInput's target should be a color input"
 
@@ -282,7 +282,7 @@ class ColorInput extends Widget
 
   # The `ColorInput` widget automatically update the color preview
   # through the `style` attribute of the dummy.
-  updateDummy:( value )->
+  updateDummy:(value)->
     if @hasDummy
       colorPreview = @dummy.children ".color"
       { red:r,green:g,blue:b } = @get "color"
@@ -310,7 +310,7 @@ class ColorInput extends Widget
   #     blue:12
   #
   # And modify the current widget's value with the values it contains.
-  set_color:( property, value )->
+  set_color:(property, value)->
 
     # If the passed-in object isn't valid the value
     # is keep unchanged.
@@ -320,10 +320,10 @@ class ColorInput extends Widget
 
     # The value is then changed.
     @set "value", "##{rgb}"
-    @[ property ] = value
+    @[property] = value
 
   # Sets the value for this widget.
-  set_value:( property, value )->
+  set_value:(property, value)->
     # If the passed-in value isn't a valid color the
     # widget's value is keep unchanged
     return @get "value" unless isValidValue value
@@ -363,13 +363,13 @@ class ColorInput extends Widget
 #
 # gpicker2.lockX()
 # gpicker4.lockX()
-# gpicker1.set( "value", [.2,.5] )
-# gpicker2.set( "value", [0,.6] )
-# gpicker3.set( "value", [.5,.8] )
-# gpicker4.set( "value", [.7,.2] )
+# gpicker1.set("value", [.2,.5])
+# gpicker2.set("value", [0,.6])
+# gpicker3.set("value", [.5,.8])
+# gpicker4.set("value", [.7,.2])
 #
-# gpicker3.set( "readonly", true )
-# gpicker4.set( "disabled", true )
+# gpicker3.set("readonly", true)
+# gpicker4.set("disabled", true)
 #
 # gpicker1.attach("#livedemos2")
 # gpicker2.attach("#livedemos2")
@@ -420,7 +420,7 @@ class SquarePicker extends Widget
 
   # Updates the widget according to the passerd-in
   # `x` and `y` values.
-  updateDummy:( x, y )->
+  updateDummy:(x, y)->
     cursor = @dummy.children(".cursor")
 
     w = @dummy.width()
@@ -429,17 +429,17 @@ class SquarePicker extends Widget
     cw = cursor.width()
     ch = cursor.height()
 
-    [ xmin, xmax ] = @get "rangeX"
-    [ ymin, ymax ] = @get "rangeY"
+    [xmin, xmax] = @get "rangeX"
+    [ymin, ymax] = @get "rangeY"
 
     # The values are normalized in the range 0-1
-    rx = ( x - xmin ) / ( xmax - xmin )
-    ry = ( y - ymin ) / ( ymax - ymin )
+    rx = (x - xmin ) / ( xmax - xmin)
+    ry = (y - ymin ) / ( ymax - ymin)
 
     # The cursor is then centered on the position
     # within the widget.
-    left = Math.floor rx * w - ( cw / 2 )
-    top = Math.floor ry * h - ( ch / 2 )
+    left = Math.floor rx * w - (cw / 2)
+    top = Math.floor ry * h - (ch / 2)
 
     cursor.css "left", "#{left}px"
     cursor.css "top", "#{top}px"
@@ -447,27 +447,27 @@ class SquarePicker extends Widget
   #### Properties Accessors
 
   # Sets the value of the horizontal range.
-  set_rangeX:( property, value )->
+  set_rangeX:(property, value)->
     unless @isValidRange value then return @get property
-    @[ property ] = value
+    @[property] = value
 
   # Sets the value of the vertical range.
-  set_rangeY:( property, value )->
+  set_rangeY:(property, value)->
     unless @isValidRange value then return @get property
-    @[ property ] = value
+    @[property] = value
 
   # Sets the value for this widget.
   # The value is an array containing the two values
   # the `x` and `y` axis respectively.
-  set_value:( property, value )->
+  set_value:(property, value)->
 
     # Invalid values, or values outside of the ranges
     # are ignored.
     unless value? and
          typeof value is "object" and
          value.length is 2 and
-         @isValid( value[0], "rangeX" ) and
-         @isValid( value[1], "rangeY" )
+         @isValid(value[0], "rangeX") and
+         @isValid(value[1], "rangeY")
       return @get "value"
 
     v = @get("value")
@@ -480,18 +480,18 @@ class SquarePicker extends Widget
     # Updates the dummy with the final values.
     @updateDummy x, y
 
-    super property, [ x, y ]
+    super property, [x, y]
 
   # The `handlePropertyChange` is overriden to catch
   # changes done on `rangeX` and `rangeY` in order
   # to adjust the value if needed.
-  handlePropertyChange:( property, value )->
+  handlePropertyChange:(property, value)->
     super property, value
 
     # Match that the call concern either `rangeX` or `rangeY`.
-    if property in [ "rangeX", "rangeY" ]
-      [ x, y ] = @get "value"
-      [ min, max ] = @get property
+    if property in ["rangeX", "rangeY"]
+      [x, y] = @get "value"
+      [min, max] = @get property
 
       # Collides the corresponding axis agaisnt the range.
       switch property
@@ -507,25 +507,25 @@ class SquarePicker extends Widget
             y = min
 
       # Updates the value.
-      @set "value", [ x, y ]
+      @set "value", [x, y]
 
   #### Validations
 
   # Validates that the passed-in `value` match the passed-in `range`.
-  isValid:( value, range )->
-    [ min, max ] = @get range
-    value? and not isNaN( value ) and min <= value <= max
+  isValid:(value, range)->
+    [min, max] = @get range
+    value? and not isNaN(value) and min <= value <= max
 
   # Validates that the passed-in `range` is a valid range.
-  isValidRange:( value )->
+  isValidRange:(value)->
     # A range takes the form of an array with two values,
     # the `min` and the `max` bounds.
     unless value? then return false
-    [ min, max ] = value
+    [min, max] = value
 
     # A range is valid when its two bounds are numbers and
     # that the `min` value is lower than the `max` value.
-    min? and max? and not isNaN( min ) and not isNaN( max ) and min < max
+    min? and max? and not isNaN(min ) and not isNaN( max) and min < max
 
   #### Cursor Dragging
   # Pressing the mouse over the widget starts a drag gesture.
@@ -572,14 +572,14 @@ class SquarePicker extends Widget
     y = 0 if y < 0
     y = h if y > h
 
-    [ xmin, xmax ] = @get "rangeX"
-    [ ymin, ymax ] = @get "rangeY"
+    [xmin, xmax] = @get "rangeX"
+    [ymin, ymax] = @get "rangeY"
 
     # And mapped according to the two ranges of the widget.
-    vx = xmin + ( x / w ) * xmax
-    vy = ymin + ( y / h ) * ymax
+    vx = xmin + (x / w) * xmax
+    vy = ymin + (y / h) * ymax
 
-    @set "value", [ vx, vy ]
+    @set "value", [vx, vy]
 
 # <a name="colorpicker"></a>
 ## ColorPicker
@@ -591,7 +591,7 @@ class SquarePicker extends Widget
 # <div id="livedemos3"></div>
 # <script type="text/javascript">
 # var dialog = new ColorPicker();
-# dialog.set( "value", "#abcdef" );
+# dialog.set("value", "#abcdef");
 # dialog.addClasses("dummy");
 #
 # dialog.attach("#livedemos3");
@@ -645,7 +645,7 @@ class ColorPicker extends Widget
     @createDummyChildren()
 
     # The default mode is the [HSV](#HSV) mode.
-    @set "mode", @editModes[ 3 ]
+    @set "mode", @editModes[3]
 
   #### Dummy Management
 
@@ -704,7 +704,7 @@ class ColorPicker extends Widget
 
   # Creates a `TextInput` with a maximum length of `maxlength`
   # and add the `cls` class to the input's dummy.
-  newInput:( cls, maxlength )->
+  newInput:(cls, maxlength)->
     input = new TextInput
     input.addClasses cls
     input.set "maxlength", maxlength
@@ -712,14 +712,14 @@ class ColorPicker extends Widget
     # The `ColorPicker` listen to all the children
     # `TextInput`s. The class added to the input is passed
     # to the listener to differenciate each input.
-    input.valueChanged.add ( w, v )=>
+    input.valueChanged.add (w, v)=>
       @inputValueChanged w, v, cls
       true
 
     input
   # Creates a `Radio` with the specified class. Optionally
   # the checked property of the radio can be set to `true`.
-  newRadio:( cls, checked = false )->
+  newRadio:(cls, checked = false)->
     radio = new Radio
     radio.addClasses cls
     radio.set "checked", checked
@@ -790,10 +790,10 @@ class ColorPicker extends Widget
     @dummy.children(".newColor").attr "style", "background: ##{value};"
 
   # Updates the value of the specified input.
-  updateInput:( input, value )->
+  updateInput:(input, value)->
     input.set "value", value
 
-  setupDialog:( colorinput )->
+  setupDialog:(colorinput)->
     # The original value is stored for allow a later reset.
     @originalValue = value = @caller.get "value"
 
@@ -829,19 +829,19 @@ class ColorPicker extends Widget
   #### Properties Accessors
 
   # Changes the color edit mode for this dialog.
-  set_mode:( property, value )->
-    oldMode = @[ property ]
+  set_mode:(property, value)->
+    oldMode = @[property]
 
     oldMode.dispose() if oldMode?
     if value?
       value.init this
       value.update @model
 
-    @[ property ] = value
+    @[property] = value
 
   # Changing the widget's value using the `value` setter
   # will feed the model with completely new datas from the passed-in color.
-  set_value:( property, value )->
+  set_value:(property, value)->
     return @get "value" unless isValidValue value
 
     @fromHex value
@@ -851,7 +851,7 @@ class ColorPicker extends Widget
 
   # Sets the widget's model with an hexadecimal color.
   # The `#` prefix is optional.
-  fromHex:( hex )->
+  fromHex:(hex)->
 
     v = if hex.indexOf("#") is -1 then "##{hex}" else hex
 
@@ -860,27 +860,27 @@ class ColorPicker extends Widget
       @fromRGB r, g, b
 
   # Sets the widget's model with the three components of a `rgb` color.
-  fromRGB:( r, g, b )->
+  fromRGB:(r, g, b)->
 
     r = parseFloat r
     g = parseFloat g
     b = parseFloat b
 
     if isValidRGB r, g, b
-      [ h, s, v ] = rgb2hsv r, g, b
+      [h, s, v] = rgb2hsv r, g, b
       @model = r:r, g:g, b:b, h:h, s:s, v:v
 
     @invalidate()
 
   # Sets the widget's model with the three components of a `hsv` color.
-  fromHSV:( h, s, v )->
+  fromHSV:(h, s, v)->
 
     h = parseFloat h
     s = parseFloat s
     v = parseFloat v
 
     if isValidHSV h, s, v
-      [ r, g, b ] = hsv2rgb h, s, v
+      [r, g, b] = hsv2rgb h, s, v
       @model = r:r, g:g, b:b, h:h, s:s, v:v
 
     @invalidate()
@@ -889,17 +889,17 @@ class ColorPicker extends Widget
 
   # Catches the change made to the `RadioGroup` selection
   # and affect the corresponding edit mode.
-  modeChanged:( widget, oldSel, newSel )->
+  modeChanged:(widget, oldSel, newSel)->
     switch newSel
-      when @redMode        then @set "mode", @editModes[ 0 ]
-      when @greenMode      then @set "mode", @editModes[ 1 ]
-      when @blueMode       then @set "mode", @editModes[ 2 ]
-      when @hueMode        then @set "mode", @editModes[ 3 ]
-      when @saturationMode then @set "mode", @editModes[ 4 ]
-      when @valueMode      then @set "mode", @editModes[ 5 ]
+      when @redMode        then @set "mode", @editModes[0]
+      when @greenMode      then @set "mode", @editModes[1]
+      when @blueMode       then @set "mode", @editModes[2]
+      when @hueMode        then @set "mode", @editModes[3]
+      when @saturationMode then @set "mode", @editModes[4]
+      when @valueMode      then @set "mode", @editModes[5]
 
   # Receives the `valueChanged` signals from the children inputs.
-  inputValueChanged:( widget, value, component )->
+  inputValueChanged:(widget, value, component)->
     # But if the lock is activated the function will not proceed.
     unless @inputValueSetProgrammatically
 
@@ -926,7 +926,7 @@ class ColorPicker extends Widget
 # by each mode.
 class AbstractMode
   # Registers the dialog that own the color mode.
-  init:( dialog )->
+  init:(dialog)->
     @dialog = dialog
     @valuesSetProgrammatically = false
 
@@ -941,7 +941,7 @@ class AbstractMode
 
   # Initialize the setup for the two `SquarePicker` owns
   # by the `ColorPicker`.
-  initPickers:( a, b, c, r, s )->
+  initPickers:(a, b, c, r, s)->
     # The `a`, `b` and `c` arguments are the three ranges for the
     # axis of the `SquarePicker`.
     @dialog.squarePicker.set
@@ -967,7 +967,7 @@ class AbstractMode
 # vertical ramp edit the `hue` component and the square
 # picker edit the `saturation` and `value`.
 class HSVMode extends AbstractMode
-  init:( dialog )->
+  init:(dialog)->
     super dialog
 
     @initPickers [0,100],
@@ -980,40 +980,40 @@ class HSVMode extends AbstractMode
             <span class='layer black-vertical-ramp'></span>
            </span>"
 
-  update:( model )->
+  update:(model)->
     if model?
       { h, s, v } = model
       [r,g,b] = hsv2rgb h, 100, 100
 
       @valuesSetProgrammatically = true
 
-      @dialog.squarePicker.set "value", [ s, 100-v ]
-      @dialog.rangePicker.set "value", [ 0, 360-h ]
+      @dialog.squarePicker.set "value", [s, 100-v]
+      @dialog.rangePicker.set "value", [0, 360-h]
 
       # The `HSV` mode change the background of the lowest
       # additional span with the current hue at full saturation
       # and value.
       value = rgb2hex r,g,b
-      @dialog.squarePicker.dummy.find( ".hue-color" )
+      @dialog.squarePicker.dummy.find(".hue-color")
                     .attr "style", "background: ##{value};"
 
       @valuesSetProgrammatically = false
 
-  updateDialog:( h, s, v )->
+  updateDialog:(h, s, v)->
     @valuesSetProgrammatically = true
     @dialog.fromHSV 360-h, s, 100-v
     @valuesSetProgrammatically = false
 
-  squareChanged:( widget, value )->
+  squareChanged:(widget, value)->
     unless @valuesSetProgrammatically
-      [ s, v ] = value
+      [s, v] = value
       h = @dialog.rangePicker.get("value")[1]
 
       @updateDialog h, s, v
 
-  rangeChanged:( widget, value )->
+  rangeChanged:(widget, value)->
     unless @valuesSetProgrammatically
-      [ s, v ] = @dialog.squarePicker.get "value"
+      [s, v] = @dialog.squarePicker.get "value"
       h = value[1]
 
       @updateDialog h, s, v
@@ -1038,35 +1038,35 @@ class SHVMode extends AbstractMode
             <span class='layer black-vertical-ramp'></span>
             </span>"
 
-  update:( model )->
+  update:(model)->
     { h, s, v } = model
-    opacity = 1-( s / 100 )
+    opacity = 1-(s / 100)
 
     @valuesSetProgrammatically = true
 
-    @dialog.squarePicker.set "value", [ 360-h, 100-v ]
-    @dialog.rangePicker.set "value", [ 0, 100-s ]
+    @dialog.squarePicker.set "value", [360-h, 100-v]
+    @dialog.rangePicker.set "value", [0, 100-s]
 
     @valuesSetProgrammatically = false
 
-    @dialog.squarePicker.dummy.find( ".white-plain" )
+    @dialog.squarePicker.dummy.find(".white-plain")
                   .attr "style", "opacity: #{opacity};"
 
-  updateDialog:( h, s, v )->
+  updateDialog:(h, s, v)->
     @valuesSetProgrammatically = true
     @dialog.fromHSV 360-h, 100-s, 100-v
     @valuesSetProgrammatically = false
 
-  squareChanged:( widget, value )->
+  squareChanged:(widget, value)->
     unless @valuesSetProgrammatically
-      [ h, v ] = value
+      [h, v] = value
       s = @dialog.rangePicker.get("value")[1]
 
       @updateDialog h, s, v
 
-  rangeChanged:( widget, value )->
+  rangeChanged:(widget, value)->
     unless @valuesSetProgrammatically
-      [ h, v ] = @dialog.squarePicker.get "value"
+      [h, v] = @dialog.squarePicker.get "value"
       s = value[1]
 
       @updateDialog h, s, v
@@ -1091,35 +1091,35 @@ class VHSMode extends AbstractMode
             <span class='layer black-plain'></span>
             </span>"
 
-  update:( model )->
+  update:(model)->
     { h, s, v } = model
-    opacity = 1-( v / 100 )
+    opacity = 1-(v / 100)
 
     @valuesSetProgrammatically = true
 
-    @dialog.squarePicker.set "value", [ 360-h, 100-s ]
-    @dialog.rangePicker.set "value", [ 0, 100-v ]
+    @dialog.squarePicker.set "value", [360-h, 100-s]
+    @dialog.rangePicker.set "value", [0, 100-v]
 
     @valuesSetProgrammatically = false
 
-    @dialog.squarePicker.dummy.find( ".black-plain" )
+    @dialog.squarePicker.dummy.find(".black-plain")
                   .attr "style", "opacity: #{opacity};"
 
-  updateDialog:( h, s, v )->
+  updateDialog:(h, s, v)->
     @valuesSetProgrammatically = true
     @dialog.fromHSV 360-h, 100-s, 100-v
     @valuesSetProgrammatically = false
 
-  squareChanged:( widget, value )->
+  squareChanged:(widget, value)->
     unless @valuesSetProgrammatically
-      [ h, s ] = value
+      [h, s] = value
       v = @dialog.rangePicker.get("value")[1]
 
       @updateDialog h, s, v
 
-  rangeChanged:( widget, value )->
+  rangeChanged:(widget, value)->
     unless @valuesSetProgrammatically
-      [ h, s ] = @dialog.squarePicker.get "value"
+      [h, s] = @dialog.squarePicker.get "value"
       v = value[1]
 
       @updateDialog h, s, v
@@ -1143,35 +1143,35 @@ class RGBMode extends AbstractMode
             <span class='layer rgb-up'></span>
             </span>"
 
-  update:( model )->
+  update:(model)->
     { r, g, b } = model
     opacity = r / 255
 
     @valuesSetProgrammatically = true
 
-    @dialog.squarePicker.set "value", [ b, 255-g ]
-    @dialog.rangePicker.set "value", [ 0, 255-r ]
+    @dialog.squarePicker.set "value", [b, 255-g]
+    @dialog.rangePicker.set "value", [0, 255-r]
 
     @valuesSetProgrammatically = false
 
-    @dialog.squarePicker.dummy.find( ".rgb-up" )
+    @dialog.squarePicker.dummy.find(".rgb-up")
                   .attr "style", "opacity: #{opacity};"
 
-  updateDialog:( r, g, b )->
+  updateDialog:(r, g, b)->
     @valuesSetProgrammatically = true
     @dialog.fromRGB 255-r, 255 - g, b
     @valuesSetProgrammatically = false
 
-  squareChanged:( widget, value )->
+  squareChanged:(widget, value)->
     unless @valuesSetProgrammatically
-      [ b, g ] = value
+      [b, g] = value
       r = @dialog.rangePicker.get("value")[1]
 
       @updateDialog r, g, b
 
-  rangeChanged:( widget, value )->
+  rangeChanged:(widget, value)->
     unless @valuesSetProgrammatically
-      [ b, g ] = @dialog.squarePicker.get "value"
+      [b, g] = @dialog.squarePicker.get "value"
       r = value[1]
 
       @updateDialog r, g, b
@@ -1195,35 +1195,35 @@ class GRBMode extends AbstractMode
             <span class='layer grb-up'></span>
             </span>"
 
-  update:( model )->
+  update:(model)->
     { r, g, b } = model
     opacity = g / 255
 
     @valuesSetProgrammatically = true
 
-    @dialog.squarePicker.set "value", [ b, 255-r ]
-    @dialog.rangePicker.set "value", [ 0, 255-g ]
+    @dialog.squarePicker.set "value", [b, 255-r]
+    @dialog.rangePicker.set "value", [0, 255-g]
 
     @valuesSetProgrammatically = false
 
-    @dialog.squarePicker.dummy.find( ".grb-up" )
+    @dialog.squarePicker.dummy.find(".grb-up")
                   .attr "style", "opacity: #{opacity};"
 
-  updateDialog:( r, g, b )->
+  updateDialog:(r, g, b)->
     @valuesSetProgrammatically = true
     @dialog.fromRGB 255-r, 255 - g, b
     @valuesSetProgrammatically = false
 
-  squareChanged:( widget, value )->
+  squareChanged:(widget, value)->
     unless @valuesSetProgrammatically
-      [ b, r ] = value
+      [b, r] = value
       g = @dialog.rangePicker.get("value")[1]
 
       @updateDialog r, g, b
 
-  rangeChanged:( widget, value )->
+  rangeChanged:(widget, value)->
     unless @valuesSetProgrammatically
-      [ b, r ] = @dialog.squarePicker.get "value"
+      [b, r] = @dialog.squarePicker.get "value"
       g = value[1]
 
       @updateDialog r, g, b
@@ -1247,35 +1247,35 @@ class BGRMode extends AbstractMode
             <span class='layer bgr-up'></span>
             </span>"
 
-  update:( model )->
+  update:(model)->
     { r, g, b } = model
     opacity = b / 255
 
     @valuesSetProgrammatically = true
 
-    @dialog.squarePicker.set "value", [ g, 255-r ]
-    @dialog.rangePicker.set "value", [ 0, 255-b ]
+    @dialog.squarePicker.set "value", [g, 255-r]
+    @dialog.rangePicker.set "value", [0, 255-b]
 
     @valuesSetProgrammatically = false
 
-    @dialog.squarePicker.dummy.find( ".bgr-up" )
+    @dialog.squarePicker.dummy.find(".bgr-up")
                   .attr "style", "opacity: #{opacity};"
 
-  updateDialog:( r, g, b )->
+  updateDialog:(r, g, b)->
     @valuesSetProgrammatically = true
     @dialog.fromRGB 255 - r, g, 255 - b
     @valuesSetProgrammatically = false
 
-  squareChanged:( widget, value )->
+  squareChanged:(widget, value)->
     unless @valuesSetProgrammatically
-      [ g, r ] = value
+      [g, r] = value
       b = @dialog.rangePicker.get("value")[1]
 
       @updateDialog r, g, b
 
-  rangeChanged:( widget, value )->
+  rangeChanged:(widget, value)->
     unless @valuesSetProgrammatically
-      [ g, r ] = @dialog.squarePicker.get "value"
+      [g, r] = @dialog.squarePicker.get "value"
       b = value[1]
 
       @updateDialog r, g, b
@@ -1284,7 +1284,7 @@ class BGRMode extends AbstractMode
 # for `ColorInput` instances.
 ColorInput.defaultListener = new ColorPicker
 
-$( document ).ready -> ColorInput.defaultListener.attach "body"
+$(document).ready -> ColorInput.defaultListener.attach "body"
 
 @rgb2hsv           = rgb2hsv
 @hsv2rgb           = hsv2rgb

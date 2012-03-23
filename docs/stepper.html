@@ -2,39 +2,43 @@
 <link rel='stylesheet' href='../css/widgets.css' media='screen'></p>
 
 <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
+
 <script type='text/javascript' src='../depends/jquery.mousewheel.js'></script>
+
 <script type='text/javascript' src='../lib/widgets.js'></script>
+
 <script type='text/javascript' src='../lib/builder.js'></script>
-A `Stepper` is a widget that allow the manipulation of
+
+<p>A <code>Stepper</code> is a widget that allow the manipulation of
 a number through a text input and two buttons to increment
-or decrement the value.
+or decrement the value.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nb">Stepper</span> <span class="k">extends</span> <span class="nb">NumericWidget</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Here some live instances :</p>
 
-Here some live instances :
-<div id="livedemos"></div>
-<link rel="stylesheet" href="../css/styles.css" media="screen">
-<link rel="stylesheet" href="../css/widgets.css" media="screen">
-
-<script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
-<script type='text/javascript'
-        src='../depends/jquery.mousewheel.js'></script>
-<script type='text/javascript' src='../depends/signals.js'></script>
-<script type='text/javascript' src='../lib/widgets.js'></script>
+<div id='steppers'></div>
 
 <script type='text/javascript'>
-var stepper1 = new Stepper();
-var stepper2 = new Stepper();
-var stepper3 = new Stepper();
+  var config = ({
+  container: "steppers",
+  builder: {
+    title: "Steppers",
+    cls: this["Stepper"],
+    rows: 1,
+    cols: 3,
+    tableClass: "float dummy",
+    cells: function(opts) {
+      var states;
+      states = [null, "readonly", "disabled"];
+      opts.widget.set("value", Math.floor(Math.random() * 100));
+      if (states[opts.col] != null) return opts.widget.set(states[opts.col], true);
+    },
+    columnHeaders: function(opts) {
+      return ["Normal", "Readonly", "Disabled"][opts.col];
+    }
+  }
+});
 
-stepper2.set( "readonly", true );
-stepper2.set( "checked", true );
-stepper3.set( "disabled", true );
-
-stepper1.attach("#livedemos");
-stepper2.attach("#livedemos");
-stepper3.attach("#livedemos");
-</script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nb">Stepper</span> <span class="k">extends</span> <span class="nb">NumericWidget</span>
-
-  <span class="py">@mixins</span> <span class="nb">HasFocusProvidedByChild</span><span class="p">,</span> <span class="nb">Spinner</span>
+  var builder = new TableBuilder(config.builder);
+  $("#steppers").append(builder.build());
+</script>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">@mixins</span> <span class="nb">HasFocusProvidedByChild</span><span class="p">,</span> <span class="nb">Spinner</span>
 
   <span class="py">spinnerDummyClass</span><span class="o">:</span><span class="s">&quot;stepper&quot;</span>
 
@@ -43,18 +47,18 @@ stepper3.attach("#livedemos");
 
     <span class="py">@set</span> <span class="s">&quot;step&quot;</span><span class="p">,</span> <span class="mi">1</span> <span class="k">unless</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;step&quot;</span><span class="p">)</span><span class="o">?</span>
 
-    <span class="py">@updateDummy</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">),</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;min&quot;</span><span class="p">),</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;max&quot;</span><span class="p">),</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;step&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <h3>Target Management</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>The target for a <code>Stepper</code> must be an input with the type <code>number</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">checkTarget</span><span class="o">:</span><span class="p">(</span> <span class="nx">target</span> <span class="p">)</span><span class="o">-&gt;</span>
+    <span class="py">@updateDummy</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">),</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;min&quot;</span><span class="p">),</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;max&quot;</span><span class="p">),</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;step&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h3>Target Management</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>The target for a <code>Stepper</code> must be an input with the type <code>number</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">checkTarget</span><span class="o">:</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span><span class="o">-&gt;</span>
     <span class="k">unless</span> <span class="py">@isInputWithType</span> <span class="nx">target</span><span class="p">,</span> <span class="s">&quot;number&quot;</span>
       <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span> <span class="s">&quot;&quot;&quot;Stepper target must be an input</span>
-<span class="s">                         with a number type&quot;&quot;&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h3>Dummy Management</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>The value of the widget is displayed within its input.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">updateDummy</span><span class="o">:</span><span class="p">(</span> <span class="nx">value</span><span class="p">,</span> <span class="nx">min</span><span class="p">,</span> <span class="nx">max</span><span class="p">,</span> <span class="nx">step</span> <span class="p">)</span><span class="o">-&gt;</span>
-    <span class="py">@focusProvider</span><span class="p">.</span><span class="nx">val</span> <span class="nx">value</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>When the value of the input is changed, the new value go through
-the validation function.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">validateInput</span><span class="o">:-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>The input's value is parsed to a float.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">value </span><span class="o">=</span> <span class="nb">parseFloat</span> <span class="py">@focusProvider</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>And if the resulting value is a number, it's affected
+<span class="s">                         with a number type&quot;&quot;&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h3>Dummy Management</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>The value of the widget is displayed within its input.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">updateDummy</span><span class="o">:</span><span class="p">(</span><span class="nx">value</span><span class="p">,</span> <span class="nx">min</span><span class="p">,</span> <span class="nx">max</span><span class="p">,</span> <span class="nx">step</span><span class="p">)</span><span class="o">-&gt;</span>
+    <span class="py">@focusProvider</span><span class="p">.</span><span class="nx">val</span> <span class="nx">value</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>When the value of the input is changed, the new value go through
+the validation function.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">validateInput</span><span class="o">:-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>The input's value is parsed to a float.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">value </span><span class="o">=</span> <span class="nb">parseFloat</span> <span class="py">@focusProvider</span><span class="p">.</span><span class="nx">attr</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">)</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>And if the resulting value is a number, it's affected
 to this widget's value.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">unless</span> <span class="nb">isNaN</span> <span class="nx">value</span>
       <span class="py">@set</span> <span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="nx">value</span>
     <span class="k">else</span>
       <span class="py">@updateDummy</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">),</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;min&quot;</span><span class="p">),</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;max&quot;</span><span class="p">),</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;step&quot;</span><span class="p">)</span>
 
-  <span class="py">drag</span><span class="o">:</span><span class="p">(</span> <span class="nx">dif</span> <span class="p">)</span><span class="o">-&gt;</span> <span class="py">@set</span> <span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">dif</span> <span class="o">*</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;step&quot;</span><span class="p">)</span>
+  <span class="py">drag</span><span class="o">:</span><span class="p">(</span><span class="nx">dif</span><span class="p">)</span><span class="o">-&gt;</span> <span class="py">@set</span> <span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;value&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="nx">dif</span> <span class="o">*</span> <span class="py">@get</span><span class="p">(</span><span class="s">&quot;step&quot;</span><span class="p">)</span>
 
 <span class="py">@Stepper</span> <span class="o">=</span> <span class="nb">Stepper</span>
 

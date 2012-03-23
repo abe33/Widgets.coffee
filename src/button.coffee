@@ -1,6 +1,7 @@
-# Here some live instances :
-#= require button
 class Button extends Widget
+  # Here some live instances :
+  #
+  #= require button
 
   # The `Button` constructor can be called both with an target input:
   #
@@ -26,16 +27,16 @@ class Button extends Widget
   #
   #     button = new Button display:"<b>label</b>", action:->
   #         console.log "action triggered"
-  constructor:( args... )->
+  constructor:(args...)->
 
     switch args.length
       when 1
-        [ arg ] = args
+        [arg] = args
         if typeof arg.action is "function"
           action = arg
         else
           target = arg
-      when 2 then [ target, action ] = args
+      when 2 then [target, action] = args
 
     super target
 
@@ -92,10 +93,10 @@ class Button extends Widget
 
   # Cacth changes mades to the `action` or `value` properties
   # to force a refresh of the button's content.
-  handlePropertyChange:( property, value )->
+  handlePropertyChange:(property, value)->
     super property, value
 
-    if property in [ "value", "action" ] then @updateContent()
+    if property in ["value", "action"] then @updateContent()
 
   #### Events Handler
 

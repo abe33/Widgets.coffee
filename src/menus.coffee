@@ -38,7 +38,7 @@
 #
 class MenuModel
   # The constructor can receive any number of items as arguments.
-  constructor:( items... )->
+  constructor:(items...)->
     #### MenuModel Signals
 
     # The `contentChanged` signal is dispatched when the content
@@ -55,13 +55,13 @@ class MenuModel
     @items = @filterValidItems items
 
   # Adds many items to the model and dispatch a `contentChanged` signal.
-  add:( items... )->
+  add:(items...)->
     @items = @items.concat @filterValidItems items
     @contentChanged.dispatch this
 
   # Removes many items from the model and dispatch a `contentChanged` signal.
-  remove:( items... )->
-    @items = ( item for item in @items when item not in items )
+  remove:(items...)->
+    @items = (item for item in @items when item not in items)
     @contentChanged.dispatch this
 
   # Returns the number of elements in the model.
@@ -70,16 +70,16 @@ class MenuModel
 
   # Takes an array of objects and return an array that contains only
   # the objects that match the criteria for an item.
-  filterValidItems:( items )->
+  filterValidItems:(items)->
     item for item in items when @isValidItem item
 
   # Returns `true` if the passed-in item is valid.
-  isValidItem:( item )->
+  isValidItem:(item)->
     item? and
     # The display property is mandatory.
     item.display? and
-    ( not item.action? or $.isFunction item.action ) and
-    ( not item.menu? or item.menu instanceof MenuModel )
+    (not item.action? or $.isFunction item.action) and
+    (not item.menu? or item.menu instanceof MenuModel)
 
 # <a name='menulist'></a>
 ## MenuList
@@ -114,20 +114,20 @@ class MenuModel
 # var item8 = { display:"Item 6", action:function()
 # { console.log ("item 6 clicked"); } };
 #
-# item3.menu.add ( item4, item5, item6 );
-# item6.menu.add ( item7, item8 );
+# item3.menu.add (item4, item5, item6);
+# item6.menu.add (item7, item8);
 #
-# var model = new MenuModel ( item1, item2, item3 );
-# var list1 = new MenuList ( model );
-# var list2 = new MenuList ( model );
-# var list3 = new MenuList ( model );
+# var model = new MenuModel (item1, item2, item3);
+# var list1 = new MenuList (model);
+# var list2 = new MenuList (model);
+# var list3 = new MenuList (model);
 #
-# list2.set( "readonly", true );
-# list3.set( "disabled", true );
+# list2.set("readonly", true);
+# list3.set("disabled", true);
 #
-# list1.addClasses ( "dummy" );
-# list2.addClasses ( "dummy" );
-# list3.addClasses ( "dummy" );
+# list1.addClasses ("dummy");
+# list2.addClasses ("dummy");
+# list3.addClasses ("dummy");
 #
 # list1.attach("#livedemos-menus");
 # list2.attach("#livedemos-menus");
@@ -137,7 +137,7 @@ class MenuList extends Widget
 
   # The `MenuList` class constructor takes a `MenuModel`
   # instance as argument.
-  constructor:( model = new MenuModel )->
+  constructor:(model = new MenuModel)->
     super()
 
     # The `cropChanged` signal is dispatched when the dummy's crop
@@ -166,21 +166,21 @@ class MenuList extends Widget
 
     # Pressing the `enter` or `space` keys when the `MenuList`
     # has the focus will trigger the action on the selected item.
-    @registerKeyDownCommand keystroke( keys.enter ), @triggerAction
-    @registerKeyDownCommand keystroke( keys.space ), @triggerAction
+    @registerKeyDownCommand keystroke(keys.enter), @triggerAction
+    @registerKeyDownCommand keystroke(keys.space), @triggerAction
 
     # Pressing the `up` or `down` keys  when the `MenuList`
     # has the focus will move the selection up or down in the list.
-    @registerKeyDownCommand keystroke( keys.up ),    @moveSelectionUp
-    @registerKeyDownCommand keystroke( keys.down ),  @moveSelectionDown
+    @registerKeyDownCommand keystroke(keys.up),    @moveSelectionUp
+    @registerKeyDownCommand keystroke(keys.down),  @moveSelectionDown
 
     # Pressing the `right` key when the selected item is a *menu item*
     # will move the focus to the child list.
-    @registerKeyDownCommand keystroke( keys.right ), @moveSelectionRight
+    @registerKeyDownCommand keystroke(keys.right), @moveSelectionRight
 
     # Pressing the `left` key when the current list has a parent list
     # will move back the focus to the parent.
-    @registerKeyDownCommand keystroke( keys.left ),  @moveSelectionLeft
+    @registerKeyDownCommand keystroke(keys.left),  @moveSelectionLeft
 
     @attached.add @updateSize, this
     @detached.add @updateSize, this
@@ -188,20 +188,20 @@ class MenuList extends Widget
   #### Selection Management
 
   # Selects the item at `index` in the list's model.
-  select:( index )->
+  select:(index)->
     # If there was a previous selection, the list item that was selected
     # see its `selected` class removed.
     if @selectedIndex isnt -1
-      @getListItemAt( @selectedIndex ).removeClass "selected"
+      @getListItemAt(@selectedIndex).removeClass "selected"
 
     @selectedIndex = if index < @get("model").size() then index else -1
 
     if @selectedIndex isnt -1
       # The new selected item is then flagged as selected
       # in the dummy.
-      li = @getListItemAt( @selectedIndex )
+      li = @getListItemAt(@selectedIndex)
       li.addClass "selected"
-      item = @get("model").items[ index ]
+      item = @get("model").items[index]
 
       # And if this item is a *menu item*,
       # the child list is opened with the data
@@ -221,7 +221,7 @@ class MenuList extends Widget
   # selected index is different of `-1`.
   triggerAction:->
     if @selectedIndex isnt -1
-      item = @get("model").items[ @selectedIndex ]
+      item = @get("model").items[@selectedIndex]
       item.action() if item.action?
 
   #### Dummy Management
@@ -251,7 +251,7 @@ class MenuList extends Widget
 
 
   # Creates the list items of the dummy.
-  buildList:( model )->
+  buildList:(model)->
     for item in model.items
       # Both *menu items* and *action items* are
       # display as `li` nodes within the dummy.
@@ -263,13 +263,13 @@ class MenuList extends Widget
         li = $("<li class='menuitem'>#{item.display}</li>")
       @dummy.append li
 
-    @dummy.children().each ( i, o )=>
+    @dummy.children().each (i, o)=>
       _li = $ o
-      _item = model.items[ i ]
+      _item = model.items[i]
       # Each list item trigger the item action
       # on `mouseup`, and select the item on a `mouseover`.
       _li.mouseup (e)=>
-        _item.action() unless @cantInteract() and _item.action?
+        _item.action() unless @cantInteract() or not _item.action?
       _li.mouseover (e)=>
         @select i unless @cantInteract()
 
@@ -287,14 +287,14 @@ class MenuList extends Widget
     @childList?.close()
 
   # Returns the list item at `index` in the dummy.
-  getListItemAt:( index )->
-    $ @dummy.children( "li" )[ index ]
+  getListItemAt:(index)->
+    $ @dummy.children("li")[index]
 
 
   #### Child List Management
 
   # Opens the child list for the specified model and list item.
-  openChildList:( model, li )->
+  openChildList:(model, li)->
     # The `MenuList` instance is created lazily.
     unless @childList?
       @childList = new MenuList new MenuModel
@@ -324,17 +324,17 @@ class MenuList extends Widget
 
   # When changing the model instance, the content of the dummy is rebuilded
   # with the new model data.
-  set_model:( property, value )->
+  set_model:(property, value)->
     @clearList()
 
-    @[ property ]?.contentChanged.remove @modelChanged, this
+    @[property]?.contentChanged.remove @modelChanged, this
     value?.contentChanged.add @modelChanged, this
 
     @buildList value
-    @[ property ] = value
+    @[property] = value
 
-  set_size:( property, value )->
-    @[ property ] = value
+  set_size:(property, value)->
+    @[property] = value
     @updateSize()
     value
 
@@ -349,7 +349,7 @@ class MenuList extends Widget
   #### Signals Listeners
 
   # The dummy content is recreated when the current model is modified.
-  modelChanged:( model )->
+  modelChanged:(model)->
     @clearList()
     @buildList model
     @updateSize()

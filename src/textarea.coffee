@@ -16,12 +16,12 @@
 # var area2 = new TextArea();
 # var area3 = new TextArea();
 #
-# area1.set( "value", "hello" );
-# area2.set( "value", "readonly" );
-# area3.set( "value", "disabled" );
+# area1.set("value", "hello");
+# area2.set("value", "readonly");
+# area3.set("value", "disabled");
 #
-# area2.set( "readonly", true );
-# area3.set( "disabled", true );
+# area2.set("readonly", true);
+# area3.set("disabled", true);
 #
 # area1.attach("#livedemos");
 # area2.attach("#livedemos");

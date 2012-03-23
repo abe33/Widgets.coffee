@@ -5,6 +5,6 @@ source:[
   "src/mixins"
   "src/widgets"
   "src/button"
-  "demos/builder"
+  "src/demos/builder"
 ]
 test:"test/test-builder"

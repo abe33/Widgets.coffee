@@ -1,0 +1,14 @@
+container:"calendar"
+builder:
+  title:"Calendars"
+  cls:this["Calendar"]
+  rows:3
+  cols:1
+  tableClass:"float dummy"
+  cells:(opts)->
+    states = [ null, "readonly", "disabled" ]
+    opts.td.css "width", "auto"
+    opts.widget.addClasses "dummy"
+    opts.widget.set states[ opts.row ], true if states[ opts.row ]?
+  rowHeaders:(opts)->
+    [ "Normal", "Readonly", "Disabled" ][opts.row]

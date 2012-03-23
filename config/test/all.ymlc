@@ -22,7 +22,7 @@ source:[
   "src/dates"
   "src/colorpicker"
   "src/jquery"
-  "demos/builder"
+  "src/demos/builder"
 ]
 test:[
   "test/test-signals"

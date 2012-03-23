@@ -20,12 +20,12 @@
 # input1.dummyClass = input1.dummyClass + " a";
 # input2.dummyClass = input2.dummyClass + " b";
 #
-# input1.set( "value", "hello" );
-# input2.set( "value", "readonly" );
-# input3.set( "value", "disabled" );
+# input1.set("value", "hello");
+# input2.set("value", "readonly");
+# input3.set("value", "disabled");
 #
-# input2.set( "readonly", true );
-# input3.set( "disabled", true );
+# input2.set("readonly", true);
+# input3.set("disabled", true);
 #
 # input1.attach("#livedemos");
 # input2.attach("#livedemos");
@@ -35,7 +35,7 @@ class TextInput extends Widget
 
   @mixins HasFocusProvidedByChild
 
-  constructor:( target )->
+  constructor:(target)->
 
     # The `target` is mandatory in the `TextInput` constructor so a default
     # target is created when nothing is passed to the constructor.
@@ -51,7 +51,7 @@ class TextInput extends Widget
 
   # The target for a `TextInput` must be an input with the
   # type `text` or `password`.
-  checkTarget:( target )->
+  checkTarget:(target)->
     unless @isInputWithType target, "text", "password"
       throw new Error "TextInput must have an input text as target"
 
@@ -70,12 +70,12 @@ class TextInput extends Widget
   #### Properties accessors
 
   # Handles the `maxlength` attribute of the target.
-  set_maxlength:( property, value )->
+  set_maxlength:(property, value)->
     if value?
       @jTarget.attr "maxlength", value
     else
       @jTarget.removeAttr "maxlength"
-    @[ property ] = value
+    @[property] = value
 
   #### Events handling
 

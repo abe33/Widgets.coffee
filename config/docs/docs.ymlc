@@ -25,7 +25,7 @@ source:[
   "src/dates"
   "src/colorpicker"
   "src/jquery"
-  "demos/builder"
+  "src/demos/builder"
 ]
 headerTemplate:"docs/header"
 builderTemplate:"docs/builder"

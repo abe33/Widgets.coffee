@@ -1,31 +1,7 @@
-# <link rel="stylesheet" href="../css/styles.css" media="screen">
-# <link rel="stylesheet" href="../css/widgets.css" media="screen">
-#
-# <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
-# <script type='text/javascript'
-#         src='../depends/jquery.mousewheel.js'></script>
-# <script type='text/javascript' src='../depends/signals.js'></script>
-# <script type='text/javascript' src='../lib/widgets.js'></script>
-
-# Here some live instances :
-# <div id="date-demos"></div>
-# <script type='text/javascript'>
-# var input1 = new Calendar();
-# var input2 = new Calendar(null,"month");
-# var input3 = new Calendar(null,"week");
-#
-# input2.set( "readonly", true );
-# input3.set( "disabled", true );
-#
-# input1.addClasses("dummy");
-# input2.addClasses("dummy");
-# input3.addClasses("dummy");
-#
-# input1.attach("#date-demos");
-# input2.attach("#date-demos");
-# input3.attach("#date-demos");
-# </script>
 class Calendar extends Widget
+  # Here some live instances :
+  #
+  #= require calendar
 
   # The `Calendar` is a `DropDownPopup` bound to dates widgets.
   @mixins DropDownPopup
@@ -36,7 +12,7 @@ class Calendar extends Widget
               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]
 
   # A `Calendar` accept a `Date` and a mode as constructor arguments.
-  constructor:( @value = new Date(), @mode = "date" )->
+  constructor:(@value = new Date(), @mode = "date")->
     super()
     # By default, the current value is displayed at startup. It
     # means that the calendar displayed month and year will be the
@@ -45,7 +21,7 @@ class Calendar extends Widget
 
   # Set the current year and month displayed by the `Calendar` on those
   # of the passed-in `Date` object.
-  display:( date )->
+  display:(date)->
     @month = date.firstDateOfMonth()
     @updateDummy()
 
@@ -109,7 +85,7 @@ class Calendar extends Widget
 
     # And for each cells in the table the date of the corresponding
     # day is affected as the cell text.
-    @dummy.find("td").each ( i, o )=>
+    @dummy.find("td").each (i, o)=>
       td = $ o
       td.text date.date()
       # The date corresponding to the cell is stored in the cell's name.
@@ -125,10 +101,10 @@ class Calendar extends Widget
     # The month and year displayed in the widget header is updated
     # with the current displayed date.
     h3 = @dummy.find("h3")
-    h3.text "#{ Calendar.MONTHS[ @month.month() ] } #{ @month.year() }"
+    h3.text "#{ Calendar.MONTHS[@month.month()] } #{ @month.year() }"
 
   # Creates the cells to display the passed-in date
-  createCells:( date )->
+  createCells:(date)->
     # Gets a reference to the table.
     table = @dummy.find "table"
     # Removes all the listeners that was previously registered.
@@ -163,11 +139,11 @@ class Calendar extends Widget
 
   # Returns the number of rows needed to display each week overlapped
   # by the `date` to display. Each rows correspond to a complete week.
-  rowsNeeded:( date )->
+  rowsNeeded:(date)->
     day = date.firstDateOfMonth().getDay()
     day = 7 if day is 0
     days = date.monthLength() + day
-    Math.ceil( days / 7 ) - 1
+    Math.ceil(days / 7) - 1
 
   #### Selection Management
 
@@ -181,7 +157,7 @@ class Calendar extends Widget
 
   # Updates a cell according to the passed-in `date` and the current
   # mode of this `Calendar`.
-  cellState:( td, date )->
+  cellState:(td, date)->
     value = @get("value")
     sameDate = date.date() is value.date()
     sameWeek = date.week() is value.week()
@@ -205,23 +181,23 @@ class Calendar extends Widget
   #### Properties Accessors
 
   # Changing the value of the calendar change also the displayed month.
-  set_value:( property, value )->
+  set_value:(property, value)->
     super property, value
     @display value
     value
 
   # Changes the mode of the `Calendar`.
-  set_mode:( property, value )->
-    if value not in [ "date", "month", "week" ] then return @get "mode"
+  set_mode:(property, value)->
+    if value not in ["date", "month", "week"] then return @get "mode"
 
-    @[ property ] = value
+    @[property] = value
     @updateDummy()
     value
 
   #### Dialog Placeholders
 
   # When requested, a calendar set its value to the caller's date.
-  setupDialog:( caller )->
+  setupDialog:(caller)->
     @set "value", @originalValue = caller.get "date"
 
   # Comfirm the changes by affecting the value to the caller.

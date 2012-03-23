@@ -53,7 +53,7 @@ class TableBuilder
   #    - `th`: The current header cell in a jQuery object.
   #    - `col`: The number of the current column (0-based)
   #
-  constructor:( @options )->
+  constructor:(@options)->
 
   # Builds and returns a table according to the current `options`
   # of this builder.
@@ -110,7 +110,7 @@ class TableBuilder
 
         # Calls the header function and affect the result
         # to the cell header.
-        th.text @options.columnHeaders context
+        th.text @options.columnHeaders.call this, context
 
     # Iterates over the rows.
     for row in rows
@@ -134,7 +134,7 @@ class TableBuilder
 
         context.th = th
 
-        th.text @options.rowHeaders context
+        th.text @options.rowHeaders.call this, context
 
 
       # Iterates over the columns.
@@ -158,7 +158,7 @@ class TableBuilder
         }
         # If `options.cell` is defined, the function is called with
         # the current context.
-        @options.cells? context
+        @options.cells?.call this, context
     # Returns the produced table.
     table
 
@@ -178,7 +178,7 @@ class BuildUnit
   #    on the object.
   #  * `callback`: A function that will be called with the created
   #    instance at the end of the build.
-  constructor:( @options )->
+  constructor:(@options)->
 
   # Process to the build and returns the created object.
   build:->
@@ -190,14 +190,14 @@ class BuildUnit
     o
 
   # Realize the concrete instanciation of the object.
-  construct:( klass, args )->
+  construct:(klass, args)->
     # In javascript, an object can't be constructed by calling either
     # `call` or `apply` on the constructor function. Thus, to be able
     # to pass arguments contained in an array to the constructor
     # we need to have a bunch of function that instanciate a class with
     # a number of arguments corresponding to the number of elements
     # in the array.
-    f = BUILDS[ if args? then args.length else 0 ]
+    f = BUILDS[if args? then args.length else 0]
     f klass, args
 
 # Contains all the function that will instanciate a class with a specific

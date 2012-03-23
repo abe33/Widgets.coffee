@@ -1,5 +1,3 @@
-# <link rel="stylesheet" href="../css/styles.css" media="screen">
-#
 # A `Container` is a base widget that allow to add other widgets
 # as children.
 class Container extends Widget
