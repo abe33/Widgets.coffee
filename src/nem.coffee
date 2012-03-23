@@ -5,9 +5,9 @@ packages = []
 
 # The `npm` function register `pkg` as a `npm install` package.
 # Optionally a target can be specified for the installed package
-# (see the [npm install documentation](http://npmjs.org/doc/install.html)
+# (see the [npm install documentation](http: //npmjs.org/doc/install.html)
 # for more details)
-npm=(pkg, target)->
+npm = (pkg, target) ->
   pkg = "#{pkg}@#{target}" if target?
   packages.push pkg
 
@@ -17,5 +17,5 @@ npm=(pkg, target)->
 
 # Executes npm install with the declared dependencies.
 exe = spawn 'npm', ['install' ].concat packages
-exe.stdout.on 'data', (data)-> print data.toString()
-exe.stderr.on 'data', (data)-> print data.toString()
+exe.stdout.on 'data', (data) -> print data.toString()
+exe.stderr.on 'data', (data) -> print data.toString()

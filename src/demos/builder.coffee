@@ -1,11 +1,11 @@
-# <link rel="stylesheet" href="../css/styles.css" media="screen">
+# <link rel ="stylesheet" href ="../css/styles.css" media ="screen">
 #
 # This file contains the classes used in the demo file.
 #
 #  * [TableBuilder](#TableBuilder)
 #  * [BuildUnit](#BuildUnit)
 
-# <a name="TableBuilder"></a>
+# <a name ="TableBuilder"></a>
 #### TableBuilder
 #
 # `TableBuilder` creates a table containing widgets.
@@ -53,11 +53,11 @@ class TableBuilder
   #    - `th`: The current header cell in a jQuery object.
   #    - `col`: The number of the current column (0-based)
   #
-  constructor:(@options)->
+  constructor: (@options) ->
 
   # Builds and returns a table according to the current `options`
   # of this builder.
-  build:->
+  build: ->
     # Ranges used to iterate over rows and columns.
     cols = [0..@options.cols-1]
     rows = [0..@options.rows-1]
@@ -75,8 +75,8 @@ class TableBuilder
     if @options.title?
       colspan = @options.cols
       colspan += 1 if hasRowHeaders
-      table.append $ "<tr><th colspan='#{ colspan }'
-                              class='table-header'>
+      table.append $ "<tr><th colspan ='#{ colspan }'
+                              class ='table-header'>
                           #{ @options.title }
                       </th></tr>"
 
@@ -93,14 +93,14 @@ class TableBuilder
       # Creates a context object that will contains all the elements
       # to pass to the column header function.
       context =
-        builder:this
-        table:table
-        tr:tr
+        builder: this
+        table: table
+        tr: tr
 
       # Iterates over the columns.
       for col in cols
         # Each header cell has a specific class.
-        th = $("<th class='column-header'></th>")
+        th = $("<th class ='column-header'></th>")
         tr.append th
 
         # The context object is updated with the current column
@@ -120,16 +120,16 @@ class TableBuilder
 
       # Prepare the context for each row.
       context =
-        builder:this
-        table:table
-        tr:tr
-        row:row
+        builder: this
+        table: table
+        tr: tr
+        row: row
 
       # If a row header function is provided, a header cell is created
       # with the result of the call of the function with the context
       # object.
       if hasRowHeaders
-        th = $("<th class='row-header'></th>")
+        th = $("<th class ='row-header'></th>")
         tr.append th
 
         context.th = th
@@ -145,7 +145,7 @@ class TableBuilder
         # If `options.cls` is defined, a widget is created and placed
         # within the cell.
         if @options.cls?
-          unit = new BuildUnit cls:@options.cls, args:@options.args
+          unit = new BuildUnit cls:@options.cls, args: @options.args
           widget = unit.build()
           widget.attach td
           context.widget = widget
@@ -153,8 +153,8 @@ class TableBuilder
         # The context is then updated with the cell and the column
         # index.
         context[k] = v for k,v of {
-          td:td
-          col:col
+          td: td
+          col: col
         }
         # If `options.cell` is defined, the function is called with
         # the current context.
@@ -162,7 +162,7 @@ class TableBuilder
     # Returns the produced table.
     table
 
-# <a name="BuildUnit"></a>
+# <a name ="BuildUnit"></a>
 #### BuildUnit
 
 # Builds an instance of a class with the specified arguments
@@ -178,10 +178,10 @@ class BuildUnit
   #    on the object.
   #  * `callback`: A function that will be called with the created
   #    instance at the end of the build.
-  constructor:(@options)->
+  constructor: (@options) ->
 
   # Process to the build and returns the created object.
-  build:->
+  build: ->
     o = @construct @options.cls, @options.args
     if o.set instanceof Function then o.set @options.set
     else o[k] = @options.set[k] for k of @options.set
@@ -190,7 +190,7 @@ class BuildUnit
     o
 
   # Realize the concrete instanciation of the object.
-  construct:(klass, args)->
+  construct: (klass, args) ->
     # In javascript, an object can't be constructed by calling either
     # `call` or `apply` on the constructor function. Thus, to be able
     # to pass arguments contained in an array to the constructor
@@ -203,7 +203,7 @@ class BuildUnit
 # Contains all the function that will instanciate a class with a specific
 # number of arguments. These functions are all generated at runtime with
 # the `Function` constructor.
-BUILDS=(
+BUILDS = (
   new Function( "return new arguments[0](#{
     ("arguments[1][#{j-1}]" for j in [0..i] when j isnt 0 ).join ","
   });") for i in [0..24]

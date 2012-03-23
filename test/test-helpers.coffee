@@ -1,21 +1,21 @@
 # opt =
-#   cls:Class
-#   className:"Class"
-#   defaultTarget:"<node>"
-#   initialValue:10
-#   valueBelowRange:-10
-#   valueAboveRange:110
-#   minValue:0
-#   setMinValue:50
-#   invalidMinValue:110
-#   maxValue:100
-#   setMaxValue:5
-#   invalidMaxValue:-10
-#   setStep:3
-#   valueNotInStep:10
-#   snappedValue:9
-#   singleIncrementValue:15
-#   singleDecrementValue:5
+#   cls: Class
+#   className: "Class"
+#   defaultTarget: "<node>"
+#   initialValue: 10
+#   valueBelowRange: -10
+#   valueAboveRange: 110
+#   minValue: 0
+#   setMinValue: 50
+#   invalidMinValue: 110
+#   maxValue: 100
+#   setMaxValue: 5
+#   invalidMaxValue: -10
+#   setStep: 3
+#   valueNotInStep: 10
+#   snappedValue: 9
+#   singleIncrementValue: 15
+#   singleDecrementValue: 5
 testValueInRangeMixin=( opt )->
   test "#{ opt.className } value shouldn't be set on
           a value outside of the range", ->
@@ -179,9 +179,9 @@ testValueInRangeMixin=( opt )->
     assertThat widget.get("step"),  opt.undefinedStepValueMatcher
 
 # opt=
-#   cls:Class
-#   className:"Class"
-#   defaultTarget:"<node>"
+#   cls: Class
+#   className: "Class"
+#   defaultTarget: "<node>"
 testValueInRangeMixinIntervals=( opt )->
   asyncTest "#{ opt.className } should provide a way
            to increment the value on an interval", ->
@@ -295,13 +295,13 @@ testValueInRangeMixinIntervals=( opt )->
     , 100
 
 # opt=
-#   cls:Class
-#   className:"Class"
-#   defaultTarget:"<node>"
-#   key:"up"
-#   action:"increment"
-#   valueMatcher:closeTo 2, 1
-#   initialValueMatcher:equalTo 10
+#   cls: Class
+#   className: "Class"
+#   defaultTarget: "<node>"
+#   key: "up"
+#   action: "increment"
+#   valueMatcher: closeTo 2, 1
+#   initialValueMatcher: equalTo 10
 testValueInRangeMixinKeyboard=( opt )->
   asyncTest "When the #{ opt.key } key is pressed the widget
            should #{ opt.action } the value", ->
@@ -311,10 +311,10 @@ testValueInRangeMixinKeyboard=( opt )->
 
     widget.grabFocus()
     widget.keydown
-      keyCode:keys[ opt.key ]
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys[ opt.key ]
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     setTimeout ->
       assertThat widget.get("value"), opt.valueMatcher
@@ -329,10 +329,10 @@ testValueInRangeMixinKeyboard=( opt )->
     target = $ opt.defaultTarget
     widget = new opt.cls target[0]
     e = {
-      keyCode:keys[ opt.key ],
-      ctrlKey:false,
-      shiftKey:false,
-      altKey:false
+      keyCode: keys[ opt.key ],
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false
     }
 
     widget.grabFocus()
@@ -356,10 +356,10 @@ testValueInRangeMixinKeyboard=( opt )->
     widget = new opt.cls target[0]
 
     e = {
-      keyCode:keys[ opt.key ],
-      ctrlKey:false,
-      shiftKey:false,
-      altKey:false
+      keyCode: keys[ opt.key ],
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false
     }
 
     widget.grabFocus()
@@ -384,10 +384,10 @@ testValueInRangeMixinKeyboard=( opt )->
     widget = new opt.cls target[0]
 
     e = {
-      keyCode:keys[ opt.key ],
-      ctrlKey:false,
-      shiftKey:false,
-      altKey:false
+      keyCode: keys[ opt.key ],
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false
     }
     widget.grabFocus()
     widget.keydown e
@@ -408,10 +408,10 @@ testValueInRangeMixinKeyboard=( opt )->
     widget = new opt.cls target[0]
 
     e = {
-      keyCode:keys[ opt.key ],
-      ctrlKey:false,
-      shiftKey:false,
-      altKey:false
+      keyCode: keys[ opt.key ],
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false
     }
     widget.set "readonly", true
 
@@ -431,10 +431,10 @@ testValueInRangeMixinKeyboard=( opt )->
     widget = new opt.cls target[0]
 
     e = {
-      keyCode:keys[ opt.key ],
-      ctrlKey:false,
-      shiftKey:false,
-      altKey:false
+      keyCode: keys[ opt.key ],
+      ctrlKey: false,
+      shiftKey: false,
+      altKey: false
     }
     widget.set "disabled", true
 
@@ -450,15 +450,15 @@ testValueInRangeMixinKeyboard=( opt )->
 
 
 # opt=
-#   cls:Class
-#   className:"Class"
-#   defaultTarget:"<node>"
-#   initialValue:10
-#   setValue:15
+#   cls: Class
+#   className: "Class"
+#   defaultTarget: "<node>"
+#   initialValue: 10
+#   setValue: 15
 testValueInRangeMixinMouseWheel=( opt )->
 
   class MockStepper extends opt.cls
-    mousewheel:( e, d )->
+    mousewheel: ( e, d )->
       d = 1
       super e, d
 
@@ -493,9 +493,9 @@ testValueInRangeMixinMouseWheel=( opt )->
     assertThat widget.get("value"), strictlyEqualTo opt.initialValue
 
 # opt =
-#   cls:Class
-#   className:"Class"
-#   focusChildSelector:".value"
+#   cls: Class
+#   className: "Class"
+#   focusChildSelector: ".value"
 testFocusProvidedByChildMixin=( opt )->
   test "#{ opt.className } shouldn't take focus,
         instead it should give it to its value input", ->
@@ -546,14 +546,14 @@ testFocusProvidedByChildMixin=( opt )->
            notNullValue()
 
 # opt=
-#   cls:Class
-#   className:"Class"
+#   cls: Class
+#   className: "Class"
 #
 # FIX tests goes into an infinite loop when testing widgets
 # that appends children in their constructor.
 testHasChildMixin=( opt )->
   class MockWidget extends Widget
-    createDummy:->
+    createDummy: ->
       $ "<span></span>"
 
   test "A #{ opt.className } should have children", ->
@@ -732,10 +732,10 @@ testHasChildMixin=( opt )->
     keyUpCommandCalled = false
 
     class MockContainer extends opt.cls
-      triggerKeyDownCommand:(e)->
+      triggerKeyDownCommand: (e)->
         keyDownCommandCalled = true
 
-      triggerKeyUpCommand:(e)->
+      triggerKeyUpCommand: (e)->
         keyUpCommandCalled = true
 
     widget = new MockWidget
@@ -743,7 +743,7 @@ testHasChildMixin=( opt )->
 
     container.add widget
 
-    event = keyCode:16, ctrlKey:true, shiftKey:true, altKey:true
+    event = keyCode:16, ctrlKey:true, shiftKey:true, altKey: true
 
     widget.triggerKeyDownCommand event
     widget.triggerKeyUpCommand event

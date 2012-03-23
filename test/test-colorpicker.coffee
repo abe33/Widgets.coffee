@@ -50,9 +50,9 @@ $( document ).ready ->
     color = input.get("color")
 
     assertThat color, allOf notNullValue(), hasProperties
-      red:0
-      green:0
-      blue:0
+      red: 0
+      green: 0
+      blue: 0
 
   test "A color input color should reflect the initial value", ->
 
@@ -62,18 +62,18 @@ $( document ).ready ->
     color = input.get("color")
 
     assertThat color, allOf notNullValue(), hasProperties
-      red:0xab
-      green:0xcd
-      blue:0xef
+      red: 0xab
+      green: 0xcd
+      blue: 0xef
 
   test "A color input should update the value when the color is changed", ->
 
     input = new ColorInput
 
     input.set "color",
-      red:0xab
-      green:0xcd
-      blue:0xef
+      red: 0xab
+      green: 0xcd
+      blue: 0xef
 
     assertThat input.get("value"), equalTo "#abcdef"
 
@@ -83,9 +83,9 @@ $( document ).ready ->
     input = new ColorInput
 
     input.set "color",
-      red:0
-      green:0
-      blue:0
+      red: 0
+      green: 0
+      blue: 0
 
     assertThat input.get("value"), equalTo "#000000"
 
@@ -98,9 +98,9 @@ $( document ).ready ->
     color = input.get("color")
 
     assertThat color, allOf notNullValue(), hasProperties
-      red:0xab
-      green:0xcd
-      blue:0xef
+      red: 0xab
+      green: 0xcd
+      blue: 0xef
 
   test "A color input should prevent invalid values
       to alter its properties", ->
@@ -115,9 +115,9 @@ $( document ).ready ->
 
     assertThat input.get("value"), equalTo "#000000"
     assertThat input.get("color"), hasProperties
-      red:0
-      green:0
-      blue:0
+      red: 0
+      green: 0
+      blue: 0
 
   test "A color input should prevent invalid color to alter
       its properties", ->
@@ -128,30 +128,30 @@ $( document ).ready ->
     input.set "color", null
 
     input.set "color",
-      red:NaN,
-      green:0,
-      blue:0
+      red: NaN,
+      green: 0,
+      blue: 0
 
     input.set "color",
-      red:0,
-      green:-1,
-      blue:0
+      red: 0,
+      green: -1,
+      blue: 0
 
     input.set "color",
-      red:0,
-      green:0,
-      blue:"foo"
+      red: 0,
+      green: 0,
+      blue: "foo"
 
     input.set "color",
-      red:0,
-      green:0,
-      blue:300
+      red: 0,
+      green: 0,
+      blue: 300
 
     assertThat input.get("value"), equalTo "#abcdef"
     assertThat input.get("color"), hasProperties
-      red:0xab
-      green:0xcd
-      blue:0xef
+      red: 0xab
+      green: 0xcd
+      blue: 0xef
 
   test "A color input should provide a dummy", ->
 
@@ -255,10 +255,10 @@ $( document ).ready ->
       signalCalled = true
 
     input.keydown
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat signalCalled
 
@@ -271,10 +271,10 @@ $( document ).ready ->
       signalCalled = true
 
     input.keydown
-      keyCode:keys.space
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.space
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat signalCalled
 
@@ -306,8 +306,8 @@ $( document ).ready ->
     grid = new SquarePicker
 
     grid.set
-      rangeX:[ 0, 100 ]
-      rangeY:[ 0, 100 ]
+      rangeX: [ 0, 100 ]
+      rangeY: [ 0, 100 ]
 
     assertThat grid.get("rangeX"), array 0, 100
     assertThat grid.get("rangeY"), array 0, 100
@@ -325,19 +325,19 @@ $( document ).ready ->
     grid = new SquarePicker
 
     grid.set
-      rangeX:[ 0, 100 ]
-      rangeY:[ 0, 100 ]
+      rangeX: [ 0, 100 ]
+      rangeY: [ 0, 100 ]
 
-    grid.set value:[ 50, 65 ]
+    grid.set value: [ 50, 65 ]
 
-    grid.set value:[ 120, 0 ]
-    grid.set value:[ 0, 120 ]
-    grid.set value:[ 0, "foo" ]
-    grid.set value:[ "foo", 0 ]
-    grid.set value:[ null, 0 ]
-    grid.set value:[ 0, null ]
-    grid.set value:"foo"
-    grid.set value:null
+    grid.set value: [ 120, 0 ]
+    grid.set value: [ 0, 120 ]
+    grid.set value: [ 0, "foo" ]
+    grid.set value: [ "foo", 0 ]
+    grid.set value: [ null, 0 ]
+    grid.set value: [ 0, null ]
+    grid.set value: "foo"
+    grid.set value: null
 
     assertThat grid.get("value"), array 50, 65
 
@@ -345,14 +345,14 @@ $( document ).ready ->
 
     grid = new SquarePicker
     grid.set
-      rangeX:[ 0, 100 ]
-      rangeY:[ 0, 100 ]
+      rangeX: [ 0, 100 ]
+      rangeY: [ 0, 100 ]
 
-    grid.set value:[ 50, 65 ]
+    grid.set value: [ 50, 65 ]
 
     grid.set
-      rangeX:[ 0, 10 ]
-      rangeY:[ 0, 10 ]
+      rangeX: [ 0, 10 ]
+      rangeY: [ 0, 10 ]
 
     assertThat grid.get("value"), array 10, 10
 
@@ -361,36 +361,36 @@ $( document ).ready ->
 
     grid = new SquarePicker
     grid.set
-      rangeX:[ 0, 100 ]
-      rangeY:[ 0, 100 ]
+      rangeX: [ 0, 100 ]
+      rangeY: [ 0, 100 ]
 
     grid.set
-      rangeX:[100,0]
-      rangeY:[100,0]
+      rangeX: [100,0]
+      rangeY: [100,0]
 
     grid.set
-      rangeX:["foo", 0]
-      rangeY:["foo", 0]
+      rangeX: ["foo", 0]
+      rangeY: ["foo", 0]
 
     grid.set
-      rangeX:[0,"foo"]
-      rangeY:[0,"foo"]
+      rangeX: [0,"foo"]
+      rangeY: [0,"foo"]
 
     grid.set
-      rangeX:[null,0]
-      rangeY:[null,0]
+      rangeX: [null,0]
+      rangeY: [null,0]
 
     grid.set
-      rangeX:[0,null]
-      rangeY:[0,null]
+      rangeX: [0,null]
+      rangeY: [0,null]
 
     grid.set
-      rangeX:"foo"
-      rangeY:"foo"
+      rangeX: "foo"
+      rangeY: "foo"
 
     grid.set
-      rangeX:null
-      rangeY:null
+      rangeX: null
+      rangeY: null
 
     assertThat grid.get("rangeX"), array 0, 100
     assertThat grid.get("rangeY"), array 0, 100
@@ -406,7 +406,7 @@ $( document ).ready ->
       to the x and y ranges",->
 
     class MockSquarePicker extends SquarePicker
-      mousedown:(e)->
+      mousedown: (e)->
         e.pageX = 45
         e.pageY = 65
         super e
@@ -416,8 +416,8 @@ $( document ).ready ->
     grid.dummy.attr "style", "width:100px; height:100px"
 
     grid.set
-      rangeX:[ 0, 10 ]
-      rangeY:[ 0, 10 ]
+      rangeX: [ 0, 10 ]
+      rangeY: [ 0, 10 ]
 
     grid.dummy.mousedown()
 
@@ -427,17 +427,17 @@ $( document ).ready ->
       to change the value", ->
 
     class MockSquarePicker extends SquarePicker
-      mousedown:(e)->
+      mousedown: (e)->
         e.pageX = 45
         e.pageY = 65
         super e
 
-      mousemove:(e)->
+      mousemove: (e)->
         e.pageX = 47
         e.pageY = 67
         super e
 
-      mouseup:(e)->
+      mouseup: (e)->
         e.pageX = 49
         e.pageY = 69
         super e
@@ -447,8 +447,8 @@ $( document ).ready ->
     grid.dummy.attr "style", "width:100px; height:100px"
 
     grid.set
-      rangeX:[ 0, 10 ]
-      rangeY:[ 0, 10 ]
+      rangeX: [ 0, 10 ]
+      rangeY: [ 0, 10 ]
 
     grid.dummy.mousedown()
     assertThat grid.get("value"), array closeTo( 4.5, 0.1 ),
@@ -466,7 +466,7 @@ $( document ).ready ->
       right should set the values on the max", ->
 
     class MockSquarePicker extends SquarePicker
-      mouseup:(e)->
+      mouseup: (e)->
         e.pageX = 110
         e.pageY = 110
         super e
@@ -476,8 +476,8 @@ $( document ).ready ->
     grid.dummy.attr "style", "width:100px; height:100px"
 
     grid.set
-      rangeX:[ 0, 10 ]
-      rangeY:[ 0, 10 ]
+      rangeX: [ 0, 10 ]
+      rangeY: [ 0, 10 ]
 
     grid.dummy.mousedown()
     grid.dummy.mouseup()
@@ -488,7 +488,7 @@ $( document ).ready ->
       on the top left should set the values on the min", ->
 
     class MockSquarePicker extends SquarePicker
-      mouseup:(e)->
+      mouseup: (e)->
         e.pageX = -10
         e.pageY = -10
         super e
@@ -498,8 +498,8 @@ $( document ).ready ->
     grid.dummy.attr "style", "width:100px; height:100px"
 
     grid.set
-      rangeX:[ 0, 10 ]
-      rangeY:[ 0, 10 ]
+      rangeX: [ 0, 10 ]
+      rangeY: [ 0, 10 ]
 
     grid.dummy.mousedown()
     grid.dummy.mouseup()
@@ -530,7 +530,7 @@ $( document ).ready ->
     result = true
 
     class MockSquarePicker extends SquarePicker
-      mousedown:(e)->
+      mousedown: (e)->
         result = super e
 
     grid = new MockSquarePicker
@@ -656,8 +656,8 @@ $( document ).ready ->
   # ColorPicker already has children.
 
   # testHasChildMixin
-  #     cls:ColorPicker
-  #     className:"ColorPicker"
+  #     cls: ColorPicker
+  #     className: "ColorPicker"
 
   test "A ColorPicker should be hidden at startup", ->
 
@@ -1021,7 +1021,7 @@ $( document ).ready ->
     input.set "value", "#abcdef"
 
     class MockColorPicker extends ColorPicker
-      mouseup:(e)->
+      mouseup: (e)->
         e.pageX = 1000
         e.pageY = 1000
         super e
@@ -1048,10 +1048,10 @@ $( document ).ready ->
     dialog.fromHex "ff0000"
 
     dialog.keydown
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat input.get("value"), "#ff0000"
     assertThat dialog.dummy.attr("style"), contains "display: none"
@@ -1070,10 +1070,10 @@ $( document ).ready ->
     dialog.redInput.input()
 
     dialog.keydown
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat input.get("value"), "#abcdef"
     assertThat dialog.dummy.attr("style"),
@@ -1093,10 +1093,10 @@ $( document ).ready ->
     dialog.greenInput.input()
 
     dialog.keydown
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat input.get("value"), "#abcdef"
     assertThat dialog.dummy.attr("style"),
@@ -1116,10 +1116,10 @@ $( document ).ready ->
     dialog.blueInput.input()
 
     dialog.keydown
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat input.get("value"), "#abcdef"
     assertThat dialog.dummy.attr("style"),
@@ -1139,10 +1139,10 @@ $( document ).ready ->
     dialog.hueInput.input()
 
     dialog.keydown
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat input.get("value"), "#abcdef"
     assertThat dialog.dummy.attr("style"),
@@ -1162,10 +1162,10 @@ $( document ).ready ->
     dialog.saturationInput.input()
 
     dialog.keydown
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat input.get("value"), "#abcdef"
     assertThat dialog.dummy.attr("style"),
@@ -1185,10 +1185,10 @@ $( document ).ready ->
     dialog.valueInput.input()
 
     dialog.keydown
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat input.get("value"), "#abcdef"
     assertThat dialog.dummy.attr("style"),
@@ -1208,10 +1208,10 @@ $( document ).ready ->
     dialog.hexInput.input()
 
     dialog.keydown
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat input.get("value"), "#abcdef"
     assertThat dialog.dummy.attr("style"),
@@ -1273,10 +1273,10 @@ $( document ).ready ->
     dialog.fromHex "ff0000"
 
     dialog.keydown
-      keyCode:keys.escape
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.escape
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat input.get("value"), "#abcdef"
     assertThat dialog.dummy.attr("style"), contains "display: none"
@@ -1297,9 +1297,9 @@ $( document ).ready ->
     disposeCalled = false
 
     class MockMode
-      init:->
-      update:->
-      dispose:->
+      init: ->
+      update: ->
+      dispose: ->
         disposeCalled = true
 
     dialog = new ColorPicker
@@ -1315,10 +1315,10 @@ $( document ).ready ->
     updateCalled = false
 
     class MockMode
-      init:->
-      update:->
+      init: ->
+      update: ->
         updateCalled = true
-      dispose:->
+      dispose: ->
 
     dialog = new ColorPicker
 
@@ -1360,10 +1360,10 @@ $( document ).ready ->
     dialog = new ColorPicker
     dialog.dialogRequested input
     dialog.keydown
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat input.hasFocus
 
@@ -1420,9 +1420,9 @@ $( document ).ready ->
       placed in the dialog by the mode", ->
 
     class MockMode
-      init:->
-      update:->
-      dispose:->
+      init: ->
+      update: ->
+      dispose: ->
 
     dialog = new ColorPicker
 
@@ -1441,25 +1441,25 @@ $( document ).ready ->
     disposeCalled = false
 
     class MockMode
-      init:->
-      update:->
-      dispose:->
+      init: ->
+      update: ->
+      dispose: ->
 
     class MockHSVMode extends HSVMode
-      constructor:()->
+      constructor: ()->
         super()
         @allowSignal = false
 
-      dispose:->
+      dispose: ->
         disposeCalled = true
         @allowSignal = true
         super()
 
-      squareChanged:( widget, value )->
+      squareChanged: ( widget, value )->
         if @allowSignal
           squareChangedCalled = true
 
-      rangeChanged:( widget, value )->
+      rangeChanged: ( widget, value )->
         if @allowSignal
           rangeChangedCalled = true
 
@@ -1494,9 +1494,9 @@ $( document ).ready ->
       placed in the dialog by the mode", ->
 
     class MockMode
-      init:->
-      update:->
-      dispose:->
+      init: ->
+      update: ->
+      dispose: ->
 
     dialog = new ColorPicker
 
@@ -1583,9 +1583,9 @@ $( document ).ready ->
       placed in the dialog by the mode", ->
 
     class MockMode
-      init:->
-      update:->
-      dispose:->
+      init: ->
+      update: ->
+      dispose: ->
 
     dialog = new ColorPicker
 
@@ -1657,9 +1657,9 @@ $( document ).ready ->
       placed in the dialog by the mode", ->
 
     class MockMode
-      init:->
-      update:->
-      dispose:->
+      init: ->
+      update: ->
+      dispose: ->
 
     dialog = new ColorPicker
 
@@ -1731,9 +1731,9 @@ $( document ).ready ->
       placed in the dialog by the mode", ->
 
     class MockMode
-      init:->
-      update:->
-      dispose:->
+      init: ->
+      update: ->
+      dispose: ->
 
     dialog = new ColorPicker
 
@@ -1805,9 +1805,9 @@ $( document ).ready ->
       placed in the dialog by the mode", ->
 
     class MockMode
-      init:->
-      update:->
-      dispose:->
+      init: ->
+      update: ->
+      dispose: ->
 
     dialog = new ColorPicker
 

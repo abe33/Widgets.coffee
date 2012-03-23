@@ -1,13 +1,13 @@
-container:"steppers"
+container: "steppers"
 builder:
-  title:"Steppers"
-  cls:this["Stepper"]
-  rows:1
-  cols:3
-  tableClass:"float dummy"
-  cells:(opts)->
+  title: "Steppers"
+  cls: this["Stepper"]
+  rows: 1
+  cols: 3
+  tableClass: "float dummy"
+  cells: (opts)->
     states = [ null, "readonly", "disabled" ]
     opts.widget.set "value", Math.floor Math.random() * 100
     opts.widget.set states[ opts.col ], true if states[ opts.col ]?
-  columnHeaders:(opts)->
+  columnHeaders: (opts)->
     [ "Normal", "Readonly", "Disabled" ][opts.col]

@@ -6,10 +6,10 @@ $(document).ready ->
     constructorCalled = false
 
     class A
-      constructor:->
+      constructor: ->
         constructorCalled = true
 
-    unit = new BuildUnit cls:A
+    unit = new BuildUnit cls: A
     o = unit.build()
 
     assertThat constructorCalled
@@ -21,10 +21,10 @@ $(document).ready ->
     args = [ 165, "irrelevant", true ]
 
     class B
-      constructor:->
+      constructor: ->
         constructorArgs = (a for a in arguments)
 
-    unit = new BuildUnit cls:B, args:args
+    unit = new BuildUnit cls:B, args: args
     o = unit.build()
 
     assertThat constructorArgs, array.apply null, args
@@ -34,9 +34,9 @@ $(document).ready ->
 
     class C
 
-    unit = new BuildUnit cls:C, set:
-      property1:"value 1",
-      property2:"value 2"
+    unit = new BuildUnit cls: C, set:
+      property1: "value 1",
+      property2: "value 2"
 
     o = unit.build()
     assertThat o.property1, equalTo "value 1"
@@ -49,7 +49,7 @@ $(document).ready ->
     cellCalled = false
     cellArg = null
 
-    unit = new BuildUnit cls:D, callback:(arg)->
+    unit = new BuildUnit cls:D, callback: (arg)->
       cellCalled = true
       cellArg = arg
 
@@ -63,11 +63,11 @@ $(document).ready ->
       and allow a cell to modify its content", ->
 
     table = new TableBuilder
-      cls:Button
-      args:[ action:-> ]
-      rows:3
-      cols:3
-      cells:(opts)->
+      cls: Button
+      args:[ action: -> ]
+      rows: 3
+      cols: 3
+      cells: (opts)->
         opts.td.addClass "foo"
         opts.widget.set "disabled", true
 
@@ -80,12 +80,12 @@ $(document).ready ->
   test "TableBuilder should provide a specific class on its results", ->
 
     table = new TableBuilder
-      cls:Button
-      args:[ action:-> ]
-      rows:3
-      cols:3
-      tableClass:"className"
-      cells:(opts)->
+      cls: Button
+      args:[ action: -> ]
+      rows: 3
+      cols: 3
+      tableClass: "className"
+      cells: (opts)->
         opts.td.addClass "foo"
         opts.widget.set "disabled", true
 
@@ -96,11 +96,11 @@ $(document).ready ->
   test "TableBuilder should add a general header cell
       if table title is provided", ->
     table = new TableBuilder
-      title:"Buttons"
-      cls:Button
-      args:[ action:-> ]
-      rows:3
-      cols:3
+      title: "Buttons"
+      cls: Button
+      args:[ action: -> ]
+      rows: 3
+      cols: 3
 
     t = table.build()
 
@@ -113,11 +113,11 @@ $(document).ready ->
       if a function is provided", ->
 
     table = new TableBuilder
-      cls:Button
-      args:[ action:-> ]
-      rows:3
-      cols:3
-      columnHeaders:(opts)->
+      cls: Button
+      args:[ action: -> ]
+      rows: 3
+      cols: 3
+      columnHeaders: (opts)->
         "foo#{opts.col+1}"
 
     t = table.build()
@@ -132,11 +132,11 @@ $(document).ready ->
       if a function is provided", ->
 
     table = new TableBuilder
-      cls:Button
-      args:[ action:-> ]
-      rows:3
-      cols:3
-      rowHeaders:(opts)->
+      cls: Button
+      args:[ action: -> ]
+      rows: 3
+      cols: 3
+      rowHeaders: (opts)->
         "foo#{opts.row + 1}"
 
     t = table.build()
@@ -151,14 +151,14 @@ $(document).ready ->
       and column headers when row headers are provided", ->
 
     table = new TableBuilder
-      cls:Button
-      args:[ action:-> ]
-      rows:3
-      cols:3
-      title:"Foo"
-      columnHeaders:(opts)->
+      cls: Button
+      args:[ action: -> ]
+      rows: 3
+      cols: 3
+      title: "Foo"
+      columnHeaders: (opts)->
         "foo#{opts.col+1}"
-      rowHeaders:(opts)->
+      rowHeaders: (opts)->
         "foo#{opts.row + 1}"
 
     t = table.build()
@@ -170,8 +170,8 @@ $(document).ready ->
       unless the cls options is provided", ->
 
     table = new TableBuilder
-      rows:3
-      cols:3
+      rows: 3
+      cols: 3
 
     t = table.build()
     assertThat t.length, equalTo 1
@@ -187,15 +187,15 @@ $(document).ready ->
   rowHeaderLabels = [ "Normal", "Readonly", "Disabled" ]
 
   table = new TableBuilder
-    title:"Buttons"
-    cls:Button,
-    args:[ display:"Button", action:-> ]
-    rows:3
-    cols:3
-    tableClass:"float dummy"
-    columnHeaders:(opts)-> colHeaderLabels[opts.col]
-    rowHeaders:(opts)-> rowHeaderLabels[opts.row]
-    cells:(opts)->
+    title: "Buttons"
+    cls: Button,
+    args:[ display: "Button", action:-> ]
+    rows: 3
+    cols: 3
+    tableClass: "float dummy"
+    columnHeaders: (opts)-> colHeaderLabels[opts.col]
+    rowHeaders: (opts)-> rowHeaderLabels[opts.row]
+    cells: (opts)->
       opts.widget.addClasses colors[ opts.col ] if colors[ opts.col ]?
       opts.widget.set states[ opts.row ], true if states[ opts.row ]?
 

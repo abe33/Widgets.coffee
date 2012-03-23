@@ -125,7 +125,7 @@ $( document ).ready ->
     focusReveiced = false
 
     class MockRadio extends Radio
-      focus:(e)->
+      focus: (e)->
         focusReveiced = true
 
     radio = new MockRadio
@@ -141,10 +141,10 @@ $( document ).ready ->
     radio.grabFocus()
 
     radio.keyup
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat radio.get "checked"
 
@@ -155,10 +155,10 @@ $( document ).ready ->
     radio.grabFocus()
 
     radio.keyup
-      keyCode:keys.space
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.space
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat radio.get "checked"
 
@@ -172,10 +172,10 @@ $( document ).ready ->
     radio.grabFocus()
 
     radio.keyup
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat not radio.get "checked"
 
@@ -189,10 +189,10 @@ $( document ).ready ->
     radio.grabFocus()
 
     radio.keyup
-      keyCode:keys.space
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.space
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat not radio.get "checked"
 

@@ -1,5 +1,5 @@
-source:[
+source: [
   "src/demos/builder"
   "src/demos/form"
 ]
-template:"demos/form"
+template: "demos/form"

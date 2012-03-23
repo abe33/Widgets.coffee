@@ -1,4 +1,4 @@
-source:[
+source: [
   "src/signals"
   "src/std"
   "src/keys"
@@ -9,4 +9,4 @@ source:[
   "src/radio"
   "src/radiogroup"
 ]
-test:"test/test-radiogroup"
+test: "test/test-radiogroup"

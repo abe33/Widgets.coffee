@@ -2,16 +2,16 @@
 # allow custom styling.
 #
 # Here some live instances :
-# <div id="livedemos"></div>
-# <link rel="stylesheet" href="../css/styles.css" media="screen">
-# <link rel="stylesheet" href="../css/widgets.css" media="screen">
+# <div id ="livedemos"></div>
+# <link rel ="stylesheet" href ="../css/styles.css" media ="screen">
+# <link rel ="stylesheet" href ="../css/widgets.css" media ="screen">
 #
-# <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
-# <script type='text/javascript' src='../depends/jquery.mousewheel.js'></script>
-# <script type='text/javascript' src='../depends/signals.js'></script>
-# <script type='text/javascript' src='../lib/widgets.js'></script>
+# <script type ='text/javascript' src ='../depends/jquery-1.6.1.min.js'></script>
+# <script type ='text/javascript' src ='../depends/jquery.mousewheel.js'></script>
+# <script type ='text/javascript' src ='../depends/signals.js'></script>
+# <script type ='text/javascript' src ='../lib/widgets.js'></script>
 #
-# <script type='text/javascript'>
+# <script type ='text/javascript'>
 # var area1 = new TextArea();
 # var area2 = new TextArea();
 # var area3 = new TextArea();
@@ -31,7 +31,7 @@ class TextArea extends Widget
 
   @mixins HasFocusProvidedByChild
 
-  constructor:(target)->
+  constructor: (target) ->
 
     # The `target` is mandatory in the `TextArea` constructor so a default
     # target is created when nothing is passed to the constructor.
@@ -44,15 +44,15 @@ class TextArea extends Widget
   #### Target Management
 
   # The target for a `TextArea` must be a `textarea` node.
-  checkTarget:(target)->
+  checkTarget: (target) ->
     unless @isTag target, "textarea"
       throw new Error "TextArea only allow textarea nodes as target"
 
   #### Dummy Management
 
   # The dummy for a `TextArea` is a `span` with a `textarea` class on it.
-  createDummy:->
-    dummy = $("<span class='textarea'></span>")
+  createDummy: ->
+    dummy = $("<span class ='textarea'></span>")
     dummy.append @target
     @focusProvider = @jTarget
     dummy
@@ -61,7 +61,7 @@ class TextArea extends Widget
 
   # When the user types some text in the target, the widget's
   # value is marked as obsolete.
-  input:(e)->
+  input: (e) ->
     @valueIsObsolete = true
 
   # When the `change` event occurs, the content of the
@@ -72,7 +72,7 @@ class TextArea extends Widget
   # a `valueChanged` signal is dispatched, the `valueIsObsolete`
   # property allow a listener to know if the change done to the
   # widget was done by a user input.
-  change:(e)->
+  change: (e) ->
     @set "value", @jTarget.val()
     @valueIsObsolete = false
     true

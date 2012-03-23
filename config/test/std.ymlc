@@ -1,2 +1,2 @@
-source:"src/std"
-test:"test/test-std"
+source: "src/std"
+test: "test/test-std"

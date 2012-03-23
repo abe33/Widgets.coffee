@@ -9,13 +9,13 @@ class Button extends Widget
   #
   # Or with an `action` object:
   #
-  #     button = new Button action:->
+  #     button = new Button action: ->
   #         console.log "action triggered"
   #
   # If you need to pass both a target and an action, pass the target
   # as the first argument and the action as the second:
   #
-  #     button = new Button target, action:->
+  #     button = new Button target, action: ->
   #         console.log "action triggered"
   #
   # Action object must have an `action` property that contains a function
@@ -25,9 +25,9 @@ class Button extends Widget
   #
   # For instance, the following button will have its label displayed in bold:
   #
-  #     button = new Button display:"<b>label</b>", action:->
+  #     button = new Button display: "<b>label</b>", action:->
   #         console.log "action triggered"
-  constructor:(args...)->
+  constructor: (args...) ->
 
     switch args.length
       when 1
@@ -48,7 +48,7 @@ class Button extends Widget
     @hideTarget()
 
     if @hasTarget and @jTarget.attr("type") is "reset"
-      @jTarget.click (e)-> e.preventDefault()
+      @jTarget.click (e) -> e.preventDefault()
 
     #### Keyboard Controls
 
@@ -61,7 +61,7 @@ class Button extends Widget
 
   # The target for a button must an input with one of the following types:
   # `button`, `reset` or `submit`.
-  checkTarget:(target)->
+  checkTarget: (target) ->
     unless @isInputWithType target, "button", "reset", "submit"
       throw new Error """Buttons only support input with a type in button,
                          reset or submit as target"""
@@ -70,12 +70,12 @@ class Button extends Widget
 
   # The base structure of a button is simply a `span`
   # with a `button` class.
-  createDummy:->
-    $("<span class='button'></span>")
+  createDummy: ->
+    $("<span class ='button'></span>")
 
   # The real content of the button is produced
   # in the `updateContent` method.
-  updateContent:->
+  updateContent: ->
     # All the previous content is removed beforehand.
     @dummy.find(".content").remove()
 
@@ -93,7 +93,7 @@ class Button extends Widget
 
   # Cacth changes mades to the `action` or `value` properties
   # to force a refresh of the button's content.
-  handlePropertyChange:(property, value)->
+  handlePropertyChange: (property, value) ->
     super property, value
 
     if property in ["value", "action"] then @updateContent()
@@ -101,7 +101,7 @@ class Button extends Widget
   #### Events Handler
 
   # Catch clicks on the button.
-  click:(e)->
+  click: (e) ->
     return if @cantInteract()
 
     action = @get "action"

@@ -8,18 +8,18 @@ class Radio extends CheckBox
   #= require radio
 
   # The target for a `Radio` must be an input with the type `radio`.
-  checkTarget:(target)->
+  checkTarget: (target) ->
     unless @isInputWithType target, "radio"
       throw new Error "Radio target must be an input with a radio type"
 
   # The dummy for the radio is just a `<span>` element
   # with a `radio` class.
-  createDummy:->
-    $ "<span class='radio'></span>"
+  createDummy: ->
+    $ "<span class ='radio'></span>"
 
   # Toggle is unidirectionnal. The only way to
   # uncheck a radio is by code.
-  toggle:->
+  toggle: ->
     super() unless @get "checked"
 
 @Radio = Radio

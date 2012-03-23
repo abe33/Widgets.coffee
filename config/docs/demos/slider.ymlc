@@ -1,13 +1,13 @@
-container:"sliders"
+container: "sliders"
 builder:
-  title:"Sliders"
-  cls:this["Slider"]
-  rows:1
-  cols:3
-  tableClass:"float dummy"
-  cells:(opts)->
+  title: "Sliders"
+  cls: this["Slider"]
+  rows: 1
+  cols: 3
+  tableClass: "float dummy"
+  cells: (opts)->
     states = [ null, "readonly", "disabled" ]
     opts.widget.set "value", Math.floor Math.random() * 100
     opts.widget.set states[ opts.col ], true if states[ opts.col ]?
-  columnHeaders:(opts)->
+  columnHeaders: (opts)->
     [ "Normal", "Readonly", "Disabled" ][opts.col]

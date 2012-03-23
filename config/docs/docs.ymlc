@@ -1,4 +1,4 @@
-source:[
+source: [
   "Cakefile"
   "Nemfile"
   "src/nem"
@@ -27,5 +27,5 @@ source:[
   "src/jquery"
   "src/demos/builder"
 ]
-headerTemplate:"docs/header"
-builderTemplate:"docs/builder"
+headerTemplate: "docs/header"
+builderTemplate: "docs/builder"

@@ -4,8 +4,8 @@ $( document ).ready ->
 
   test "MenuModel should contains a list of action items", ->
 
-    item1 = display:"irrelevant"
-    item2 = display:"irrelevant"
+    item1 = display: "irrelevant"
+    item2 = display: "irrelevant"
 
     model = new MenuModel item1, item2
 
@@ -16,8 +16,8 @@ $( document ).ready ->
   test "MenuModel should prevent invalid or in complete actions
       to be passed in its constructor",->
 
-    item1 = action:->
-    item2= display:"irrelevant", action:"irrelevant"
+    item1 = action: ->
+    item2= display: "irrelevant", action:"irrelevant"
     item3 = null
     item4 = "foo"
 
@@ -32,8 +32,8 @@ $( document ).ready ->
 
     model = new MenuModel
 
-    item1 = display:"irrelevant"
-    item2 = display:"irrelevant"
+    item1 = display: "irrelevant"
+    item2 = display: "irrelevant"
 
     model.add item1, item2
 
@@ -44,8 +44,8 @@ $( document ).ready ->
   test "MenuModel should prevent invalid or incomplete actions
       to be added",->
 
-    item1 = action:->
-    item2 = display:"irrelevant", action:"irrelevant"
+    item1 = action: ->
+    item2 = display: "irrelevant", action:"irrelevant"
     item3 = null
     item4 = "foo"
 
@@ -60,9 +60,9 @@ $( document ).ready ->
 
   test "MenuModel should allow to remove items", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
 
@@ -76,7 +76,7 @@ $( document ).ready ->
 
     model = new MenuModel
 
-    item = display:"irrelevant"
+    item = display: "irrelevant"
 
     signalCalled = false
     listener = ->
@@ -95,10 +95,10 @@ $( document ).ready ->
     assertThat signalCalled
 
   test "A MenuModel should be able to handle sub models", ->
-    item3 = display:"display3"
-    item4 = display:"display4"
-    item1 = display:"display1"
-    item2 = display:"display2", menu:new MenuModel item3, item4
+    item3 = display: "display3"
+    item4 = display: "display4"
+    item1 = display: "display1"
+    item2 = display: "display2", menu:new MenuModel item3, item4
 
     model = new MenuModel item1, item2
 
@@ -110,9 +110,9 @@ $( document ).ready ->
 
   test "A MenuList should take a MenuModel as argument", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -122,9 +122,9 @@ $( document ).ready ->
   test "MenuList's dummy should be a list that contains
       the elements in the model", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -135,9 +135,9 @@ $( document ).ready ->
 
   test "MenuList provides a size property", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -150,12 +150,12 @@ $( document ).ready ->
       to its size when size isn't null and the model's
       size is bigger", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
-    item4 = display:"display4"
-    item5 = display:"display5"
-    item6 = display:"display6"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
+    item4 = display: "display4"
+    item5 = display: "display5"
+    item6 = display: "display6"
 
     model = new MenuModel item1, item2, item3, item4, item5, item6
     list = new MenuList model
@@ -171,12 +171,12 @@ $( document ).ready ->
 
   test "Setting null as size should reset the dummy", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
-    item4 = display:"display4"
-    item5 = display:"display5"
-    item6 = display:"display6"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
+    item4 = display: "display4"
+    item5 = display: "display5"
+    item6 = display: "display6"
 
     model = new MenuModel item1, item2, item3, item4, item5, item6
     list = new MenuList model
@@ -193,12 +193,12 @@ $( document ).ready ->
   test "MenuList should add a specific class to the dummy
       when items are hidden", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
-    item4 = display:"display4"
-    item5 = display:"display5"
-    item6 = display:"display6"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
+    item4 = display: "display4"
+    item5 = display: "display5"
+    item6 = display: "display6"
 
     model = new MenuModel item1, item2, item3, item4, item5, item6
     list = new MenuList model
@@ -213,12 +213,12 @@ $( document ).ready ->
   test "Changes made to the cropped state should dispatch
       a cropChanged signal", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
-    item4 = display:"display4"
-    item5 = display:"display5"
-    item6 = display:"display6"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
+    item4 = display: "display4"
+    item5 = display: "display5"
+    item6 = display: "display6"
 
     signalCalled = false
     signalSource = null
@@ -255,9 +255,9 @@ $( document ).ready ->
   test "Setting a size greater that the model content should
       not crop the list", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -272,9 +272,9 @@ $( document ).ready ->
   test "Altering the model of a list with a given size should
       affect its crop", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -295,9 +295,9 @@ $( document ).ready ->
   test "MenuList should null the selection if the passed-in index
       is out of bounds", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -311,10 +311,10 @@ $( document ).ready ->
 
     itemActionTriggered = false
 
-    item1 = display:"display1"
-    item2 = display:"display2", action:->
+    item1 = display: "display1"
+    item2 = display: "display2", action:->
       itemActionTriggered = true
-    item3 = display:"display3"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -328,10 +328,10 @@ $( document ).ready ->
 
     itemActionTriggered = false
 
-    item1 = display:"display1"
-    item2 = display:"display2", action:->
+    item1 = display: "display1"
+    item2 = display: "display2", action:->
       itemActionTriggered = true
-    item3 = display:"display3"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -346,10 +346,10 @@ $( document ).ready ->
 
     itemActionTriggered = false
 
-    item1 = display:"display1"
-    item2 = display:"display2", action:->
+    item1 = display: "display1"
+    item2 = display: "display2", action:->
       itemActionTriggered = true
-    item3 = display:"display3"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -361,9 +361,9 @@ $( document ).ready ->
 
   test "Changing the model's content should update the list", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -376,9 +376,9 @@ $( document ).ready ->
 
   test "Passing the mouse over a list item should select it", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -391,9 +391,9 @@ $( document ).ready ->
   test "Passing the mouse over a readonly select's list item
       shouldn't select it", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -406,9 +406,9 @@ $( document ).ready ->
   test "Passing the mouse over a disabled select's list item
       shouldn't select it", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -421,9 +421,9 @@ $( document ).ready ->
 
   test "Pressing the up key should move the selection up", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -431,20 +431,20 @@ $( document ).ready ->
     list.select 1
 
     list.keydown
-      keyCode:keys.up
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.up
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat list.selectedIndex, equalTo 0
     assertThat list.dummy.children("li").first().hasClass "selected"
 
   test "Pressing the down down should move the selection down", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -452,11 +452,11 @@ $( document ).ready ->
     list.select 1
 
     list.keydown
-      keyCode:keys.down
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.down
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat list.selectedIndex, equalTo 2
     assertThat list.dummy.children("li").last().hasClass "selected"
@@ -464,9 +464,9 @@ $( document ).ready ->
   test "Pressing the up key when the selection is at the top should
       move the selection to the bottom", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -474,11 +474,11 @@ $( document ).ready ->
     list.select 0
 
     list.keydown
-      keyCode:keys.up
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.up
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat list.selectedIndex, equalTo 2
     assertThat list.dummy.children("li").last().hasClass "selected"
@@ -486,9 +486,9 @@ $( document ).ready ->
   test "Pressing the down key when the selection is at the bottom
       should move the selection to the top", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -496,11 +496,11 @@ $( document ).ready ->
     list.select 2
 
     list.keydown
-      keyCode:keys.down
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.down
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat list.selectedIndex, equalTo 0
     assertThat list.dummy.children("li").first().hasClass "selected"
@@ -510,10 +510,10 @@ $( document ).ready ->
 
     actionTriggered = false
 
-    item1 = display:"display1"
-    item2 = display:"display2", action:->
+    item1 = display: "display1"
+    item2 = display: "display2", action:->
       actionTriggered = true
-    item3 = display:"display3"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -521,11 +521,11 @@ $( document ).ready ->
     list.select 1
 
     list.keydown
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat actionTriggered
 
@@ -534,10 +534,10 @@ $( document ).ready ->
 
     actionTriggered = false
 
-    item1 = display:"display1"
-    item2 = display:"display2", action:->
+    item1 = display: "display1"
+    item2 = display: "display2", action:->
       actionTriggered = true
-    item3 = display:"display3"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -545,19 +545,19 @@ $( document ).ready ->
     list.select 1
 
     list.keydown
-      keyCode:keys.space
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.space
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat actionTriggered
 
   test "Pressing the up key should prevent the default behavior", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -567,20 +567,20 @@ $( document ).ready ->
     preventDefaultCalled = false
 
     list.keydown
-      keyCode:keys.up
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.up
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
         preventDefaultCalled = true
 
     assertThat preventDefaultCalled
 
    test "Pressing the down key should prevent the default behavior", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -590,11 +590,11 @@ $( document ).ready ->
     preventDefaultCalled = false
 
     list.keydown
-      keyCode:keys.down
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.down
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
         preventDefaultCalled = true
 
     assertThat preventDefaultCalled
@@ -602,9 +602,9 @@ $( document ).ready ->
   test "Pressing the up key on a readonly select shouldn't
       move the selection up", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -613,20 +613,20 @@ $( document ).ready ->
     list.set "readonly", true
 
     list.keydown
-      keyCode:keys.up
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.up
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat list.selectedIndex, equalTo 1
 
   test "Pressing the down key on a readonly select shouldn't
       move the selection down", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -635,20 +635,20 @@ $( document ).ready ->
     list.set "readonly", true
 
     list.keydown
-      keyCode:keys.down
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.down
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat list.selectedIndex, equalTo 1
 
   test "Pressing the up key on a disabled select shouldn't
       move the selection up", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -657,20 +657,20 @@ $( document ).ready ->
     list.set "disabled", true
 
     list.keydown
-      keyCode:keys.up
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.up
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat list.selectedIndex, equalTo 1
 
   test "Pressing the down key on a disabled select shouldn't
       move the selection down", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
-    item3 = display:"display3"
+    item1 = display: "display1"
+    item2 = display: "display2"
+    item3 = display: "display3"
 
     model = new MenuModel item1, item2, item3
     list = new MenuList model
@@ -679,21 +679,21 @@ $( document ).ready ->
     list.set "disabled", true
 
     list.keydown
-      keyCode:keys.down
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.down
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat list.selectedIndex, equalTo 1
 
   test "MenuList items that contains a sub model should
       have a specific class", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2", menu:new MenuModel
-    item3 = display:"display3"
-    item4 = display:"display4"
+    item1 = display: "display1"
+    item2 = display: "display2", menu:new MenuModel
+    item3 = display: "display3"
+    item4 = display: "display4"
 
     item2.menu.add item3, item4
 
@@ -705,10 +705,10 @@ $( document ).ready ->
   test "Passing the mouse over a MenuList item that contains
       a submodel should popup a new menulist next to the former", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2", menu:new MenuModel
-    item3 = display:"display3"
-    item4 = display:"display4"
+    item1 = display: "display1"
+    item2 = display: "display2", menu:new MenuModel
+    item3 = display: "display3"
+    item4 = display: "display4"
 
     item2.menu.add item3, item4
 
@@ -734,10 +734,10 @@ $( document ).ready ->
   test "Passing the mouse over a basic item when a child list
       is displayed should close the child list", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2", menu:new MenuModel
-    item3 = display:"display3"
-    item4 = display:"display4"
+    item1 = display: "display1"
+    item2 = display: "display2", menu:new MenuModel
+    item3 = display: "display3"
+    item4 = display: "display4"
 
     item2.menu.add item3, item4
 
@@ -757,8 +757,8 @@ $( document ).ready ->
     list.detach()
 
   test "Closing a child list should make it lose the focus", ->
-    item1 = display:"display1", menu:new MenuModel( display:"display3" )
-    item2 = display:"display2"
+    item1 = display: "display1", menu:new MenuModel( display:"display3" )
+    item2 = display: "display2"
     model = new MenuModel item1, item2
     list = new MenuList model
 
@@ -776,12 +776,12 @@ $( document ).ready ->
 
   test "Closing a child list should also close the descendant list", ->
     item1 =
-      display:"display1",
-      menu:new MenuModel(
-        display:"display3",
-        menu:new MenuModel( display:"display4" ) )
+      display: "display1",
+      menu: new MenuModel(
+        display: "display3",
+        menu:new MenuModel( display: "display4" ) )
 
-    item2 = display:"display2"
+    item2 = display: "display2"
     model = new MenuModel item1, item2
     list = new MenuList model
 
@@ -799,9 +799,9 @@ $( document ).ready ->
   test "A childlist should have a reference to its parent", ->
 
     item1 =
-      display:"display1",
-      menu:new MenuModel( display:"display3" )
-    item2 = display:"display2"
+      display: "display1",
+      menu:new MenuModel( display: "display3" )
+    item2 = display: "display2"
     model = new MenuModel item1, item2
     list = new MenuList model
 
@@ -816,21 +816,21 @@ $( document ).ready ->
 
   test "A menu should stop the propagation of the mousedown event", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
+    item1 = display: "display1"
+    item2 = display: "display2"
     model = new MenuModel item1, item2
     list = new MenuList model
     stopImmediatePropagationCalled = false
 
-    list.mousedown stopImmediatePropagation:->
+    list.mousedown stopImmediatePropagation: ->
       stopImmediatePropagationCalled = true
 
     assertThat stopImmediatePropagationCalled
 
   test "Passing the mouse over an item should give the focus to the list", ->
 
-    item1 = display:"display1"
-    item2 = display:"display2"
+    item1 = display: "display1"
+    item2 = display: "display2"
     model = new MenuModel item1, item2
     list = new MenuList model
 
@@ -841,8 +841,8 @@ $( document ).ready ->
   test "Coming back from a child list to the original menu item1
       should blur the child list", ->
 
-    item1 = display:"display1", menu:new MenuModel( display:"display3" )
-    item2 = display:"display2"
+    item1 = display: "display1", menu:new MenuModel( display:"display3" )
+    item2 = display: "display2"
     model = new MenuModel item1, item2
     list = new MenuList model
 
@@ -860,8 +860,8 @@ $( document ).ready ->
   test "Coming back from a child list to a menu item that
       also have a submenu should change the child List", ->
 
-    item1 = display:"display1", menu:new MenuModel( display:"display3" )
-    item2 = display:"display2", menu:new MenuModel( display:"display4" )
+    item1 = display: "display1", menu:new MenuModel( display:"display3" )
+    item2 = display: "display2", menu:new MenuModel( display:"display4" )
     model = new MenuModel item1, item2
     list = new MenuList model
 
@@ -881,8 +881,8 @@ $( document ).ready ->
       is on a sub menu should move the focus
       to the child list", ->
 
-    item1 = display:"display1", menu:new MenuModel({ display:"display3"})
-    item2 = display:"display2"
+    item1 = display: "display1", menu:new MenuModel({ display:"display3"})
+    item2 = display: "display2"
 
     model = new MenuModel item1, item2
     list = new MenuList model
@@ -890,19 +890,19 @@ $( document ).ready ->
     list.dummy.children("li").first().mouseover()
 
     list.keydown
-      keyCode:keys.right
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.right
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat list.childList.hasFocus
 
   test "Pressing the left key when the focus is on a child
       list should return the focus to the parent", ->
 
-    item1 = display:"display1", menu:new MenuModel({ display:"display3"})
-    item2 = display:"display2"
+    item1 = display: "display1", menu:new MenuModel({ display:"display3"})
+    item2 = display: "display2"
 
     model = new MenuModel item1, item2
     list = new MenuList model
@@ -911,28 +911,28 @@ $( document ).ready ->
     list.childList.dummy.children("li").first().mouseover()
 
     list.childList.keydown
-      keyCode:keys.left
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.left
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat not list.childList.hasFocus
     assertThat list.hasFocus
 
 
-  item1 = display:"display1", action:-> console.log "item 1 clicked"
-  item2 = display:"display2", action:-> console.log "item 2 clicked"
-  item3 = display:"display3", menu:new MenuModel
-  item4 = display:"display4", action:-> console.log "item 4 clicked"
-  item5 = display:"display5", action:-> console.log "item 5 clicked"
-  item6 = display:"display6", menu:new MenuModel
-  item7 = display:"display7", action:-> console.log "item 7 clicked"
-  item8 = display:"display8", action:-> console.log "item 8 clicked"
-  item9 = display:"display9", action:-> console.log "item 9 clicked"
-  item10 = display:"display10", action:-> console.log "item 10 clicked"
-  item11 = display:"display11", action:-> console.log "item 11 clicked"
-  item12 = display:"display12", action:-> console.log "item 12 clicked"
+  item1 = display: "display1", action:-> console.log "item 1 clicked"
+  item2 = display: "display2", action:-> console.log "item 2 clicked"
+  item3 = display: "display3", menu:new MenuModel
+  item4 = display: "display4", action:-> console.log "item 4 clicked"
+  item5 = display: "display5", action:-> console.log "item 5 clicked"
+  item6 = display: "display6", menu:new MenuModel
+  item7 = display: "display7", action:-> console.log "item 7 clicked"
+  item8 = display: "display8", action:-> console.log "item 8 clicked"
+  item9 = display: "display9", action:-> console.log "item 9 clicked"
+  item10 = display: "display10", action:-> console.log "item 10 clicked"
+  item11 = display: "display11", action:-> console.log "item 11 clicked"
+  item12 = display: "display12", action:-> console.log "item 12 clicked"
 
   item3.menu.add item4, item5, item6
   item6.menu.add item7, item8

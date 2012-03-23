@@ -59,9 +59,9 @@ $( document ).ready ->
     assertThat area.valueIsObsolete
 
   opt =
-    cls:TextArea
-    className:"TextArea"
-    focusChildSelector:"textarea"
+    cls: TextArea
+    className: "TextArea"
+    focusChildSelector: "textarea"
 
   testFocusProvidedByChildMixin opt
 

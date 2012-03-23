@@ -76,7 +76,7 @@ $( document ).ready ->
       place it in the element parent", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<div></div>"
 
     plugin = $.widgetPlugin
@@ -113,7 +113,7 @@ $( document ).ready ->
       that doesn't require extra setup", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<div></div>"
 
     plugin = $.widgetPlugin
@@ -146,7 +146,7 @@ $( document ).ready ->
       class", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<div></div>"
 
     plugin = $.widgetPlugin
@@ -164,7 +164,7 @@ $( document ).ready ->
   test "The plugin process should prevent to process twice an element", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<div></div>"
 
     plugin = $.widgetPlugin

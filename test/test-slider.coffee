@@ -21,68 +21,68 @@ $( document ).ready ->
     assertThat errorRaised
 
   opt=
-    cls:Slider
-    className:"Slider"
-    defaultTarget:"<input type='range' min='0'
+    cls: Slider
+    className: "Slider"
+    defaultTarget: "<input type='range' min='0'
                 max='100' step='5' value='10'>"
 
-    initialValue:10
-    valueBelowRange:-10
-    valueAboveRange:110
+    initialValue: 10
+    valueBelowRange: -10
+    valueAboveRange: 110
 
-    minValue:0
-    setMinValue:50
-    invalidMinValue:110
+    minValue: 0
+    setMinValue: 50
+    invalidMinValue: 110
 
-    maxValue:100
-    setMaxValue:5
-    invalidMaxValue:-10
+    maxValue: 100
+    setMaxValue: 5
+    invalidMaxValue: -10
 
-    stepValue:5
-    setStep:3
-    valueNotInStep:10
-    snappedValue:9
+    stepValue: 5
+    setStep: 3
+    valueNotInStep: 10
+    snappedValue: 9
 
-    singleIncrementValue:15
-    singleDecrementValue:5
+    singleIncrementValue: 15
+    singleDecrementValue: 5
 
-    undefinedMinValueMatcher:equalTo 0
-    undefinedMaxValueMatcher:equalTo 100
-    undefinedStepValueMatcher:equalTo 1
+    undefinedMinValueMatcher: equalTo 0
+    undefinedMaxValueMatcher: equalTo 100
+    undefinedStepValueMatcher: equalTo 1
 
   testValueInRangeMixin opt
 
   testValueInRangeMixinIntervals opt
 
   a =
-    key:"up"
-    action:"increment"
-    valueMatcher:closeTo 15, 1
-    initialValueMatcher:equalTo 10
+    key: "up"
+    action: "increment"
+    valueMatcher: closeTo 15, 1
+    initialValueMatcher: equalTo 10
 
   testValueInRangeMixinKeyboard opt extends a
 
   a =
-    key:"down"
-    action:"decrement"
-    valueMatcher:closeTo 5, 1
-    initialValueMatcher:equalTo 10
+    key: "down"
+    action: "decrement"
+    valueMatcher: closeTo 5, 1
+    initialValueMatcher: equalTo 10
 
   testValueInRangeMixinKeyboard opt extends a
 
   a =
-    key:"right"
-    action:"increment"
-    valueMatcher:closeTo 15, 1
-    initialValueMatcher:equalTo 10
+    key: "right"
+    action: "increment"
+    valueMatcher: closeTo 15, 1
+    initialValueMatcher: equalTo 10
 
   testValueInRangeMixinKeyboard opt extends a
 
   a =
-    key:"left"
-    action:"decrement"
-    valueMatcher:closeTo 5, 1
-    initialValueMatcher:equalTo 10
+    key: "left"
+    action: "decrement"
+    valueMatcher: closeTo 5, 1
+    initialValueMatcher: equalTo 10
 
   testValueInRangeMixinKeyboard opt extends a
 
@@ -92,7 +92,7 @@ $( document ).ready ->
       the value, grab the focus and start a knob drag", ->
 
     class MockSlider extends Slider
-      handleTrackMouseDown:(e)->
+      handleTrackMouseDown: (e)->
         e.pageX = 10
         super e
 
@@ -117,7 +117,7 @@ $( document ).ready ->
       change the value ", ->
 
     class MockSlider extends Slider
-      handleTrackMouseDown:(e)->
+      handleTrackMouseDown: (e)->
         e.pageX = 10
 
         super e
@@ -135,7 +135,7 @@ $( document ).ready ->
       change the value ", ->
 
     class MockSlider extends Slider
-      handleTrackMouseDown:(e)->
+      handleTrackMouseDown: (e)->
         e.pageX = 10
         super e
 

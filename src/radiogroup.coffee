@@ -5,7 +5,7 @@ class RadioGroup
   #
   #= require radiogroup
 
-  constructor:(radios...)->
+  constructor: (radios...) ->
     #### RadioGroup Signals
 
     # The `selectionChanged` signal is dispatched when the selection
@@ -28,7 +28,7 @@ class RadioGroup
 
   # Adds a `Radio` in this group unless this radio is already
   # registered.
-  add:(radio)->
+  add: (radio) ->
     unless @contains radio
       @radios.push radio
 
@@ -41,28 +41,28 @@ class RadioGroup
       @selectedRadio = radio if radio.get "checked"
 
   # Removes a radio from this group.
-  remove:(radio)->
+  remove: (radio) ->
     if @contains radio
       @radios.splice @indexOf(radio), 1
       radio.checkedChanged.remove @radioCheckedChanged, this
 
   # Returns `true` if the passed-in `radio` is registered in this group.
-  contains:(radio)->
+  contains: (radio) ->
     radio in @radios
 
   # Returns the index of the `radio` in this group.
-  indexOf:(radio)->
+  indexOf: (radio) ->
     return i for r, i in @radios when r is radio
     return -1
 
   #### Selection
 
   # Flag used to prevent infinite loops during a selection phase.
-  checkedSetProgrammatically:false
+  checkedSetProgrammatically: false
 
   # Set the passed-in `radio` as the selected radio.
   # The previously selected radio is then unchecked.
-  select:(radio)->
+  select: (radio) ->
 
     unless radio is @selectedRadio
       # The `checkedSetProgrammatically` flag is set to `true`
@@ -102,7 +102,7 @@ class RadioGroup
   # If the source radio is checked, it became the new selected radio for
   # this group. Otherwise, if it was the selected radio, the `selectedRadio`
   # is set to `null`.
-  radioCheckedChanged:(radio, checked)->
+  radioCheckedChanged: (radio, checked) ->
     unless @checkedSetProgrammatically
       if checked then @select radio
       else if radio is @selectedRadio then @selectedRadio = null

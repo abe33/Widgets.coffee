@@ -37,7 +37,7 @@ $( document ).ready ->
 
   test "Buttons should also allow an action object as argument", ->
 
-    action = action:->
+    action = action: ->
 
     button = new Button action
 
@@ -46,7 +46,7 @@ $( document ).ready ->
   test "Buttons should accept both a target and an action as arguments", ->
 
     target = ( $ "<input type='reset'></input>" )[0]
-    action = action:->
+    action = action: ->
 
     button = new Button target, action
 
@@ -55,7 +55,7 @@ $( document ).ready ->
 
   test "Buttons content should be provided through the action object", ->
 
-    action = display:"label", action:->
+    action = display: "label", action:->
 
     button = new Button action
 
@@ -65,7 +65,7 @@ $( document ).ready ->
 
     actionTriggered = false
 
-    action = action:->
+    action = action: ->
       actionTriggered = true
 
     button = new Button action
@@ -100,7 +100,7 @@ $( document ).ready ->
 
     actionTriggered = false
 
-    action = action:->
+    action = action: ->
       actionTriggered = true
 
     button = new Button action
@@ -114,7 +114,7 @@ $( document ).ready ->
 
     actionTriggered = false
 
-    action = action:->
+    action = action: ->
       actionTriggered = true
 
     button = new Button action
@@ -158,16 +158,16 @@ $( document ).ready ->
 
     actionTriggered = false
 
-    action = action:->
+    action = action: ->
       actionTriggered = true
 
     button = new Button action
 
     button.keydown
-      keyCode:keys.space
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.space
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat actionTriggered
 
@@ -175,16 +175,16 @@ $( document ).ready ->
 
     actionTriggered = false
 
-    action = action:->
+    action = action: ->
       actionTriggered = true
 
     button = new Button action
 
     button.keydown
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat actionTriggered
 

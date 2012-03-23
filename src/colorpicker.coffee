@@ -19,7 +19,7 @@
 
 # Converts a color defined with its red, green and blue channels into
 # an hexadecimal string.
-rgb2hex = (r, g, b)->
+rgb2hex = (r, g, b) ->
   rnd = Math.round
   value = (( rnd( r ) << 16 ) + ( rnd( g ) << 8 ) + rnd( b )).toString 16
 
@@ -30,7 +30,7 @@ rgb2hex = (r, g, b)->
 
 # Converts an hexadecimal string such as `#abcdef` into an array
 # with the red, green and blue channels values.
-hex2rgb = (hex)->
+hex2rgb = (hex) ->
   rgb = hex.substr 1
   color = parseInt rgb, 16
 
@@ -42,7 +42,7 @@ hex2rgb = (hex)->
 
 # Converts a color in the `rgb` color space in an
 # array with the color in the `hsv` color space.
-rgb2hsv = (r, g, b)->
+rgb2hsv = (r, g, b) ->
 
   r = r / 255
   g = g / 255
@@ -92,7 +92,7 @@ rgb2hsv = (r, g, b)->
 
 # Converts a color defined in the `hsv` color space into
 # an array containing the color in the `rgb` color space.
-hsv2rgb = (h, s, v)->
+hsv2rgb = (h, s, v) ->
   # Hue is reduced to the `0-6` range when both saturation
   # and value are reduced to the `0-1`
   h = h / 60
@@ -136,20 +136,20 @@ hsv2rgb = (h, s, v)->
 
 # Converts a color in a string into an object with
 # the three channels values as integer between 0 and 255.
-colorObjectFromValue = (value)->
+colorObjectFromValue = (value) ->
   [r, g, b] = hex2rgb value
 
-  red:r, green:g, blue:b
+  red:r, green:g, blue: b
 
 # Converts an object with `red`, `green` and `blue` properties
 # to a string with the html representation of the color.
-colorObjectToValue = (rgb)->
+colorObjectToValue = (rgb) ->
   rgb2hex rgb.red, rgb.green, rgb.blue
 
 #### Color Validations
 
 # Validates that the passed-in string is a valid hexadecimal color code.
-isValidValue = (value)->
+isValidValue = (value) ->
   re = /// ^       # nothing allowed before
     \#             # starts with a diese
     [0-9a-fA-F]{6} # must have 6 chars in 0123456789abcdefABCDEF
@@ -158,52 +158,52 @@ isValidValue = (value)->
   re.test value
 
 # Validates that the passed-in argument is a valid number.
-isValidNumber = (value)->
+isValidNumber = (value) ->
   value? and not isNaN(value)
 
 # Validates that the passed-in argument is a valid hue.
-isValidHue = (value)->
+isValidHue = (value) ->
   (isValidNumber value) and 0 <= value <= 360
 
 # Validates that the passed-in argument is a valid percentage.
-isValidPercentage = (value)->
+isValidPercentage = (value) ->
   (isValidNumber value) and 0 <= value <= 100
 
 # Validates that the passed-in argument is a valid channel value.
-isValidChannel = (value)->
+isValidChannel = (value) ->
   (isValidNumber value) and 0 <= value <= 255
 
 # Validates that the passed-in color object is valid.
-isValidColor = (value)->
+isValidColor = (value) ->
   value?                         and
   (isValidChannel value.red)   and
   (isValidChannel value.green) and
   (isValidChannel value.blue)
 
 # Validates that the passed-in red green and blue channels form a valid color.
-isValidRGB = (r, g, b)->
+isValidRGB = (r, g, b) ->
   (isValidChannel r ) and ( isValidChannel g ) and ( isValidChannel b)
 
 # Validates that the passed-in hue, saturation and value channels
 # form a valid color.
-isValidHSV = (h, s, v)->
+isValidHSV = (h, s, v) ->
   (isValidHue h ) and ( isValidPercentage s ) and ( isValidPercentage v)
 
-# <a name='colorinput'></a>
+# <a name ='colorinput'></a>
 ## ColorInput
 
 # Here some live instances of the `ColorInput` widget :
-# <div id="livedemos"></div>
-# <link rel="stylesheet" href="../css/styles.css" media="screen">
-# <link rel="stylesheet" href="../css/widgets.css" media="screen">
+# <div id ="livedemos"></div>
+# <link rel ="stylesheet" href ="../css/styles.css" media ="screen">
+# <link rel ="stylesheet" href ="../css/widgets.css" media ="screen">
 #
-# <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
-# <script type='text/javascript'
-#         src='../depends/jquery.mousewheel.js'></script>
-# <script type='text/javascript' src='../depends/signals.js'></script>
-# <script type='text/javascript' src='../lib/widgets.js'></script>
+# <script type ='text/javascript' src ='../depends/jquery-1.6.1.min.js'></script>
+# <script type ='text/javascript'
+#         src ='../depends/jquery.mousewheel.js'></script>
+# <script type ='text/javascript' src ='../depends/signals.js'></script>
+# <script type ='text/javascript' src ='../lib/widgets.js'></script>
 #
-# <script type='text/javascript'>
+# <script type ='text/javascript'>
 # var picker1 = new ColorInput()
 # var picker2 = new ColorInput()
 # var picker3 = new ColorInput()
@@ -221,7 +221,7 @@ isValidHSV = (h, s, v)->
 # </script>
 class ColorInput extends Widget
 
-  constructor:(target)->
+  constructor: (target) ->
     super target
 
     #### ColorInput Signals
@@ -267,7 +267,7 @@ class ColorInput extends Widget
 
   # Color inputs only allow input with a `color` type
   # as target.
-  checkTarget:(target)->
+  checkTarget: (target) ->
     unless @isInputWithType target, "color"
       throw new Error "ColorInput's target should be a color input"
 
@@ -275,17 +275,17 @@ class ColorInput extends Widget
 
   # The `ColorInput` dummy contains an additional `span` used
   # to display the current color of this widget.
-  createDummy:->
-    $ "<span class='colorinput'>
-         <span class='color'></span>
+  createDummy: ->
+    $ "<span class ='colorinput'>
+         <span class ='color'></span>
        </span>"
 
   # The `ColorInput` widget automatically update the color preview
   # through the `style` attribute of the dummy.
-  updateDummy:(value)->
+  updateDummy: (value) ->
     if @hasDummy
       colorPreview = @dummy.children ".color"
-      { red:r,green:g,blue:b } = @get "color"
+      { red:r,green:g,blue: b } = @get "color"
 
       # The color channel average value is used to define
       # whether the text should be black or white.
@@ -305,12 +305,12 @@ class ColorInput extends Widget
 
   # The `color` setter takes an object such as :
   #
-  #     red:145
-  #     green:254
-  #     blue:12
+  #     red: 145
+  #     green: 254
+  #     blue: 12
   #
   # And modify the current widget's value with the values it contains.
-  set_color:(property, value)->
+  set_color: (property, value) ->
 
     # If the passed-in object isn't valid the value
     # is keep unchanged.
@@ -323,7 +323,7 @@ class ColorInput extends Widget
     @[property] = value
 
   # Sets the value for this widget.
-  set_value:(property, value)->
+  set_value: (property, value) ->
     # If the passed-in value isn't a valid color the
     # widget's value is keep unchanged
     return @get "value" unless isValidValue value
@@ -338,18 +338,18 @@ class ColorInput extends Widget
   #### Events Handling
 
   # Clicking on a color picker dispatch a dialog request signal.
-  click:(e)->
+  click: (e) ->
     @dialogRequested.dispatch this unless @cantInteract()
 
-# <a name="gridpicker"></a>
+# <a name ="gridpicker"></a>
 ## SquarePicker
 
 # The `SquarePicker` widget is used in the `ColorPicker`.
 # It allow to manipulate value by dragging a cursor over a surface.
 #
 # Here some live instances :
-# <div id="livedemos2"></div>
-# <script type='text/javascript'>
+# <div id ="livedemos2"></div>
+# <script type ='text/javascript'>
 # var gpicker1 = new SquarePicker()
 # var gpicker2 = new SquarePicker()
 # var gpicker3 = new SquarePicker()
@@ -377,7 +377,7 @@ class ColorInput extends Widget
 # gpicker4.attach("#livedemos2")
 # </script>
 class SquarePicker extends Widget
-  constructor:->
+  constructor: ->
     super()
 
     @rangeX = [0,1]
@@ -396,31 +396,31 @@ class SquarePicker extends Widget
   # locked axis, either by an interaction or by the `value`
   # setter.
 
-  lockX:->
+  lockX: ->
     @xLocked = true
 
   # Locks can be unlocked as well.
-  unlockX:->
+  unlockX: ->
     @xLocked = false
 
-  lockY:->
+  lockY: ->
     @yLocked = true
 
-  unlockY:->
+  unlockY: ->
     @yLocked = false
 
   #### Dummy Management
 
   # The cursor for the widget is a `span` indide
   # the dummy.
-  createDummy:->
-    $ "<span class='gridpicker'>
-         <span class='cursor'></span>
+  createDummy: ->
+    $ "<span class ='gridpicker'>
+         <span class ='cursor'></span>
        </span>"
 
   # Updates the widget according to the passerd-in
   # `x` and `y` values.
-  updateDummy:(x, y)->
+  updateDummy: (x, y) ->
     cursor = @dummy.children(".cursor")
 
     w = @dummy.width()
@@ -447,19 +447,19 @@ class SquarePicker extends Widget
   #### Properties Accessors
 
   # Sets the value of the horizontal range.
-  set_rangeX:(property, value)->
+  set_rangeX: (property, value) ->
     unless @isValidRange value then return @get property
     @[property] = value
 
   # Sets the value of the vertical range.
-  set_rangeY:(property, value)->
+  set_rangeY: (property, value) ->
     unless @isValidRange value then return @get property
     @[property] = value
 
   # Sets the value for this widget.
   # The value is an array containing the two values
   # the `x` and `y` axis respectively.
-  set_value:(property, value)->
+  set_value: (property, value) ->
 
     # Invalid values, or values outside of the ranges
     # are ignored.
@@ -485,7 +485,7 @@ class SquarePicker extends Widget
   # The `handlePropertyChange` is overriden to catch
   # changes done on `rangeX` and `rangeY` in order
   # to adjust the value if needed.
-  handlePropertyChange:(property, value)->
+  handlePropertyChange: (property, value) ->
     super property, value
 
     # Match that the call concern either `rangeX` or `rangeY`.
@@ -512,12 +512,12 @@ class SquarePicker extends Widget
   #### Validations
 
   # Validates that the passed-in `value` match the passed-in `range`.
-  isValid:(value, range)->
+  isValid: (value, range) ->
     [min, max] = @get range
     value? and not isNaN(value) and min <= value <= max
 
   # Validates that the passed-in `range` is a valid range.
-  isValidRange:(value)->
+  isValidRange: (value) ->
     # A range takes the form of an array with two values,
     # the `min` and the `max` bounds.
     unless value? then return false
@@ -529,16 +529,16 @@ class SquarePicker extends Widget
 
   #### Cursor Dragging
   # Pressing the mouse over the widget starts a drag gesture.
-  mousedown:(e)->
+  mousedown: (e) ->
     unless @cantInteract()
       @dragging = true
       @drag e
 
       # Mouse release outside of the widget stop the drag as well.
-      $(document).bind "mouseup", @documentMouseUpDelegate = (e)=>
+      $(document).bind "mouseup", @documentMouseUpDelegate = (e) =>
         @mouseup e
 
-      $(document).bind "mousemove", @documentMouseMoveDelegate = (e)=>
+      $(document).bind "mousemove", @documentMouseMoveDelegate = (e) =>
         @mousemove e
 
 
@@ -547,11 +547,11 @@ class SquarePicker extends Widget
     false
 
   # Perform the drag during the mouse moves.
-  mousemove:(e)->
+  mousemove: (e) ->
     @drag e if @dragging
 
   # Releaseing the mouse stops the drag gesture.
-  mouseup:(e)->
+  mouseup: (e) ->
     if @dragging
       @drag e
       @dragging = false
@@ -559,7 +559,7 @@ class SquarePicker extends Widget
       $(document).unbind "mousemove", @documentMouseMoveDelegate
 
   # Realizes the drag gesture.
-  drag:(e)->
+  drag: (e) ->
     w = @dummy.width()
     h = @dummy.height()
 
@@ -581,15 +581,15 @@ class SquarePicker extends Widget
 
     @set "value", [vx, vy]
 
-# <a name="colorpicker"></a>
+# <a name ="colorpicker"></a>
 ## ColorPicker
 
 # The `ColorPicker` class handle the manipulation
 # of the color for a given `ColorInput` object.
 #
 # Here a live instance of the `ColorPicker` widget :
-# <div id="livedemos3"></div>
-# <script type="text/javascript">
+# <div id ="livedemos3"></div>
+# <script type ="text/javascript">
 # var dialog = new ColorPicker();
 # dialog.set("value", "#abcdef");
 # dialog.addClasses("dummy");
@@ -600,7 +600,7 @@ class ColorPicker extends Widget
 
   @mixins HasChildren, DropDownPopup
 
-  constructor:->
+  constructor: ->
     super()
 
     # The color is stored internally as an object that
@@ -611,7 +611,7 @@ class ColorPicker extends Widget
     # in this object. Ultimately the changes made
     # by a user interaction are affected to the widget's
     # value.
-    @model = r:0, g:0, b:0, h:0, s:0, v:0
+    @model = r:0, g:0, b:0, h:0, s:0, v: 0
 
     # When interactions are done on the children of the
     # `ColorPicker` the model is updated and each
@@ -654,10 +654,10 @@ class ColorPicker extends Widget
   #
   # Additionally, there's two `span` that serve to display the original color
   # in comparison next to the current color.
-  createDummy:->
-    dummy = $ "<span class='colorpicker'>
-            <span class='newColor'></span>
-            <span class='oldColor'></span>
+  createDummy: ->
+    dummy = $ "<span class ='colorpicker'>
+            <span class ='newColor'></span>
+            <span class ='oldColor'></span>
            </span>"
 
     # Clicking on the original color reset the widget.
@@ -668,7 +668,7 @@ class ColorPicker extends Widget
 
   # Creates the widgets used by the dialog to manipulate
   # the color's components.
-  createDummyChildren:->
+  createDummyChildren: ->
     # There's one `TextInput` for each component of the color
     # for both the `rgb` and `hsv` color space. And for each
     # components input, a `Radio` button is placed next to it
@@ -704,7 +704,7 @@ class ColorPicker extends Widget
 
   # Creates a `TextInput` with a maximum length of `maxlength`
   # and add the `cls` class to the input's dummy.
-  newInput:(cls, maxlength)->
+  newInput: (cls, maxlength) ->
     input = new TextInput
     input.addClasses cls
     input.set "maxlength", maxlength
@@ -712,14 +712,14 @@ class ColorPicker extends Widget
     # The `ColorPicker` listen to all the children
     # `TextInput`s. The class added to the input is passed
     # to the listener to differenciate each input.
-    input.valueChanged.add (w, v)=>
+    input.valueChanged.add (w, v) =>
       @inputValueChanged w, v, cls
       true
 
     input
   # Creates a `Radio` with the specified class. Optionally
   # the checked property of the radio can be set to `true`.
-  newRadio:(cls, checked = false)->
+  newRadio: (cls, checked = false) ->
     radio = new Radio
     radio.addClasses cls
     radio.set "checked", checked
@@ -729,7 +729,7 @@ class ColorPicker extends Widget
     radio
 
   # Invalidates the widget to force an update.
-  invalidate:->
+  invalidate: ->
     @update()
 
     # Since the `update` method can be called in the listener
@@ -749,7 +749,7 @@ class ColorPicker extends Widget
   # Updates the current widget's value after changes made
   # to its children, the other children are also updated
   # with the current color components.
-  update:()->
+  update: () ->
 
     rnd = Math.round
 
@@ -790,10 +790,10 @@ class ColorPicker extends Widget
     @dummy.children(".newColor").attr "style", "background: ##{value};"
 
   # Updates the value of the specified input.
-  updateInput:(input, value)->
+  updateInput: (input, value) ->
     input.set "value", value
 
-  setupDialog:(colorinput)->
+  setupDialog: (colorinput) ->
     # The original value is stored for allow a later reset.
     @originalValue = value = @caller.get "value"
 
@@ -806,7 +806,7 @@ class ColorPicker extends Widget
   #### Comfirmation And Cancelation
 
   # Handles the changes comfirmation with the `Enter` key.
-  comfirmChangesOnEnter:->
+  comfirmChangesOnEnter: ->
     # If the command is triggered when on of the children inputs
     # has changes that haven't trigger a `change` event, the
     # widgets prevent the comfirmation to allow the submission
@@ -822,14 +822,14 @@ class ColorPicker extends Widget
 
   # Comfirm the changes to the `ColorInput`. The dialog is hidden
   # a the end of the call.
-  comfirmChanges:->
+  comfirmChanges: ->
     @caller.set "value", @get "value"
     @close()
 
   #### Properties Accessors
 
   # Changes the color edit mode for this dialog.
-  set_mode:(property, value)->
+  set_mode: (property, value) ->
     oldMode = @[property]
 
     oldMode.dispose() if oldMode?
@@ -841,7 +841,7 @@ class ColorPicker extends Widget
 
   # Changing the widget's value using the `value` setter
   # will feed the model with completely new datas from the passed-in color.
-  set_value:(property, value)->
+  set_value: (property, value) ->
     return @get "value" unless isValidValue value
 
     @fromHex value
@@ -851,16 +851,16 @@ class ColorPicker extends Widget
 
   # Sets the widget's model with an hexadecimal color.
   # The `#` prefix is optional.
-  fromHex:(hex)->
+  fromHex: (hex) ->
 
     v = if hex.indexOf("#") is -1 then "##{hex}" else hex
 
     if isValidValue v
-      { red:r, green:g, blue:b } = colorObjectFromValue v
+      { red:r, green:g, blue: b } = colorObjectFromValue v
       @fromRGB r, g, b
 
   # Sets the widget's model with the three components of a `rgb` color.
-  fromRGB:(r, g, b)->
+  fromRGB: (r, g, b) ->
 
     r = parseFloat r
     g = parseFloat g
@@ -868,12 +868,12 @@ class ColorPicker extends Widget
 
     if isValidRGB r, g, b
       [h, s, v] = rgb2hsv r, g, b
-      @model = r:r, g:g, b:b, h:h, s:s, v:v
+      @model = r:r, g:g, b:b, h:h, s:s, v: v
 
     @invalidate()
 
   # Sets the widget's model with the three components of a `hsv` color.
-  fromHSV:(h, s, v)->
+  fromHSV: (h, s, v) ->
 
     h = parseFloat h
     s = parseFloat s
@@ -881,7 +881,7 @@ class ColorPicker extends Widget
 
     if isValidHSV h, s, v
       [r, g, b] = hsv2rgb h, s, v
-      @model = r:r, g:g, b:b, h:h, s:s, v:v
+      @model = r:r, g:g, b:b, h:h, s:s, v: v
 
     @invalidate()
 
@@ -889,7 +889,7 @@ class ColorPicker extends Widget
 
   # Catches the change made to the `RadioGroup` selection
   # and affect the corresponding edit mode.
-  modeChanged:(widget, oldSel, newSel)->
+  modeChanged: (widget, oldSel, newSel) ->
     switch newSel
       when @redMode        then @set "mode", @editModes[0]
       when @greenMode      then @set "mode", @editModes[1]
@@ -899,7 +899,7 @@ class ColorPicker extends Widget
       when @valueMode      then @set "mode", @editModes[5]
 
   # Receives the `valueChanged` signals from the children inputs.
-  inputValueChanged:(widget, value, component)->
+  inputValueChanged: (widget, value, component) ->
     # But if the lock is activated the function will not proceed.
     unless @inputValueSetProgrammatically
 
@@ -919,20 +919,20 @@ class ColorPicker extends Widget
 
 ## Color Manipulation Modes
 
-#<a name="AbstractMode"></a>
+#<a name ="AbstractMode"></a>
 #### AbstractMode
 
 # The abstract class provides some basic behavior that are shared
 # by each mode.
 class AbstractMode
   # Registers the dialog that own the color mode.
-  init:(dialog)->
+  init: (dialog) ->
     @dialog = dialog
     @valuesSetProgrammatically = false
 
   # The `dispose` methods unregisters the signals listeners
   # and remove the content the mode added to the dialog.
-  dispose:->
+  dispose: ->
     @dialog.rangePicker.valueChanged.remove @rangeChanged, this
     @dialog.squarePicker.valueChanged.remove @squareChanged, this
 
@@ -941,15 +941,15 @@ class AbstractMode
 
   # Initialize the setup for the two `SquarePicker` owns
   # by the `ColorPicker`.
-  initPickers:(a, b, c, r, s)->
+  initPickers: (a, b, c, r, s) ->
     # The `a`, `b` and `c` arguments are the three ranges for the
     # axis of the `SquarePicker`.
     @dialog.squarePicker.set
-      rangeX:a
-      rangeY:b
+      rangeX: a
+      rangeY: b
 
     @dialog.rangePicker.set
-      rangeY:c
+      rangeY: c
 
     # Listeners are automatically registered on the `valueChanged`
     # signals of the `SquarePicker`.
@@ -960,27 +960,27 @@ class AbstractMode
     @dialog.rangePicker.dummy.prepend $ r
     @dialog.squarePicker.dummy.prepend $ s
 
-#<a name="HSV"></a>
+#<a name ="HSV"></a>
 #### HSV Mode
 
 # The `HSVMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `hue` component and the square
 # picker edit the `saturation` and `value`.
 class HSVMode extends AbstractMode
-  init:(dialog)->
+  init: (dialog) ->
     super dialog
 
     @initPickers [0,100],
            [0,100],
            [0,360],
-           "<span class='layer hue-vertical-ramp'></span>",
-           "<span class='layer'>
-            <span class='layer hue-color'></span>
-            <span class='layer white-horizontal-ramp'></span>
-            <span class='layer black-vertical-ramp'></span>
+           "<span class ='layer hue-vertical-ramp'></span>",
+           "<span class ='layer'>
+            <span class ='layer hue-color'></span>
+            <span class ='layer white-horizontal-ramp'></span>
+            <span class ='layer black-vertical-ramp'></span>
            </span>"
 
-  update:(model)->
+  update: (model) ->
     if model?
       { h, s, v } = model
       [r,g,b] = hsv2rgb h, 100, 100
@@ -999,46 +999,46 @@ class HSVMode extends AbstractMode
 
       @valuesSetProgrammatically = false
 
-  updateDialog:(h, s, v)->
+  updateDialog: (h, s, v) ->
     @valuesSetProgrammatically = true
     @dialog.fromHSV 360-h, s, 100-v
     @valuesSetProgrammatically = false
 
-  squareChanged:(widget, value)->
+  squareChanged: (widget, value) ->
     unless @valuesSetProgrammatically
       [s, v] = value
       h = @dialog.rangePicker.get("value")[1]
 
       @updateDialog h, s, v
 
-  rangeChanged:(widget, value)->
+  rangeChanged: (widget, value) ->
     unless @valuesSetProgrammatically
       [s, v] = @dialog.squarePicker.get "value"
       h = value[1]
 
       @updateDialog h, s, v
 
-#<a name="SHV"></a>
+#<a name ="SHV"></a>
 #### SHV Mode
 
 # The `SHVMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `saturation` component and the square
 # picker edit the `hue` and `value`.
 class SHVMode extends AbstractMode
-  init:(dialog)->
+  init: (dialog) ->
     super dialog
 
     @initPickers [0,360],
            [0,100],
            [1,100],
-           "<span class='layer black-white-vertical-ramp'></span>",
-           "<span class='layer'>
-            <span class='layer hue-horizontal-ramp'></span>
-            <span class='layer white-plain'></span>
-            <span class='layer black-vertical-ramp'></span>
+           "<span class ='layer black-white-vertical-ramp'></span>",
+           "<span class ='layer'>
+            <span class ='layer hue-horizontal-ramp'></span>
+            <span class ='layer white-plain'></span>
+            <span class ='layer black-vertical-ramp'></span>
             </span>"
 
-  update:(model)->
+  update: (model) ->
     { h, s, v } = model
     opacity = 1-(s / 100)
 
@@ -1052,46 +1052,46 @@ class SHVMode extends AbstractMode
     @dialog.squarePicker.dummy.find(".white-plain")
                   .attr "style", "opacity: #{opacity};"
 
-  updateDialog:(h, s, v)->
+  updateDialog: (h, s, v) ->
     @valuesSetProgrammatically = true
     @dialog.fromHSV 360-h, 100-s, 100-v
     @valuesSetProgrammatically = false
 
-  squareChanged:(widget, value)->
+  squareChanged: (widget, value) ->
     unless @valuesSetProgrammatically
       [h, v] = value
       s = @dialog.rangePicker.get("value")[1]
 
       @updateDialog h, s, v
 
-  rangeChanged:(widget, value)->
+  rangeChanged: (widget, value) ->
     unless @valuesSetProgrammatically
       [h, v] = @dialog.squarePicker.get "value"
       s = value[1]
 
       @updateDialog h, s, v
 
-#<a name="VHS"></a>
+#<a name ="VHS"></a>
 #### VHS Mode
 
 # The `VHSMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `value` component and the square
 # picker edit the `saturation` and `hue`.
 class VHSMode extends AbstractMode
-  init:(dialog)->
+  init: (dialog) ->
     super dialog
 
     @initPickers [0,360],
            [0,100],
            [1,100],
-           "<span class='layer black-white-vertical-ramp'></span>",
-           "<span class='layer'>
-            <span class='layer hue-horizontal-ramp'></span>
-            <span class='layer white-vertical-ramp'></span>
-            <span class='layer black-plain'></span>
+           "<span class ='layer black-white-vertical-ramp'></span>",
+           "<span class ='layer'>
+            <span class ='layer hue-horizontal-ramp'></span>
+            <span class ='layer white-vertical-ramp'></span>
+            <span class ='layer black-plain'></span>
             </span>"
 
-  update:(model)->
+  update: (model) ->
     { h, s, v } = model
     opacity = 1-(v / 100)
 
@@ -1105,45 +1105,45 @@ class VHSMode extends AbstractMode
     @dialog.squarePicker.dummy.find(".black-plain")
                   .attr "style", "opacity: #{opacity};"
 
-  updateDialog:(h, s, v)->
+  updateDialog: (h, s, v) ->
     @valuesSetProgrammatically = true
     @dialog.fromHSV 360-h, 100-s, 100-v
     @valuesSetProgrammatically = false
 
-  squareChanged:(widget, value)->
+  squareChanged: (widget, value) ->
     unless @valuesSetProgrammatically
       [h, s] = value
       v = @dialog.rangePicker.get("value")[1]
 
       @updateDialog h, s, v
 
-  rangeChanged:(widget, value)->
+  rangeChanged: (widget, value) ->
     unless @valuesSetProgrammatically
       [h, s] = @dialog.squarePicker.get "value"
       v = value[1]
 
       @updateDialog h, s, v
 
-#<a name="RGB"></a>
+#<a name ="RGB"></a>
 #### RGB Mode
 
 # The `RGBMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `red` component and the square
 # picker edit the `green` and `blue`.
 class RGBMode extends AbstractMode
-  init:(dialog)->
+  init: (dialog) ->
     super dialog
 
     @initPickers [0,255],
            [0,255],
            [0,255],
-           "<span class='layer black-red-vertical-ramp'></span>",
-           "<span class='layer'>
-            <span class='layer rgb-bottom'></span>
-            <span class='layer rgb-up'></span>
+           "<span class ='layer black-red-vertical-ramp'></span>",
+           "<span class ='layer'>
+            <span class ='layer rgb-bottom'></span>
+            <span class ='layer rgb-up'></span>
             </span>"
 
-  update:(model)->
+  update: (model) ->
     { r, g, b } = model
     opacity = r / 255
 
@@ -1157,45 +1157,45 @@ class RGBMode extends AbstractMode
     @dialog.squarePicker.dummy.find(".rgb-up")
                   .attr "style", "opacity: #{opacity};"
 
-  updateDialog:(r, g, b)->
+  updateDialog: (r, g, b) ->
     @valuesSetProgrammatically = true
     @dialog.fromRGB 255-r, 255 - g, b
     @valuesSetProgrammatically = false
 
-  squareChanged:(widget, value)->
+  squareChanged: (widget, value) ->
     unless @valuesSetProgrammatically
       [b, g] = value
       r = @dialog.rangePicker.get("value")[1]
 
       @updateDialog r, g, b
 
-  rangeChanged:(widget, value)->
+  rangeChanged: (widget, value) ->
     unless @valuesSetProgrammatically
       [b, g] = @dialog.squarePicker.get "value"
       r = value[1]
 
       @updateDialog r, g, b
 
-#<a name="GRB"></a>
+#<a name ="GRB"></a>
 #### GRB Mode
 
 # The `RGBMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `green` component and the square
 # picker edit the `red` and `blue`.
 class GRBMode extends AbstractMode
-  init:(dialog)->
+  init: (dialog) ->
     super dialog
 
     @initPickers [0,255],
            [0,255],
            [0,255],
-           "<span class='layer black-green-vertical-ramp'></span>",
-           "<span class='layer'>
-            <span class='layer grb-bottom'></span>
-            <span class='layer grb-up'></span>
+           "<span class ='layer black-green-vertical-ramp'></span>",
+           "<span class ='layer'>
+            <span class ='layer grb-bottom'></span>
+            <span class ='layer grb-up'></span>
             </span>"
 
-  update:(model)->
+  update: (model) ->
     { r, g, b } = model
     opacity = g / 255
 
@@ -1209,45 +1209,45 @@ class GRBMode extends AbstractMode
     @dialog.squarePicker.dummy.find(".grb-up")
                   .attr "style", "opacity: #{opacity};"
 
-  updateDialog:(r, g, b)->
+  updateDialog: (r, g, b) ->
     @valuesSetProgrammatically = true
     @dialog.fromRGB 255-r, 255 - g, b
     @valuesSetProgrammatically = false
 
-  squareChanged:(widget, value)->
+  squareChanged: (widget, value) ->
     unless @valuesSetProgrammatically
       [b, r] = value
       g = @dialog.rangePicker.get("value")[1]
 
       @updateDialog r, g, b
 
-  rangeChanged:(widget, value)->
+  rangeChanged: (widget, value) ->
     unless @valuesSetProgrammatically
       [b, r] = @dialog.squarePicker.get "value"
       g = value[1]
 
       @updateDialog r, g, b
 
-#<a name="BGR"></a>
+#<a name ="BGR"></a>
 #### BGR Mode
 
 # The `RGBMode` setup the `ColorPicker` such as the
 # vertical ramp edit the `blue` component and the square
 # picker edit the `green` and `red`.
 class BGRMode extends AbstractMode
-  init:(dialog)->
+  init: (dialog) ->
     super dialog
 
     @initPickers [0,255],
            [0,255],
            [0,255],
-           "<span class='layer black-blue-vertical-ramp'></span>",
-           "<span class='layer'>
-            <span class='layer bgr-bottom'></span>
-            <span class='layer bgr-up'></span>
+           "<span class ='layer black-blue-vertical-ramp'></span>",
+           "<span class ='layer'>
+            <span class ='layer bgr-bottom'></span>
+            <span class ='layer bgr-up'></span>
             </span>"
 
-  update:(model)->
+  update: (model) ->
     { r, g, b } = model
     opacity = b / 255
 
@@ -1261,19 +1261,19 @@ class BGRMode extends AbstractMode
     @dialog.squarePicker.dummy.find(".bgr-up")
                   .attr "style", "opacity: #{opacity};"
 
-  updateDialog:(r, g, b)->
+  updateDialog: (r, g, b) ->
     @valuesSetProgrammatically = true
     @dialog.fromRGB 255 - r, g, 255 - b
     @valuesSetProgrammatically = false
 
-  squareChanged:(widget, value)->
+  squareChanged: (widget, value) ->
     unless @valuesSetProgrammatically
       [g, r] = value
       b = @dialog.rangePicker.get("value")[1]
 
       @updateDialog r, g, b
 
-  rangeChanged:(widget, value)->
+  rangeChanged: (widget, value) ->
     unless @valuesSetProgrammatically
       [g, r] = @dialog.squarePicker.get "value"
       b = value[1]

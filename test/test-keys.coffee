@@ -64,10 +64,10 @@ $( document ).ready ->
     ks = keystroke 16, 7
 
     assertThat ks.match
-      keyCode:16
-      ctrlKey:true
-      shiftKey:true
-      altKey:true
+      keyCode: 16
+      ctrlKey: true
+      shiftKey: true
+      altKey: true
 
   test "The string representation of a keystroke should
       be a human readable representation", ->

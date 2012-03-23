@@ -1,2 +1,2 @@
-source:"src/signals"
-test:"test/test-signals"
+source: "src/signals"
+test: "test/test-signals"

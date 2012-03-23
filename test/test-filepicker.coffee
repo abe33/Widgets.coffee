@@ -107,7 +107,7 @@ $( document ).ready ->
     targetChangeWasCalled = false
 
     class MockFilePicker extends FilePicker
-      targetChange:(e)->
+      targetChange: (e)->
         targetChangeWasCalled = true
 
     picker = new MockFilePicker
@@ -135,9 +135,9 @@ $( document ).ready ->
     assertThat picker.dummy.attr("title"), equalTo ""
 
   opt =
-    cls:FilePicker
-    className:"FilePicker"
-    focusChildSelector:"input"
+    cls: FilePicker
+    className: "FilePicker"
+    focusChildSelector: "input"
 
   testFocusProvidedByChildMixin opt
 

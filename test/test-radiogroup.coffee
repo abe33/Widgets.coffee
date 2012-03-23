@@ -15,7 +15,7 @@ $( document ).ready ->
     signalCalled = false
 
     class MockRadioGroup extends RadioGroup
-      radioCheckedChanged:( radio, checked )->
+      radioCheckedChanged: ( radio, checked )->
         signalCalled = true
 
     radio = new Radio
@@ -38,7 +38,7 @@ $( document ).ready ->
     signalCalled = false
 
     class MockRadioGroup extends RadioGroup
-      radioCheckedChanged:( radio, checked )->
+      radioCheckedChanged: ( radio, checked )->
         signalCalled = true
 
     radio = new Radio
@@ -65,7 +65,7 @@ $( document ).ready ->
     signalCalled = false
 
     class MockRadioGroup extends RadioGroup
-      radioCheckedChanged:( radio, checked )->
+      radioCheckedChanged: ( radio, checked )->
         signalCalled = true
 
     radio = new Radio

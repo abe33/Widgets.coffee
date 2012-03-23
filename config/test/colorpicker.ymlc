@@ -1,4 +1,4 @@
-source:[
+source: [
   "src/signals"
   "src/std"
   "src/keys"
@@ -12,4 +12,4 @@ source:[
   "src/radiogroup"
   "src/colorpicker"
 ]
-test:"test/test-colorpicker"
+test: "test/test-colorpicker"

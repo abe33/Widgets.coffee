@@ -89,7 +89,7 @@ $( document ).ready ->
     targetChangeCalled = false
 
     class MockWidget extends Widget
-      targetChange:(e)->
+      targetChange: (e)->
         targetChangeCalled = true
 
     widget = new MockWidget target[0]
@@ -146,9 +146,9 @@ $( document ).ready ->
 
     widget = new Widget
     widget.set
-      name:"someName"
-      disabled:true
-      value:"foo"
+      name: "someName"
+      disabled: true
+      value: "foo"
 
     assertThat widget.get("name"), equalTo "someName"
     assertThat widget.get("disabled"), equalTo true
@@ -179,7 +179,7 @@ $( document ).ready ->
     createDummyWasCalled = false
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         createDummyWasCalled = true
         $ "<span></span>"
 
@@ -202,23 +202,23 @@ $( document ).ready ->
     dblclickReceived = false
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         @dummy = $ "<span></span>"
-      mousedown:->
+      mousedown: ->
         mousedownReceived = true
-      mouseup:->
+      mouseup: ->
         mouseupReceived = true
-      mousemove:->
+      mousemove: ->
         mousemoveReceived = true
-      mouseover:->
+      mouseover: ->
         mouseoverReceived = true
-      mouseout:->
+      mouseout: ->
         mouseoutReceived = true
-      mousewheel:->
+      mousewheel: ->
         mousewheelReceived = true
-      click:->
+      click: ->
         clickReceived = true
-      dblclick:->
+      dblclick: ->
         dblclickReceived = true
 
     widget = new MockWidget
@@ -255,23 +255,23 @@ $( document ).ready ->
     dblclickReceived = false
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span></span>"
-      mousedown:->
+      mousedown: ->
         mousedownReceived = true
-      mouseup:->
+      mouseup: ->
         mouseupReceived = true
-      mousemove:->
+      mousemove: ->
         mousemoveReceived = true
-      mouseover:->
+      mouseover: ->
         mouseoverReceived = true
-      mouseout:->
+      mouseout: ->
         mouseoutReceived = true
-      mousewheel:->
+      mousewheel: ->
         mousewheelReceived = true
-      click:->
+      click: ->
         clickReceived = true
-      dblclick:->
+      dblclick: ->
         dblclickReceived = true
 
     widget = new MockWidget
@@ -300,7 +300,7 @@ $( document ).ready ->
       class attribute", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span></span>"
 
     widget = new MockWidget
@@ -317,7 +317,7 @@ $( document ).ready ->
       the call order is", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span></span>"
 
     widget = new MockWidget
@@ -338,7 +338,7 @@ $( document ).ready ->
       when the state is changed", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span></span>"
 
     widget           = new MockWidget
@@ -362,7 +362,7 @@ $( document ).ready ->
       the state is modified", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span></span>"
 
     widget           = new MockWidget
@@ -379,7 +379,7 @@ $( document ).ready ->
       the tabindex attribute", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span></span>"
 
     widget = new MockWidget
@@ -392,11 +392,11 @@ $( document ).ready ->
     blurReceived = false
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span></span>"
-      focus:(e)->
+      focus: (e)->
         focusReceived = true
-      blur:(e)->
+      blur: (e)->
         blurReceived = true
 
 
@@ -415,13 +415,13 @@ $( document ).ready ->
     keypressReceived = false
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span></span>"
-      keydown:(e)->
+      keydown: (e)->
         keydownReceived = true
-      keyup:(e)->
+      keyup: (e)->
         keyupReceived = true
-      keypress:(e)->
+      keypress: (e)->
         keypressReceived = true
 
     widget = new MockWidget
@@ -436,7 +436,7 @@ $( document ).ready ->
 
   test "Widgets should be able to know when it has focus", ->
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget()
@@ -447,7 +447,7 @@ $( document ).ready ->
 
   test "Widgets should be able to know when it lose focus", ->
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget()
@@ -461,7 +461,7 @@ $( document ).ready ->
       in its class attribute", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget()
@@ -474,7 +474,7 @@ $( document ).ready ->
       state in its class attribute", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget()
@@ -487,7 +487,7 @@ $( document ).ready ->
   test "Widgets should preserve the initial class value of the dummy", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget
@@ -498,7 +498,7 @@ $( document ).ready ->
       value of the dummy even with state class", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget
@@ -548,10 +548,10 @@ $( document ).ready ->
       commandCalled = true
 
     widget.keydown
-      keyCode:keys.a
-      ctrlKey:true
-      shiftKey:false
-      altKey:false
+      keyCode: keys.a
+      ctrlKey: true
+      shiftKey: false
+      altKey: false
 
     assertThat commandCalled
 
@@ -574,10 +574,10 @@ $( document ).ready ->
       commandCalled = true
 
     widget.keyup
-      keyCode:keys.a
-      ctrlKey:true
-      shiftKey:false
-      altKey:false
+      keyCode: keys.a
+      ctrlKey: true
+      shiftKey: false
+      altKey: false
 
     assertThat commandCalled
 
@@ -587,10 +587,10 @@ $( document ).ready ->
     widget = new Widget
 
     assertThat widget.keyup
-      keyCode:keys.a
-      ctrlKey:true
-      shiftKey:false
-      altKey:false
+      keyCode: keys.a
+      ctrlKey: true
+      shiftKey: false
+      altKey: false
 
   test "Widgets keydown events that doesn't trigger a command
       shouldn't return false", ->
@@ -598,10 +598,10 @@ $( document ).ready ->
     widget = new Widget
 
     assertThat widget.keydown
-      keyCode:keys.a
-      ctrlKey:true
-      shiftKey:false
-      altKey:false
+      keyCode: keys.a
+      ctrlKey: true
+      shiftKey: false
+      altKey: false
 
   test "Widgets keydown events that trigger a command should
       return the command return",->
@@ -612,10 +612,10 @@ $( document ).ready ->
       true
 
     assertThat widget.keydown
-      keyCode:keys.a
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.a
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
   test "Widgets keyup events that trigger a command should
       return the command return",->
@@ -626,10 +626,10 @@ $( document ).ready ->
       true
 
     assertThat widget.keyup
-      keyCode:keys.a
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.a
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
   test "Widgets should pass the event to the keydown commands", ->
 
@@ -640,10 +640,10 @@ $( document ).ready ->
       event = e
 
     widget.keydown
-      keyCode:keys.a
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.a
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat event, notNullValue()
 
@@ -656,10 +656,10 @@ $( document ).ready ->
       event = e
 
     widget.keyup
-      keyCode:keys.a
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.a
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat event, notNullValue()
 
@@ -692,9 +692,9 @@ $( document ).ready ->
     focusReceived = false
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
-      focus:(e)->
+      focus: (e)->
         focusReceived = true
 
     widget = new MockWidget
@@ -708,11 +708,11 @@ $( document ).ready ->
     blurReceived = false
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
-      focus:(e)->
+      focus: (e)->
         focusReceived = true
-      blur:(e)->
+      blur: (e)->
         blurReceived = true
 
     widget = new MockWidget
@@ -727,7 +727,7 @@ $( document ).ready ->
 
   test "Disabled widgets shouldn't allow focus", ->
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget
@@ -742,7 +742,7 @@ $( document ).ready ->
     setterCalled = false
 
     class MockWidget extends Widget
-      set_value:( property, value )->
+      set_value: ( property, value )->
         setterCalled = true
 
     widget = new MockWidget
@@ -755,15 +755,15 @@ $( document ).ready ->
     setterCalled = false
 
     class MockWidgetA extends Widget
-      constructor:(target)->
+      constructor: (target)->
         super target
         @foo = "bar"
 
-      set_foo:( property, value )->
+      set_foo: ( property, value )->
         @[ property ] = value
 
     class MockWidgetB extends MockWidgetA
-      set_foo:( property, value )->
+      set_foo: ( property, value )->
         setterCalled = true
         super property, value
 
@@ -792,7 +792,7 @@ $( document ).ready ->
 
     target = $("<input type='text' style='width: 100px;'></input>")[0]
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget target
@@ -824,7 +824,7 @@ $( document ).ready ->
 
   test "Widgets should provides a way to add a class to its dummy", ->
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget
@@ -836,7 +836,7 @@ $( document ).ready ->
 
   test "Widgets should provides a way to remove a class from its dummy", ->
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo bar owl'></span>"
 
     widget = new MockWidget
@@ -849,7 +849,7 @@ $( document ).ready ->
   test "Widgets should provide an id property that is mapped to the dummy", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo' id='hola'></span>"
 
     widget = new MockWidget
@@ -863,7 +863,7 @@ $( document ).ready ->
   test "Setting a null id should remove the attribute from the dummy", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget
@@ -877,7 +877,7 @@ $( document ).ready ->
       should have an id derived from it", ->
     target = $("<input type='text' id='someid'></input>")[0]
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget target
@@ -919,7 +919,7 @@ $( document ).ready ->
       class attribute", ->
     target = $("<input type='text' required></input>")[0]
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget target
@@ -930,7 +930,7 @@ $( document ).ready ->
       an object in the DOM", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget
@@ -943,7 +943,7 @@ $( document ).ready ->
   test "Widget.attach should accept a selector string as argument", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget
@@ -957,7 +957,7 @@ $( document ).ready ->
       on a call to attach", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     signalCalled = false
@@ -978,7 +978,7 @@ $( document ).ready ->
   test "Widget should provide a detach method", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget = new MockWidget
@@ -990,7 +990,7 @@ $( document ).ready ->
   test "Widget should provide a before method", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget1 = new MockWidget
@@ -1007,7 +1007,7 @@ $( document ).ready ->
       on a call to before", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     signalCalled = false
@@ -1031,7 +1031,7 @@ $( document ).ready ->
   test "Widget should provide a after method", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     widget1 = new MockWidget
@@ -1048,7 +1048,7 @@ $( document ).ready ->
       on a call to after", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     signalCalled = false
@@ -1073,7 +1073,7 @@ $( document ).ready ->
       on a call to detach", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     signalCalled = false
@@ -1093,7 +1093,7 @@ $( document ).ready ->
   test "Classes set on the target should be kept by the widget", ->
 
     class MockWidget extends Widget
-      createDummy:->
+      createDummy: ->
         $ "<span class='foo'></span>"
 
     target = $ "<input type='text' class='cssclass'></input>"
@@ -1132,7 +1132,7 @@ $( document ).ready ->
 
   test "Widgets should provides a string representation with details", ->
     class MockWidget extends Widget
-      toString:->
+      toString: ->
         @stringify "name"
 
     widget = new MockWidget

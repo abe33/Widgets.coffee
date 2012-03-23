@@ -1,4 +1,4 @@
-source:[
+source: [
   "src/signals"
   "src/std"
   "src/keys"
@@ -6,4 +6,4 @@ source:[
   "src/mixins"
   "src/widgets"
 ]
-test:"test/test-widgets"
+test: "test/test-widgets"

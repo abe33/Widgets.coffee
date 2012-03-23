@@ -30,7 +30,7 @@ $( document ).ready ->
     updateDummyCalled = false
 
     class MockNumericWidget extends NumericWidget
-      updateDummy:(value, min, max)->
+      updateDummy: (value, min, max)->
         updateDummyCalled = true
 
     widget = new MockNumericWidget
@@ -39,81 +39,81 @@ $( document ).ready ->
     assertThat updateDummyCalled
 
   testValueInRangeMixin
-    cls:NumericWidget
-    className:"NumericWidget"
-    defaultTarget:"<input min='0' max='100' step='5' value='10'>"
+    cls: NumericWidget
+    className: "NumericWidget"
+    defaultTarget: "<input min='0' max='100' step='5' value='10'>"
 
-    initialValue:10
-    valueBelowRange:-10
-    valueAboveRange:110
+    initialValue: 10
+    valueBelowRange: -10
+    valueAboveRange: 110
 
-    minValue:0
-    setMinValue:50
-    invalidMinValue:110
+    minValue: 0
+    setMinValue: 50
+    invalidMinValue: 110
 
-    maxValue:100
-    setMaxValue:5
-    invalidMaxValue:-10
+    maxValue: 100
+    setMaxValue: 5
+    invalidMaxValue: -10
 
-    stepValue:5
-    setStep:3
-    valueNotInStep:10
-    snappedValue:9
+    stepValue: 5
+    setStep: 3
+    valueNotInStep: 10
+    snappedValue: 9
 
-    singleIncrementValue:15
-    singleDecrementValue:5
+    singleIncrementValue: 15
+    singleDecrementValue: 5
 
-    undefinedMinValueMatcher:nullValue()
-    undefinedMaxValueMatcher:nullValue()
-    undefinedStepValueMatcher:nullValue()
+    undefinedMinValueMatcher: nullValue()
+    undefinedMaxValueMatcher: nullValue()
+    undefinedStepValueMatcher: nullValue()
 
   testValueInRangeMixinIntervals
-    cls:NumericWidget
-    className:"NumericWidget"
-    defaultTarget:"<input min='0' max='100' step='5' value='10'>"
+    cls: NumericWidget
+    className: "NumericWidget"
+    defaultTarget: "<input min='0' max='100' step='5' value='10'>"
 
   testValueInRangeMixinKeyboard
-    cls:NumericWidget
-    className:"NumericWidget"
-    defaultTarget:"<input min='0' max='100' step='5' value='10'>"
-    key:"up"
-    action:"increment"
-    valueMatcher:closeTo 15, 1
-    initialValueMatcher:equalTo 10
+    cls: NumericWidget
+    className: "NumericWidget"
+    defaultTarget: "<input min='0' max='100' step='5' value='10'>"
+    key: "up"
+    action: "increment"
+    valueMatcher: closeTo 15, 1
+    initialValueMatcher: equalTo 10
 
   testValueInRangeMixinKeyboard
-    cls:NumericWidget
-    className:"NumericWidget"
-    defaultTarget:"<input min='0' max='100' step='5' value='10'>"
-    key:"down"
-    action:"decrement"
-    valueMatcher:closeTo 5, 1
-    initialValueMatcher:equalTo 10
+    cls: NumericWidget
+    className: "NumericWidget"
+    defaultTarget: "<input min='0' max='100' step='5' value='10'>"
+    key: "down"
+    action: "decrement"
+    valueMatcher: closeTo 5, 1
+    initialValueMatcher: equalTo 10
 
   testValueInRangeMixinKeyboard
-    cls:NumericWidget
-    className:"NumericWidget"
-    defaultTarget:"<input min='0' max='100' step='5' value='10'>"
-    key:"right"
-    action:"increment"
-    valueMatcher:closeTo 15, 1
-    initialValueMatcher:equalTo 10
+    cls: NumericWidget
+    className: "NumericWidget"
+    defaultTarget: "<input min='0' max='100' step='5' value='10'>"
+    key: "right"
+    action: "increment"
+    valueMatcher: closeTo 15, 1
+    initialValueMatcher: equalTo 10
 
   testValueInRangeMixinKeyboard
-    cls:NumericWidget
-    className:"NumericWidget"
-    defaultTarget:"<input min='0' max='100' step='5' value='10'>"
-    key:"left"
-    action:"decrement"
-    valueMatcher:closeTo 5, 1
-    initialValueMatcher:equalTo 10
+    cls: NumericWidget
+    className: "NumericWidget"
+    defaultTarget: "<input min='0' max='100' step='5' value='10'>"
+    key: "left"
+    action: "decrement"
+    valueMatcher: closeTo 5, 1
+    initialValueMatcher: equalTo 10
 
   testValueInRangeMixinMouseWheel
-    cls:NumericWidget
-    className:"NumericWidget"
-    defaultTarget:"<input min='0' max='100' step='5' value='10'>"
-    initialValue:10
-    singleIncrementValue:15
+    cls: NumericWidget
+    className: "NumericWidget"
+    defaultTarget: "<input min='0' max='100' step='5' value='10'>"
+    initialValue: 10
+    singleIncrementValue: 15
 
 
 

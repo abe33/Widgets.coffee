@@ -8,9 +8,9 @@ class CheckBox extends Widget
   # `CheckBox` and its descendants are dedicated to work with
   # a unique type of inputs. This property allow to define the
   # type of allowed inputs for the class.
-  targetType:"checkbox"
+  targetType: "checkbox"
 
-  constructor:(target)->
+  constructor: (target) ->
     super target
 
     #### Checkbox Signals
@@ -60,7 +60,7 @@ class CheckBox extends Widget
   #### Target Management
 
   # The target for a `CheckBox` must be an `input` with a type `checkbox`.
-  checkTarget:(target)->
+  checkTarget: (target) ->
     unless @isInputWithType target, "checkbox"
       throw new Error """CheckBox target must be an input
                  with a checkbox type"""
@@ -68,7 +68,7 @@ class CheckBox extends Widget
   #### Properties Accessors
 
   # Setting the `checked` property also affect the `value` property.
-  set_checked:(property, value)->
+  set_checked: (property, value) ->
     @[property] = value
     @updateValue value, @get("values")
     @booleanToAttribute property, value
@@ -77,13 +77,13 @@ class CheckBox extends Widget
   # Overrides the default behavior for the `value` setter.
   # Changing the `value` also modify the `checked` attribute
   # unless the setter was called internally.
-  set_value:(property, value)->
+  set_value: (property, value) ->
     @set "checked", value is @get("values")[0] unless @valueSetProgrammatically
     super property, value
 
   # The `value` property is automatically updated when the `values`
   # change.
-  set_values:(property, value)->
+  set_values: (property, value) ->
     @updateValue @get("checked"), value
     @[property] = value
 
@@ -91,29 +91,29 @@ class CheckBox extends Widget
 
   # The dummy for the checkbox is just a `<span>` element
   # with a `checkbox` class.
-  createDummy:->
-    $("<span class='checkbox'></span>")
+  createDummy: ->
+    $("<span class ='checkbox'></span>")
 
   #### Checked State Management
 
   # Toggle the state of the checkbox.
-  toggle:->
+  toggle: ->
     @set "checked", not @get "checked"
 
   # Use to toggle the state on a user action, with care
   # to the state of the widget.
-  actionToggle:->
+  actionToggle: ->
     @toggle() unless @get("readonly") or @get("disabled")
 
   # The `reset` function operate on both the `value`
   # and the `checked` state of the widget.
-  reset:->
+  reset: ->
     super()
     @set "checked", @targetInitialChecked
 
   # Update the `value` property according to the passed-in
   # `checked` state and `values`.
-  updateValue:(checked, values)->
+  updateValue: (checked, values) ->
     @valueSetProgrammatically = true
     @set "value", if checked then values[0] else values[1]
     @valueSetProgrammatically = false
@@ -121,7 +121,7 @@ class CheckBox extends Widget
   #### Dummy Events Handlers
 
   # Toggle the checkbox on a user click.
-  click:(e)->
+  click: (e) ->
     @actionToggle()
 
     # Grabing the focus on a click is only allowed

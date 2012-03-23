@@ -1,4 +1,4 @@
-source:[
+source: [
   "src/signals"
   "src/std"
   "src/keys"
@@ -24,7 +24,7 @@ source:[
   "src/jquery"
   "src/demos/builder"
 ]
-test:[
+test: [
   "test/test-signals"
   "test/test-std"
   "test/test-keys"

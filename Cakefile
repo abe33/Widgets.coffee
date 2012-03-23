@@ -38,11 +38,11 @@ option '-v', '--verbose', 'Enable verbose output mode'
 # that takes a callback function as only argument.
 class Queue
   # Constructs the queue with the passed-in commands.
-  constructor:(@commands)->
+  constructor: (@commands)->
     @iterator = 0
 
   # Starts the queue process.
-  run:(callback)->
+  run: (callback)->
     # While there's still a command to process.
     if @iterator < @commands.length
       # The command is executed with a callback that'll
@@ -164,8 +164,8 @@ testTask=(unit)->
     hamlc = "templates/test/test.hamlc"
     html = ".tmp/test-#{unit}.html"
     context =
-      title:unit
-      test:unit
+      title: unit
+      test: unit
 
     # Generates the test runner.
     hamlcompile hamlc, html, context, ->
@@ -232,7 +232,7 @@ demoTask=(unit)->
         # Prepares the demo html file generation.
         hamlc = "templates/#{ config.template }.hamlc"
         html = ".tmp/#{unit}.html"
-        context = demo:output
+        context = demo: output
 
         # Generates the demo html file.
         hamlcompile hamlc, html, context, ->
@@ -372,21 +372,21 @@ task 'lint', 'Lint the widgets sources files', ->
 task 'compile', 'Compiles all the javascript files from configs', ->
   invoke libTask for libTask in LIB_COMPILATION_TASKS
 
-#### cake compile:config
+#### cake compile: config
 
 # Each `ymlc` file in the `config/lib` folder will be available
 # as a compilation task.
 libTask file for file in fs.readdirSync('config/lib').map cleanExtension
 
 # <a name="demo"></a>
-#### cake demo:config
+#### cake demo: config
 
 # Each `ymlc` file in the `config/demos` folder will be available
 # as a demo task.
 demoTask file for file in fs.readdirSync('config/demos').map cleanExtension
 
 # <a name="test"></a>
-#### cake test:config
+#### cake test: config
 
 # Each `ymlc` file in the `config/test` folder will be available
 # as a test task.

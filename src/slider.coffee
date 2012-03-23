@@ -7,7 +7,7 @@ class Slider extends NumericWidget
   # Here some live instances :
   #
   #= require slider
-  constructor:(target)->
+  constructor: (target) ->
     super target
 
     #### Dragging Properties
@@ -41,7 +41,7 @@ class Slider extends NumericWidget
   #### Target Management
 
   # The target for a `Slider` must be an input with the type `range`.
-  checkTarget:(target)->
+  checkTarget: (target) ->
     unless @isInputWithType target, "range"
       throw new Error "Slider target must be an input with a range type"
 
@@ -51,7 +51,7 @@ class Slider extends NumericWidget
   # the slider's value.
 
   # Initiate a drag gesture.
-  startDrag:(e)->
+  startDrag: (e) ->
     @draggingKnob = true
 
     # The mouse position is stored when the drag gesture
@@ -63,15 +63,15 @@ class Slider extends NumericWidget
     # `mousemove` and `mouseup` events.
     # It ensure that the slider keeps to receive events
     # even when the mouse is outside of the slider.
-    $(document).bind "mouseup", @documentMouseUpDelegate = (e)=>
+    $(document).bind "mouseup", @documentMouseUpDelegate = (e) =>
       @endDrag()
 
-    $(document).bind "mousemove", @documentMouseMoveDelegate = (e)=>
+    $(document).bind "mousemove", @documentMouseMoveDelegate = (e) =>
       @drag e
 
   # During the drag, the slider converts the data
   # in the mouse event object to drag related data.
-  drag:(e)->
+  drag: (e) ->
     data = @getDragDataFromEvent e
 
     width     = @dummy.width()
@@ -96,7 +96,7 @@ class Slider extends NumericWidget
 
   # When the drag ends the slider unregister from the document's
   # events.
-  endDrag:->
+  endDrag: ->
     @draggingKnob = false
 
     $(document).unbind "mousemove", @documentMouseMoveDelegate
@@ -104,13 +104,13 @@ class Slider extends NumericWidget
 
   # Mouse events are converted in dragging data by
   # calculating the distance two mouse moves.
-  getDragDataFromEvent:(e)->
-    x:e.pageX - @lastMouseX
-    y:e.pageY - @lastMouseY
+  getDragDataFromEvent: (e) ->
+    x: e.pageX - @lastMouseX
+    y: e.pageY - @lastMouseY
 
   # Pressing the mouse button over the knob start
   # the drag gesture.
-  handleKnobMouseDown:(e)->
+  handleKnobMouseDown: (e) ->
     # The knob's drag is not allowed for a readonly
     # or a disabled slider.
     unless @cantInteract()
@@ -123,7 +123,7 @@ class Slider extends NumericWidget
 
   # Pressing the mouse button over the track change
   # the value and start the drag gesture.
-  handleTrackMouseDown:(e)->
+  handleTrackMouseDown: (e) ->
     unless @cantInteract()
       track = @dummy.children ".track"
       min = @get "min"
@@ -146,25 +146,25 @@ class Slider extends NumericWidget
   # The dummy of the `Slider` widget is a parent `<span>` with
   # a `slider` class and three `<span>` child to represent respectively
   # the slider's `track`, `knob` and `value`.
-  createDummy:->
-    dummy = $  "<span class='slider'>
-                  <span class='track'></span>
-                  <span class='knob'></span>
-                  <span class='value'></span>
+  createDummy: ->
+    dummy = $  "<span class ='slider'>
+                  <span class ='track'></span>
+                  <span class ='knob'></span>
+                  <span class ='value'></span>
                 </span>"
 
     # The slider register to the `mousedown` events
     # of its track and its knob.
-    dummy.children(".knob").bind "mousedown", (e)=>
+    dummy.children(".knob").bind "mousedown", (e) =>
       @handleKnobMouseDown e
 
-    dummy.children(".track").bind "mousedown", (e)=>
+    dummy.children(".track").bind "mousedown", (e) =>
       @handleTrackMouseDown e
 
     dummy
 
   # Updates the dummy according to the slider's data.
-  updateDummy:(value, min, max, step)->
+  updateDummy: (value, min, max, step) ->
     width     = @dummy.width()
     knob      = @dummy.children ".knob"
     val       = @dummy.children ".value"

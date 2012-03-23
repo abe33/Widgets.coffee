@@ -9,9 +9,9 @@ class Stepper extends NumericWidget
 
   @mixins HasFocusProvidedByChild, Spinner
 
-  spinnerDummyClass:"stepper"
+  spinnerDummyClass: "stepper"
 
-  constructor:(target)->
+  constructor: (target) ->
     super target
 
     @set "step", 1 unless @get("step")?
@@ -21,7 +21,7 @@ class Stepper extends NumericWidget
   #### Target Management
 
   # The target for a `Stepper` must be an input with the type `number`.
-  checkTarget:(target)->
+  checkTarget: (target) ->
     unless @isInputWithType target, "number"
       throw new Error """Stepper target must be an input
                          with a number type"""
@@ -29,12 +29,12 @@ class Stepper extends NumericWidget
   #### Dummy Management
 
   # The value of the widget is displayed within its input.
-  updateDummy:(value, min, max, step)->
+  updateDummy: (value, min, max, step) ->
     @focusProvider.val value
 
   # When the value of the input is changed, the new value go through
   # the validation function.
-  validateInput:->
+  validateInput: ->
     # The input's value is parsed to a float.
     value = parseFloat @focusProvider.attr("value")
 
@@ -45,6 +45,6 @@ class Stepper extends NumericWidget
     else
       @updateDummy @get("value"), @get("min"), @get("max"), @get("step")
 
-  drag:(dif)-> @set "value", @get("value") + dif * @get("step")
+  drag: (dif) -> @set "value", @get("value") + dif * @get("step")
 
 @Stepper = Stepper

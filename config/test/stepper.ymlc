@@ -1,4 +1,4 @@
-source:[
+source: [
   "src/signals"
   "src/std"
   "src/keys"
@@ -8,4 +8,4 @@ source:[
   "src/numeric-widget"
   "src/stepper"
 ]
-test:"test/test-stepper"
+test: "test/test-stepper"

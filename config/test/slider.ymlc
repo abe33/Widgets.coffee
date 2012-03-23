@@ -1,4 +1,4 @@
-source:[
+source: [
   "src/signals",
   "src/std",
   "src/keys",
@@ -8,4 +8,4 @@ source:[
   "src/numeric-widget"
   "src/slider"
 ]
-test:"test/test-slider"
+test: "test/test-slider"

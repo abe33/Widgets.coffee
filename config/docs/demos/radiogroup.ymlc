@@ -1,11 +1,11 @@
-container:"radio"
+container: "radio"
 builder:
-  title:"RadioGroup"
-  cls:this["Radio"]
-  rows:1
-  cols:4
-  tableClass:"float dummy"
-  cells:(opts)->
+  title: "RadioGroup"
+  cls: this["Radio"]
+  rows: 1
+  cols: 4
+  tableClass: "float dummy"
+  cells: (opts)->
     @group = new RadioGroup unless @group?
     @group.add opts.widget
 

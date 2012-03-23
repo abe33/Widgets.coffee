@@ -127,7 +127,7 @@ $( document ).ready ->
     focusReveiced = false
 
     class MockCheckBox extends CheckBox
-      focus:(e)->
+      focus: (e)->
         focusReveiced = true
 
     checkbox = new MockCheckBox
@@ -143,10 +143,10 @@ $( document ).ready ->
     checkbox.grabFocus()
 
     checkbox.keyup
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat checkbox.get "checked"
 
@@ -157,10 +157,10 @@ $( document ).ready ->
     checkbox.grabFocus()
 
     checkbox.keyup
-      keyCode:keys.space
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.space
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat checkbox.get "checked"
 
@@ -174,10 +174,10 @@ $( document ).ready ->
     checkbox.grabFocus()
 
     checkbox.keyup
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat not checkbox.get "checked"
 
@@ -191,10 +191,10 @@ $( document ).ready ->
     checkbox.grabFocus()
 
     checkbox.keyup
-      keyCode:keys.space
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.space
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat not checkbox.get "checked"
 

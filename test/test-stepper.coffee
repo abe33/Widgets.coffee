@@ -21,35 +21,35 @@ $( document ).ready ->
     assertThat errorRaised
 
   opt=
-    cls:Stepper
-    className:"Stepper"
-    defaultTarget:"<input type='number' min='0'
+    cls: Stepper
+    className: "Stepper"
+    defaultTarget: "<input type='number' min='0'
                 max='100' step='5' value='10'>"
-    focusChildSelector:"input"
+    focusChildSelector: "input"
 
-    initialValue:10
-    valueBelowRange:-10
-    valueAboveRange:110
+    initialValue: 10
+    valueBelowRange: -10
+    valueAboveRange: 110
 
-    minValue:0
-    setMinValue:50
-    invalidMinValue:110
+    minValue: 0
+    setMinValue: 50
+    invalidMinValue: 110
 
-    maxValue:100
-    setMaxValue:5
-    invalidMaxValue:-10
+    maxValue: 100
+    setMaxValue: 5
+    invalidMaxValue: -10
 
-    stepValue:5
-    setStep:3
-    valueNotInStep:10
-    snappedValue:9
+    stepValue: 5
+    setStep: 3
+    valueNotInStep: 10
+    snappedValue: 9
 
-    singleIncrementValue:15
-    singleDecrementValue:5
+    singleIncrementValue: 15
+    singleDecrementValue: 5
 
-    undefinedMinValueMatcher:nullValue()
-    undefinedMaxValueMatcher:nullValue()
-    undefinedStepValueMatcher:equalTo 1
+    undefinedMinValueMatcher: nullValue()
+    undefinedMaxValueMatcher: nullValue()
+    undefinedStepValueMatcher: equalTo 1
 
 
   testValueInRangeMixin opt
@@ -57,34 +57,34 @@ $( document ).ready ->
   testValueInRangeMixinIntervals opt
 
   a =
-    key:"up"
-    action:"increment"
-    valueMatcher:closeTo 15, 1
-    initialValueMatcher:equalTo 10
+    key: "up"
+    action: "increment"
+    valueMatcher: closeTo 15, 1
+    initialValueMatcher: equalTo 10
 
   testValueInRangeMixinKeyboard opt extends a
 
   a =
-    key:"down"
-    action:"decrement"
-    valueMatcher:closeTo 5, 1
-    initialValueMatcher:equalTo 10
+    key: "down"
+    action: "decrement"
+    valueMatcher: closeTo 5, 1
+    initialValueMatcher: equalTo 10
 
   testValueInRangeMixinKeyboard opt extends a
 
   a =
-    key:"right"
-    action:"increment"
-    valueMatcher:closeTo 15, 1
-    initialValueMatcher:equalTo 10
+    key: "right"
+    action: "increment"
+    valueMatcher: closeTo 15, 1
+    initialValueMatcher: equalTo 10
 
   testValueInRangeMixinKeyboard opt extends a
 
   a =
-    key:"left"
-    action:"decrement"
-    valueMatcher:closeTo 5, 1
-    initialValueMatcher:equalTo 10
+    key: "left"
+    action: "decrement"
+    valueMatcher: closeTo 5, 1
+    initialValueMatcher: equalTo 10
 
   testValueInRangeMixinKeyboard opt extends a
 
@@ -301,11 +301,11 @@ $( document ).ready ->
       the mouse is released", ->
 
     class MockStepper extends Stepper
-      mousedown:(e)->
+      mousedown: (e)->
         e.pageY = 5
         super e
 
-      mousemove:(e)->
+      mousemove: (e)->
         e.pageY = 0
         super e
 

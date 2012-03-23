@@ -12,7 +12,7 @@ class Calendar extends Widget
               "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" ]
 
   # A `Calendar` accept a `Date` and a mode as constructor arguments.
-  constructor:(@value = new Date(), @mode = "date")->
+  constructor: (@value = new Date(), @mode = "date") ->
     super()
     # By default, the current value is displayed at startup. It
     # means that the calendar displayed month and year will be the
@@ -21,7 +21,7 @@ class Calendar extends Widget
 
   # Set the current year and month displayed by the `Calendar` on those
   # of the passed-in `Date` object.
-  display:(date)->
+  display: (date) ->
     @month = date.firstDateOfMonth()
     @updateDummy()
 
@@ -35,44 +35,44 @@ class Calendar extends Widget
   #
   # The last element in the calendar dummy is a table that display the
   # current month and year of the widget.
-  createDummy:->
-    dummy = $ "<span class='calendar'>
+  createDummy: ->
+    dummy = $ "<span class ='calendar'>
                  <h3></h3>
-                 <a class='prev-year'>Previous Year</a>
-                 <a class='prev-month'>Previous Month</a>
-                 <a class='next-month'>Next Month</a>
-                 <a class='next-year'>Next Year</a>
+                 <a class ='prev-year'>Previous Year</a>
+                 <a class ='prev-month'>Previous Month</a>
+                 <a class ='next-month'>Next Month</a>
+                 <a class ='next-year'>Next Year</a>
                  <table></table>
-                 <a class='today'>Today</a>
+                 <a class ='today'>Today</a>
                </span>"
 
     # Clicking on the `today` anchor display the current date.
-    dummy.find("a.today").click (e)=>
+    dummy.find("a.today").click (e) =>
       @display new Date unless @cantInteract()
 
     # Clicking on the `prev-year` anchor decrement the year
     # of the current display.
-    dummy.find("a.prev-year").click (e)=>
+    dummy.find("a.prev-year").click (e) =>
       @display @month.incrementYear -1 unless @cantInteract()
     # Clicking on the `next-year` anchor increment the year
     # of the current display.
-    dummy.find("a.next-year").click (e)=>
+    dummy.find("a.next-year").click (e) =>
       @display @month.incrementYear 1 unless @cantInteract()
 
     # Clicking on the `prev-month` anchor decrement the month
     # of the current display.
-    dummy.find("a.prev-month").click (e)=>
+    dummy.find("a.prev-month").click (e) =>
       @display @month.incrementMonth -1 unless @cantInteract()
     # Clicking on the `next-month` anchor increment the month
     # of the current display.
-    dummy.find("a.next-month").click (e)=>
+    dummy.find("a.next-month").click (e) =>
       @display @month.incrementMonth 1 unless @cantInteract()
 
     return dummy
 
   # Updating the dummy means recreating the table rows and cells
   # according to the current displayed date.
-  updateDummy:->
+  updateDummy: ->
     @createCells @month
 
     # Get the first day in the month.
@@ -85,7 +85,7 @@ class Calendar extends Widget
 
     # And for each cells in the table the date of the corresponding
     # day is affected as the cell text.
-    @dummy.find("td").each (i, o)=>
+    @dummy.find("td").each (i, o) =>
       td = $ o
       td.text date.date()
       # The date corresponding to the cell is stored in the cell's name.
@@ -104,7 +104,7 @@ class Calendar extends Widget
     h3.text "#{ Calendar.MONTHS[@month.month()] } #{ @month.year() }"
 
   # Creates the cells to display the passed-in date
-  createCells:(date)->
+  createCells: (date) ->
     # Gets a reference to the table.
     table = @dummy.find "table"
     # Removes all the listeners that was previously registered.
@@ -118,14 +118,14 @@ class Calendar extends Widget
     table.append header
 
     # Creates the function that will be bound to each cells.
-    @cellDelegate =(e)=> @cellSelected e
+    @cellDelegate = (e) => @cellSelected e
 
     # For all the lines needed to display the current month
     # a row is created.
     for y in [0..@rowsNeeded date]
       # The first cell of the row is a header cell that will contains
       # the week number.
-      line = $("<tr><th class='week'></th></tr>")
+      line = $("<tr><th class ='week'></th></tr>")
       # And then for the seven days of each week, a cell is created.
       for x in [0..6]
         cell = $ "<td></td>"
@@ -139,7 +139,7 @@ class Calendar extends Widget
 
   # Returns the number of rows needed to display each week overlapped
   # by the `date` to display. Each rows correspond to a complete week.
-  rowsNeeded:(date)->
+  rowsNeeded: (date) ->
     day = date.firstDateOfMonth().getDay()
     day = 7 if day is 0
     days = date.monthLength() + day
@@ -149,7 +149,7 @@ class Calendar extends Widget
 
   # When a click is done on a cell, the value is changed according
   # to the cell.
-  cellSelected:(e)->
+  cellSelected: (e) ->
     unless @cantInteract()
       e.stopImmediatePropagation()
       @set "value", Date.dateFromString $(e.target).attr "name"
@@ -157,7 +157,7 @@ class Calendar extends Widget
 
   # Updates a cell according to the passed-in `date` and the current
   # mode of this `Calendar`.
-  cellState:(td, date)->
+  cellState: (td, date) ->
     value = @get("value")
     sameDate = date.date() is value.date()
     sameWeek = date.week() is value.week()
@@ -181,13 +181,13 @@ class Calendar extends Widget
   #### Properties Accessors
 
   # Changing the value of the calendar change also the displayed month.
-  set_value:(property, value)->
+  set_value: (property, value) ->
     super property, value
     @display value
     value
 
   # Changes the mode of the `Calendar`.
-  set_mode:(property, value)->
+  set_mode: (property, value) ->
     if value not in ["date", "month", "week"] then return @get "mode"
 
     @[property] = value
@@ -197,16 +197,16 @@ class Calendar extends Widget
   #### Dialog Placeholders
 
   # When requested, a calendar set its value to the caller's date.
-  setupDialog:(caller)->
+  setupDialog: (caller) ->
     @set "value", @originalValue = caller.get "date"
 
   # Comfirm the changes by affecting the value to the caller.
-  comfirmChanges:->
+  comfirmChanges: ->
     @caller.set "date", @get "value"
     @close()
 
   # Pressing enter directly comfirm the changes.
-  comfirmChangesOnEnter:->
+  comfirmChangesOnEnter: ->
     @comfirmChanges()
 
 

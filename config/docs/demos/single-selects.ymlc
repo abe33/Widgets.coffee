@@ -1,15 +1,15 @@
-container:"single-selects"
+container: "single-selects"
 builder:
-  title:"Single Selects"
-  cls:this["SingleSelect"]
-  rows:1
-  cols:3
-  tableClass:"float dummy"
-  cells:(opts)->
+  title: "Single Selects"
+  cls: this["SingleSelect"]
+  rows: 1
+  cols: 3
+  tableClass: "float dummy"
+  cells: (opts)->
     items =(display: "Item #{i}", value: "value#{i}" for i in [0..5])
 
     for i in [0..2]
-      a =(display:"Sub Item #{i}-#{j}", value:"value#{i}-#{j}" for j in [0..5])
+      a =(display: "Sub Item #{i}-#{j}", value:"value#{i}-#{j}" for j in [0..5])
       m = new MenuModel
       m.add.apply m, a
       items.push display: "Group #{i}", menu: m
@@ -21,5 +21,5 @@ builder:
 
     states = [null, "readonly", "disabled"]
     opts.widget.set states[opts.col ], true if states[ opts.col]?
-  columnHeaders:(opts)->
+  columnHeaders: (opts)->
     ["Normal", "Readonly", "Disabled"][opts.col]

@@ -43,9 +43,9 @@ $( document ).ready ->
     assertThat input.dummy.children("input").length, equalTo 1
 
   opt =
-    cls:TextInput
-    className:"TextInput"
-    focusChildSelector:"input"
+    cls: TextInput
+    className: "TextInput"
+    focusChildSelector: "input"
 
   testFocusProvidedByChildMixin opt
 

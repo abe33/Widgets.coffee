@@ -62,8 +62,8 @@ test "The same listener can be registered twice with two different context", ->
 
 test "Even a listener with a context can be removed", ->
   signal = new Signal
-  context1 = foo:"Foo"
-  context2 = foo:"Bar"
+  context1 = foo: "Foo"
+  context2 = foo: "Bar"
   lastCall = null
   listener = ->
     lastCall = this.foo

@@ -1,4 +1,4 @@
-source:[
+source: [
   "src/signals"
   "src/std"
   "src/keys"
@@ -23,4 +23,4 @@ source:[
   "src/colorpicker"
   "src/jquery"
 ]
-test:"test/test-jquery"
+test: "test/test-jquery"

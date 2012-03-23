@@ -9,7 +9,7 @@
 # * [HasChildren](HasChildren)
 # * [DropDownPopup](DropDownPopup)
 
-# <a name="HasValueInRange"></a>
+# <a name ="HasValueInRange"></a>
 ## HasValueInRange
 
 # HasValueInRange provides a coherent behavior accross the widgets
@@ -20,11 +20,11 @@
 # `min`, `max` and `step` properties. The class that receive the
 # mixin should define them to ensure bounds validity and value
 # collision.
-HasValueInRange=
+HasValueInRange =
   # The constructor hook initialize the shared properties and
   # creates the keyboard bindings for trigger increment and
   # decrement intervals.
-  constructorHook:->
+  constructorHook: ->
     # The `min` property represent the lower bound of the value's range.
     @min = null
     # The `max` property represent the upper bound of the value's range.
@@ -55,32 +55,32 @@ HasValueInRange=
   #
   # The returned value should be safely affected to the `value`
   # property.
-  fitToRange:(value, min, max)->
+  fitToRange: (value, min, max) ->
     if min? and value < min then value = min
     else if max? and value > max then value = max
 
     @snapToStep value
 
   # Override this method to implement the concrete snapping.
-  snapToStep:(value)-> value
+  snapToStep: (value) -> value
 
   #### Intervals Management
 
   # Stores the interval id. When not running, `intervalId`
   # is always `-1`.
-  intervalId:-1
+  intervalId: -1
 
   # Increment the value of the amount of the `step` property.
   # Override the method in the class that receive the mixin.
-  increment:->
+  increment: ->
 
   # Decrement the value of the amount of the `step` property.
   # Override the method in the class that receive the mixin.
-  decrement:->
+  decrement: ->
 
   # Initiate the increment interval if interaction are allowed
   # on the widget.
-  startIncrement:->
+  startIncrement: ->
     unless @cantInteract()
       if @intervalId is -1 then @intervalId = setInterval =>
         @increment()
@@ -91,7 +91,7 @@ HasValueInRange=
 
   # Initiate the decrement interval if interaction are allowed
   # on the widget.
-  startDecrement:->
+  startDecrement: ->
     unless @cantInteract()
       if @intervalId is -1 then @intervalId = setInterval =>
         @decrement()
@@ -101,12 +101,12 @@ HasValueInRange=
     false
 
   # Ends the increment interval.
-  endIncrement:->
+  endIncrement: ->
     clearInterval @intervalId
     @intervalId = -1
 
   # Ends the decrement interval.
-  endDecrement:->
+  endDecrement: ->
     clearInterval @intervalId
     @intervalId = -1
 
@@ -114,15 +114,15 @@ HasValueInRange=
 
   # Using the mouse wheel, the value is either incremented
   # or decremented according to the event's delta.
-  mousewheel:(event, delta, deltaX, deltaY)->
+  mousewheel: (event, delta, deltaX, deltaY) ->
     unless @cantInteract()
       if delta > 0 then @increment() else @decrement()
     # `mousewheel` returns `false` to prevent the page to scroll.
     false
 
-# <a name="Spinner"></a>
+# <a name ="Spinner"></a>
 ## Spinner
-Spinner=
+Spinner =
   #### Dummy Management
 
   # The dummy for a spinner widget is a span containing :
@@ -130,11 +130,11 @@ Spinner=
   # * A `text` input that allow to type a value directly.
   # * A span that act as the decrement button.
   # * A span that act as the increment button.
-  createDummy:->
-    dummy = $ "<span class='#{ @spinnerDummyClass }'>
-        <input type='text' class='value widget-done'></input>
-        <span class='down'></span>
-        <span class='up'></span>
+  createDummy: ->
+    dummy = $ "<span class ='#{ @spinnerDummyClass }'>
+        <input type ='text' class ='value widget-done'></input>
+        <span class ='down'></span>
+        <span class ='up'></span>
        </span>"
 
     @focusProvider = dummy.children("input")
@@ -143,7 +143,7 @@ Spinner=
 
     # Pressing on the buttons starts an increment or decrement
     # interval according to the pressed button.
-    buttonsMousedown = (e)=>
+    buttonsMousedown = (e) =>
       e.stopImmediatePropagation()
 
       @mousePressed = true
@@ -161,7 +161,7 @@ Spinner=
       # Initiate the interval.
       startFunction.call this
       # And register a callback to stop the interval on `mouseup`.
-      $(document).bind "mouseup", @documentDelegate = (e)=>
+      $(document).bind "mouseup", @documentDelegate = (e) =>
         @mousePressed = false
         endFunction.call this
         $(document).unbind "mouseup", @documentDelegate
@@ -185,7 +185,7 @@ Spinner=
     dummy
 
   # The states of the widget is reflected on the widget's input.
-  updateStates:->
+  updateStates: ->
     @super "updateStates"
 
     if @get "readonly" then @focusProvider.attr "readonly", "readonly"
@@ -197,13 +197,13 @@ Spinner=
   #### Events Handlers
 
   # Changes made to the input lead to an input validation.
-  change:(e)-> @validateInput()
-  input:(e)->
+  change: (e) -> @validateInput()
+  input: (e) ->
 
   # Releasing the mouse over the widget will force the focus on the
   # input. That way, clicking on the increment and decrement button
   # will also give the focus to the widget.
-  mouseup:->
+  mouseup: ->
     return true if @get "disabled"
 
     @grabFocus()
@@ -216,20 +216,20 @@ Spinner=
     true
 
   # A `Spinner` allow to drag the mouse vertically to change the value.
-  mousedown:(e)->
+  mousedown: (e) ->
     return true if @cantInteract()
 
     @dragging = true
     @pressedY = e.pageY
 
     $(document).bind "mousemove",
-             @documentMouseMoveDelegate =(e)=> @mousemove e
+             @documentMouseMoveDelegate = (e) => @mousemove e
     $(document).bind "mouseup",
-             @documentMouseUpDelegate   =(e)=> @mouseup e
+             @documentMouseUpDelegate   = (e) => @mouseup e
 
   # The value is changed on the basis that a move of 1 pixel
   # change the value of the amount of `step`.
-  mousemove:(e)->
+  mousemove: (e) ->
     if @dragging
       y = e.pageY
       dif = @pressedY - y
@@ -238,10 +238,10 @@ Spinner=
 
   #### Placeholder Functions
 
-  validateInput:->
-  drag:(dif)->
+  validateInput: ->
+  drag: (dif) ->
 
-# <a name="HasFocusProvidedByChild"></a>
+# <a name ="HasFocusProvidedByChild"></a>
 ## HasFocusProvidedByChild
 
 # Allow a widget to handle the focus trough one of its child.
@@ -252,30 +252,30 @@ Spinner=
 # to have only one focusable element (not both the widget and its input)
 # and to allow to write in the input as soon as the widget get
 # the focus, whatever the means lead the widget to get the focus.
-HasFocusProvidedByChild=
+HasFocusProvidedByChild =
   # The constructor hook will register focus related events
   # on the `focusProvider` child. The widget receiving the
   # mixin should ensure that the property is set before
   # the hook call.
-  constructorHook:->
-    @focusProvider.bind @focusRelatedEvents, (e)=>
+  constructorHook: ->
+    @focusProvider.bind @focusRelatedEvents, (e) =>
       @[e.type].apply this, arguments
 
   #### Focus Management
 
   # There's no need for the dummy to be able to receive the focus. So
   # the dummy will never have the `tabindex` attribute set.
-  setFocusable:->
+  setFocusable: ->
 
   # Grabbing the focus for this widget is giving the focus to its child.
-  grabFocus:->
+  grabFocus: ->
     @focusProvider.focus()
 
   #### Events Handling
 
   # Since focus related events will be provided by another object,
   # the events that the widget will receive from its dummy is reduced.
-  supportedEvents:[
+  supportedEvents: [
     "mousedown", "mouseup",     "mousemove", "mouseover",
     "mouseout",  "mousewheel",  "click",     "dblclick",
   ].join " "
@@ -283,27 +283,27 @@ HasFocusProvidedByChild=
   # Since keyboard events can only be received from the element
   # that have the focus, the widget will listen the keyboard events
   # from the focus provider and not from the dummy.
-  focusRelatedEvents:[
+  focusRelatedEvents: [
     "focus",     "blur",         "keyup",     "keydown",
     "keypress",  "input",        "change",
   ].join " "
 
   # Both unregister events from the dummy and from the focus provider.
-  unregisterFromDummyEvents:->
+  unregisterFromDummyEvents: ->
     @focusProvider.unbind @focusRelatedEvents
     @super "unregisterFromDummyEvents"
 
   # Releasing the mouse over the widget gives it the focus.
-  mouseup:(e)->
+  mouseup: (e) ->
     @grabFocus() unless @get "disabled"
     true
 
-# <a name="HasChildren"></a>
+# <a name ="HasChildren"></a>
 ## HasChildren
 
 # Allow a widget to have widgets as children.
-HasChildren=
-  constructorHook:->
+HasChildren =
+  constructorHook: ->
     # Children widgets are stored in an array in the
     # `children` property.
     @children = []
@@ -311,7 +311,7 @@ HasChildren=
   #### Children Management
 
   # Use the `add` method to add child to this container.
-  add:(child)->
+  add: (child) ->
     # Only widgets that are not already a child are allowed.
     if child? and child.isWidget and child not in @children
       @children.push child
@@ -324,7 +324,7 @@ HasChildren=
       child.parent = this
 
   # Use the `remove` method to remove a child from this container.
-  remove:(child)->
+  remove: (child) ->
     # Only widgets that are already a children of this container
     # can be removed.
     if child? and child in @children
@@ -340,16 +340,16 @@ HasChildren=
 
   # Focus on the widget is prevented if the focus target
   # is one of its children.
-  focus:(e)->
+  focus: (e) ->
     @super "focus", e if e.target is @dummy[0]
 
-# <a name="DropDownPopup"></a>
+# <a name ="DropDownPopup"></a>
 ## DropDownPopup
 
 # A  `DropDownPopup` widget is a widget which display is triggered
 # by and bound to another widget.
-DropDownPopup=
-  constructorHook:->
+DropDownPopup =
+  constructorHook: ->
     # A drop down popup is hidden at creation.
     @dummy.hide()
 
@@ -363,11 +363,11 @@ DropDownPopup=
   #### Display Management
 
   # Handles the *opening* of the popup.
-  open:->
+  open: ->
     # The drop down popup register itself to catch clicks done
     # outside of it. When it occurs the drop down popup will close
     # itself and call the `comfirmChanges` method.
-    $(document).bind "mouseup", @documentDelegate=(e)=>
+    $(document).bind "mouseup", @documentDelegate = (e) =>
       @comfirmChanges()
 
     # The dummy is placed below the widget that requested
@@ -383,7 +383,7 @@ DropDownPopup=
     @grabFocus()
 
   # Hides the dummy of this drop down popup.
-  close:->
+  close: ->
     @dummy.hide()
     $(document).unbind "mouseup", @documentDelegate
 
@@ -393,7 +393,7 @@ DropDownPopup=
 
   # Receive a signal from a `caller` object that need the drop down popup
   # to appear.
-  dialogRequested:(caller)->
+  dialogRequested: (caller) ->
     @caller = caller
     @setupDialog caller
     @open()
@@ -401,16 +401,16 @@ DropDownPopup=
   #### Events Handlers
 
   # Prevents the click on the dummy to bubble to the `document` object.
-  mouseup:(e)-> e.stopImmediatePropagation()
+  mouseup: (e) -> e.stopImmediatePropagation()
 
   #### Placeholder Functions
 
   # Placeholder functions that you can overrides to implements the concrete
   # comfirmation/cancelation routines of your widget.
-  abortChanges:-> @close()
-  comfirmChanges:->
-  comfirmChangesOnEnter:->
-  setupDialog:(caller)->
+  abortChanges: -> @close()
+  comfirmChanges: ->
+  comfirmChangesOnEnter: ->
+  setupDialog: (caller) ->
 
 
 @Spinner                 = Spinner

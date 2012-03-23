@@ -1,14 +1,14 @@
-container:"button"
+container: "button"
 builder:
-  title:"Buttons"
-  cls:this["Button"]
-  args:[ display:"Button", action:-> ]
-  rows:3
-  cols:3
-  tableClass:"float dummy"
-  columnHeaders:(opts)-> [ "Normal", "Blue", "Green" ][opts.col]
-  rowHeaders:(opts)-> [ "Normal", "Readonly", "Disabled" ][opts.row]
-  cells:(opts)->
+  title: "Buttons"
+  cls: this["Button"]
+  args:[ display: "Button", action:-> ]
+  rows: 3
+  cols: 3
+  tableClass: "float dummy"
+  columnHeaders: (opts)-> [ "Normal", "Blue", "Green" ][opts.col]
+  rowHeaders: (opts)-> [ "Normal", "Readonly", "Disabled" ][opts.row]
+  cells: (opts)->
     states = [ null, "readonly", "disabled" ]
     colors = [ null, "blue", "green" ]
     opts.widget.addClasses colors[ opts.col ] if colors[ opts.col ]?

@@ -1,4 +1,4 @@
-source:[
+source: [
   "src/signals"
   "src/std"
   "src/keys"
@@ -8,4 +8,4 @@ source:[
   "src/checkbox"
   "src/radio"
 ]
-test:"test/test-radio"
+test: "test/test-radio"

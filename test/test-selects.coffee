@@ -159,7 +159,7 @@ $( document ).ready ->
            </select>" )
     select = new SingleSelect target[0]
 
-    select.model.add display:"new item", value:"new value"
+    select.model.add display: "new item", value:"new value"
 
     assertThat target.children("option").length, equalTo 3
 
@@ -175,7 +175,7 @@ $( document ).ready ->
 
     select = new SingleSelect target[0]
 
-    select.model.add display:"new item", value:"new value"
+    select.model.add display: "new item", value:"new value"
 
     assertThat target.find("optgroup").length, equalTo 1
     assertThat target.find("optgroup").children().length, equalTo 2
@@ -190,7 +190,7 @@ $( document ).ready ->
                  </select>" )
     select = new SingleSelect target[0]
 
-    select.model.add display:"new item", value:"new value"
+    select.model.add display: "new item", value:"new value"
 
     select.model.items[2].action()
 
@@ -218,7 +218,7 @@ $( document ).ready ->
                </select>" )
     select = new SingleSelect target[0]
 
-    select.model.add display:"new item", value:"new value"
+    select.model.add display: "new item", value:"new value"
 
     assertThat target.children("option[selected]").length, equalTo 1
     assertThat target.children("option[selected]").text(), equalTo "bar"
@@ -241,9 +241,9 @@ $( document ).ready ->
         in the constructor", ->
 
     select = new SingleSelect new MenuModel {
-      display:"Item 1", value:"value 1"
+      display: "Item 1", value:"value 1"
     },{
-      display:"Item 2", value:"value 2"
+      display: "Item 2", value:"value 2"
     }
 
     assertThat select.model.size(), equalTo 2
@@ -254,9 +254,9 @@ $( document ).ready ->
     select = new SingleSelect
 
     model = new MenuModel {
-      display:"Item 1", value:"value 1"
+      display: "Item 1", value:"value 1"
     },{
-      display:"Item 2", value:"value 2"
+      display: "Item 2", value:"value 2"
     }
 
     select.set "model", model
@@ -283,9 +283,9 @@ $( document ).ready ->
     select = new SingleSelect
 
     model = new MenuModel {
-      display:"Item 1", value:"value 1"
+      display: "Item 1", value:"value 1"
     },{
-      display:"Item 2", value:"value 2"
+      display: "Item 2", value:"value 2"
     }
 
     select.set "model", model
@@ -297,9 +297,9 @@ $( document ).ready ->
     select = new SingleSelect
 
     model = new MenuModel {
-      display:"Item 1", value:"value 1"
+      display: "Item 1", value:"value 1"
     },{
-      display:"Item 2", value:"value 2"
+      display: "Item 2", value:"value 2"
     }
 
     select.set "model", model
@@ -310,12 +310,12 @@ $( document ).ready ->
         of the new item", ->
 
     select = new SingleSelect new MenuModel {
-      display:"Item 1", value:"value 1"
+      display: "Item 1", value:"value 1"
     },{
-      display:"Item 2", value:"value 2"
+      display: "Item 2", value:"value 2"
     }
 
-    select.model.add display:"foo", value:"bar"
+    select.model.add display: "foo", value:"bar"
 
     assertThat select.model.items[2].action instanceof Function
 
@@ -418,9 +418,9 @@ $( document ).ready ->
     select = new SingleSelect
     preventDefaultCalled = false
 
-    select.mousedown preventDefault:->
+    select.mousedown preventDefault: ->
       preventDefaultCalled = true
-    , stopImmediatePropagation:->
+    , stopImmediatePropagation: ->
 
     assertThat preventDefaultCalled
 
@@ -502,7 +502,7 @@ $( document ).ready ->
   test "A SingleSelect should allow html content in items display", ->
 
     select = new SingleSelect
-    select.model.add display:"<b>foo</b>", value:'foo'
+    select.model.add display: "<b>foo</b>", value:'foo'
     select.set "value", "foo"
 
     assertThat select.dummy.find("b").length, equalTo 1
@@ -511,7 +511,7 @@ $( document ).ready ->
       should hide the menu", ->
 
     class MockSingleSelect extends SingleSelect
-      documentMouseDown:(e)->
+      documentMouseDown: (e)->
         e.pageX = 1000
         e.pageY = 1000
 
@@ -546,10 +546,10 @@ $( document ).ready ->
     select.attach "body"
 
     select.keydown
-      keyCode:keys.enter
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat select.menuList.dummy.parent().length, equalTo 1
 
@@ -568,10 +568,10 @@ $( document ).ready ->
     select.attach "body"
 
     select.keydown
-      keyCode:keys.space
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.space
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat select.menuList.dummy.parent().length, equalTo 1
 
@@ -591,10 +591,10 @@ $( document ).ready ->
     select.attach "body"
 
     select.keydown
-      keyCode:keys.space
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
+      keyCode: keys.space
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
 
     assertThat select.menuList.dummy.parent().length, equalTo 0
 
@@ -610,11 +610,11 @@ $( document ).ready ->
     select = new SingleSelect target[0]
 
     select.keydown
-      keyCode:keys.up
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.up
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat select.get("value"), equalTo "foo"
 
@@ -629,11 +629,11 @@ $( document ).ready ->
     select = new SingleSelect target[0]
 
     select.keydown
-      keyCode:keys.down
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.down
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat select.get("value"), equalTo "bar"
 
@@ -648,11 +648,11 @@ $( document ).ready ->
     select = new SingleSelect target[0]
 
     select.keydown
-      keyCode:keys.down
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.down
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat select.get("value"), equalTo "foo"
 
@@ -666,11 +666,11 @@ $( document ).ready ->
     select = new SingleSelect target[0]
 
     select.keydown
-      keyCode:keys.up
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.up
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat select.get("value"), equalTo "bar"
 
@@ -688,11 +688,11 @@ $( document ).ready ->
     select = new SingleSelect target[0]
 
     select.keydown
-      keyCode:keys.down
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.down
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat select.get("value"), equalTo "bar"
 
@@ -724,11 +724,11 @@ $( document ).ready ->
     select = new SingleSelect target[0]
 
     select.keydown
-      keyCode:keys.down
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.down
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat select.get("value"), equalTo "foo"
 
@@ -746,11 +746,11 @@ $( document ).ready ->
     select = new SingleSelect target[0]
 
     select.keydown
-      keyCode:keys.down
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.down
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat select.get("value"), equalTo "foo"
 
@@ -770,11 +770,11 @@ $( document ).ready ->
     select = new SingleSelect target[0]
 
     select.keydown
-      keyCode:keys.down
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.down
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat select.get("value"), equalTo "foo"
 
@@ -792,11 +792,11 @@ $( document ).ready ->
     select = new SingleSelect target[0]
 
     select.keydown
-      keyCode:keys.up
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.up
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat select.get("value"), equalTo "foo"
 
@@ -815,11 +815,11 @@ $( document ).ready ->
     select = new SingleSelect target[0]
 
     select.keydown
-      keyCode:keys.up
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.up
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat select.get("value"), equalTo "foo"
 
@@ -840,11 +840,11 @@ $( document ).ready ->
     select = new SingleSelect target[0]
 
     select.keydown
-      keyCode:keys.up
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.up
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat select.get("value"), equalTo "foo"
 
@@ -859,11 +859,11 @@ $( document ).ready ->
     preventDefaultCalled = false
 
     select.keydown
-      keyCode:keys.down
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.down
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
         preventDefaultCalled = true
 
     assertThat preventDefaultCalled
@@ -879,11 +879,11 @@ $( document ).ready ->
     preventDefaultCalled = false
 
     select.keydown
-      keyCode:keys.up
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.up
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
         preventDefaultCalled = true
 
     assertThat preventDefaultCalled
@@ -899,11 +899,11 @@ $( document ).ready ->
     select.set "readonly", true
 
     select.keydown
-      keyCode:keys.up
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.up
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat select.get("value"), equalTo "bar"
 
@@ -918,11 +918,11 @@ $( document ).ready ->
     select.set "readonly", true
 
     select.keydown
-      keyCode:keys.down
-      ctrlKey:false
-      shiftKey:false
-      altKey:false
-      preventDefault:->
+      keyCode: keys.down
+      ctrlKey: false
+      shiftKey: false
+      altKey: false
+      preventDefault: ->
 
     assertThat select.get("value"), equalTo "foo"
 

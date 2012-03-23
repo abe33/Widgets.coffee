@@ -1,4 +1,4 @@
-source:[
+source: [
   "src/signals"
   "src/std"
   "src/keys"
@@ -8,4 +8,4 @@ source:[
   "src/menus"
   "src/selects"
 ]
-test:"test/test-selects"
+test: "test/test-selects"

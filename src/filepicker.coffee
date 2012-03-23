@@ -13,12 +13,12 @@ class FilePicker extends Widget
 
   @mixins HasFocusProvidedByChild
 
-  constructor:(target)->
+  constructor: (target) ->
 
     # The `target` is mandatory in the `FilePicker` constructor
     # so a default target is created when nothing is passed
     # to the constructor.
-    target = $("<input type='file'></input>")[0] unless target?
+    target = $("<input type ='file'></input>")[0] unless target?
 
     super target
 
@@ -28,28 +28,28 @@ class FilePicker extends Widget
   #### Target Management
 
   # The target for a `FilePicker` must be an input with the type `file`.
-  checkTarget:(target)->
+  checkTarget: (target) ->
     unless @isInputWithType target, "file"
       throw new Error "FilePicker must have an input file as target"
 
   # Display the target if defined.
-  showTarget:->
+  showTarget: ->
     @jTarget.show() if @hasTarget
 
   # When the target changed the `value`'s text is then replaced with
   # the new value.
-  change:(e)->
+  change: (e) ->
     @setValueLabel if @jTarget.val()? then @jTarget.val() else "Browse"
     @dummy.attr "title", @jTarget.val()
 
   #### Dummy Management
 
   # The dummy for a `FilePicker` is a `span` with a `filepicker` class on it.
-  createDummy:->
+  createDummy: ->
     # It contains two `span` children for an icon and the value display.
-    dummy = $ "<span class='filepicker'>
-                <span class='icon'></span>
-                <span class='value'>Browse</span>
+    dummy = $ "<span class ='filepicker'>
+                <span class ='icon'></span>
+                <span class ='value'>Browse</span>
                </span>"
     # The widget's target is part of the dummy, at the top.
     # Generally the target's opacity should be set to `0`
@@ -62,14 +62,14 @@ class FilePicker extends Widget
     dummy
 
   # This method allow to test the change of the `value`'s text.
-  setValueLabel:(label)->
+  setValueLabel: (label) ->
     @dummy.children(".value").text label
 
   #### Properties Accessors
 
   # Disabling a `FilePicker` hides the target, in the contrary
   # enabling the widget will display the target again.
-  set_disabled:(property, value)->
+  set_disabled: (property, value) ->
     if value then @hideTarget()
     else unless @get("readonly") then @showTarget()
 
@@ -77,7 +77,7 @@ class FilePicker extends Widget
 
   # When a widget allow writing in it, the target is visible, otherwise the
   # target is hidden.
-  set_readonly:(property, value)->
+  set_readonly: (property, value) ->
     if value then @hideTarget()
     else unless @get("disabled") then @showTarget()
 

@@ -1,4 +1,4 @@
-source:[
+source: [
   "src/signals"
   "src/std"
   "src/keys"
@@ -8,4 +8,4 @@ source:[
   "src/calendar"
   "src/dates"
 ]
-test:"test/test-dates"
+test: "test/test-dates"

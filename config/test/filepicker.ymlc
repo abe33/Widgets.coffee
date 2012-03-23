@@ -1,4 +1,4 @@
-source:[
+source: [
   "src/signals"
   "src/std"
   "src/keys"
@@ -7,4 +7,4 @@ source:[
   "src/widgets"
   "src/filepicker"
 ]
-test:"test/test-filepicker"
+test: "test/test-filepicker"

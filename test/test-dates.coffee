@@ -166,81 +166,81 @@ testGenericDateWidgetBehaviors=( opt )->
               step='#{ opt.stepValue }'></input>"
 
   testValueInRangeMixin
-    cls:opt.cls
-    className:opt.className
-    defaultTarget:defaultTarget
+    cls: opt.cls
+    className: opt.className
+    defaultTarget: defaultTarget
 
-    initialValue:opt.defaultValue
-    valueBelowRange:opt.valueBelowRange
-    valueAboveRange:opt.valueAboveRange
+    initialValue: opt.defaultValue
+    valueBelowRange: opt.valueBelowRange
+    valueAboveRange: opt.valueAboveRange
 
-    minValue:opt.minValue
-    setMinValue:opt.setValue
-    invalidMinValue:opt.invalidMinValue
+    minValue: opt.minValue
+    setMinValue: opt.setValue
+    invalidMinValue: opt.invalidMinValue
 
-    maxValue:opt.maxValue
-    setMaxValue:opt.setValue
-    invalidMaxValue:opt.invalidMaxValue
+    maxValue: opt.maxValue
+    setMaxValue: opt.setValue
+    invalidMaxValue: opt.invalidMaxValue
 
-    stepValue:opt.stepValue
-    setStep:opt.setStep
-    valueNotInStep:opt.valueNotInStep
-    snappedValue:opt.snappedValue
+    stepValue: opt.stepValue
+    setStep: opt.setStep
+    valueNotInStep: opt.valueNotInStep
+    snappedValue: opt.snappedValue
 
-    singleIncrementValue:opt.singleIncrementValue
-    singleDecrementValue:opt.singleDecrementValue
+    singleIncrementValue: opt.singleIncrementValue
+    singleDecrementValue: opt.singleDecrementValue
 
-    undefinedMinValueMatcher:opt.undefinedMinValueMatcher
-    undefinedMaxValueMatcher:opt.undefinedMaxValueMatcher
-    undefinedStepValueMatcher:opt.undefinedStepValueMatcher
+    undefinedMinValueMatcher: opt.undefinedMinValueMatcher
+    undefinedMaxValueMatcher: opt.undefinedMaxValueMatcher
+    undefinedStepValueMatcher: opt.undefinedStepValueMatcher
 
   testValueInRangeMixinIntervals
-    cls:opt.cls
-    className:opt.className
-    defaultTarget:defaultTarget
+    cls: opt.cls
+    className: opt.className
+    defaultTarget: defaultTarget
 
   testValueInRangeMixinKeyboard
-    cls:opt.cls
-    className:opt.className
-    defaultTarget:defaultTarget
-    key:"up"
-    action:"increment"
-    valueMatcher:opt.singleIncrementValue
-    initialValueMatcher:equalTo opt.defaultValue
+    cls: opt.cls
+    className: opt.className
+    defaultTarget: defaultTarget
+    key: "up"
+    action: "increment"
+    valueMatcher: opt.singleIncrementValue
+    initialValueMatcher: equalTo opt.defaultValue
 
   testValueInRangeMixinKeyboard
-    cls:opt.cls
-    className:opt.className
-    defaultTarget:defaultTarget
-    key:"down"
-    action:"decrement"
-    valueMatcher:opt.singleDecrementValue
-    initialValueMatcher:equalTo opt.defaultValue
+    cls: opt.cls
+    className: opt.className
+    defaultTarget: defaultTarget
+    key: "down"
+    action: "decrement"
+    valueMatcher: opt.singleDecrementValue
+    initialValueMatcher: equalTo opt.defaultValue
 
   testValueInRangeMixinKeyboard
-    cls:opt.cls
-    className:opt.className
-    defaultTarget:defaultTarget
-    key:"right"
-    action:"increment"
-    valueMatcher:opt.singleIncrementValue
-    initialValueMatcher:equalTo opt.defaultValue
+    cls: opt.cls
+    className: opt.className
+    defaultTarget: defaultTarget
+    key: "right"
+    action: "increment"
+    valueMatcher: opt.singleIncrementValue
+    initialValueMatcher: equalTo opt.defaultValue
 
   testValueInRangeMixinKeyboard
-    cls:opt.cls
-    className:opt.className
-    defaultTarget:defaultTarget
-    key:"left"
-    action:"decrement"
-    valueMatcher:opt.singleDecrementValue
-    initialValueMatcher:equalTo opt.defaultValue
+    cls: opt.cls
+    className: opt.className
+    defaultTarget: defaultTarget
+    key: "left"
+    action: "decrement"
+    valueMatcher: opt.singleDecrementValue
+    initialValueMatcher: equalTo opt.defaultValue
 
   testValueInRangeMixinMouseWheel
-    cls:opt.cls
-    className:opt.className
-    defaultTarget:defaultTarget
-    initialValue:opt.defaultValue
-    singleIncrementValue:opt.singleIncrementValue
+    cls: opt.cls
+    className: opt.className
+    defaultTarget: defaultTarget
+    initialValue: opt.defaultValue
+    singleIncrementValue: opt.singleIncrementValue
 
   input1 = new opt.cls new Date, opt.type
   input2 = new opt.cls new Date, opt.type
@@ -261,45 +261,45 @@ $( document ).ready ->
   module "timeinput tests"
 
   testGenericDateWidgetBehaviors
-    className:"TimeInput"
-    cls:TimeInput
-    type:"time"
+    className: "TimeInput"
+    cls: TimeInput
+    type: "time"
 
-    defaultDate:new Date 1970, 0, 1, 11, 30, 0
-    defaultValue:"11:30:00"
+    defaultDate: new Date 1970, 0, 1, 11, 30, 0
+    defaultValue: "11:30:00"
 
-    invalidDates:[ null, new Date "foo" ]
-    invalidValues:[ null, "foo", "100:00:00", "1:22:2" ]
+    invalidDates: [ null, new Date "foo" ]
+    invalidValues: [ null, "foo", "100:00:00", "1:22:2" ]
 
-    setDate:new Date 1970, 0, 1, 16, 30, 00
-    setValue:"16:30:00"
+    setDate: new Date 1970, 0, 1, 16, 30, 00
+    setValue: "16:30:00"
 
-    minDate:new Date 1970, 0, 1, 10, 0, 0
-    minValue:"10:00:00"
-    valueBelowRange:"05:45:00"
-    invalidMinValue:"23:45:00"
+    minDate: new Date 1970, 0, 1, 10, 0, 0
+    minValue: "10:00:00"
+    valueBelowRange: "05:45:00"
+    invalidMinValue: "23:45:00"
 
-    maxDate:new Date 1970, 0, 1, 23, 0, 0
-    maxValue:"23:00:00"
-    valueAboveRange:"23:45:00"
-    invalidMaxValue:"05:00:00"
+    maxDate: new Date 1970, 0, 1, 23, 0, 0
+    maxValue: "23:00:00"
+    valueAboveRange: "23:45:00"
+    invalidMaxValue: "05:00:00"
 
-    stepValue:1800
-    setStep:3600
-    valueNotInStep:"10:10:54"
-    snappedValue:"10:00:00"
+    stepValue: 1800
+    setStep: 3600
+    valueNotInStep: "10:10:54"
+    snappedValue: "10:00:00"
 
-    singleIncrementValue:"12:00:00"
-    singleDecrementValue:"11:00:00"
+    singleIncrementValue: "12:00:00"
+    singleDecrementValue: "11:00:00"
 
-    undefinedMinValueMatcher:nullValue()
-    undefinedMaxValueMatcher:nullValue()
-    undefinedStepValueMatcher:equalTo 60
+    undefinedMinValueMatcher: nullValue()
+    undefinedMaxValueMatcher: nullValue()
+    undefinedStepValueMatcher: equalTo 60
 
   testFocusProvidedByChildMixin
-    className:"TimeInput"
-    cls:TimeInput
-    focusChildSelector:"input"
+    className: "TimeInput"
+    cls: TimeInput
+    focusChildSelector: "input"
 
   test "A TimeInput dummy should contains an input that contains
       the value", ->
@@ -468,11 +468,11 @@ $( document ).ready ->
       the mouse is released", ->
 
     class MockTimeInput extends TimeInput
-      mousedown:(e)->
+      mousedown: (e)->
         e.pageY = 5
         super e
 
-      mousemove:(e)->
+      mousemove: (e)->
         e.pageY = 0
         super e
 
@@ -489,39 +489,39 @@ $( document ).ready ->
   module "dateinput tests"
 
   testGenericDateWidgetBehaviors
-    className:"DateInput"
-    cls:DateInput
-    type:"date"
+    className: "DateInput"
+    cls: DateInput
+    type: "date"
 
-    defaultDate:new Date 1981, 8, 9, 0
-    defaultValue:"1981-09-09"
+    defaultDate: new Date 1981, 8, 9, 0
+    defaultValue: "1981-09-09"
 
-    invalidDates:[ null, new Date "foo" ]
-    invalidValues:[ null, "foo", "122-50-4", "1-1-+6" ]
+    invalidDates: [ null, new Date "foo" ]
+    invalidValues: [ null, "foo", "122-50-4", "1-1-+6" ]
 
-    setDate:new Date 2012, 4, 27, 0
-    setValue:"2012-05-27"
+    setDate: new Date 2012, 4, 27, 0
+    setValue: "2012-05-27"
 
-    minDate:new Date 1970, 0, 1, 0
-    minValue:"1970-01-01"
-    valueBelowRange:"1960-05-23"
-    invalidMinValue:"2013-05-25"
+    minDate: new Date 1970, 0, 1, 0
+    minValue: "1970-01-01"
+    valueBelowRange: "1960-05-23"
+    invalidMinValue: "2013-05-25"
 
-    maxDate:new Date 2012, 11, 29, 0
-    maxValue:"2012-12-29"
-    valueAboveRange:"2100-05-21"
-    invalidMaxValue:"1960-05-23"
+    maxDate: new Date 2012, 11, 29, 0
+    maxValue: "2012-12-29"
+    valueAboveRange: "2100-05-21"
+    invalidMaxValue: "1960-05-23"
 
-    stepValue:1800
-    setStep:3600
-    valueNotInStep:"2012-05-27"
-    snappedValue:"2012-05-27"
-    singleIncrementValue:"1981-09-09"
-    singleDecrementValue:"1981-09-08"
+    stepValue: 1800
+    setStep: 3600
+    valueNotInStep: "2012-05-27"
+    snappedValue: "2012-05-27"
+    singleIncrementValue: "1981-09-09"
+    singleDecrementValue: "1981-09-08"
 
-    undefinedMinValueMatcher:nullValue()
-    undefinedMaxValueMatcher:nullValue()
-    undefinedStepValueMatcher:nullValue()
+    undefinedMinValueMatcher: nullValue()
+    undefinedMaxValueMatcher: nullValue()
+    undefinedStepValueMatcher: nullValue()
 
   test "A DateInput dummy should contains an span that contains
       the value", ->
@@ -599,40 +599,40 @@ $( document ).ready ->
   module "monthinput tests"
 
   testGenericDateWidgetBehaviors
-    className:"MonthInput"
-    cls:MonthInput
-    type:"month"
+    className: "MonthInput"
+    cls: MonthInput
+    type: "month"
 
-    defaultDate:new Date 1981, 8, 1, 0
-    defaultValue:"1981-09"
+    defaultDate: new Date 1981, 8, 1, 0
+    defaultValue: "1981-09"
 
-    invalidDates:[ null, new Date "foo" ]
-    invalidValues:[ null, "foo", "122-50", "1-1-+6" ]
+    invalidDates: [ null, new Date "foo" ]
+    invalidValues: [ null, "foo", "122-50", "1-1-+6" ]
 
-    setDate:new Date 2012, 4, 1, 0
-    setValue:"2012-05"
+    setDate: new Date 2012, 4, 1, 0
+    setValue: "2012-05"
 
-    minDate:new Date 1970, 0, 1, 0
-    minValue:"1970-01"
-    valueBelowRange:"1960-01"
-    invalidMinValue:"2013-01"
+    minDate: new Date 1970, 0, 1, 0
+    minValue: "1970-01"
+    valueBelowRange: "1960-01"
+    invalidMinValue: "2013-01"
 
-    maxDate:new Date 2012, 11, 1, 0
-    maxValue:"2012-12"
-    valueAboveRange:"2100-05"
-    invalidMaxValue:"1960-01"
+    maxDate: new Date 2012, 11, 1, 0
+    maxValue: "2012-12"
+    valueAboveRange: "2100-05"
+    invalidMaxValue: "1960-01"
 
-    stepValue:1800
-    setStep:3600
-    valueNotInStep:"2012-05"
-    snappedValue:"2012-05"
+    stepValue: 1800
+    setStep: 3600
+    valueNotInStep: "2012-05"
+    snappedValue: "2012-05"
 
-    singleIncrementValue:"1981-09"
-    singleDecrementValue:"1981-08"
+    singleIncrementValue: "1981-09"
+    singleDecrementValue: "1981-08"
 
-    undefinedMinValueMatcher:nullValue()
-    undefinedMaxValueMatcher:nullValue()
-    undefinedStepValueMatcher:nullValue()
+    undefinedMinValueMatcher: nullValue()
+    undefinedMaxValueMatcher: nullValue()
+    undefinedStepValueMatcher: nullValue()
 
   test "A MonthInput dummy should contains an span that contains
       the value", ->
@@ -710,39 +710,39 @@ $( document ).ready ->
   module "weekinput tests"
 
   testGenericDateWidgetBehaviors
-    className:"WeekInput"
-    cls:WeekInput
-    type:"week"
+    className: "WeekInput"
+    cls: WeekInput
+    type: "week"
 
-    defaultDate:Date.weekFromString "2012-W01"
-    defaultValue:"2012-W01"
+    defaultDate: Date.weekFromString "2012-W01"
+    defaultValue: "2012-W01"
 
-    invalidDates:[ null, new Date "foo" ]
-    invalidValues:[ null, "foo", "122-50", "1-1-+6" ]
+    invalidDates: [ null, new Date "foo" ]
+    invalidValues: [ null, "foo", "122-50", "1-1-+6" ]
 
-    setDate:Date.weekFromString "2011-W31"
-    setValue:"2011-W31"
+    setDate: Date.weekFromString "2011-W31"
+    setValue: "2011-W31"
 
-    minDate:Date.weekFromString "2011-W04"
-    minValue:"2011-W04"
-    valueBelowRange:"2011-W01"
-    invalidMinValue:"2014-W35"
+    minDate: Date.weekFromString "2011-W04"
+    minValue: "2011-W04"
+    valueBelowRange: "2011-W01"
+    invalidMinValue: "2014-W35"
 
-    maxDate:Date.weekFromString "2013-W04"
-    maxValue:"2013-W04"
-    valueAboveRange:"2100-W05"
-    invalidMaxValue:"2010-W09"
+    maxDate: Date.weekFromString "2013-W04"
+    maxValue: "2013-W04"
+    valueAboveRange: "2100-W05"
+    invalidMaxValue: "2010-W09"
 
-    stepValue:1800
-    setStep:3600
-    valueNotInStep:"2012-W05"
-    snappedValue:"2012-W05"
-    singleIncrementValue:"2012-W01"
-    singleDecrementValue:"2012-W52"
+    stepValue: 1800
+    setStep: 3600
+    valueNotInStep: "2012-W05"
+    snappedValue: "2012-W05"
+    singleIncrementValue: "2012-W01"
+    singleDecrementValue: "2012-W52"
 
-    undefinedMinValueMatcher:nullValue()
-    undefinedMaxValueMatcher:nullValue()
-    undefinedStepValueMatcher:nullValue()
+    undefinedMinValueMatcher: nullValue()
+    undefinedMaxValueMatcher: nullValue()
+    undefinedStepValueMatcher: nullValue()
 
   test "A WeekInput dummy should contains an span that contains
       the value", ->
@@ -820,39 +820,39 @@ $( document ).ready ->
   module "datetimeinput tests"
 
   testGenericDateWidgetBehaviors
-    className:"DateTimeInput"
-    cls:DateTimeInput
-    type:"datetime"
+    className: "DateTimeInput"
+    cls: DateTimeInput
+    type: "datetime"
 
-    defaultDate:new Date 2011, 5, 21, 16, 30, 00
-    defaultValue:"2011-06-21T16:30:00+02:00"
+    defaultDate: new Date 2011, 5, 21, 16, 30, 00
+    defaultValue: "2011-06-21T16:30:00+02:00"
 
-    invalidDates:[ null, new Date "foo" ]
-    invalidValues:[ null, "foo", "122-50", "1-1-+6" ]
+    invalidDates: [ null, new Date "foo" ]
+    invalidValues: [ null, "foo", "122-50", "1-1-+6" ]
 
-    setDate:new Date 2011, 7, 15, 8, 30, 00
-    setValue:"2011-08-15T08:30:00+02:00"
+    setDate: new Date 2011, 7, 15, 8, 30, 00
+    setValue: "2011-08-15T08:30:00+02:00"
 
-    minDate:new Date 2011, 0, 1, 0, 0, 0
-    minValue:"2011-01-01T00:00:00+01:00"
-    valueBelowRange:"2010-12-31T23:30:00+01:00"
-    invalidMinValue:"2013-05-03T23:30:00+01:00"
+    minDate: new Date 2011, 0, 1, 0, 0, 0
+    minValue: "2011-01-01T00:00:00+01:00"
+    valueBelowRange: "2010-12-31T23:30:00+01:00"
+    invalidMinValue: "2013-05-03T23:30:00+01:00"
 
-    maxDate:new Date 2011, 11, 31, 23, 30, 00
-    maxValue:"2011-12-31T23:30:00+01:00"
-    valueAboveRange:"2013-05-03T00:00:00+01:00"
-    invalidMaxValue:"2010-01-01T00:00:00+01:00"
+    maxDate: new Date 2011, 11, 31, 23, 30, 00
+    maxValue: "2011-12-31T23:30:00+01:00"
+    valueAboveRange: "2013-05-03T00:00:00+01:00"
+    invalidMaxValue: "2010-01-01T00:00:00+01:00"
 
-    stepValue:1800
-    setStep:3600
-    valueNotInStep:"2011-08-15T08:35:12+02:00"
-    snappedValue:"2011-08-15T08:00:00+02:00"
-    singleIncrementValue:"2011-06-21T17:00:00+02:00"
-    singleDecrementValue:"2011-06-21T16:00:00+02:00"
+    stepValue: 1800
+    setStep: 3600
+    valueNotInStep: "2011-08-15T08:35:12+02:00"
+    snappedValue: "2011-08-15T08:00:00+02:00"
+    singleIncrementValue: "2011-06-21T17:00:00+02:00"
+    singleDecrementValue: "2011-06-21T16:00:00+02:00"
 
-    undefinedMinValueMatcher:nullValue()
-    undefinedMaxValueMatcher:nullValue()
-    undefinedStepValueMatcher:nullValue()
+    undefinedMinValueMatcher: nullValue()
+    undefinedMaxValueMatcher: nullValue()
+    undefinedStepValueMatcher: nullValue()
 
   test "DateTimeInput should compose a DateInput and a TimeInput
       as children", ->
@@ -896,39 +896,39 @@ $( document ).ready ->
   module "datetimelocalinput tests"
 
   testGenericDateWidgetBehaviors
-    className:"DateTimeLocalInput"
-    cls:DateTimeLocalInput
-    type:"datetime-local"
+    className: "DateTimeLocalInput"
+    cls: DateTimeLocalInput
+    type: "datetime-local"
 
-    defaultDate:new Date 2011, 5, 21, 16, 30, 00
-    defaultValue:"2011-06-21T16:30:00"
+    defaultDate: new Date 2011, 5, 21, 16, 30, 00
+    defaultValue: "2011-06-21T16:30:00"
 
-    invalidDates:[ null, new Date "foo" ]
-    invalidValues:[ null, "foo", "122-50", "1-1-+6" ]
+    invalidDates: [ null, new Date "foo" ]
+    invalidValues: [ null, "foo", "122-50", "1-1-+6" ]
 
-    setDate:new Date 2011, 7, 15, 8, 30, 00
-    setValue:"2011-08-15T08:30:00"
+    setDate: new Date 2011, 7, 15, 8, 30, 00
+    setValue: "2011-08-15T08:30:00"
 
-    minDate:new Date 2011, 0, 1, 0, 0, 0
-    minValue:"2011-01-01T00:00:00"
-    valueBelowRange:"2010-12-31T23:30:00"
-    invalidMinValue:"2013-05-16T23:30:00"
+    minDate: new Date 2011, 0, 1, 0, 0, 0
+    minValue: "2011-01-01T00:00:00"
+    valueBelowRange: "2010-12-31T23:30:00"
+    invalidMinValue: "2013-05-16T23:30:00"
 
-    maxDate:new Date 2011, 11, 31, 23, 30, 00
-    maxValue:"2011-12-31T23:00:00"
-    valueAboveRange:"2013-05-01T00:00:00"
-    invalidMaxValue:"2010-01-07T00:00:00"
+    maxDate: new Date 2011, 11, 31, 23, 30, 00
+    maxValue: "2011-12-31T23:00:00"
+    valueAboveRange: "2013-05-01T00:00:00"
+    invalidMaxValue: "2010-01-07T00:00:00"
 
-    stepValue:1800
-    setStep:3600
-    valueNotInStep:"2011-08-15T08:35:12"
-    snappedValue:"2011-08-15T08:00:00"
-    singleIncrementValue:"2011-06-21T17:00:00"
-    singleDecrementValue:"2011-06-21T16:00:00"
+    stepValue: 1800
+    setStep: 3600
+    valueNotInStep: "2011-08-15T08:35:12"
+    snappedValue: "2011-08-15T08:00:00"
+    singleIncrementValue: "2011-06-21T17:00:00"
+    singleDecrementValue: "2011-06-21T16:00:00"
 
-    undefinedMinValueMatcher:nullValue()
-    undefinedMaxValueMatcher:nullValue()
-    undefinedStepValueMatcher:nullValue()
+    undefinedMinValueMatcher: nullValue()
+    undefinedMaxValueMatcher: nullValue()
+    undefinedStepValueMatcher: nullValue()
 
   test "DateTimeLocalInput should compose a DateInput and a TimeInput
       as children", ->

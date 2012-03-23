@@ -121,7 +121,7 @@ runTests=()->
     updateDummyCalled = false
 
     class MockCalendar extends Calendar
-      updateDummy:->
+      updateDummy: ->
         super()
         updateDummyCalled = true
 
@@ -319,9 +319,9 @@ runTests=()->
       by opening itself", ->
 
     class MockWidget extends Widget
-      createDummy:-> $ "<span></span>"
+      createDummy: -> $ "<span></span>"
 
-      get_date:(property)-> new Date
+      get_date: (property)-> new Date
 
     widget = new MockWidget
     calendar = new Calendar
@@ -335,9 +335,9 @@ runTests=()->
       after dialogRequested was triggered", ->
 
     class MockWidget extends Widget
-      createDummy:-> $ "<span></span>"
+      createDummy: -> $ "<span></span>"
 
-      get_date:(property)-> new Date 2012, 1, 22
+      get_date: (property)-> new Date 2012, 1, 22
 
     d = new Date 2012, 1, 22
     widget = new MockWidget
@@ -351,9 +351,9 @@ runTests=()->
   test "Clicking outside of the widgfet should close it", ->
 
     class MockWidget extends Widget
-      createDummy:-> $ "<span></span>"
+      createDummy: -> $ "<span></span>"
 
-      get_date:(property)-> new Date 2012, 1, 22
+      get_date: (property)-> new Date 2012, 1, 22
 
     d = new Date 2012, 1, 22
     widget = new MockWidget
@@ -368,9 +368,9 @@ runTests=()->
   test "Clicking on the widgfet shouldn't close it", ->
 
     class MockWidget extends Widget
-      createDummy:-> $ "<span></span>"
+      createDummy: -> $ "<span></span>"
 
-      get_date:(property)-> new Date 2012, 1, 22
+      get_date: (property)-> new Date 2012, 1, 22
 
     d = new Date 2012, 1, 22
     widget = new MockWidget
@@ -389,10 +389,10 @@ runTests=()->
     setterValue = null
 
     class MockWidget extends Widget
-      createDummy:-> $ "<span></span>"
+      createDummy: -> $ "<span></span>"
 
-      get_date:(property)-> new Date 2012, 1, 22
-      set_date:(property, value)->
+      get_date: (property)-> new Date 2012, 1, 22
+      set_date: (property, value)->
         setterCalled = property
         setterValue = value
 
@@ -416,10 +416,10 @@ runTests=()->
     setterValue = null
 
     class MockWidget extends Widget
-      createDummy:-> $ "<span></span>"
+      createDummy: -> $ "<span></span>"
 
-      get_date:(property)-> new Date 2012, 1, 22
-      set_date:(property, value)->
+      get_date: (property)-> new Date 2012, 1, 22
+      set_date: (property, value)->
         setterCalled = property
         setterValue = value
 
@@ -432,10 +432,10 @@ runTests=()->
     calendar.set "value", d
 
     calendar.keydown
-      keyCode:keys.enter
-      ctrlKey:false
-      altKey:false
-      shiftKey:false
+      keyCode: keys.enter
+      ctrlKey: false
+      altKey: false
+      shiftKey: false
 
     assertThat setterCalled is "date"
     assertThat setterValue, dateEquals d
@@ -445,10 +445,10 @@ runTests=()->
     setterCalled = null
 
     class MockWidget extends Widget
-      createDummy:-> $ "<span></span>"
+      createDummy: -> $ "<span></span>"
 
-      get_date:(property)-> new Date 2012, 1, 22
-      set_date:(property, value)->
+      get_date: (property)-> new Date 2012, 1, 22
+      set_date: (property, value)->
         setterCalled = property
 
     d = new Date 2007, 5, 17

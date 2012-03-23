@@ -8,7 +8,7 @@ class SingleSelect extends Widget
 
   # A `SingleSelect` accept either a `select` node or a `MenuModel`
   # as contructor argument.
-  constructor:(targetOrModel)->
+  constructor: (targetOrModel) ->
 
     @size = null
 
@@ -71,7 +71,7 @@ class SingleSelect extends Widget
 
   # Only `select` nodes that doesn't have the `multiple` flag set
   # are allowed as target for a `SingleSelect`.
-  checkTarget:(target)->
+  checkTarget: (target) ->
     if not @isTag(target, "select") or $(target).attr("multiple")?
       throw new Error "A SingleSelect only allow select nodes as target"
 
@@ -88,8 +88,8 @@ class SingleSelect extends Widget
   # options groups are preserved in the data structure. Each
   # `optgroup` will appear as a submenu in a `MenuList` and
   # will open a new `MenuList` with the data of the `optgroup`.
-  buildModel:(model, node)->
-    node.each (i, o)=>
+  buildModel: (model, node) ->
+    node.each (i, o) =>
       option = $(o)
       if o.nodeName.toLowerCase() is "optgroup"
         # Sub-models are represented by an object that
@@ -114,7 +114,7 @@ class SingleSelect extends Widget
   # If the `path` argument is `null` or if the
   # path lead to a dead end, the function returns
   # `null`.
-  getItemAt:(path)->
+  getItemAt: (path) ->
     return if path is null
 
     model = @model
@@ -131,7 +131,7 @@ class SingleSelect extends Widget
   #
   # The `model` argument is optionnal and allow
   # to use the `findValue` method recursively.
-  findValue:(value, model = @model)->
+  findValue: (value, model = @model) ->
     # If the value is `null` or if it's an empty string
     # the function returns `null`.
     return null if not value? or value is ""
@@ -160,7 +160,7 @@ class SingleSelect extends Widget
   # Returns the last model that contains the item at `path`.
   # If the `path` argument is `null` or if the path lead
   # to a dead end, the function returns `null`.
-  getModelAt:(path)->
+  getModelAt: (path) ->
     return if path is null
 
     model = @model
@@ -173,55 +173,55 @@ class SingleSelect extends Widget
 
     model
 
-  ensureModelActions:(model=@model)->
+  ensureModelActions: (model =@model) ->
     for item in model.items
       if item.menu? then @ensureModelActions item.menu
       else item.action = @buildActionFor item unless item.action?
 
-  buildActionFor:(item)->
+  buildActionFor: (item) ->
     => @set "value", item.value
 
   #### Options Management
 
   # Removes all the `option` nodes in the target.
-  clearOptions:->
+  clearOptions: ->
     @jTarget.children().remove()
 
   # Build the content of the target based on the current model's data.
-  buildOptions:(model = @model, target = @jTarget)->
+  buildOptions: (model = @model, target = @jTarget) ->
 
     for act in model.items
       if act.menu?
-        group = $("<optgroup label='#{act.display}'></optgroup>")
+        group = $("<optgroup label ='#{act.display}'></optgroup>")
         target.append group
         @buildOptions act.menu, group
       else
-        act.action= (=> @set "value", act.value) unless act.action?
-        target.append $("<option value='#{act.value}'>#{act.display}</option>")
+        act.action = ( => @set "value", act.value) unless act.action?
+        target.append $("<option value ='#{act.value}'>#{act.display}</option>")
 
   # Updates the state of the target accordingly with
   # the current selection of the widget.
-  updateOptionSelection:()->
+  updateOptionSelection: () ->
     @getOptionAt(@selectedPath)?.attr "selected", "selected"
 
   # Returns the label to use for a given `option` or `optgroup` node.
   # If provided the `label` attribute will have the priority. If not
   # the node content will be used instead.
-  getOptionLabel:(option)->
+  getOptionLabel: (option) ->
     return null unless option?
     if option.attr "label" then option.attr "label" else option.text()
 
   # Returns the value to use for a given `option` node.
   # If provided the `value` attribute will have the priority. If not
   # the node content will be used instead.
-  getOptionValue:(option)->
+  getOptionValue: (option) ->
     return null unless option?
     if option.attr "value" then option.attr "value" else option.text()
 
   # Returns the `option` or `optgroup` node at the specified `path`.
   # If the `path` argument is `null` or if the path lead to a dead end
   # the function returns `null`
-  getOptionAt:(path)->
+  getOptionAt: (path) ->
     return null if path is null
 
     option = null
@@ -236,7 +236,7 @@ class SingleSelect extends Widget
   #### Selection Management
 
   # Moves the selection cursor to the up.
-  moveSelectionUp:(e)->
+  moveSelectionUp: (e) ->
     e.preventDefault()
 
     unless @cantInteract()
@@ -245,7 +245,7 @@ class SingleSelect extends Widget
       @set "value", @getOptionValue @getOptionAt @selectedPath
 
   # Moves the selection cursor to the down.
-  moveSelectionDown:(e)->
+  moveSelectionDown: (e) ->
     e.preventDefault()
 
     unless @cantInteract()
@@ -262,7 +262,7 @@ class SingleSelect extends Widget
   #
   # If there's no longer any element after the current path,
   # the search restart from the top.
-  findNext:(path)->
+  findNext: (path) ->
     model = @getModelAt path
     step = path.length - 1
     newPath = path.concat()
@@ -296,7 +296,7 @@ class SingleSelect extends Widget
   #
   # If there's no longer any element before the current path,
   # the search restart from the bottom.
-  findPrevious:(path)->
+  findPrevious: (path) ->
     model = @getModelAt path
     step = path.length - 1
     newPath = path.concat()
@@ -326,14 +326,14 @@ class SingleSelect extends Widget
 
   # The dummy for a `SingleSelect` is a span with the class `single-select`
   # and an internal span with the class `value`.
-  createDummy:->
-    $ "<span class='single-select'>
-         <span class='value'></span>
+  createDummy: ->
+    $ "<span class ='single-select'>
+         <span class ='value'></span>
        </span>"
 
   # The dummy's `value` span will receive the content of the
   # `display` property of the current selected item.
-  updateDummy:->
+  updateDummy: ->
     # Assuming the selection path is valid.
     unless @selectedPath is null
       display = @getItemAt(@selectedPath)?.display
@@ -349,22 +349,22 @@ class SingleSelect extends Widget
     # as the content for the new `value` span. That's imply that
     # the display for an item could contains any valid HTML code.
     @dummy.find(".value").remove()
-    @dummy.append $("<span class='value'>#{display}</span>")
+    @dummy.append $("<span class ='value'>#{display}</span>")
 
   #### Menu Management
 
   # Creates a `MenuList` instance for this `SingleSelect`.
   # The same model is shared between a `SingleSelect` and
   # its `MenuList`.
-  buildMenu:->
+  buildMenu: ->
     @menuList = new MenuList @model
 
   # Opens the `MenuList` for this instance.
-  openMenu:->
+  openMenu: ->
     unless @cantInteract()
       # Pressing the mouse on the document when the `MenuList` is
       # opened will close the menu.
-      $(document).bind "mousedown", @documentDelegate=(e)=>
+      $(document).bind "mousedown", @documentDelegate = (e) =>
         @documentMouseDown e
 
       # The `MenuList` dummy is appended directly on the document body.
@@ -389,7 +389,7 @@ class SingleSelect extends Widget
           list = list.childList if list.childList
 
   # Closes the `MenuList` for this instance.
-  closeMenu:->
+  closeMenu: ->
     @menuList.close()
     # When the `MenuList` is closed, the `SingleSelect`
     # recover the focus.
@@ -398,14 +398,14 @@ class SingleSelect extends Widget
     $(document).unbind "mousedown", @documentDelegate
 
   # Returns `true` is the `MenuList` is currently present in the DOM.
-  isMenuVisible:->
+  isMenuVisible: ->
     @menuList.dummy.parent().length is 1
 
   #### Properties Accessors
 
   # The only legible values for a `SingleSelect`
   # are those are stored in its model.
-  set_value:(property, value)->
+  set_value: (property, value) ->
     # In case the new value can't be found in the model, the
     # widget's value will remain unchanged.
     oldValue = @get "value"
@@ -435,7 +435,7 @@ class SingleSelect extends Widget
 
   # Changes the model of this `SingleSelect`. When it occurs, the
   # select's `MenuList` instance's model is also changed.
-  set_model:(property, value)->
+  set_model: (property, value) ->
     @model?.contentChanged.remove @modelChanged, this
     @model = value
     @menuList.set "model", value
@@ -447,7 +447,7 @@ class SingleSelect extends Widget
   #### Signal Listeners
 
   # Catch all changes made to the model.
-  modelChanged:(model)->
+  modelChanged: (model) ->
     # In the case the previous value can't be found anymore
     # in the model, the selection is reset to the first selectable
     # item in the model.
@@ -469,7 +469,7 @@ class SingleSelect extends Widget
 
   # Pressing the mouse over a `SingleSelect` open or close the
   # `MenuList` of the instance according to its current state.
-  mousedown:(e)->
+  mousedown: (e) ->
     unless @cantInteract()
       # Prevent the default behavior on the `SingleSelect`
       # `mousedown` event to allow the `menuList` to trigger
@@ -488,6 +488,6 @@ class SingleSelect extends Widget
   # There's no need to test the position of the mouse since
   # both the `SingleSelect` and its `MenuList` stop the propagation
   # of the event and prevents the document to catch it.
-  documentMouseDown:(e)-> @closeMenu()
+  documentMouseDown: (e) -> @closeMenu()
 
 @SingleSelect = SingleSelect
