@@ -340,13 +340,13 @@ Date.datetimeLocalFromString = (string) ->
     seconds, milliseconds ] = Date.dateTimeLocalRE().exec string
 
   pI = parseInt
-  new Date pI(year    , 10),
-           pI(month   , 10) - 1,
-           pI(day     , 10),
-           pI(hours   , 10),
-           pI(minutes , 10),
-           pI(seconds , 10)
-           if milliseconds? then pI milliseconds.replace(".", ""), 10 else 0
+  new Date pI(year   , 10),
+           pI(month  , 10) - 1,
+           pI(day    , 10),
+           pI(hours  , 10),
+           pI(minutes, 10),
+           pI(seconds, 10)
+           if milliseconds? then pI(milliseconds.replace(".", ""), 10) else 0
 
 Date.datetimeLocalToString = (date) ->
   "#{ Date.dateToString date }T#{ Date.timeToString date }"
