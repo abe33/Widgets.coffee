@@ -1,0 +1,13 @@
+container: "textareas"
+builder:
+  title: "TextAreas"
+  cls: this["TextArea"]
+  rows: 1
+  cols: 3
+  tableClass: "float dummy"
+  cells: (opts)->
+    states = [null, "readonly", "disabled"]
+    opts.widget.set "value", states[opts.col] or "normal"
+    opts.widget.set states[opts.col], true if states[opts.col]?
+  columnHeaders: (opts)->
+    ["Normal", "Readonly", "Disabled"][opts.col]

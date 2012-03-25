@@ -7,7 +7,7 @@ class Container extends Widget
   # The dummy for a `Container` is a single `span` with
   # a `container` class on it.
   createDummy: ->
-    $("<span class ='container'></span>")
+    $("<span class='container'></span>")
 
 @Container = Container
 

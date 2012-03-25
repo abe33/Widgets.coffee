@@ -15,7 +15,7 @@ class Radio extends CheckBox
   # The dummy for the radio is just a `<span>` element
   # with a `radio` class.
   createDummy: ->
-    $ "<span class ='radio'></span>"
+    $ "<span class='radio'></span>"
 
   # Toggle is unidirectionnal. The only way to
   # uncheck a radio is by code.

@@ -327,8 +327,8 @@ class SingleSelect extends Widget
   # The dummy for a `SingleSelect` is a span with the class `single-select`
   # and an internal span with the class `value`.
   createDummy: ->
-    $ "<span class ='single-select'>
-         <span class ='value'></span>
+    $ "<span class='single-select'>
+         <span class='value'></span>
        </span>"
 
   # The dummy's `value` span will receive the content of the
@@ -349,7 +349,7 @@ class SingleSelect extends Widget
     # as the content for the new `value` span. That's imply that
     # the display for an item could contains any valid HTML code.
     @dummy.find(".value").remove()
-    @dummy.append $("<span class ='value'>#{display}</span>")
+    @dummy.append $("<span class='value'>#{display}</span>")
 
   #### Menu Management
 

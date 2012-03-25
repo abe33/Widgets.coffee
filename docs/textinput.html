@@ -2,74 +2,74 @@
 <link rel='stylesheet' href='../css/widgets.css' media='screen'></p>
 
 <script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
+
 <script type='text/javascript' src='../depends/jquery.mousewheel.js'></script>
+
 <script type='text/javascript' src='../lib/widgets.js'></script>
+
 <script type='text/javascript' src='../lib/builder.js'></script>
-The `TextInput` widget wrap the target within a `span` in order to
-allow custom styling.
 
-Here some live instances where a prefix to the field
-was created using the `:before` selector through css :
-<div id="livedemos"></div>
-<link rel="stylesheet" href="../css/styles.css" media="screen">
-<link rel="stylesheet" href="../css/widgets.css" media="screen">
+<p>The <code>TextInput</code> widget wrap the target within a <code>span</code> in order to
+allow custom styling.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nb">TextInput</span> <span class="k">extends</span> <span class="nb">Widget</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>Here some live instances where a prefix to the field</p>
 
-<script type='text/javascript' src='../depends/jquery-1.6.1.min.js'></script>
-<script type='text/javascript' src='../depends/jquery.mousewheel.js'></script>
-<script type='text/javascript' src='../depends/signals.js'></script>
-<script type='text/javascript' src='../lib/widgets.js'></script>
+<div id='textinputs'></div>
 
 <script type='text/javascript'>
-var input1 = new TextInput();
-var input2 = new TextInput();
-var input3 = new TextInput();
+  var config = ({
+  container: "textinputs",
+  builder: {
+    title: "TextInputs",
+    cls: this["TextInput"],
+    rows: 1,
+    cols: 3,
+    tableClass: "float dummy",
+    cells: function(opts) {
+      var prefixes, states;
+      states = [null, "readonly", "disabled"];
+      prefixes = ["a", "b", "c"];
+      opts.widget.addClasses(prefixes[opts.col]);
+      opts.widget.set("value", states[opts.col] || "normal");
+      if (states[opts.col] != null) return opts.widget.set(states[opts.col], true);
+    },
+    columnHeaders: function(opts) {
+      return ["Normal", "Readonly", "Disabled"][opts.col];
+    }
+  }
+});
 
-input1.dummyClass = input1.dummyClass + " a";
-input2.dummyClass = input2.dummyClass + " b";
+  var builder = new TableBuilder(config.builder);
+  $("#textinputs").append(builder.build());
+</script>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">@mixins</span> <span class="nb">HasFocusProvidedByChild</span>
 
-input1.set("value", "hello");
-input2.set("value", "readonly");
-input3.set("value", "disabled");
-
-input2.set("readonly", true);
-input3.set("disabled", true);
-
-input1.attach("#livedemos");
-input2.attach("#livedemos");
-input3.attach("#livedemos");
-</script>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nb">TextInput</span> <span class="k">extends</span> <span class="nb">Widget</span>
-
-  <span class="py">@mixins</span> <span class="nb">HasFocusProvidedByChild</span>
-
-  <span class="py">constructor</span><span class="o">:</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span><span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p>The <code>target</code> is mandatory in the <code>TextInput</code> constructor so a default
+  <span class="py">constructor</span><span class="o">:</span> <span class="p">(</span><span class="nx">target</span><span class="p">)</span> <span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>The <code>target</code> is mandatory in the <code>TextInput</code> constructor so a default
 target is created when nothing is passed to the constructor.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nv">target </span><span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s">&quot;&lt;input type=&#39;text&#39;&gt;&lt;/input&gt;&quot;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="k">unless</span> <span class="nx">target</span><span class="o">?</span>
 
     <span class="k">super</span> <span class="nx">target</span>
 
     <span class="py">@maxlength</span> <span class="o">=</span> <span class="py">@valueFromAttribute</span> <span class="s">&quot;maxlength&quot;</span>
 
-    <span class="py">@valueIsObsolete</span> <span class="o">=</span> <span class="kc">false</span></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <h3>Target management</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>The target for a <code>TextInput</code> must be an input with the
-type <code>text</code> or <code>password</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">checkTarget</span><span class="o">:</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span><span class="o">-&gt;</span>
+    <span class="py">@valueIsObsolete</span> <span class="o">=</span> <span class="kc">false</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <h3>Target management</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>The target for a <code>TextInput</code> must be an input with the
+type <code>text</code> or <code>password</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">checkTarget</span><span class="o">:</span> <span class="p">(</span><span class="nx">target</span><span class="p">)</span> <span class="o">-&gt;</span>
     <span class="k">unless</span> <span class="py">@isInputWithType</span> <span class="nx">target</span><span class="p">,</span> <span class="s">&quot;text&quot;</span><span class="p">,</span> <span class="s">&quot;password&quot;</span>
-      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span> <span class="s">&quot;TextInput must have an input text as target&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <h3>Dummy management</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>The dummy for a <code>TextInput</code> is a <code>span</code> with a <code>text</code> class on it.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">createDummy</span><span class="o">:-&gt;</span>
-    <span class="nv">dummy </span><span class="o">=</span> <span class="nx">$</span> <span class="s">&quot;&lt;span class=&#39;text&#39;&gt;&lt;/span&gt;&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>The target of the widget is appended to the dummy.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">dummy</span><span class="p">.</span><span class="nx">append</span> <span class="py">@jTarget</span>
+      <span class="k">throw</span> <span class="k">new</span> <span class="nb">Error</span> <span class="s">&quot;TextInput must have an input text as target&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <h3>Dummy management</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>The dummy for a <code>TextInput</code> is a <code>span</code> with a <code>text</code> class on it.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">createDummy</span><span class="o">:</span> <span class="o">-&gt;</span>
+    <span class="nv">dummy </span><span class="o">=</span> <span class="nx">$</span> <span class="s">&quot;&lt;span class=&#39;text&#39;&gt;&lt;/span&gt;&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <p>The target of the widget is appended to the dummy.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="nx">dummy</span><span class="p">.</span><span class="nx">append</span> <span class="py">@jTarget</span>
     <span class="py">@focusProvider</span> <span class="o">=</span> <span class="py">@jTarget</span>
 
-    <span class="nx">dummy</span></pre></div>             </td>           </tr>                               <tr id="section-8">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-8">&#182;</a>               </div>               <h3>Properties accessors</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Handles the <code>maxlength</code> attribute of the target.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">set_maxlength</span><span class="o">:</span><span class="p">(</span><span class="nx">property</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span><span class="o">-&gt;</span>
+    <span class="nx">dummy</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <h3>Properties accessors</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Handles the <code>maxlength</code> attribute of the target.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">set_maxlength</span><span class="o">:</span> <span class="p">(</span><span class="nx">property</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="o">-&gt;</span>
     <span class="k">if</span> <span class="nx">value</span><span class="o">?</span>
       <span class="py">@jTarget</span><span class="p">.</span><span class="nx">attr</span> <span class="s">&quot;maxlength&quot;</span><span class="p">,</span> <span class="nx">value</span>
     <span class="k">else</span>
       <span class="py">@jTarget</span><span class="p">.</span><span class="nx">removeAttr</span> <span class="s">&quot;maxlength&quot;</span>
-    <span class="py">@</span><span class="p">[</span><span class="nx">property</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <h3>Events handling</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>When the user types some text in the target, the widget's
-value is marked as obsolete.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">input</span><span class="o">:</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="o">-&gt;</span>
-    <span class="py">@valueIsObsolete</span> <span class="o">=</span> <span class="kc">true</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>When the <code>change</code> event occurs, the content of the
+    <span class="py">@</span><span class="p">[</span><span class="nx">property</span><span class="p">]</span> <span class="o">=</span> <span class="nx">value</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <h3>Events handling</h3>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>When the user types some text in the target, the widget's
+value is marked as obsolete.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">input</span><span class="o">:</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="py">@valueIsObsolete</span> <span class="o">=</span> <span class="kc">true</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>When the <code>change</code> event occurs, the content of the
 target is saved as the new widget's value and the obsolete
 flag is set to <code>false</code>.</p>
 
 <p>The flag is unset after the value's affectation, and since
 a <code>valueChanged</code> signal is dispatched, the <code>valueIsObsolete</code>
 property allow a listener to know if the change done to the
-widget was done by a user input.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">change</span><span class="o">:</span><span class="p">(</span><span class="nx">e</span><span class="p">)</span><span class="o">-&gt;</span>
+widget was done by a user input.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">change</span><span class="o">:</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">-&gt;</span>
     <span class="py">@set</span> <span class="s">&quot;value&quot;</span><span class="p">,</span> <span class="py">@valueFromAttribute</span> <span class="s">&quot;value&quot;</span>
     <span class="py">@valueIsObsolete</span> <span class="o">=</span> <span class="kc">false</span>
     <span class="kc">false</span>

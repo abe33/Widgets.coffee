@@ -85,55 +85,10 @@ class MenuModel
 ## MenuList
 
 # A `MenuList` is used to render and manipulate a `MenuModel`.
-#
-# Here some live instances:
-# <link rel ="stylesheet" href ="../css/styles.css" media ="screen">
-# <div id ="livedemos-menus"></div>
-# <link rel ="stylesheet" href ="../css/styles.css" media ="screen">
-# <link rel ="stylesheet" href ="../css/widgets.css" media ="screen">
-#
-# <script type ='text/javascript' src ='../depends/jquery-1.6.1.min.js'></script>
-# <script type ='text/javascript'
-#         src ='../depends/jquery.mousewheel.js'></script>
-# <script type ='text/javascript' src ='../depends/signals.js'></script>
-# <script type ='text/javascript' src ='../lib/widgets.js'></script>
-#
-# <script type ='text/javascript'>
-# var item1 = { display: "Item 1", action:function()
-# { console.log ("item 1 clicked"); } };
-# var item2 = { display: "Item 2", action:function()
-# { console.log ("item 2 clicked"); } };
-# var item3 = { display: "<em>Group 1</em>", menu:new MenuModel() };
-# var item4 = { display: "Item 3", action:function()
-# { console.log ("item 3 clicked"); } };
-# var item5 = { display: "Item 4", action:function()
-# { console.log ("item 5 clicked"); } };
-# var item6 = { display: "<em>Group 2</em>", menu:new MenuModel() };
-# var item7 = { display: "Item 5", action:function()
-# { console.log ("item 6 clicked"); } };
-# var item8 = { display: "Item 6", action:function()
-# { console.log ("item 6 clicked"); } };
-#
-# item3.menu.add (item4, item5, item6);
-# item6.menu.add (item7, item8);
-#
-# var model = new MenuModel (item1, item2, item3);
-# var list1 = new MenuList (model);
-# var list2 = new MenuList (model);
-# var list3 = new MenuList (model);
-#
-# list2.set("readonly", true);
-# list3.set("disabled", true);
-#
-# list1.addClasses ("dummy");
-# list2.addClasses ("dummy");
-# list3.addClasses ("dummy");
-#
-# list1.attach("#livedemos-menus");
-# list2.attach("#livedemos-menus");
-# list3.attach("#livedemos-menus");
-# </script>
 class MenuList extends Widget
+  # Here some live instances:
+  #
+  #= require menulist
 
   # The `MenuList` class constructor takes a `MenuModel`
   # instance as argument.
@@ -229,7 +184,7 @@ class MenuList extends Widget
   # The dummy for a `MenuList` is an unordered list
   # with the class `menulist`.
   createDummy: ->
-    $("<ul class ='menulist'></ul>")
+    $("<ul class='menulist'></ul>")
 
   updateSize: ->
     itemHeight = @dummy.children().first()[0]?.offsetHeight
@@ -257,10 +212,10 @@ class MenuList extends Widget
       # display as `li` nodes within the dummy.
       if item.menu?
         # Menus receive the `menu` class.
-        li = $("<li class ='menu'>#{item.display}</li>")
+        li = $("<li class='menu'>#{item.display}</li>")
       else
         # Actions receive the `menuitem` class.
-        li = $("<li class ='menuitem'>#{item.display}</li>")
+        li = $("<li class='menuitem'>#{item.display}</li>")
       @dummy.append li
 
     @dummy.children().each (i, o) =>
@@ -302,7 +257,7 @@ class MenuList extends Widget
 
     @childList.dummy.blur() if @childList.hasFocus
 
-    @dummy.after @childList.dummy unless @isChildListVisible()
+    @childList.attach "body" unless @isChildListVisible()
     @childList.set "model", model unless @childList.get("model") is model
 
     # The child `MenuList` is placed next to the `li` that requested it.

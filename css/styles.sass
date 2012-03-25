@@ -107,6 +107,9 @@ form
     td, th
       border: none
 
+    h3:first-letter
+      color: $base03
+
   .not-standard
     background: $orange1
     color: $widget-text-focus-color
@@ -148,13 +151,13 @@ form
     width: 80px !important
 
     &:before
-      content: "A: "
+      content: "A:"
       color: $widget-text-color
       display: inline
       position: absolute
-      left: 2px
+      left: 4px
       top: 50%
-      margin-top: -8px
+      margin-top: -9px
       font-size: 0.85em
       line-height: 18px
 
@@ -164,17 +167,18 @@ form
     color: $base4
     display: inline
     position: absolute
-    right: 2px
+    right: 4px
     top: 50%
-    margin-top: -10px
+    margin-top: -8px
     font-size: 0.9em
     line-height: 19px
 
   &.b:before
-    content: "B: "
+    content: "B:"
 
   &.c:before
-    content: "C: "
+    content: "C:"
+    font-style: normal
 
 
 .button

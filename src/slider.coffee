@@ -147,10 +147,10 @@ class Slider extends NumericWidget
   # a `slider` class and three `<span>` child to represent respectively
   # the slider's `track`, `knob` and `value`.
   createDummy: ->
-    dummy = $  "<span class ='slider'>
-                  <span class ='track'></span>
-                  <span class ='knob'></span>
-                  <span class ='value'></span>
+    dummy = $  "<span class='slider'>
+                  <span class='track'></span>
+                  <span class='knob'></span>
+                  <span class='value'></span>
                 </span>"
 
     # The slider register to the `mousedown` events

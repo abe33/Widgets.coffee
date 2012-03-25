@@ -71,7 +71,7 @@ class Button extends Widget
   # The base structure of a button is simply a `span`
   # with a `button` class.
   createDummy: ->
-    $("<span class ='button'></span>")
+    $("<span class='button'></span>")
 
   # The real content of the button is produced
   # in the `updateContent` method.

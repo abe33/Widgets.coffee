@@ -131,10 +131,10 @@ Spinner =
   # * A span that act as the decrement button.
   # * A span that act as the increment button.
   createDummy: ->
-    dummy = $ "<span class ='#{ @spinnerDummyClass }'>
-        <input type ='text' class ='value widget-done'></input>
-        <span class ='down'></span>
-        <span class ='up'></span>
+    dummy = $ "<span class='#{ @spinnerDummyClass }'>
+        <input type='text' class='value widget-done'></input>
+        <span class='down'></span>
+        <span class='up'></span>
        </span>"
 
     @focusProvider = dummy.children("input")

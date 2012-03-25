@@ -309,7 +309,7 @@ class Widget extends Module
   hideTarget: ->
     @jTarget.hide() if @hasTarget
 
-  # Reset the target as a `<input type ='reset'>` could do.
+  # Reset the target as a `<input type='reset'>` could do.
   reset: -> @set "value", @targetInitialValue
 
   # A placeholder for the target's change event.
@@ -470,12 +470,12 @@ class Widget extends Module
   # Register the passed-in function to be triggered
   # when the keystroke `ks` is matched on `keydown`.
   registerKeyDownCommand: (ks, command) ->
-    @keyDownCommands[ks ] = [ ks, command]
+    @keyDownCommands[ks] = [ks, command]
 
   # Register the passed-in function to be triggered
   # when the keystroke `ks` is matched on `keyup`.
   registerKeyUpCommand: (ks, command) ->
-    @keyUpCommands[ks ] = [ ks, command]
+    @keyUpCommands[ks] = [ks, command]
 
   # Returns `yes` if the passed-in keystroke have been associated
   # with a command for this widget's `keydown` event.

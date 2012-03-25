@@ -76,7 +76,7 @@ class TableBuilder
       colspan = @options.cols
       colspan += 1 if hasRowHeaders
       table.append $ "<tr><th colspan ='#{ colspan }'
-                              class ='table-header'>
+                              class='table-header'>
                           #{ @options.title }
                       </th></tr>"
 
@@ -100,7 +100,7 @@ class TableBuilder
       # Iterates over the columns.
       for col in cols
         # Each header cell has a specific class.
-        th = $("<th class ='column-header'></th>")
+        th = $("<th class='column-header'></th>")
         tr.append th
 
         # The context object is updated with the current column
@@ -129,7 +129,7 @@ class TableBuilder
       # with the result of the call of the function with the context
       # object.
       if hasRowHeaders
-        th = $("<th class ='row-header'></th>")
+        th = $("<th class='row-header'></th>")
         tr.append th
 
         context.th = th

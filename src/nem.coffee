@@ -16,6 +16,6 @@ npm = (pkg, target) ->
 ###NPM_DECLARATION###
 
 # Executes npm install with the declared dependencies.
-exe = spawn 'npm', ['install' ].concat packages
+exe = spawn 'npm', ['install'].concat packages
 exe.stdout.on 'data', (data) -> print data.toString()
 exe.stderr.on 'data', (data) -> print data.toString()

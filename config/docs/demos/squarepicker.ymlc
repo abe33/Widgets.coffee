@@ -1,0 +1,20 @@
+container: "squarepickers"
+builder:
+  title: "SquarePickers"
+  cls: this["SquarePicker"]
+  rows: 1
+  cols: 4
+  tableClass: "float dummy"
+  cells: (opts)->
+    states = [null, null, "readonly","disabled"]
+    styles = ["", "vertical", "", "vertical"]
+
+    if opts.col % 2 is 1
+      opts.widget.lockX()
+      opts.td.css "width", "auto"
+    opts.widget.addClasses styles[opts.col]
+    opts.widget.set "value", [Math.random(),Math.random()]
+    opts.widget.set states[opts.col], true if states[opts.col]?
+
+  columnHeaders: (opts)->
+    ["Normal", "", "Vertical", ""][opts.col]

@@ -1,10 +1,11 @@
-container: "calendar"
+container: "colorpicker"
 builder:
-  title: "Calendar"
-  cls: this["Calendar"]
+  title: "ColorPicker"
+  cls: this["ColorPicker"]
   rows: 1
   cols: 1
   tableClass: "float dummy"
   cells: (opts)->
     opts.td.css "width", "auto"
+    opts.widget.set "value", "#abcdef"
     opts.widget.addClasses "dummy"

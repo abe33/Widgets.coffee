@@ -1,12 +1,3 @@
-# <link rel ="stylesheet" href ="../css/styles.css" media ="screen">
-# <link rel ="stylesheet" href ="../css/widgets.css" media ="screen">
-#
-# <script type ='text/javascript' src ='../depends/jquery-1.6.1.min.js'></script>
-# <script type ='text/javascript'
-#         src ='../depends/jquery.mousewheel.js'></script>
-# <script type ='text/javascript' src ='../depends/signals.js'></script>
-# <script type ='text/javascript' src ='../lib/widgets.js'></script>
-
 # The `dates.coffee` file contains all the widgets that handles date and time
 # related inputs.
 #
@@ -166,7 +157,7 @@ class AbstractDateInputWidget extends Widget
   # The base dummy for date widgets is a span with a `datetime`
   # class completed with the type of the widget.
   createDummy: ->
-    $("<span class ='dateinput #{ @supportedType }'></span>")
+    $("<span class='dateinput #{ @supportedType }'></span>")
 
   # Placeholder for the dummy update.
   updateDummy: ->
@@ -221,6 +212,8 @@ class AbstractDateInputWidget extends Widget
     @updateDummy()
     @[property]
 
+  ##### Range Accessors
+
   # Sets the `min` property of the widget.
   #
   # The `min` property is constrained by the same rules as the
@@ -267,6 +260,7 @@ class AbstractDateInputWidget extends Widget
     value = null if isNaN value
     @[property] = value
     @valueToAttribute property, value
+
     # When affected, the current `date` of the widget is
     # adjusted to the new step by calling the `date` setter.
     @set "date", @get "date"
@@ -290,12 +284,14 @@ OpenCalendar =
   # a `span` with the class `value`.
   createDummy: ->
     dummy = @super "createDummy"
-    dummy.append "<span class ='value'>#{ @get "value" }</span>"
+    dummy.append "<span class='value'>#{ @get "value" }</span>"
     dummy
 
   # Updates the `span` that contains the value.
   updateDummy: ->
     @dummy.find(".value").text @get "value"
+
+  #### Events Listeners
 
   # Clicking on the widget will trigger the `dialogRequested` signal
   # unless it can't interact.
@@ -321,6 +317,7 @@ HasDateAndTime =
   constructorHook: ->
     @add @dateInput = new DateInput
     @add @timeInput = new TimeInput
+
     # The widget listen to both children `valueChanged` signal.
     @dateInput.valueChanged.add @dateChanged, this
     @timeInput.valueChanged.add @timeChanged, this
@@ -336,6 +333,8 @@ HasDateAndTime =
     @dateInput.set "date", @get("date").clone()
     @timeInput.set "date", @get("date").clone()
     @datetimeSetProgramatically = false
+
+  #### Slots
 
   # Receive the `valueChanged` signal of the `DateInput` child.
   dateChanged: (widget) ->
@@ -365,23 +364,11 @@ HasDateAndTime =
 ## TimeInput
 
 # The `TimeInput` handles the form input of type `time`.
-#
-# Here some live instances :
-# <div id ="timeinput-demos"></div>
-#
-# <script type ='text/javascript'>
-# var input1 = new TimeInput();
-# var input2 = new TimeInput();
-# var input3 = new TimeInput();
-#
-# input2.set("readonly", true);
-# input3.set("disabled", true);
-#
-# input1.attach("#timeinput-demos");
-# input2.attach("#timeinput-demos");
-# input3.attach("#timeinput-demos");
-# </script>
 class TimeInput extends AbstractDateInputWidget
+  # Here some live instances :
+  #
+  #= require timeinput
+
   # The `TimeWidget` is displayed as a spinner
   # with a text input that allow to input directly
   # a time. In that case the focus is provided
@@ -429,23 +416,10 @@ class TimeInput extends AbstractDateInputWidget
 ## DateInput
 
 # The `DateInput` handles the form input of type `date`.
-#
-# Here some live instances :
-# <div id ="dateinput-demos"></div>
-#
-# <script type ='text/javascript'>
-# var input1 = new DateInput();
-# var input2 = new DateInput();
-# var input3 = new DateInput();
-#
-# input2.set("readonly", true);
-# input3.set("disabled", true);
-#
-# input1.attach("#dateinput-demos");
-# input2.attach("#dateinput-demos");
-# input3.attach("#dateinput-demos");
-# </script>
 class DateInput extends AbstractDateInputWidget
+  # Here some live instances :
+  #
+  #= require dateinput
 
   # Clicking on a `DateInput` open a `Calendar` object
   # in `date` mode.
@@ -469,23 +443,10 @@ class DateInput extends AbstractDateInputWidget
 ## MonthInput
 
 # The `MonthInput` handles the form input of type `month`.
-#
-# Here some live instances :
-# <div id ="monthinput-demos"></div>
-#
-# <script type ='text/javascript'>
-# var input1 = new MonthInput();
-# var input2 = new MonthInput();
-# var input3 = new MonthInput();
-#
-# input2.set("readonly", true);
-# input3.set("disabled", true);
-#
-# input1.attach("#monthinput-demos");
-# input2.attach("#monthinput-demos");
-# input3.attach("#monthinput-demos");
-# </script>
 class MonthInput extends AbstractDateInputWidget
+  # Here some live instances :
+  #
+  #= require monthinput
 
   # Clicking on a `MonthInput` open a `Calendar` object
   # in `month` mode.
@@ -509,23 +470,10 @@ class MonthInput extends AbstractDateInputWidget
 ## WeekInput
 
 # The `WeekInput` handles the form input of type `week`.
-#
-# Here some live instances :
-# <div id ="weekinput-demos"></div>
-#
-# <script type ='text/javascript'>
-# var input1 = new WeekInput();
-# var input2 = new WeekInput();
-# var input3 = new WeekInput();
-#
-# input2.set("readonly", true);
-# input3.set("disabled", true);
-#
-# input1.attach("#weekinput-demos");
-# input2.attach("#weekinput-demos");
-# input3.attach("#weekinput-demos");
-# </script>
 class WeekInput extends AbstractDateInputWidget
+  # Here some live instances :
+  #
+  #= require weekinput
 
   # Clicking on a `WeekInput` open a `Calendar` object
   # in `week` mode.
@@ -549,23 +497,10 @@ class WeekInput extends AbstractDateInputWidget
 ## DateTimeInput
 
 # The `DateTimeInput` handles the form input of type `date`.
-#
-# Here some live instances :
-# <div id ="datetimeinput-demos"></div>
-#
-# <script type ='text/javascript'>
-# var input1 = new DateTimeInput();
-# var input2 = new DateTimeInput();
-# var input3 = new DateTimeInput();
-#
-# input2.set("readonly", true);
-# input3.set("disabled", true);
-#
-# input1.attach("#datetimeinput-demos");
-# input2.attach("#datetimeinput-demos");
-# input3.attach("#datetimeinput-demos");
-# </script>
 class DateTimeInput extends AbstractDateInputWidget
+  # Here some live instances :
+  #
+  #= require datetimeinput
 
   @mixins HasChildren, HasDateAndTime
 
@@ -581,23 +516,10 @@ class DateTimeInput extends AbstractDateInputWidget
 ## DateTimeLocalInput
 
 # The `DateTimeLocalInput` handles the form input of type `date`.
-#
-# Here some live instances :
-# <div id ="datetimelocalinput-demos"></div>
-#
-# <script type ='text/javascript'>
-# var input1 = new DateTimeLocalInput();
-# var input2 = new DateTimeLocalInput();
-# var input3 = new DateTimeLocalInput();
-#
-# input2.set("readonly", true);
-# input3.set("disabled", true);
-#
-# input1.attach("#datetimelocalinput-demos");
-# input2.attach("#datetimelocalinput-demos");
-# input3.attach("#datetimelocalinput-demos");
-# </script>
 class DateTimeLocalInput extends AbstractDateInputWidget
+  # Here some live instances :
+  #
+  #= require datetimelocalinput
 
   @mixins HasChildren, HasDateAndTime
 

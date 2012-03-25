@@ -36,14 +36,14 @@ class Calendar extends Widget
   # The last element in the calendar dummy is a table that display the
   # current month and year of the widget.
   createDummy: ->
-    dummy = $ "<span class ='calendar'>
+    dummy = $ "<span class='calendar'>
                  <h3></h3>
-                 <a class ='prev-year'>Previous Year</a>
-                 <a class ='prev-month'>Previous Month</a>
-                 <a class ='next-month'>Next Month</a>
-                 <a class ='next-year'>Next Year</a>
+                 <a class='prev-year'>Previous Year</a>
+                 <a class='prev-month'>Previous Month</a>
+                 <a class='next-month'>Next Month</a>
+                 <a class='next-year'>Next Year</a>
                  <table></table>
-                 <a class ='today'>Today</a>
+                 <a class='today'>Today</a>
                </span>"
 
     # Clicking on the `today` anchor display the current date.
@@ -125,7 +125,7 @@ class Calendar extends Widget
     for y in [0..@rowsNeeded date]
       # The first cell of the row is a header cell that will contains
       # the week number.
-      line = $("<tr><th class ='week'></th></tr>")
+      line = $("<tr><th class='week'></th></tr>")
       # And then for the seven days of each week, a cell is created.
       for x in [0..6]
         cell = $ "<td></td>"

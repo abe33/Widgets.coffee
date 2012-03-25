@@ -92,7 +92,7 @@ class CheckBox extends Widget
   # The dummy for the checkbox is just a `<span>` element
   # with a `checkbox` class.
   createDummy: ->
-    $("<span class ='checkbox'></span>")
+    $("<span class='checkbox'></span>")
 
   #### Checked State Management
 

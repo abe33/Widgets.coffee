@@ -18,7 +18,7 @@ class FilePicker extends Widget
     # The `target` is mandatory in the `FilePicker` constructor
     # so a default target is created when nothing is passed
     # to the constructor.
-    target = $("<input type ='file'></input>")[0] unless target?
+    target = $("<input type='file'></input>")[0] unless target?
 
     super target
 
@@ -47,9 +47,9 @@ class FilePicker extends Widget
   # The dummy for a `FilePicker` is a `span` with a `filepicker` class on it.
   createDummy: ->
     # It contains two `span` children for an icon and the value display.
-    dummy = $ "<span class ='filepicker'>
-                <span class ='icon'></span>
-                <span class ='value'>Browse</span>
+    dummy = $ "<span class='filepicker'>
+                <span class='icon'></span>
+                <span class='value'>Browse</span>
                </span>"
     # The widget's target is part of the dummy, at the top.
     # Generally the target's opacity should be set to `0`

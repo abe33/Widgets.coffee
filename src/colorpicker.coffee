@@ -21,7 +21,7 @@
 # an hexadecimal string.
 rgb2hex = (r, g, b) ->
   rnd = Math.round
-  value = (( rnd( r ) << 16 ) + ( rnd( g ) << 8 ) + rnd( b )).toString 16
+  value = ((rnd(r) << 16) + (rnd(g) << 8) + rnd(b)).toString 16
 
   # The value is filled with `0` to match a length of 6.
   value = "0#{value}" while value.length < 6
@@ -65,9 +65,9 @@ rgb2hsv = (r, g, b) ->
     # The lower the delta is in comparison with the value
     # the higher the saturation will be.
     s = delta / v
-    deltaR = (( ( v - r ) / 6 ) + ( delta / 2 )) / delta
-    deltaG = (( ( v - g ) / 6 ) + ( delta / 2 )) / delta
-    deltaB = (( ( v - b ) / 6 ) + ( delta / 2 )) / delta
+    deltaR = (((v - r) / 6) + (delta / 2)) / delta
+    deltaG = (((v - g) / 6) + (delta / 2)) / delta
+    deltaB = (((v - b) / 6) + (delta / 2)) / delta
 
     # In a range from `0` to `1`, full red is at `0` and `1`,
     # full green is at `1/3` and full blue at `2/3`.
@@ -75,12 +75,9 @@ rgb2hsv = (r, g, b) ->
     # From the point in the range corresponding to the dominant
     # component, the delta of the other channels are both added
     # in order to move the hue around this point.
-    if r is v
-      h = deltaB - deltaG
-    else if g is v
-      h = (1 / 3) + deltaR - deltaB
-    else if b == v
-      h = (2 / 3) + deltaG - deltaR
+    if r is v      then h = deltaB - deltaG
+    else if g is v then h = (1 / 3) + deltaR - deltaB
+    else if b == v then h = (2 / 3) + deltaG - deltaR
 
     # Hue is then reduced to fit in the `0-1` range.
     h += 1 if h < 0
@@ -116,19 +113,19 @@ hsv2rgb = (h, s, v) ->
     #  * 5 = Fuschia
     dominant = Math.floor h
 
-    comp1 = v * ( 1 - s)
-    comp2 = v * (1 - s * ( h - dominant ))
-    comp3 = v * (1 - s * ( 1 - ( h - dominant ) ))
+    comp1 = v * (1 - s)
+    comp2 = v * (1 - s * (h - dominant))
+    comp3 = v * (1 - s * (1 - (h - dominant)))
 
     # According to the dominant color we affect
     # the values to each component.
     switch dominant
-      when 0 then [r, g, b ] = [ v, comp3, comp1]
-      when 1 then [r, g, b ] = [ comp2, v, comp1]
-      when 2 then [r, g, b ] = [ comp1, v, comp3]
-      when 3 then [r, g, b ] = [ comp1, comp2, v]
-      when 4 then [r, g, b ] = [ comp3, comp1, v]
-      else        [r, g, b ] = [ v, comp1, comp2]
+      when 0 then [r, g, b] = [v, comp3, comp1]
+      when 1 then [r, g, b] = [comp2, v, comp1]
+      when 2 then [r, g, b] = [comp1, v, comp3]
+      when 3 then [r, g, b] = [comp1, comp2, v]
+      when 4 then [r, g, b] = [comp3, comp1, v]
+      else        [r, g, b] = [v, comp1, comp2]
 
     # And each component is normalized to fit in the
     # `0-255`.
@@ -175,51 +172,27 @@ isValidChannel = (value) ->
 
 # Validates that the passed-in color object is valid.
 isValidColor = (value) ->
-  value?                         and
+  value?                       and
   (isValidChannel value.red)   and
   (isValidChannel value.green) and
   (isValidChannel value.blue)
 
 # Validates that the passed-in red green and blue channels form a valid color.
 isValidRGB = (r, g, b) ->
-  (isValidChannel r ) and ( isValidChannel g ) and ( isValidChannel b)
+  (isValidChannel r) and (isValidChannel g) and (isValidChannel b)
 
 # Validates that the passed-in hue, saturation and value channels
 # form a valid color.
 isValidHSV = (h, s, v) ->
-  (isValidHue h ) and ( isValidPercentage s ) and ( isValidPercentage v)
+  (isValidHue h) and (isValidPercentage s) and (isValidPercentage v)
 
 # <a name ='colorinput'></a>
 ## ColorInput
 
-# Here some live instances of the `ColorInput` widget :
-# <div id ="livedemos"></div>
-# <link rel ="stylesheet" href ="../css/styles.css" media ="screen">
-# <link rel ="stylesheet" href ="../css/widgets.css" media ="screen">
-#
-# <script type ='text/javascript' src ='../depends/jquery-1.6.1.min.js'></script>
-# <script type ='text/javascript'
-#         src ='../depends/jquery.mousewheel.js'></script>
-# <script type ='text/javascript' src ='../depends/signals.js'></script>
-# <script type ='text/javascript' src ='../lib/widgets.js'></script>
-#
-# <script type ='text/javascript'>
-# var picker1 = new ColorInput()
-# var picker2 = new ColorInput()
-# var picker3 = new ColorInput()
-#
-# picker1.set("value", "#cbdc1b")
-# picker2.set("value", "#66ff99")
-# picker3.set("value", "#6699ff")
-#
-# picker2.set("readonly", true)
-# picker3.set("disabled", true)
-#
-# picker1.attach("#livedemos")
-# picker2.attach("#livedemos")
-# picker3.attach("#livedemos")
-# </script>
 class ColorInput extends Widget
+  # Here some live instances of the `ColorInput` widget :
+  #
+  #= require colorinput
 
   constructor: (target) ->
     super target
@@ -276,8 +249,8 @@ class ColorInput extends Widget
   # The `ColorInput` dummy contains an additional `span` used
   # to display the current color of this widget.
   createDummy: ->
-    $ "<span class ='colorinput'>
-         <span class ='color'></span>
+    $ "<span class='colorinput'>
+         <span class='color'></span>
        </span>"
 
   # The `ColorInput` widget automatically update the color preview
@@ -285,7 +258,7 @@ class ColorInput extends Widget
   updateDummy: (value) ->
     if @hasDummy
       colorPreview = @dummy.children ".color"
-      { red:r,green:g,blue: b } = @get "color"
+      {red:r, green:g, blue: b} = @get "color"
 
       # The color channel average value is used to define
       # whether the text should be black or white.
@@ -298,8 +271,7 @@ class ColorInput extends Widget
 
       # That same child background color is then changed according
       # to the widget's current color.
-      colorPreview.attr "style",
-                "background: #{value}; color: #{textColor};"
+      colorPreview.attr "style", "background: #{value}; color: #{textColor};"
 
   #### Properties Accessors
 
@@ -346,37 +318,10 @@ class ColorInput extends Widget
 
 # The `SquarePicker` widget is used in the `ColorPicker`.
 # It allow to manipulate value by dragging a cursor over a surface.
-#
-# Here some live instances :
-# <div id ="livedemos2"></div>
-# <script type ='text/javascript'>
-# var gpicker1 = new SquarePicker()
-# var gpicker2 = new SquarePicker()
-# var gpicker3 = new SquarePicker()
-# var gpicker4 = new SquarePicker()
-#
-# gpicker2.dummyClass = gpicker2.dummyClass + " vertical"
-# gpicker2.updateStates()
-#
-# gpicker4.dummyClass = gpicker4.dummyClass + " vertical"
-# gpicker4.updateStates()
-#
-# gpicker2.lockX()
-# gpicker4.lockX()
-# gpicker1.set("value", [.2,.5])
-# gpicker2.set("value", [0,.6])
-# gpicker3.set("value", [.5,.8])
-# gpicker4.set("value", [.7,.2])
-#
-# gpicker3.set("readonly", true)
-# gpicker4.set("disabled", true)
-#
-# gpicker1.attach("#livedemos2")
-# gpicker2.attach("#livedemos2")
-# gpicker3.attach("#livedemos2")
-# gpicker4.attach("#livedemos2")
-# </script>
 class SquarePicker extends Widget
+  # Here some live instances :
+  #
+  #= require squarepicker
   constructor: ->
     super()
 
@@ -414,8 +359,8 @@ class SquarePicker extends Widget
   # The cursor for the widget is a `span` indide
   # the dummy.
   createDummy: ->
-    $ "<span class ='gridpicker'>
-         <span class ='cursor'></span>
+    $ "<span class='gridpicker'>
+         <span class='cursor'></span>
        </span>"
 
   # Updates the widget according to the passerd-in
@@ -433,8 +378,8 @@ class SquarePicker extends Widget
     [ymin, ymax] = @get "rangeY"
 
     # The values are normalized in the range 0-1
-    rx = (x - xmin ) / ( xmax - xmin)
-    ry = (y - ymin ) / ( ymax - ymin)
+    rx = (x - xmin) / (xmax - xmin)
+    ry = (y - ymin) / (ymax - ymin)
 
     # The cursor is then centered on the position
     # within the widget.
@@ -496,15 +441,11 @@ class SquarePicker extends Widget
       # Collides the corresponding axis agaisnt the range.
       switch property
         when "rangeX"
-          if x > max
-            x = max
-          else if x < min
-            x = min
+          if x > max      then x = max
+          else if x < min then x = min
         when "rangeY"
-          if y > max
-            y = max
-          else if y < min
-            y = min
+          if y > max      then y = max
+          else if y < min then y = min
 
       # Updates the value.
       @set "value", [x, y]
@@ -525,7 +466,7 @@ class SquarePicker extends Widget
 
     # A range is valid when its two bounds are numbers and
     # that the `min` value is lower than the `max` value.
-    min? and max? and not isNaN(min ) and not isNaN( max) and min < max
+    min? and max? and not isNaN(min) and not isNaN(max) and min < max
 
   #### Cursor Dragging
   # Pressing the mouse over the widget starts a drag gesture.
@@ -586,17 +527,10 @@ class SquarePicker extends Widget
 
 # The `ColorPicker` class handle the manipulation
 # of the color for a given `ColorInput` object.
-#
-# Here a live instance of the `ColorPicker` widget :
-# <div id ="livedemos3"></div>
-# <script type ="text/javascript">
-# var dialog = new ColorPicker();
-# dialog.set("value", "#abcdef");
-# dialog.addClasses("dummy");
-#
-# dialog.attach("#livedemos3");
-# </script>
 class ColorPicker extends Widget
+  # Here a live instance of the `ColorPicker` widget :
+  #
+  #= require colorpicker
 
   @mixins HasChildren, DropDownPopup
 
@@ -655,10 +589,10 @@ class ColorPicker extends Widget
   # Additionally, there's two `span` that serve to display the original color
   # in comparison next to the current color.
   createDummy: ->
-    dummy = $ "<span class ='colorpicker'>
-            <span class ='newColor'></span>
-            <span class ='oldColor'></span>
-           </span>"
+    dummy = $ "<span class='colorpicker'>
+                <span class='newColor'></span>
+                <span class='oldColor'></span>
+               </span>"
 
     # Clicking on the original color reset the widget.
     dummy.children(".oldColor").click =>
@@ -719,7 +653,7 @@ class ColorPicker extends Widget
     input
   # Creates a `Radio` with the specified class. Optionally
   # the checked property of the radio can be set to `true`.
-  newRadio: (cls, checked = false) ->
+  newRadio: (cls, checked=false) ->
     radio = new Radio
     radio.addClasses cls
     radio.set "checked", checked
@@ -754,7 +688,7 @@ class ColorPicker extends Widget
     rnd = Math.round
 
     # The color's components are stored in individual variables.
-    { r, g, b, h, s, v } = @model
+    {r, g, b, h, s, v} = @model
 
     # The hexadecimal form is produced from the current red,
     # green and blue.
@@ -811,13 +745,13 @@ class ColorPicker extends Widget
     # has changes that haven't trigger a `change` event, the
     # widgets prevent the comfirmation to allow the submission
     # of the changes made to this input.
-    unless @redInput.valueIsObsolete          or
-         @greenInput.valueIsObsolete        or
-         @blueInput.valueIsObsolete         or
-         @hueInput.valueIsObsolete          or
-         @saturationInput.valueIsObsolete   or
-         @valueInput.valueIsObsolete        or
-         @hexInput.valueIsObsolete
+    unless @redInput.valueIsObsolete        or
+           @greenInput.valueIsObsolete      or
+           @blueInput.valueIsObsolete       or
+           @hueInput.valueIsObsolete        or
+           @saturationInput.valueIsObsolete or
+           @valueInput.valueIsObsolete      or
+           @hexInput.valueIsObsolete
       @comfirmChanges()
 
   # Comfirm the changes to the `ColorInput`. The dialog is hidden
@@ -856,7 +790,7 @@ class ColorPicker extends Widget
     v = if hex.indexOf("#") is -1 then "##{hex}" else hex
 
     if isValidValue v
-      { red:r, green:g, blue: b } = colorObjectFromValue v
+      {red: r, green: g, blue: b} = colorObjectFromValue v
       @fromRGB r, g, b
 
   # Sets the widget's model with the three components of a `rgb` color.
@@ -903,7 +837,7 @@ class ColorPicker extends Widget
     # But if the lock is activated the function will not proceed.
     unless @inputValueSetProgrammatically
 
-      { r, g, b, h, s, v } = @model
+      {r, g, b, h, s, v} = @model
 
       # According to the component the widget's value is changed.
       switch component
@@ -971,18 +905,18 @@ class HSVMode extends AbstractMode
     super dialog
 
     @initPickers [0,100],
-           [0,100],
-           [0,360],
-           "<span class ='layer hue-vertical-ramp'></span>",
-           "<span class ='layer'>
-            <span class ='layer hue-color'></span>
-            <span class ='layer white-horizontal-ramp'></span>
-            <span class ='layer black-vertical-ramp'></span>
-           </span>"
+                 [0,100],
+                 [0,360],
+                 "<span class='layer hue-vertical-ramp'></span>",
+                 "<span class='layer'>
+                    <span class='layer hue-color'></span>
+                    <span class='layer white-horizontal-ramp'></span>
+                    <span class='layer black-vertical-ramp'></span>
+                  </span>"
 
   update: (model) ->
     if model?
-      { h, s, v } = model
+      {h, s, v} = model
       [r,g,b] = hsv2rgb h, 100, 100
 
       @valuesSetProgrammatically = true
@@ -1029,14 +963,14 @@ class SHVMode extends AbstractMode
     super dialog
 
     @initPickers [0,360],
-           [0,100],
-           [1,100],
-           "<span class ='layer black-white-vertical-ramp'></span>",
-           "<span class ='layer'>
-            <span class ='layer hue-horizontal-ramp'></span>
-            <span class ='layer white-plain'></span>
-            <span class ='layer black-vertical-ramp'></span>
-            </span>"
+                 [0,100],
+                 [1,100],
+                 "<span class='layer black-white-vertical-ramp'></span>",
+                 "<span class='layer'>
+                    <span class='layer hue-horizontal-ramp'></span>
+                    <span class='layer white-plain'></span>
+                    <span class='layer black-vertical-ramp'></span>
+                  </span>"
 
   update: (model) ->
     { h, s, v } = model
@@ -1082,17 +1016,17 @@ class VHSMode extends AbstractMode
     super dialog
 
     @initPickers [0,360],
-           [0,100],
-           [1,100],
-           "<span class ='layer black-white-vertical-ramp'></span>",
-           "<span class ='layer'>
-            <span class ='layer hue-horizontal-ramp'></span>
-            <span class ='layer white-vertical-ramp'></span>
-            <span class ='layer black-plain'></span>
-            </span>"
+                 [0,100],
+                 [1,100],
+                 "<span class='layer black-white-vertical-ramp'></span>",
+                 "<span class='layer'>
+                    <span class='layer hue-horizontal-ramp'></span>
+                    <span class='layer white-vertical-ramp'></span>
+                    <span class='layer black-plain'></span>
+                  </span>"
 
   update: (model) ->
-    { h, s, v } = model
+    {h, s, v} = model
     opacity = 1-(v / 100)
 
     @valuesSetProgrammatically = true
@@ -1135,16 +1069,16 @@ class RGBMode extends AbstractMode
     super dialog
 
     @initPickers [0,255],
-           [0,255],
-           [0,255],
-           "<span class ='layer black-red-vertical-ramp'></span>",
-           "<span class ='layer'>
-            <span class ='layer rgb-bottom'></span>
-            <span class ='layer rgb-up'></span>
-            </span>"
+                 [0,255],
+                 [0,255],
+                 "<span class='layer black-red-vertical-ramp'></span>",
+                 "<span class='layer'>
+                    <span class='layer rgb-bottom'></span>
+                    <span class='layer rgb-up'></span>
+                  </span>"
 
   update: (model) ->
-    { r, g, b } = model
+    {r, g, b} = model
     opacity = r / 255
 
     @valuesSetProgrammatically = true
@@ -1187,16 +1121,16 @@ class GRBMode extends AbstractMode
     super dialog
 
     @initPickers [0,255],
-           [0,255],
-           [0,255],
-           "<span class ='layer black-green-vertical-ramp'></span>",
-           "<span class ='layer'>
-            <span class ='layer grb-bottom'></span>
-            <span class ='layer grb-up'></span>
-            </span>"
+                 [0,255],
+                 [0,255],
+                 "<span class='layer black-green-vertical-ramp'></span>",
+                 "<span class='layer'>
+                    <span class='layer grb-bottom'></span>
+                    <span class='layer grb-up'></span>
+                  </span>"
 
   update: (model) ->
-    { r, g, b } = model
+    {r, g, b} = model
     opacity = g / 255
 
     @valuesSetProgrammatically = true
@@ -1239,16 +1173,16 @@ class BGRMode extends AbstractMode
     super dialog
 
     @initPickers [0,255],
-           [0,255],
-           [0,255],
-           "<span class ='layer black-blue-vertical-ramp'></span>",
-           "<span class ='layer'>
-            <span class ='layer bgr-bottom'></span>
-            <span class ='layer bgr-up'></span>
-            </span>"
+                 [0,255],
+                 [0,255],
+                 "<span class='layer black-blue-vertical-ramp'></span>",
+                 "<span class='layer'>
+                    <span class='layer bgr-bottom'></span>
+                    <span class='layer bgr-up'></span>
+                  </span>"
 
   update: (model) ->
-    { r, g, b } = model
+    {r, g, b} = model
     opacity = b / 255
 
     @valuesSetProgrammatically = true
@@ -1286,14 +1220,14 @@ ColorInput.defaultListener = new ColorPicker
 
 $(document).ready -> ColorInput.defaultListener.attach "body"
 
-@rgb2hsv           = rgb2hsv
-@hsv2rgb           = hsv2rgb
-@ColorInput        = ColorInput
-@SquarePicker      = SquarePicker
-@ColorPicker       = ColorPicker
-@HSVMode           = HSVMode
-@SHVMode           = SHVMode
-@VHSMode           = VHSMode
-@RGBMode           = RGBMode
-@GRBMode           = GRBMode
-@BGRMode           = BGRMode
+@rgb2hsv      = rgb2hsv
+@hsv2rgb      = hsv2rgb
+@ColorInput   = ColorInput
+@SquarePicker = SquarePicker
+@ColorPicker  = ColorPicker
+@HSVMode      = HSVMode
+@SHVMode      = SHVMode
+@VHSMode      = VHSMode
+@RGBMode      = RGBMode
+@GRBMode      = GRBMode
+@BGRMode      = BGRMode

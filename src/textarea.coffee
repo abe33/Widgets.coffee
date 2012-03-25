@@ -1,33 +1,9 @@
 # The `TextArea` widget wrap the target within a `span` in order to
 # allow custom styling.
-#
-# Here some live instances :
-# <div id ="livedemos"></div>
-# <link rel ="stylesheet" href ="../css/styles.css" media ="screen">
-# <link rel ="stylesheet" href ="../css/widgets.css" media ="screen">
-#
-# <script type ='text/javascript' src ='../depends/jquery-1.6.1.min.js'></script>
-# <script type ='text/javascript' src ='../depends/jquery.mousewheel.js'></script>
-# <script type ='text/javascript' src ='../depends/signals.js'></script>
-# <script type ='text/javascript' src ='../lib/widgets.js'></script>
-#
-# <script type ='text/javascript'>
-# var area1 = new TextArea();
-# var area2 = new TextArea();
-# var area3 = new TextArea();
-#
-# area1.set("value", "hello");
-# area2.set("value", "readonly");
-# area3.set("value", "disabled");
-#
-# area2.set("readonly", true);
-# area3.set("disabled", true);
-#
-# area1.attach("#livedemos");
-# area2.attach("#livedemos");
-# area3.attach("#livedemos");
-# </script>
 class TextArea extends Widget
+  # Here some live instances :
+  #
+  #= require textarea
 
   @mixins HasFocusProvidedByChild
 
@@ -52,7 +28,7 @@ class TextArea extends Widget
 
   # The dummy for a `TextArea` is a `span` with a `textarea` class on it.
   createDummy: ->
-    dummy = $("<span class ='textarea'></span>")
+    dummy = $("<span class='textarea'></span>")
     dummy.append @target
     @focusProvider = @jTarget
     dummy

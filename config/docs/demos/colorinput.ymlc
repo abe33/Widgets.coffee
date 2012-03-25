@@ -1,0 +1,15 @@
+container: "colorinputs"
+builder:
+  title: "ColorInputs"
+  cls: this["ColorInput"]
+  rows: 1
+  cols: 3
+  tableClass: "float dummy"
+  cells: (opts)->
+    states = [null, "readonly", "disabled"]
+    colors = ["#cbdc1b","#66ff99","#6699ff"]
+
+    opts.widget.set "value", colors[opts.col]
+    opts.widget.set states[opts.col], true if states[opts.col]?
+  columnHeaders: (opts)->
+    ["Normal", "Readonly", "Disabled"][opts.col]
