@@ -19,6 +19,13 @@
   -o-transform: #{$trans}
   transform: #{$trans}
 
+@mixin transform-origin($options)
+  transform-origin: #{$options}
+  -ms-transform-origin: #{$options} /* IE 9 */
+  -webkit-transform-origin: #{$options} /* Safari and Chrome */
+  -moz-transform-origin: #{$options} /* Firefox */
+  -o-transform-origin: #{$options} /* Opera */
+
 @mixin transition($trans)
   -webkit-transition: #{$trans}
   -moz-transition: #{$trans}

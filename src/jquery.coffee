@@ -131,12 +131,17 @@ class WidgetPlugin
   # Returns `true` if the passed-in argument is an `input` node
   # with a type attribute contains in `types`.
   isInputWithType: (o, types...) ->
-    @isTag(o, "input" ) and $( o).attr("type") in types
+    @isTag(o, "input") and $(o).attr("type") in types
 
   # Returns a function that will match an element with the
   # `isInputWithType` function.
   inputWithType: (types...) ->
     (o) -> @isInputWithType.apply this, [o].concat types
+
+  selectWithMultiple: (multiple) ->
+    (o) ->
+      isMultiple = $(o).attr("multiple")?
+      @isTag(o,"select") and (if multiple then isMultiple else not isMultiple)
 
 #### Plugin Setup
 
@@ -151,8 +156,12 @@ $.widgetPlugin.registerWidgetFor "textarea",
                                   TextArea
 
 $.widgetPlugin.registerWidgetFor "select",
-                                 "select",
+                                 $.widgetPlugin.selectWithMultiple(false),
                                  SingleSelect
+
+$.widgetPlugin.registerWidgetFor "multiselect",
+                                 $.widgetPlugin.selectWithMultiple(true),
+                                 MultiSelect
 
 $.widgetPlugin.registerWidgetFor "textinput",
                                  $.widgetPlugin.inputWithType( "text",

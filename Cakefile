@@ -100,7 +100,11 @@ loadConfig = (file, noEval, callback) ->
   coffee.stdout.on 'data', (data) ->
     # When `noEval` is true, the config content isn't evaluated and
     # returned as a string.
-    callback? (if noEval then data.toString() else eval data.toString())
+    try
+      callback? (if noEval then data.toString() else eval data.toString())
+    catch e
+      console.log file, noEval, callback
+      console.error e
 
 # Generates a command function for the passed-in configuration file.
 # The `configs` object is the target object which will stores
@@ -344,7 +348,7 @@ task 'docs', 'Generate annotated source code with Docco', (options) ->
           file = if exist file then file else "#{file}.coffee"
 
           fs.readFile file, 'utf-8', (err, data) ->
-
+            return console.error err, file, copy if err
             source = data.toString()
             tpl = templates["templates/#{config.builderTemplate}"]
 

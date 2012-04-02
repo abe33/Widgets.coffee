@@ -16,4 +16,73 @@
     right: 6px
     top: 50%
 
+.multi-select
+  padding-bottom: 4px
+
+  @extend .widget-common
+  @extend .inset-box
+  @include borderradius(6px)
+
+  &.readonly
+    .add:hover
+      @extend .outset-box.blue
+
+  &.disabled
+    .add
+      @extend .outset-box
+      &:hover
+        @extend .outset-box
+
+
+  .add
+    display: block
+    height: 20px
+    right: 0
+    top: 0
+    margin: 4px 4px 2px 4px
+
+    @extend .button
+    @extend .button.blue
+    @include borderradius(4px)
+
+    &:before
+      content: "+"
+      background: transparentize($base04,0.5)
+      color: $base3
+      display: block
+      position: absolute
+      left: 50%
+      width: 18px
+      height: 18px
+      margin-left: -10px
+      font-size: 19px
+      font-weight: bold
+      text-indent: 4px
+      line-height: 18px
+
+      @include textshadow(none)
+      @include borderradius(10px)
+
+  .value
+    display: block
+    margin-right: 4px
+
+  .option
+    margin-left: 4px
+    margin-top: 4px
+    margin-bottom: 2px
+
+    padding: 2px 22px 1px 4px
+    position: relative
+    display: inline-block
+
+    @extend .font
+    @extend .cross
+    @extend .cross.right
+    @extend .outset-box
+    @extend .inset-text
+    @extend .button-text-content
+    @include borderbox
+    @include borderradius(4px)
+
 

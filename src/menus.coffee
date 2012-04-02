@@ -216,6 +216,8 @@ class MenuList extends Widget
       else
         # Actions receive the `menuitem` class.
         li = $("<li class='menuitem'>#{item.display}</li>")
+
+      li.hide() if item.hidden
       @dummy.append li
 
     @dummy.children().each (i, o) =>

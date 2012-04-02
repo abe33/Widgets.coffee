@@ -50,7 +50,28 @@
   &.right
     border-color: transparent $base03 $base03 transparent
 
+.cross
+  &:before, &:after
+    content: ""
+    display: block
+    width: 2px
+    height: 12px
+    position: absolute
+    background: $widget-button-color
 
+    @include transform-origin(50% 50%)
+
+  &:before
+    @include transform("rotate(-45deg)")
+
+  &:after
+    @include transform("rotate(45deg)")
+
+  &.right
+    &:before, &:after
+      right: 8px
+      top: 50%
+      margin-top: -6px
 
 
 .widget-common

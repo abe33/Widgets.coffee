@@ -355,6 +355,14 @@ $( document ).ready ->
 
     assertThat target.children(".single-select").length, equalTo 1
 
+  test "select nodes with multiple should be replaced by a MultiSelect", ->
+
+    target = $("<p><select multiple></select></p>")
+
+    target.children().widgets()
+
+    assertThat target.children(".multi-select").length, equalTo 1
+
   test "When a child is a form, the plugin should create a specific
      object and process its form elements children", ->
 

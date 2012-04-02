@@ -1,6 +1,6 @@
 $( document ).ready ->
 
-  module "single select tests"
+  module "singleselect tests"
 
   test "SingleSelect should accept select node as target", ->
     target = $( "<select></select>" )[0]
@@ -1068,7 +1068,6 @@ $( document ).ready ->
 
     assertThat select.dummy.find(".value").text(), equalTo "Empty"
 
-
   s = "<select>
           <option>List Item 1</option>
           <option selected>List Item 2</option>
@@ -1097,3 +1096,224 @@ $( document ).ready ->
   select1.before "#qunit-header"
   select2.before "#qunit-header"
   select3.before "#qunit-header"
+
+
+  module "multiselect tests"
+
+  test "MultiSelect should accept a multiple select node as target", ->
+    target = $( "<select multiple></select>" )[0]
+
+    select = new MultiSelect target
+
+    assertThat select.target is target
+
+  test "MultiSelect shouldn't accept anything else that
+      a select as target", ->
+    target = $( "<input></input>" )[0]
+
+    errorRaised = false
+
+    try
+      select = new MultiSelect target
+    catch e
+      errorRaised = true
+
+    assertThat errorRaised
+
+  test "MultiSelect shouldn't accept a select without the multiple
+      attribute as target", ->
+    target = $( "<select></select>" )[0]
+
+    errorRaised = false
+
+    try
+      select = new MultiSelect target
+    catch e
+      errorRaised = true
+
+    assertThat errorRaised
+
+  test "MultiSelect's dummy should display the selected option label", ->
+
+    target = $( "<select multiple>
+                  <option>foo</option>
+                  <option selected value='__BAR__' label='BAR'>bar</option>
+                  <option selected value='__FOO__' label='FOO'>foo</option>
+                  <option value='__OTHER__' label='OTHER'>other</option>
+                 </select>" )[0]
+    select = new MultiSelect target
+
+    assertThat select.dummy.find(".option").length, equalTo 2
+    assertThat select.dummy.find(".option").first().text(), equalTo "BAR"
+    assertThat select.dummy.find(".option").last().text(), equalTo "FOO"
+    assertThat select.get("value"), array "__BAR__", "__FOO__"
+
+  test "MultiSelect's selected paths should be the index
+      of the children with the selected attribute", ->
+
+    target = $( "<select multiple>
+                  <option>foo</option>
+                  <option selected value='__BAR__' label='BAR'>bar</option>
+                  <option selected value='__FOO__' label='FOO'>foo</option>
+                  <option value='__OTHER__' label='OTHER'>other</option>
+                 </select>" )[0]
+    select = new MultiSelect target
+
+    assertThat select.selectedPaths, array array(1), array(2)
+
+  test "Clicking on a displayed item of a MultiSelect should
+        remove this item from the selection", ->
+
+    target = $( "<select multiple>
+                  <option>foo</option>
+                  <option selected value='__BAR__' label='BAR'>bar</option>
+                  <option selected value='__FOO__' label='FOO'>foo</option>
+                  <option value='__OTHER__' label='OTHER'>other</option>
+                 </select>" )[0]
+    select = new MultiSelect target
+    select.dummy.find(".option").first().mouseup()
+
+    assertThat select.selectedPaths, array array(2)
+    assertThat select.dummy.find(".option").length, equalTo 1
+    assertThat select.dummy.find(".option").text(), equalTo "FOO"
+
+  test "Clicking on a displayed item of a disabled MultiSelect shouldn't
+        remove this item from the selection", ->
+
+    target = $( "<select multiple>
+                  <option>foo</option>
+                  <option selected value='__BAR__' label='BAR'>bar</option>
+                  <option selected value='__FOO__' label='FOO'>foo</option>
+                  <option value='__OTHER__' label='OTHER'>other</option>
+                 </select>" )[0]
+    select = new MultiSelect target
+    select.set "disabled", true
+    select.dummy.find(".option").first().mouseup()
+
+    assertThat select.selectedPaths, array array(1), array(2)
+    assertThat select.dummy.find(".option").length, equalTo 2
+
+  test "Clicking on a displayed item of a readonly MultiSelect shouldn't
+        remove this item from the selection", ->
+
+    target = $( "<select multiple>
+                  <option>foo</option>
+                  <option selected value='__BAR__' label='BAR'>bar</option>
+                  <option selected value='__FOO__' label='FOO'>foo</option>
+                  <option value='__OTHER__' label='OTHER'>other</option>
+                 </select>" )[0]
+    select = new MultiSelect target
+    select.set "readonly", true
+    select.dummy.find(".option").first().mouseup()
+
+    assertThat select.selectedPaths, array array(1), array(2)
+    assertThat select.dummy.find(".option").length, equalTo 2
+
+  test "MultiSelect should provide a button to open a menu to add elements
+        in the selection", ->
+
+    target = $( "<select multiple>
+                  <option>foo</option>
+                  <option selected value='__BAR__' label='BAR'>bar</option>
+                  <option selected value='__FOO__' label='FOO'>foo</option>
+                  <option value='__OTHER__' label='OTHER'>other</option>
+                 </select>" )[0]
+
+    select = new MultiSelect target
+
+    assertThat select.dummy.find(".add").length, equalTo 1
+
+    select.dummy.find(".add").mouseup()
+
+    assertThat select.menuList.dummy.parent().length, equalTo 1
+
+    visibleMenuItem = select.menuList.dummy.find(".menuitem")
+                                           .filter(":visible")
+
+    assertThat visibleMenuItem.length, equalTo 2
+
+    visibleMenuItem.first().mouseup()
+
+    assertThat select.selectedPaths.length, equalTo 3
+    assertThat select.get("value"), array "foo", "__BAR__", "__FOO__"
+    assertThat select.menuList.dummy.parent().length, equalTo 0
+
+    select.dummy.find(".add").mouseup()
+
+    visibleMenuItem = select.menuList.dummy.find(".menuitem")
+                                           .filter(":visible")
+
+    assertThat visibleMenuItem.length, equalTo 1
+
+    select.menuList.detach()
+
+  test "MultiSelect should hide its target at creation", ->
+
+    target = $( "<select multiple>
+                  <option>foo</option>
+                  <option selected value='__BAR__' label='BAR'>bar</option>
+                  <option selected value='__FOO__' label='FOO'>foo</option>
+                  <option value='__OTHER__' label='OTHER'>other</option>
+                 </select>" )
+
+    select = new MultiSelect target[0]
+    assertThat target.attr("style"), contains "display: none"
+
+  test "MultiSelect without a target should be able
+        to have selection as well", ->
+
+    item1 = display:"item 1", value:"value 1"
+    item2 = display:"item 2", value:"value 2"
+    item3 = display:"item 3", value:"value 3"
+    item4 = display:"item 4", value:"value 4"
+    item5 = display:"item 5", value:"value 5"
+    item6 = display:"item 6", value:"value 6"
+    item7 = display:"item 7", value:"value 7"
+    item8 = display:"item 8", value:"value 8"
+
+    model = new MenuModel item1,
+                          item2,
+                          item3,
+                          item4,
+                          display: "group",
+                          menu: new MenuModel item5, item6, item7, item8
+
+    select = new MultiSelect model
+
+    assertThat select.get("value"), array()
+
+    select.set "value", ["value 2", "value 8"]
+
+    assertThat select.selectedPaths, array array(1), array(4,3)
+
+
+  s = "<select multiple>
+          <option>List Item 1</option>
+          <option selected>Item 2</option>
+          <option>Long List Item 3</option>
+          <option selected>Very Long List Item 4</option>
+          <optgroup label='Group 1'>
+            <option>List Item 5</option>
+            <option selected>List Item 6</option>
+            <option>Long List Item 7</option>
+          </optgroup>
+          <optgroup label='Group 2'>
+            <option>List Item 8</option>
+            <option selected>Item 9</option>
+            <option>Long List Item 10</option>
+          </optgroup>
+         </select>"
+
+  select1 = new MultiSelect $(s)[0]
+  select2 = new MultiSelect $(s)[0]
+  select3 = new MultiSelect $(s)[0]
+
+  select2.set "readonly", true
+  select3.set "disabled", true
+
+  $("#qunit-header").before $ "<h4>MultiSelect</h4>"
+  select1.before "#qunit-header"
+  select2.before "#qunit-header"
+  select3.before "#qunit-header"
+
+

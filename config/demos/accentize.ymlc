@@ -1,0 +1,5 @@
+source: [
+  "src/demos/builder"
+  "src/demos/form"
+]
+template: "demos/accentize"

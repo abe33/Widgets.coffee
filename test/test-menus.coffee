@@ -773,6 +773,7 @@ $( document ).ready ->
     assertThat list.hasFocus
 
     list.detach()
+    list.childList.detach()
 
   test "Closing a child list should also close the descendant list", ->
     item1 =
@@ -898,6 +899,8 @@ $( document ).ready ->
 
     assertThat list.childList.hasFocus
 
+    list.childList.detach()
+
   test "Pressing the left key when the focus is on a child
       list should return the focus to the parent", ->
 
@@ -920,6 +923,22 @@ $( document ).ready ->
     assertThat not list.childList.hasFocus
     assertThat list.hasFocus
 
+    list.childList.detach()
+
+  test "Items that provide a hidden property
+        with true will not be displayd", ->
+
+    item1 = display: "display1"
+    item2 = display: "display2", hidden: true
+
+    model = new MenuModel item1, item2
+    list = new MenuList model
+
+    list.attach "body"
+
+    assertThat list.dummy.find("li").filter(":visible").length, equalTo 1
+
+    list.detach()
 
   item1 = display: "display1", action:-> console.log "item 1 clicked"
   item2 = display: "display2", action:-> console.log "item 2 clicked"
