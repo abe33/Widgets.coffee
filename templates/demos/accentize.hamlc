@@ -35,7 +35,7 @@
 
   %body
     %form
-      %table#accentize.float
+      %table#accentize.demo-table
         %tr
           %th.table-header{ colspan:2 }="Accentize"
         - for color in colors

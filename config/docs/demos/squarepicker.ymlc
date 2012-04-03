@@ -4,7 +4,7 @@ builder:
   cls: this["SquarePicker"]
   rows: 1
   cols: 4
-  tableClass: "float dummy"
+  tableClass: "demo-table"
   cells: (opts)->
     states = [null, null, "readonly","disabled"]
     styles = ["", "vertical", "", "vertical"]

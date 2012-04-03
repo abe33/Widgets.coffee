@@ -5,7 +5,7 @@ builder:
   args:[ display: "Button", action:-> ]
   rows: 3
   cols: 3
-  tableClass: "float dummy"
+  tableClass: "demo-table"
   columnHeaders: (opts)-> [ "Normal", "Blue", "Green" ][opts.col]
   rowHeaders: (opts)-> [ "Normal", "Readonly", "Disabled" ][opts.row]
   cells: (opts)->

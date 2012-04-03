@@ -4,7 +4,7 @@ builder:
   cls: this["Radio"]
   rows: 1
   cols: 4
-  tableClass: "float dummy"
+  tableClass: "demo-table"
   cells: (opts)->
     @group = new RadioGroup unless @group?
     @group.add opts.widget

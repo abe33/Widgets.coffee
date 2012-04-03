@@ -4,7 +4,7 @@ builder:
   cls: this["WeekInput"]
   rows: 1
   cols: 3
-  tableClass: "float dummy"
+  tableClass: "demo-table"
   cells: (opts)->
     states = [ null, "readonly", "disabled" ]
     opts.widget.set states[ opts.col ], true if states[ opts.col ]?

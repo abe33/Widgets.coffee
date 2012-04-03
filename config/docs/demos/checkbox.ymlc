@@ -4,7 +4,7 @@ builder:
   cls: this["CheckBox"]
   rows: 2
   cols: 3
-  tableClass: "float dummy"
+  tableClass: "demo-table"
   columnHeaders: (opts)-> [ "Normal", "Readonly", "Disabled" ][opts.col]
   rowHeaders: (opts)-> [ "Normal", "Checked" ][opts.row]
   cells: (opts)->

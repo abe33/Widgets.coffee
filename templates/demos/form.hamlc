@@ -46,7 +46,7 @@
 
   %body
     %form{ target: "./index.html" }
-      %table#form.float
+      %table#form.demo-table
         %tr
           %th.table-header{ colspan: 5 }="HTML Form Elements Substitution"
         %tr
@@ -61,16 +61,16 @@
           %td.type='"radio"'
           - forStates (state, readonly, disabled)->
             %td
-              %input{ type:"radio", name:"group_#{ state }", checked:"checked", readonly:readonly, disabled:disabled  }
-              %input{ type:"radio", name:"group_#{ state }", readonly:readonly, disabled:disabled }
+              %input{ type:"radio", value: "yes", name:"group_#{ state }", checked:"checked", readonly:readonly, disabled:disabled  }
+              %input{ type:"radio", value: "no" name:"group_#{ state }", readonly:readonly, disabled:disabled }
 
         %tr
           %th="Checkbox"
           %td.type='"checkbox"'
           - forStates (state, readonly, disabled)->
             %td
-              %input{ type:"checkbox", name:"checkbox_#{ state }", checked:"checked", readonly:readonly, disabled:disabled  }
-              %input{ type:"checkbox", name:"checkbox_#{ state }", readonly:readonly, disabled:disabled }
+              %input{ type:"checkbox", name:"checkbox_#{ state }[0]", checked:"checked", readonly:readonly, disabled:disabled  }
+              %input{ type:"checkbox", name:"checkbox_#{ state }[1]", readonly:readonly, disabled:disabled }
 
         %tr
           %th{ style:'border-bottom:none;' }="TextInput"

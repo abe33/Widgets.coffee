@@ -4,7 +4,7 @@ builder:
   cls: this["MultiSelect"]
   rows: 1
   cols: 3
-  tableClass: "float dummy"
+  tableClass: "demo-table"
   cells: (opts)->
     items =(display: "Item #{i}", value: "value#{i}" for i in [0..5])
 

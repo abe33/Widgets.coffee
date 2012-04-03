@@ -134,7 +134,7 @@ form a valid color.</p>             </td>             <td class="code">         
     cls: this["ColorInput"],
     rows: 1,
     cols: 3,
-    tableClass: "float dummy",
+    tableClass: "demo-table",
     cells: function(opts) {
       var colors, states;
       states = [null, "readonly", "disabled"];
@@ -220,7 +220,7 @@ It allow to manipulate value by dragging a cursor over a surface.</p>           
     cls: this["SquarePicker"],
     rows: 1,
     cols: 4,
-    tableClass: "float dummy",
+    tableClass: "demo-table",
     cells: function(opts) {
       var states, styles;
       states = [null, null, "readonly", "disabled"];
@@ -364,7 +364,7 @@ of the color for a given <code>ColorInput</code> object.</p>             </td>  
     cls: this["ColorPicker"],
     rows: 1,
     cols: 1,
-    tableClass: "float dummy",
+    tableClass: "demo-table",
     cells: function(opts) {
       opts.td.css("width", "auto");
       opts.widget.set("value", "#abcdef");

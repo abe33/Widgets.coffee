@@ -73,10 +73,10 @@ exist = (path) ->
     false
 
 # Verify that the `.tmp` folder exists, and creates it otherwise.
-ensureTmp = (options) ->
-  unless exist ".tmp"
-    fs.mkdirSync ".tmp"
-    console.log ".tmp directory created" if options.verbose
+ensure = (dir, options) ->
+  unless exist dir
+    fs.mkdirSync dir
+    console.log "#{dir} created" if options.verbose
 
 ##### Configurations Loading
 #
@@ -196,7 +196,7 @@ TEST_DEPENDENCIES = ["test/test-helpers"]
 testTask = (unit) ->
   task "test:#{unit}", "Compiles and runs tests for #{unit}", (opts) ->
     # Generated files are placed in the `.tmp` folder.
-    ensureTmp opts
+    ensure ".tmp", opts
 
     # Prepares the tests runner generation.
     hamlc = "templates/test/test.hamlc"
@@ -248,10 +248,10 @@ libTask = (unit) ->
 
 # Defines a task that compiles a demo file and open it in a browser.
 demoTask = (unit) ->
-  task "demo:#{unit}", eat("Creates a demo file in the .tmp directory and then
+  task "demo:#{unit}", eat("Creates a demo file in the demos directory and then
                             run it in a browser"), (opts) ->
-    # Generated files are placed in the `.tmp` folder.
-    ensureTmp opts
+    # Generated files are placed in the `demos` folder.
+    ensure "demos", opts
 
     # Loads the configuration file.
     loadConfig "config/demos/#{unit}.ymlc", (config) ->
@@ -261,7 +261,7 @@ demoTask = (unit) ->
 
       # Prepares the demo compilation.
       output="#{unit}.js"
-      options = ['--join',".tmp/#{output}",'--compile'].concat sources
+      options = ['--join',"demos/#{output}",'--compile'].concat sources
 
       # Compiles the demo files.
       run 'coffee', options, ->
@@ -269,7 +269,7 @@ demoTask = (unit) ->
 
         # Prepares the demo html file generation.
         hamlc = "templates/#{ config.template }.hamlc"
-        html = ".tmp/#{unit}.html"
+        html = "demos/#{unit}.html"
         context = demo: output
 
         # Generates the demo html file.
@@ -277,7 +277,7 @@ demoTask = (unit) ->
           console.log "#{html} generated" if opts.verbose
 
           # Opens the file.
-          run 'gnome-open', [".tmp/#{unit}.html"]
+          run 'gnome-open', ["demos/#{unit}.html"]
 
 ## Tasks
 
@@ -322,7 +322,7 @@ REQUIRE_RE = ///^
 
 # Defines a task that generates the documentation.
 task 'docs', 'Generate annotated source code with Docco', (options) ->
-  ensureTmp options
+  ensure ".tmp", options
   taskConfig = "config/docs/docs.ymlc"
   demosConfig = "config/docs/demos"
   demosTemplates = "templates/docs"

@@ -4,7 +4,7 @@ builder:
   cls: this["Stepper"]
   rows: 1
   cols: 3
-  tableClass: "float dummy"
+  tableClass: "demo-table"
   cells: (opts)->
     states = [ null, "readonly", "disabled" ]
     opts.widget.set "value", Math.floor Math.random() * 100

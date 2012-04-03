@@ -4,7 +4,7 @@ builder:
   cls: this["Calendar"]
   rows: 1
   cols: 1
-  tableClass: "float dummy"
+  tableClass: "demo-table"
   cells: (opts)->
     opts.td.css "width", "auto"
     opts.widget.addClasses "dummy"
