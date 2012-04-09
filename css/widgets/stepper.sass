@@ -3,7 +3,6 @@
   height: 26px
 
   @extend .text
-  @include borderradius(6px)
 
   input
     margin-top: 3px
@@ -17,8 +16,6 @@
     &:hover
       &:before, &:after
         display: none
-
-
 
   &:hover
     &:before, &:after
@@ -35,13 +32,9 @@
       border-color: transparent transparent $base01 transparent
       margin-top: -10px
 
-
-
   &.disabled
     .value
       @extend .disabled-text-content
-
-
 
   .value
     @extend .text-content
@@ -73,15 +66,12 @@
       left: 50%
       top: 50%
 
-
-
   .up
     right: 3px
     @include borderradius(0 4px 4px 0)
     &:after
       @extend .arrow
       @extend .arrow.right
-
 
   .down
     right: 19px
