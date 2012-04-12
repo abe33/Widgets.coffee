@@ -940,6 +940,66 @@ $( document ).ready ->
 
     list.detach()
 
+  test "MenuList that appear outside of the visible page area should
+        adjust their position to fit in", ->
+
+    w = $ window
+    sW = w.width()
+    sH = w.height()
+    sX = w.scrollLeft()
+    sY = w.scrollTop()
+
+    item1 = display: "display1"
+    item2 = display: "display2", hidden: true
+
+    model = new MenuModel item1, item2
+    list = new MenuList model
+
+    list.dummy.css
+      left: "#{sX + sW - 10}px"
+      top: "#{sY + sH - 10}px"
+
+    list.attach "body"
+
+    assertThat list.dummy.position(), hasProperties
+      left: equalTo sX + w.width() - list.dummy.width()
+      top: equalTo sY + w.height() - list.dummy.height()
+
+    list.detach()
+
+  test "MenuList's child list that appear outside of the visible
+        page area should adjust their position to fit in", ->
+
+    item1 = display: "display1", menu:new MenuModel({
+      display:"display3"
+    },{
+      display:"display4"
+    })
+
+    item2 = display: "display2", menu:new MenuModel({
+      display:"display5"
+    },{
+      display:"display6"
+    })
+
+    w = $ window
+    sW = w.width()
+    sH = w.height()
+    sX = w.scrollLeft()
+    sY = w.scrollTop()
+    model = new MenuModel item1, item2
+    list = new MenuList model
+
+    list.dummy.css
+      left: "#{sX + sW - 10}px"
+      top: "#{sY + sH - 10}px"
+
+    list.attach "body"
+
+    list.dummy.children().first().mouseup()
+
+    # TODO: Complete this test
+
   item1 = display: "display1", action:-> console.log "item 1 clicked"
   item2 = display: "display2", action:-> console.log "item 2 clicked"
   item3 = display: "display3", menu:new MenuModel

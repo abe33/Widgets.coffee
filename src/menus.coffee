@@ -137,8 +137,8 @@ class MenuList extends Widget
     # will move back the focus to the parent.
     @registerKeyDownCommand keystroke(keys.left),  @moveSelectionLeft
 
-    @attached.add @updateSize, this
-    @detached.add @updateSize, this
+    @attached.add @adjust, this
+    @detached.add @adjust, this
 
   #### Selection Management
 
@@ -186,7 +186,7 @@ class MenuList extends Widget
   createDummy: ->
     $("<ul class='menulist'></ul>")
 
-  updateSize: ->
+  adjust: ->
     itemHeight = @dummy.children().first()[0]?.offsetHeight
     size = @get("model").size()
     maxSize = @get "size"
@@ -204,6 +204,22 @@ class MenuList extends Widget
         @removeClasses "cropped"
         @cropChanged.dispatch this, false
 
+    w = $(window)
+    {left, top} = @dummy.position()
+    width = @dummy.width()
+    height = @dummy.height()
+    scrollTop = w.scrollTop()
+    scrollLeft = w.scrollLeft()
+    screenWidth = w.width()
+    screenHeight = w.height()
+
+    if left + width > scrollLeft + screenWidth
+      console.log "was outside"
+      @dummy.css left: scrollLeft + screenWidth - width
+
+    if top + height > scrollTop + screenHeight
+      console.log "was outside"
+      @dummy.css top: scrollTop + screenHeight - height
 
   # Creates the list items of the dummy.
   buildList: (model) ->
@@ -259,7 +275,6 @@ class MenuList extends Widget
 
     @childList.dummy.blur() if @childList.hasFocus
 
-    @childList.attach "body" unless @isChildListVisible()
     @childList.set "model", model unless @childList.get("model") is model
 
     # The child `MenuList` is placed next to the `li` that requested it.
@@ -267,6 +282,8 @@ class MenuList extends Widget
     top = li.offset().top
 
     @childList.dummy.attr "style", "left: #{left}px; top: #{top}px;"
+    @childList.attach "body" unless @isChildListVisible()
+
 
   # Closes the child list and return the focus to the current list.
   closeChildList: ->
@@ -292,7 +309,7 @@ class MenuList extends Widget
 
   set_size: (property, value) ->
     @[property] = value
-    @updateSize()
+    @adjust()
     value
 
   #### Events Handler
@@ -309,7 +326,7 @@ class MenuList extends Widget
   modelChanged: (model) ->
     @clearList()
     @buildList model
-    @updateSize()
+    @adjust()
 
   #### Keyboard Commands
 
