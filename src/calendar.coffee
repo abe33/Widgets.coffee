@@ -4,7 +4,7 @@ class Calendar extends Widget
   #= require calendar
 
   # The `Calendar` is a `DropDownPopup` bound to dates widgets.
-  @mixins DropDownPopup
+  @include DropDownPopup
 
   # Constants that stores the table headers and the month names.
   @DAYS   = ["M","T","W","T","F","S","S",]

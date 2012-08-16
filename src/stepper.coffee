@@ -7,7 +7,7 @@ class Stepper extends NumericWidget
   #
   #= require stepper
 
-  @mixins HasFocusProvidedByChild, Spinner
+  @include HasFocusProvidedByChild, Spinner
 
   spinnerDummyClass: "stepper"
 

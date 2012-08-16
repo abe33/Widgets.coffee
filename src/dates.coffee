@@ -32,7 +32,7 @@
 class AbstractDateInputWidget extends Widget
   # Date and time widgets can operate in a range. Their prototype is then
   # decorated with the `HasValueInRange` mixin.
-  @mixins HasValueInRange
+  @include HasValueInRange
 
   # Concretes classes must defines these properties before calling
   # the super constructor. The three functions handles the validation
@@ -373,7 +373,7 @@ class TimeInput extends AbstractDateInputWidget
   # with a text input that allow to input directly
   # a time. In that case the focus is provided
   # by the text input.
-  @mixins HasFocusProvidedByChild, Spinner
+  @include HasFocusProvidedByChild, Spinner
 
   spinnerDummyClass: "dateinput time"
 
@@ -423,7 +423,7 @@ class DateInput extends AbstractDateInputWidget
 
   # Clicking on a `DateInput` open a `Calendar` object
   # in `date` mode.
-  @mixins OpenCalendar
+  @include OpenCalendar
 
   # The `Calendar` instance for the `DateInput` class.
   @calendar = new Calendar
@@ -450,7 +450,7 @@ class MonthInput extends AbstractDateInputWidget
 
   # Clicking on a `MonthInput` open a `Calendar` object
   # in `month` mode.
-  @mixins OpenCalendar
+  @include OpenCalendar
 
   # The `Calendar` instance for the `MonthInput` class.
   @calendar = new Calendar null, "month"
@@ -477,7 +477,7 @@ class WeekInput extends AbstractDateInputWidget
 
   # Clicking on a `WeekInput` open a `Calendar` object
   # in `week` mode.
-  @mixins OpenCalendar
+  @include OpenCalendar
 
   # The `Calendar` instance for the `WeekInput` class.
   @calendar = new Calendar null, "week"
@@ -502,7 +502,7 @@ class DateTimeInput extends AbstractDateInputWidget
   #
   #= require datetimeinput
 
-  @mixins HasChildren, HasDateAndTime
+  @include HasChildren, HasDateAndTime
 
   constructor: (target = new Date) ->
     @supportedType = "datetime"
@@ -521,7 +521,7 @@ class DateTimeLocalInput extends AbstractDateInputWidget
   #
   #= require datetimelocalinput
 
-  @mixins HasChildren, HasDateAndTime
+  @include HasChildren, HasDateAndTime
 
   constructor: (target) ->
     @supportedType = "datetime-local"

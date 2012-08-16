@@ -78,8 +78,8 @@ The following strings are considered as valid :
   <span class="k">return</span> <span class="kc">false</span> <span class="k">unless</span> <span class="nx">string</span><span class="o">?</span>
   <span class="p">(</span><span class="sr">///</span> <span class="sro">^</span>
     <span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span>             <span class="c1"># Hours are required</span>
-    <span class="sro">(</span><span class="sr">: </span><span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span>           <span class="c1"># Minutes are optional</span>
-      <span class="sro">(</span><span class="sr">: </span><span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span>         <span class="c1"># Seconds as well</span>
+    <span class="sro">(</span><span class="sr">:</span><span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span>           <span class="c1"># Minutes are optional</span>
+      <span class="sro">(</span><span class="sr">:</span><span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">2</span><span class="sro">}</span>         <span class="c1"># Seconds as well</span>
         <span class="sro">(</span><span class="sr">\.</span><span class="src">[</span><span class="sre">\d</span><span class="src">]</span><span class="sro">{</span><span class="sri">1,4</span><span class="sro">})?</span>  <span class="c1"># Milliseconds too</span>
       <span class="sro">)?</span>                <span class="c1"># End Seconds</span>
     <span class="sro">)?</span>                  <span class="c1"># End Minutes</span>

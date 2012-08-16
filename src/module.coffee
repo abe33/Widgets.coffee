@@ -13,15 +13,17 @@
 #       clone: -> ...
 #
 class Module
-  # Call the static `@mixins` method in your class body
+  # Call the static `@include` method in your class body
   # to specify the mixins that the class will implement.
   #
   #     class MyModule extends Module
-  #       @mixins Serializable, Cloneable, Suspendable
+  #       @include Serializable, Cloneable, Suspendable
   #
   #       # rest of the class definition...
   #
-  @mixins: (mixins...) ->
+  @include: (mixins...) ->
+    ##### Class Members
+
     # Calling `super` inside a mixin method that overides
     # a inherited method will fail. To resolve it, a `@super`
     # method is provided on instances. And to avoid issues
@@ -33,18 +35,23 @@ class Module
     # A copy the hash is made each time the `mixins` method is called.
     # It prevents the hash of a parent class to be affected by changes
     # made in child class.
-    @::__superOf__ = @copy @::__superOf__
+    @__superOf__ = @copy @__superOf__
 
-    # Each member of each mixin is added to the current class
-    # prototype, unless the member is a constructor hook.
+    __excluded__ = ["constructorHook", "included", "excluded"]
     for mixin in mixins
-      for key, value of mixin when key isnt "constructorHook"
+      excluded = if mixin.excluded?
+        __excluded__.concat mixin.excluded
+      else
+        __excluded__.concat()
+
+      # Each member of each mixin is added to the current class
+      # prototype, unless the member is part of the excluded array.
+      for key, value of mixin when key not in excluded
         @::[key] = value
 
         # The current class is registered as constructor for
         # for the mixed method.
-        if value instanceof Function
-          @::__superOf__[key] = @__super__
+        @__superOf__[key] = @__super__ if value instanceof Function
 
       # Mixins can provide a function called `constructorHook`.
       # That function will be stored in a specific prototype
@@ -52,43 +59,81 @@ class Module
       # constructor.
       if mixin.constructorHook?
         hook = mixin.constructorHook
-        @::__constructorHooks__ = @::__constructorHooks__.concat hook
+        @__hooks__ = @__hooks__.concat hook
+
+    mixin.included? this
     this
 
-  # Returns a clone of the passed-in object `o`.
+  # Returns a copy of the passed-in object `o`.
   @copy: (o) ->
     r = {}
     r[i] = o[i] for i in o if o?
     r
 
   # Stores the mixins constructor hooks.
-  __constructorHooks__: []
+  @__hooks__: []
   # Stores the respective super objects of mixed methods.
-  __superOf__: {}
+  @__superOf__: {}
+
+  ##### Instance Members
 
   # When `preventConstructorHooksInModule` is `true`, the `Module`
   # constructor will not triggers the constructors hook, allowing
   # a subclass to handle the hooks in its own constructor.
   #
   # Subclasses that prevent the `Module` constructor to trigger
-  # the hooks should provide the same kind of guard in their
-  # constructor to allow their subclasses to to do so.
+  # the hooks should provide the same kind of guards in their
+  # constructor to allow their subclasses to do so.
   preventConstructorHooksInModule: false
 
   # The `Module` constructor behavior is to automatically
   # triggers the constructor hooks.
   constructor: ->
-    unless @preventConstructorHooksInModule
-      @triggerConstructorHooks()
+    @triggerConstructorHooks() unless @preventConstructorHooksInModule
 
   # Loop through all the constructor hooks and call
   # them with the current object as context.
   triggerConstructorHooks: ->
-    hook.call @ for hook in @__constructorHooks__
+    hook.call this for hook in @constructor.__hooks__
 
   # Use `@super "methodName"` in a mixin's function to call the
   # super function of the specified method.
   super: (method, args...) ->
-    @__superOf__[method]?[method]?.apply this, args
+    @constructor.__superOf__[method]?[method]?.apply this, args
 
-@Module = Module
+
+Mixin = (mixin) ->
+  included = mixin.included
+
+  mixin.included = (base) ->
+    included? base
+
+    base.__mixins__ ?= []
+    base.__mixins__.push mixin unless mixin in base.__mixins__
+
+  # FIX: Prevent override of the mixin excluded fields.
+  mixin.excluded = ["isMixinOf", "__definition__"]
+  mixin.isMixinOf = (object) ->
+    mixin in object.constructor.__mixins__ if object.constructor.__mixins__?
+
+  mixin
+
+toType = (o) ->
+  Object::toString.call(o).toLowerCase().replace /\[object (\w+)\]/, "$1"
+
+quacksLike = (o,m) ->
+  if m.__definition__?
+    return m.__definition__ o if typeof m.__definition__ is "function"
+    for k,v of m.__definition__
+      if typeof v is "function"
+        return false unless v o[k]
+      else
+        return false unless (v is "*" or toType(o[k]) is v)
+    true
+  else
+    false
+
+@Module     = Module
+@Mixin      = Mixin
+@toType     = toType
+@quacksLike = quacksLike

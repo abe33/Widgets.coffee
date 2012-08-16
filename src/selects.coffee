@@ -16,7 +16,7 @@
 class AbstractSelect extends Widget
 
   # Model and options handling are provided by the corresponding mixins.
-  @mixins HasMenuModel, HasOptions
+  @include HasMenuModel, HasOptions
 
   # An `AbstractSelect` accept either a `select` node or a `MenuModel`
   # as contructor argument.
@@ -114,7 +114,7 @@ class SingleSelect extends AbstractSelect
 
   # Selection and `MenuList` management are provided
   # by the corresponding mixins.
-  @mixins HasSingleSelection, HasPopupMenuList
+  @include HasSingleSelection, HasPopupMenuList
 
   # A `SingleSelect` accept either a `select` node or a `MenuModel`
   # as contructor argument.
@@ -282,7 +282,7 @@ class MultiSelect extends AbstractSelect
   #
   #= require multi-selects
 
-  @mixins HasMultiSelection, HasPopupMenuList
+  @include HasMultiSelection, HasPopupMenuList
 
   constructor: (targetOrModel) ->
     super targetOrModel

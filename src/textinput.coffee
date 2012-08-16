@@ -5,7 +5,7 @@ class TextInput extends Widget
   #
   #= require textinput
 
-  @mixins HasFocusProvidedByChild
+  @include HasFocusProvidedByChild
 
   constructor: (target) ->
 

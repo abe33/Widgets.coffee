@@ -2,7 +2,7 @@
 # as children.
 class Container extends Widget
 
-  @mixins HasChildren
+  @include HasChildren
 
   # The dummy for a `Container` is a single `span` with
   # a `container` class on it.

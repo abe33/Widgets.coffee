@@ -11,7 +11,7 @@ class FilePicker extends Widget
   #
   #= require filepicker
 
-  @mixins HasFocusProvidedByChild
+  @include HasFocusProvidedByChild
 
   constructor: (target) ->
 

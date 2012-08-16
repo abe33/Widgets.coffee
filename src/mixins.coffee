@@ -621,7 +621,7 @@ HasPopupMenuList =
 
       @adjustMenu()
       # The `MenuList` dummy is appended directly on the document body.
-      $("body").append @menuList.dummy
+      @menuList.attach "body"
       # The focus is then placed on the `MenuList`.
       @menuList.grabFocus()
       @displayMenuSelection()

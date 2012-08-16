@@ -532,7 +532,7 @@ class ColorPicker extends Widget
   #
   #= require colorpicker
 
-  @mixins HasChildren, DropDownPopup
+  @include HasChildren, DropDownPopup
 
   constructor: ->
     super()

@@ -5,7 +5,7 @@ class TextArea extends Widget
   #
   #= require textarea
 
-  @mixins HasFocusProvidedByChild
+  @include HasFocusProvidedByChild
 
   constructor: (target) ->
 

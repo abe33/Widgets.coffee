@@ -3,7 +3,7 @@
 class NumericWidget extends Widget
 
   # Ranges management is provided by the `HasValueInRange` mixin.
-  @mixins HasValueInRange
+  @include HasValueInRange
 
   constructor: (target) ->
 

@@ -21,7 +21,7 @@ either with or without the <code>multiple</code> attribute.</p>
 </ul>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-2">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-2">&#182;</a>               </div>               <p><a name='AbstractSelect'></a></p>
 
 <h1>AbstractSelect</h1>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-3">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-3">&#182;</a>               </div>               <p>The <code>AbstractSelect</code> provides the basic functionalities to deal
-with <code>select</code> nodes.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nb">AbstractSelect</span> <span class="k">extends</span> <span class="nb">Widget</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Model and options handling are provided by the corresponding mixins.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">@mixins</span> <span class="nb">HasMenuModel</span><span class="p">,</span> <span class="nb">HasOptions</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>An <code>AbstractSelect</code> accept either a <code>select</code> node or a <code>MenuModel</code>
+with <code>select</code> nodes.</p>             </td>             <td class="code">               <div class="highlight"><pre><span class="k">class</span> <span class="nb">AbstractSelect</span> <span class="k">extends</span> <span class="nb">Widget</span></pre></div>             </td>           </tr>                               <tr id="section-4">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-4">&#182;</a>               </div>               <p>Model and options handling are provided by the corresponding mixins.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">@include</span> <span class="nb">HasMenuModel</span><span class="p">,</span> <span class="nb">HasOptions</span></pre></div>             </td>           </tr>                               <tr id="section-5">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-5">&#182;</a>               </div>               <p>An <code>AbstractSelect</code> accept either a <code>select</code> node or a <code>MenuModel</code>
 as contructor argument.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">constructor</span><span class="o">:</span> <span class="p">(</span><span class="nx">targetOrModel</span><span class="p">)</span> <span class="o">-&gt;</span></pre></div>             </td>           </tr>                               <tr id="section-6">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-6">&#182;</a>               </div>               <p>Stores the maximum visible elements in the <code>MenuList</code> as defined
 by the <code>size</code> attributes of <code>select</code> nodes.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">@size</span> <span class="o">=</span> <span class="kc">null</span></pre></div>             </td>           </tr>                               <tr id="section-7">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-7">&#182;</a>               </div>               <p>When a <code>MenuModel</code> is provided in the constructor, the <code>AbstractSelect</code>
 is initialized without a target.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="k">if</span> <span class="nx">targetOrModel</span> <span class="k">instanceof</span> <span class="nb">MenuModel</span>
@@ -60,7 +60,9 @@ possibility to have nested submenus.</p>             </td>             <td class
 <div id='single-selects'></div>
 
 <script type='text/javascript'>
-  var config = ({
+  var config = // Generated by CoffeeScript 1.3.1
+
+({
   container: "single-selects",
   builder: {
     title: "SingleSelects",
@@ -69,11 +71,11 @@ possibility to have nested submenus.</p>             </td>             <td class
     cols: 3,
     tableClass: "demo-table",
     cells: function(opts) {
-      var a, i, items, j, m, model, states;
+      var a, i, items, j, m, model, states, _i;
       items = (function() {
-        var _results;
+        var _i, _results;
         _results = [];
-        for (i = 0; i <= 5; i++) {
+        for (i = _i = 0; _i <= 5; i = ++_i) {
           _results.push({
             display: "Item " + i,
             value: "value" + i
@@ -81,11 +83,11 @@ possibility to have nested submenus.</p>             </td>             <td class
         }
         return _results;
       })();
-      for (i = 0; i <= 2; i++) {
+      for (i = _i = 0; _i <= 2; i = ++_i) {
         a = (function() {
-          var _results;
+          var _j, _results;
           _results = [];
-          for (j = 0; j <= 5; j++) {
+          for (j = _j = 0; _j <= 5; j = ++_j) {
             _results.push({
               display: "Sub Item " + i + "-" + j,
               value: "value" + i + "-" + j
@@ -104,7 +106,9 @@ possibility to have nested submenus.</p>             </td>             <td class
       model.add.apply(model, items);
       opts.widget.set("model", model);
       states = [null, "readonly", "disabled"];
-      if (states[opts.col] != null) return opts.widget.set(states[opts.col], true);
+      if (states[opts.col] != null) {
+        return opts.widget.set(states[opts.col], true);
+      }
     },
     columnHeaders: function(opts) {
       return ["Normal", "Readonly", "Disabled"][opts.col];
@@ -115,7 +119,7 @@ possibility to have nested submenus.</p>             </td>             <td class
   var builder = new TableBuilder(config.builder);
   $("#single-selects").append(builder.build());
 </script>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-28">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-28">&#182;</a>               </div>               <p>Selection and <code>MenuList</code> management are provided
-by the corresponding mixins.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">@mixins</span> <span class="nb">HasSingleSelection</span><span class="p">,</span> <span class="nb">HasPopupMenuList</span></pre></div>             </td>           </tr>                               <tr id="section-29">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-29">&#182;</a>               </div>               <p>A <code>SingleSelect</code> accept either a <code>select</code> node or a <code>MenuModel</code>
+by the corresponding mixins.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">@include</span> <span class="nb">HasSingleSelection</span><span class="p">,</span> <span class="nb">HasPopupMenuList</span></pre></div>             </td>           </tr>                               <tr id="section-29">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-29">&#182;</a>               </div>               <p>A <code>SingleSelect</code> accept either a <code>select</code> node or a <code>MenuModel</code>
 as contructor argument.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">constructor</span><span class="o">:</span> <span class="p">(</span><span class="nx">targetOrModel</span><span class="p">)</span> <span class="o">-&gt;</span>
     <span class="k">super</span> <span class="nx">targetOrModel</span></pre></div>             </td>           </tr>                               <tr id="section-30">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-30">&#182;</a>               </div>               <p>And the value is searched in the target structure to
 find the current selection path.</p>
@@ -193,7 +197,9 @@ when the mouse is pressed over the <code>SingleSelect</code>.</p>             </
 <div id='multi-selects'></div>
 
 <script type='text/javascript'>
-  var config = ({
+  var config = // Generated by CoffeeScript 1.3.1
+
+({
   container: "multi-selects",
   builder: {
     title: "MultiSelects",
@@ -202,11 +208,11 @@ when the mouse is pressed over the <code>SingleSelect</code>.</p>             </
     cols: 3,
     tableClass: "demo-table",
     cells: function(opts) {
-      var a, i, items, j, m, model, states;
+      var a, i, items, j, m, model, states, _i;
       items = (function() {
-        var _results;
+        var _i, _results;
         _results = [];
-        for (i = 0; i <= 5; i++) {
+        for (i = _i = 0; _i <= 5; i = ++_i) {
           _results.push({
             display: "Item " + i,
             value: "value" + i
@@ -214,11 +220,11 @@ when the mouse is pressed over the <code>SingleSelect</code>.</p>             </
         }
         return _results;
       })();
-      for (i = 0; i <= 2; i++) {
+      for (i = _i = 0; _i <= 2; i = ++_i) {
         a = (function() {
-          var _results;
+          var _j, _results;
           _results = [];
-          for (j = 0; j <= 5; j++) {
+          for (j = _j = 0; _j <= 5; j = ++_j) {
             _results.push({
               display: "Sub Item " + i + "-" + j,
               value: "value" + i + "-" + j
@@ -238,7 +244,9 @@ when the mouse is pressed over the <code>SingleSelect</code>.</p>             </
       opts.widget.set("model", model);
       opts.widget.set("value", ["value3", "value2-4"]);
       states = [null, "readonly", "disabled"];
-      if (states[opts.col] != null) return opts.widget.set(states[opts.col], true);
+      if (states[opts.col] != null) {
+        return opts.widget.set(states[opts.col], true);
+      }
     },
     columnHeaders: function(opts) {
       return ["Normal", "Readonly", "Disabled"][opts.col];
@@ -248,7 +256,7 @@ when the mouse is pressed over the <code>SingleSelect</code>.</p>             </
 
   var builder = new TableBuilder(config.builder);
   $("#multi-selects").append(builder.build());
-</script>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">@mixins</span> <span class="nb">HasMultiSelection</span><span class="p">,</span> <span class="nb">HasPopupMenuList</span>
+</script>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">@include</span> <span class="nb">HasMultiSelection</span><span class="p">,</span> <span class="nb">HasPopupMenuList</span>
 
   <span class="py">constructor</span><span class="o">:</span> <span class="p">(</span><span class="nx">targetOrModel</span><span class="p">)</span> <span class="o">-&gt;</span>
     <span class="k">super</span> <span class="nx">targetOrModel</span>

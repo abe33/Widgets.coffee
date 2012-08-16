@@ -145,8 +145,8 @@ Date.isValidTime = (string) ->
   return false unless string?
   (/// ^
     [\d]{2}             # Hours are required
-    (: [\d]{2}           # Minutes are optional
-      (: [\d]{2}         # Seconds as well
+    (:[\d]{2}           # Minutes are optional
+      (:[\d]{2}         # Seconds as well
         (\.[\d]{1,4})?  # Milliseconds too
       )?                # End Seconds
     )?                  # End Minutes
