@@ -33,11 +33,11 @@ is builded from the data of the target.</p>             </td>             <td cl
         <span class="py">@model</span> <span class="o">=</span> <span class="py">@modelFromOptions</span> <span class="k">new</span> <span class="nb">MenuModel</span><span class="p">,</span> <span class="py">@jTarget</span><span class="p">.</span><span class="nx">children</span><span class="p">()</span>
         <span class="py">@size</span> <span class="o">=</span> <span class="nb">parseInt</span> <span class="py">@valueFromAttribute</span> <span class="s">&quot;size&quot;</span>
       <span class="k">else</span></pre></div>             </td>           </tr>                               <tr id="section-9">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-9">&#182;</a>               </div>               <p>Otherwise the <code>AbstractSelect</code> is initialized with a new
-model and a <code>null</code> selection path.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="py">@model</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">MenuModel</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Changes made to the model are listened by the <code>AbstractSelect</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">@model</span><span class="p">.</span><span class="nx">contentChanged</span><span class="p">.</span><span class="nx">add</span> <span class="py">@modelChanged</span><span class="p">,</span> <span class="k">this</span>
+model and a <code>null</code> selection path.</p>             </td>             <td class="code">               <div class="highlight"><pre>        <span class="py">@model</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">MenuModel</span></pre></div>             </td>           </tr>                               <tr id="section-10">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-10">&#182;</a>               </div>               <p>Changes made to the model are listened by the <code>AbstractSelect</code>.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">@model</span><span class="p">.</span><span class="nx">contentChanged</span><span class="p">.</span><span class="nx">add</span> <span class="py">@modelChanged</span><span class="p">,</span> <span class="py">this</span>
     <span class="py">@ensureModelCompletion</span><span class="p">()</span></pre></div>             </td>           </tr>                               <tr id="section-11">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-11">&#182;</a>               </div>               <p>The setter defined by the <code>HasMenuModel</code> is stored to be used in
 the overriden setter.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="nb">_set_model</span> <span class="o">=</span> <span class="py">@</span><span class="o">::</span><span class="nx">set_model</span></pre></div>             </td>           </tr>                               <tr id="section-12">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-12">&#182;</a>               </div>               <p>When the model of this widget change, the <code>ensureModelCompletion</code>
 method is called to validates and complete items if needed.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">set_model</span><span class="o">:</span> <span class="p">(</span><span class="nx">property</span><span class="p">,</span> <span class="nx">value</span><span class="p">)</span> <span class="o">-&gt;</span>
-    <span class="nb">_set_model</span><span class="p">.</span><span class="nx">call</span> <span class="k">this</span><span class="p">,</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span>
+    <span class="nb">_set_model</span><span class="p">.</span><span class="nx">call</span> <span class="py">this</span><span class="p">,</span> <span class="nx">property</span><span class="p">,</span> <span class="nx">value</span>
     <span class="py">@ensureModelCompletion</span><span class="p">()</span>
     <span class="nx">value</span></pre></div>             </td>           </tr>                               <tr id="section-13">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-13">&#182;</a>               </div>               <p>This function make sure that items contained in a <code>MenuModel</code> match
 the criteria for being used by the widget.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">ensureModelCompletion</span><span class="o">:</span> <span class="p">(</span><span class="nv">model</span><span class="o">=</span><span class="py">@model</span><span class="p">)</span> <span class="o">-&gt;</span>
@@ -60,7 +60,7 @@ possibility to have nested submenus.</p>             </td>             <td class
 <div id='single-selects'></div>
 
 <script type='text/javascript'>
-  var config = // Generated by CoffeeScript 1.3.1
+  var config = // Generated by CoffeeScript 1.3.3
 
 ({
   container: "single-selects",
@@ -197,7 +197,7 @@ when the mouse is pressed over the <code>SingleSelect</code>.</p>             </
 <div id='multi-selects'></div>
 
 <script type='text/javascript'>
-  var config = // Generated by CoffeeScript 1.3.1
+  var config = // Generated by CoffeeScript 1.3.3
 
 ({
   container: "multi-selects",

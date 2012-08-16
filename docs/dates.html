@@ -181,7 +181,7 @@ The propagation of the event is stopped to prevent the document
 to catch the event and closing the dialog instantly.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">mouseup</span><span class="o">:</span> <span class="p">(</span><span class="nx">e</span><span class="p">)</span> <span class="o">-&gt;</span>
     <span class="k">unless</span> <span class="py">@cantInteract</span><span class="p">()</span>
       <span class="nx">e</span><span class="p">.</span><span class="nx">stopImmediatePropagation</span><span class="p">()</span>
-      <span class="py">@dialogRequested</span><span class="p">.</span><span class="nx">dispatch</span> <span class="k">this</span></pre></div>             </td>           </tr>                               <tr id="section-53">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-53">&#182;</a>               </div>               <p><a name ='HasDateAndTime'></a></p>
+      <span class="py">@dialogRequested</span><span class="p">.</span><span class="nx">dispatch</span> <span class="py">this</span></pre></div>             </td>           </tr>                               <tr id="section-53">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-53">&#182;</a>               </div>               <p><a name ='HasDateAndTime'></a></p>
 
 <h1>HasDateAndTime</h1>             </td>             <td class="code">               <div class="highlight"><pre></pre></div>             </td>           </tr>                               <tr id="section-54">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-54">&#182;</a>               </div>               <p>This mixin provides the composition of a <code>DateInput</code> and a <code>TimeInput</code>
 as child of the widget. Each component of the widget value is handled
@@ -190,8 +190,8 @@ that will allow to edit and display the date part of a <code>datetime</code>
 or <code>datetime-local</code> input. The second child is a <code>TimeInput</code> which
 will handle the time edition.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">constructorHook</span><span class="o">:</span> <span class="o">-&gt;</span>
     <span class="py">@add</span> <span class="py">@dateInput</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">DateInput</span>
-    <span class="py">@add</span> <span class="py">@timeInput</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">TimeInput</span></pre></div>             </td>           </tr>                               <tr id="section-56">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-56">&#182;</a>               </div>               <p>The widget listen to both children <code>valueChanged</code> signal.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">@dateInput</span><span class="p">.</span><span class="nx">valueChanged</span><span class="p">.</span><span class="nx">add</span> <span class="py">@dateChanged</span><span class="p">,</span> <span class="k">this</span>
-    <span class="py">@timeInput</span><span class="p">.</span><span class="nx">valueChanged</span><span class="p">.</span><span class="nx">add</span> <span class="py">@timeChanged</span><span class="p">,</span> <span class="k">this</span></pre></div>             </td>           </tr>                               <tr id="section-57">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-57">&#182;</a>               </div>               <p>The update of the widget's dummy consist in updating its two
+    <span class="py">@add</span> <span class="py">@timeInput</span> <span class="o">=</span> <span class="k">new</span> <span class="nb">TimeInput</span></pre></div>             </td>           </tr>                               <tr id="section-56">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-56">&#182;</a>               </div>               <p>The widget listen to both children <code>valueChanged</code> signal.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">@dateInput</span><span class="p">.</span><span class="nx">valueChanged</span><span class="p">.</span><span class="nx">add</span> <span class="py">@dateChanged</span><span class="p">,</span> <span class="py">this</span>
+    <span class="py">@timeInput</span><span class="p">.</span><span class="nx">valueChanged</span><span class="p">.</span><span class="nx">add</span> <span class="py">@timeChanged</span><span class="p">,</span> <span class="py">this</span></pre></div>             </td>           </tr>                               <tr id="section-57">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-57">&#182;</a>               </div>               <p>The update of the widget's dummy consist in updating its two
 children's value.</p>             </td>             <td class="code">               <div class="highlight"><pre>  <span class="py">updateDummy</span><span class="o">:</span> <span class="o">-&gt;</span>
     <span class="py">@super</span> <span class="s">&quot;updateDummy&quot;</span></pre></div>             </td>           </tr>                               <tr id="section-58">             <td class="docs">               <div class="pilwrap">                 <a class="pilcrow" href="#section-58">&#182;</a>               </div>               <p>The update of this widgets value by its children is prevented
 by a lock before affecting the values.</p>             </td>             <td class="code">               <div class="highlight"><pre>    <span class="py">@datetimeSetProgramatically</span> <span class="o">=</span> <span class="kc">true</span>
@@ -214,7 +214,7 @@ by a lock before affecting the values.</p>             </td>             <td cla
 <div id='timeinputs'></div>
 
 <script type='text/javascript'>
-  var config = // Generated by CoffeeScript 1.3.1
+  var config = // Generated by CoffeeScript 1.3.3
 
 ({
   container: "timeinputs",
@@ -267,7 +267,7 @@ of the amount of <code>step</code>.</p>             </td>             <td class=
 <div id='dateinputs'></div>
 
 <script type='text/javascript'>
-  var config = // Generated by CoffeeScript 1.3.1
+  var config = // Generated by CoffeeScript 1.3.3
 
 ({
   container: "dateinputs",
@@ -308,7 +308,7 @@ of the <code>AbstractDateInputWidget</code> class.</p>             </td>        
 <div id='monthinputs'></div>
 
 <script type='text/javascript'>
-  var config = // Generated by CoffeeScript 1.3.1
+  var config = // Generated by CoffeeScript 1.3.3
 
 ({
   container: "monthinputs",
@@ -349,7 +349,7 @@ of the <code>AbstractDateInputWidget</code> class.</p>             </td>        
 <div id='weekinputs'></div>
 
 <script type='text/javascript'>
-  var config = // Generated by CoffeeScript 1.3.1
+  var config = // Generated by CoffeeScript 1.3.3
 
 ({
   container: "weekinputs",
@@ -390,7 +390,7 @@ of the <code>AbstractDateInputWidget</code> class.</p>             </td>        
 <div id='datetimeinputs'></div>
 
 <script type='text/javascript'>
-  var config = // Generated by CoffeeScript 1.3.1
+  var config = // Generated by CoffeeScript 1.3.3
 
 ({
   container: "datetimeinputs",
@@ -430,7 +430,7 @@ of the <code>AbstractDateInputWidget</code> class.</p>             </td>        
 <div id='datetimelocalinputs'></div>
 
 <script type='text/javascript'>
-  var config = // Generated by CoffeeScript 1.3.1
+  var config = // Generated by CoffeeScript 1.3.3
 
 ({
   container: "datetimelocalinputs",
