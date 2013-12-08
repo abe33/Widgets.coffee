@@ -1,9 +1,0 @@
-source: [
-  "src/signals"
-  "src/std"
-  "src/keys"
-  "src/module"
-  "src/mixins"
-  "src/widgets"
-]
-test: "test/test-widgets"
