@@ -1,0 +1,40 @@
+{
+  "name": "widgets",
+  "version": "0.0.0",
+  "description": "Some web widgets lib",
+  "main": "lib/widgets.js",
+  "scripts": {
+    "test": "./node_modules/.bin/spectacular test specs/**/*.spec.coffee"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/abe33/Widgets.coffee.git"
+  },
+  "keywords": [
+    "widgets"
+  ],
+  "author": "Cédric Néhémie <cedric.nehemie@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/abe33/Widgets.coffee/issues"
+  },
+  "dependencies": {
+    "mixinsjs": "1.0.1"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-contrib-jshint": "~0.6.3",
+    "grunt-contrib-nodeunit": "~0.2.0",
+    "grunt-contrib-uglify": "~0.2.2",
+    "grunt-contrib-coffee": "~0.7.0",
+    "grunt-contrib-watch": "~0.5.3",
+    "spectacular": "~1.6.0",
+    "q": "~0.9.7",
+    "grunt-growl": "~0.1.5",
+    "grunt-docco": "~0.3.0",
+    "jade": "~0.35.0",
+    "stylus": "~0.41.1",
+    "grunt-contrib-jade": "~0.8.0",
+    "grunt-contrib-stylus": "~0.11.0"
+  }
+}

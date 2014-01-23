@@ -1,11 +1,7 @@
-*.sublime-workspace
-*.sublime-project
+*.sublime-*
 .sass-cache
 .tmp
 node_modules
+bower_components
 lint.results
-css/colors.css
-css/common.css
-css/docco.css
-css/mixins.css
-css/widgets/*.css
+docs/

@@ -1,0 +1,24 @@
+{
+  "name": "widgets",
+  "version": "0.0.0",
+  "homepage": "https://github.com/abe33/Widgets.coffee",
+  "authors": [
+    "abe33 <cedric.nehemie@gmail.com>"
+  ],
+  "description": "Some web widgets lib",
+  "main": "lib/widgets.js",
+  "keywords": [
+    "widgets"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "mixins-js": "1.0.1"
+  }
+}

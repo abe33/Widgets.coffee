@@ -1,0 +1,7 @@
+--profile
+--coffee
+--source-map
+--require ./lib/widgets.js
+--require ./bower_components/mixins-js/lib/mixins.js
+--require ./specs/support
+--format progress
