@@ -10,7 +10,8 @@ For instance, the following snippet:
 widgets 'checkbox', 'input[type=checkbox]', on: 'load'
 ```
 
-Will call `widgets.checkbox` with each node matching the selector `input[type=checkbox]` on the `load` event.
+Will call `widgets.checkbox` with each node matching the selector
+`input[type=checkbox]` on the `load` event.
 
 You can also pass a function as the last argument that will be called
 for every elements handled by the defined widget after its handling by
@@ -46,7 +47,10 @@ This method execute a test condition for the given element. The condition
 can be either a function or a value converted to boolean.
 
       test_condition = (condition, element) ->
-        if typeof condition is 'function' then condition(element) else !!condition
+        if typeof condition is 'function'
+          condition(element)
+        else
+          !!condition
 
 The DOM elements handled by a widget will receive a handled class
 to differenciate them from unhandled elements.
@@ -62,7 +66,8 @@ of a single `&&` condition.
       can_be_handled = (element) ->
         res = element.className.indexOf(handled_class) is -1
         res &&= test_condition(if_condition, element) if if_condition?
-        res &&= not test_condition(unless_condition, element) if unless_condition?
+        if unless_condition?
+          res &&= not test_condition(unless_condition, element)
         res
 
 If a media condition have been specified, the widget activation will be
@@ -217,12 +222,12 @@ myFunc = ->
       caller = ''
       if e.stack?
         s = e.stack.split('\n')
-        [deprecatedMethodCallerName, deprecatedMethodCallerFile] = parseLine s[3]
+        [callerName, callerFile] = parseLine s[3]
 
-        caller = if deprecatedMethodCallerName
-          " (called from #{ deprecatedMethodCallerName } at #{ deprecatedMethodCallerFile })"
+        caller = if callerName
+          " (called from #{ callerName } at #{ callerFile })"
         else
-           "(called from #{ deprecatedMethodCallerFile })"
+           "(called from #{ callerFile })"
 
       console.log "DEPRECATION WARNING: #{ message }#{ caller }"
 
