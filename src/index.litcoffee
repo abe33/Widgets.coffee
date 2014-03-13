@@ -1,4 +1,20 @@
 
+
+
+Widgets are small code snippets that are executed on DOM elements to provides
+new behaviors or decorates the element with new markup.
+
+The `__widgets__` object stores the widgets registered using the
+`widgets.define` method.
+
+    __widgets__ = {}
+
+The `__instances__` object stores the returned instances of the various
+widgets, stored by widget type and then mapped with their target DOM
+element as key.
+
+    __instances__ = {}
+
 ## widgets
 
 The `widgets` module is in fact a function you can use to register
@@ -18,7 +34,7 @@ for every elements handled by the defined widget after its handling by
 the widget function.
 
     widgets = (name, selector, options={}, block) ->
-      unless widgets[name]?
+      unless __widgets__[name]?
         throw new Error "Unable to find widget '#{name}'"
 
 The options specific to the widget registration and activation are
@@ -41,7 +57,7 @@ Events can be passed as a string with event names separated with spaces.
 The widgets instances are stored in a Hash with the DOM element they
 target as key. The instances hashes are stored per widget type.
 
-      instances = widgets.instances[name] ||= new widgets.Hash
+      instances = __instances__[name] ||= new widgets.Hash
 
 This method execute a test condition for the given element. The condition
 can be either a function or a value converted to boolean.
@@ -52,7 +68,7 @@ can be either a function or a value converted to boolean.
         else
           !!condition
 
-The DOM elements handled by a widget will receive a handled class
+The DOM elements handled by a widget will receive a `*-handled` class
 to differenciate them from unhandled elements.
 
       handled_class = "#{name}-handled"
@@ -114,7 +130,7 @@ will proceed to the creation of the widgets if the conditions are met.
         Array::forEach.call elements, (element) ->
           return unless can_be_handled element
 
-          res = widgets[name] element, Object.create(options), elements
+          res = __widgets__[name] element, Object.create(options), elements
           element.className += " #{handled_class}"
           instances.set element, res
 
@@ -138,16 +154,7 @@ handler as soon a the function is called.
           else
             document.addEventListener event, handler
 
-The module version is stored in the module.
-
-    widgets.version = '0.0.0'
-
-The `instances` of the various widgets, stored by widget type and then
-mapped with their target DOM element as key.
-
-    widgets.instances = {}
-
-## widgets.define
+### widgets.define
 
 The `widgets.define` is used to create a new widget usable through the
 `widgets` method. Basically, a widget is defined using a `name`, and a
@@ -163,7 +170,7 @@ The `block` function should have the following signature:
 The `options` object will contains all the options passed to the `widgets`
 method except the `on`, `if`, `unless` and `media` ones.
 
-    widgets.define = (name, block) -> widgets[name] = block
+    widgets.define = (name, block) -> __widgets__[name] = block
 
 ### widgets.release
 
@@ -173,21 +180,21 @@ It's the widget responsibility to clean up its dependencies during
 the `dispose` call.
 
     widgets.release = (name) ->
-      widgets.instances[name].each (value) -> value?.dispose?()
+      __instances__[name].each (value) -> value?.dispose?()
 
 ### widgets.activate
 
 Activates all the widgets instances of type `name`.
 
     widgets.activate = (name) ->
-      widgets.instances[name].each (value) -> value?.activate?()
+      __instances__[name].each (value) -> value?.activate?()
 
 ### widgets.deactivate
 
 Deactivates all the widgets instances of type `name`.
 
     widgets.deactivate = (name) ->
-      widgets.instances[name].each (value) -> value?.deactivate?()
+      __instances__[name].each (value) -> value?.deactivate?()
 
 ### widgets.deprecated
 
@@ -231,6 +238,14 @@ myFunc = ->
 
       console.log "DEPRECATION WARNING: #{ message }#{ caller }"
 
-Finally the `widgets` module is added on global
+## widgets exports
+
+The module version is stored in the module.
+
+    widgets.version = '0.0.0'
+
+Finally the `widgets` module is added on global using various aliases..
 
     window.widgets = widgets
+    window.widget = widgets
+    window.$w = widgets
