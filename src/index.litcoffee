@@ -242,7 +242,7 @@ myFunc = ->
 
 The module version is stored in the module.
 
-    widgets.version = '0.0.0'
+    widgets.version = '0.0.1'
 
 Finally the `widgets` module is added on global using various aliases..
 
