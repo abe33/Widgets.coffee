@@ -97,17 +97,4 @@ module.exports = (grunt) ->
   grunt.loadNpmTasks('grunt-growl')
   grunt.loadNpmTasks('grunt-docco')
 
-  grunt.registerTask 'test', 'Run npm tests', ->
-    done = @async()
-    run('npm test')
-    .then ->
-      grunt.task.run 'growl:spectacular_success'
-      done true
-    .fail ->
-      console.log 'in fail'
-      grunt.task.run 'growl:spectacular_failure'
-      done false
-
-
-  grunt.registerTask('default', ['test'])
-
+  grunt.registerTask('default', ['coffee', 'uglify'])
