@@ -12,11 +12,13 @@
   ],
   "license": "MIT",
   "ignore": [
-    "**/.*",
     "node_modules",
     "bower_components",
-    "test",
-    "tests"
+    "specs",
+    "templates",
+    "demos",
+    "css",
+    "src"
   ],
   "dependencies": {
     "mixins-js": "1.0.1"
