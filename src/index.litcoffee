@@ -15,6 +15,21 @@ element as key.
 
     __instances__ = {}
 
+The `get_event` helper build a new blubbling and cancelable `Event`
+object of the specified type.
+
+    get_event = (type) ->
+      try
+        event = new Event type, {
+          bubbles: true
+          cancelable: true
+        }
+      catch e
+        event = document.createEvent 'Event'
+        event.initEvent type, true, true
+
+      event
+
 ## widgets
 
 The `widgets` module is in fact a function you can use to register
@@ -138,7 +153,12 @@ The widgets activation state are resolved at creation
 
           media_handler(element, res) if media_condition?
 
-And finally the passed-in block is called with the element and its widget
+An event is then dispatched
+
+          event = get_event "#{name}:handled"
+          element.dispatchEvent event
+
+And finally the passed-in block is called with the element and its widget.
 
           block?.call element, element, res
 
