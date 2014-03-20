@@ -192,6 +192,26 @@ method except the `on`, `if`, `unless` and `media` ones.
 
     widgets.define = (name, block) -> __widgets__[name] = block
 
+### widgets.$define
+
+A shorthand method to register a jQuery widget.
+When triggered, if a method of the specified `name` exists on the jQuery
+object it will called with the constructed options.
+The passed-in block acts as a jquery plugin function with some additional
+parameters, it will be called with the jQuery object as `this` and will
+receive the same arguments as a normal widget's block.
+
+    widgets.$define = (name, base_options={}, block) ->
+      if typeof base_options is 'function'
+        [base_options, block] = [{}, base_options]
+
+      __widgets__[name] = (element, options={}) ->
+        options[k] = v for k,v of base_options when not options[k]?
+
+        $element = $(element)
+        res = $element[name]?(options)
+        block?.call($element, element, res, options)
+
 ### widgets.release
 
 The `widgets.release` method can be used to completely remove the widgets
