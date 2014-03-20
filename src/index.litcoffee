@@ -160,7 +160,7 @@ An event is then dispatched
 
 And finally the passed-in block is called with the element and its widget.
 
-          block?.call element, element, res
+          block?.call element, element, res, options
 
 For each event specified, the handler is registered as listener.
 A special case is the `init` event that simply mean to trigger the
