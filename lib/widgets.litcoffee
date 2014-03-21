@@ -122,18 +122,17 @@ the minimal and maximal window width where the widget is activated.
 The media handler is registered on the `resize` event of the `window`
 object.
 
-        media_handler = (element, widget) ->
-          return unless widget?
+          media_handler = (name) ->
+            return unless name?
 
-          condition_matched = test_condition(media_condition, element)
+            condition_matched = test_condition(media_condition)
 
-          if condition_matched and not widget.active
-            widget.activate?()
-          else if not condition_matched and widget.active
-            widget.deactivate?()
+            if condition_matched
+              widgets.activate(name)
+            else
+              widgets.deactivate(name)
 
-        window.addEventListener 'resize', ->
-          instances.each_pair (element, widget) -> media_handler name
+          window.addEventListener 'resize', -> media_handler name
 
 The `handler` function is the function registered on specified event and
 will proceed to the creation of the widgets if the conditions are met.
@@ -148,9 +147,6 @@ will proceed to the creation of the widgets if the conditions are met.
           element.className += " #{handled_class}"
           instances.set element, res
 
-The widgets activation state are resolved at creation
-
-          media_handler(name) if media_condition?
 
 An event is then dispatched
 
@@ -160,6 +156,10 @@ An event is then dispatched
 And finally the passed-in block is called with the element and its widget.
 
           block?.call element, element, res, options
+
+The widgets activation state are resolved at creation
+
+        media_handler(name) if media_condition?
 
 For each event specified, the handler is registered as listener.
 A special case is the `init` event that simply mean to trigger the

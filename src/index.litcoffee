@@ -147,9 +147,6 @@ will proceed to the creation of the widgets if the conditions are met.
           element.className += " #{handled_class}"
           instances.set element, res
 
-The widgets activation state are resolved at creation
-
-          media_handler(name) if media_condition?
 
 An event is then dispatched
 
@@ -159,6 +156,10 @@ An event is then dispatched
 And finally the passed-in block is called with the element and its widget.
 
           block?.call element, element, res, options
+
+The widgets activation state are resolved at creation
+
+        media_handler(name) if media_condition?
 
 For each event specified, the handler is registered as listener.
 A special case is the `init` event that simply mean to trigger the
