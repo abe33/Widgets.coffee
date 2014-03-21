@@ -19,15 +19,13 @@ module.exports = (grunt) ->
         options:
           join: true
           sourceMap: true
+          joinExt: '.litcoffee'
+          literate: true
 
         files:
           'lib/widgets.js': [
             'src/index.litcoffee'
-            'src/mixins/*.litcoffee'
-            'src/gestures/*.litcoffee'
-            'src/feedbacks/*.litcoffee'
-            'src/processors/*.litcoffee'
-            'src/interactions/*.litcoffee'
+            'src/hash.litcoffee'
           ]
 
     uglify:
