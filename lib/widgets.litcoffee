@@ -1,6 +1,4 @@
 
-
-
 Widgets are small code snippets that are executed on DOM elements to provides
 new behaviors or decorates the element with new markup.
 
@@ -15,20 +13,6 @@ element as key.
 
     __instances__ = {}
 
-The `get_event` helper build a new blubbling and cancelable `Event`
-object of the specified type.
-
-    get_event = (type) ->
-      try
-        event = new Event type, {
-          bubbles: true
-          cancelable: true
-        }
-      catch e
-        event = document.createEvent 'Event'
-        event.initEvent type, true, true
-
-      event
 
 ## widgets
 
@@ -55,7 +39,7 @@ the widget function.
 The options specific to the widget registration and activation are
 extracted from the `options object.
 
-      events = options.on or 'init'
+      events = options.on ? 'init'
       if_condition = options.if
       unless_condition = options.unless
       media_condition = options.media
@@ -150,7 +134,7 @@ will proceed to the creation of the widgets if the conditions are met.
 
 An event is then dispatched
 
-          event = get_event "#{name}:handled"
+          event = widgets.dom_event "#{name}:handled"
           element.dispatchEvent event
 
 And finally the passed-in block is called with the element and its widget.
@@ -172,6 +156,23 @@ handler as soon a the function is called.
             window.addEventListener event, handler
           else
             document.addEventListener event, handler
+
+### widgets.dom_event
+
+The `dom_event` helper build a new blubbling and cancelable `Event`
+object of the specified type.
+
+    widgets.dom_event = (type, {bubbles, cancelable}={}) ->
+      try
+        event = new Event type, {
+          bubbles: bubbles ? true
+          cancelable: cancelable ? true
+        }
+      catch e
+        event = document.createEvent 'Event'
+        event.initEvent type, true, true
+
+      event
 
 ### widgets.define
 
