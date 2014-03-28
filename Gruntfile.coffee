@@ -40,7 +40,7 @@ module.exports = (grunt) ->
     uglify:
       prod:
         options:
-          sourceMap: 'lib/widgets.min.js.map'
+          sourceMap: true
         files:
           'lib/widgets.min.js': ['lib/widgets.js']
           'lib/widgets.utils.min.js': ['lib/widgets.utils.js']
