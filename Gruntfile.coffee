@@ -74,7 +74,7 @@ module.exports = (grunt) ->
 
     docco:
       dev:
-        src: ['src/**/*.litcoffee']
+        src: ['lib/*.litcoffee']
         options:
           output: 'docs/'
 
