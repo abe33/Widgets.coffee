@@ -30,6 +30,9 @@ module.exports = (grunt) ->
           'lib/widgets.utils.js': [
             'src/utilities/*.litcoffee'
           ]
+          'lib/widgets.common.js': [
+            'src/widgets/*.litcoffee'
+          ]
 
     uglify:
       prod:
@@ -38,6 +41,7 @@ module.exports = (grunt) ->
         files:
           'lib/widgets.min.js': ['lib/widgets.js']
           'lib/widgets.utils.min.js': ['lib/widgets.utils.js']
+          'lib/widgets.common.min.js': ['lib/widgets.common.js']
 
     watch:
       scripts:
