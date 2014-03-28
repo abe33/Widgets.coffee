@@ -4,4 +4,15 @@ block title
   = 'Index'
 
 block content
-  = 'Hello World'
+
+  div
+    div
+      div
+        input(type='text')
+        input(type='checkbox')
+
+block scripts
+  :coffeescript
+    window.onload = ->
+      widget 'bubbling_focus', 'input'
+      widget 'checked_input', 'input[type="checkbox"]'

@@ -6,7 +6,25 @@
     <meta charset="utf-8">
     <link href="../css/widgets.css" media="screen" rel="stylesheet">
     <script src="../lib/widgets.js"></script>
+    <script src="../lib/widgets.utils.js"></script>
+    <script src="../lib/widgets.common.js"></script><script type="text/javascript">
+(function() {
+  window.onload = function() {
+    widget('bubbling_focus', 'input');
+    return widget('checked_input', 'input[type="checkbox"]');
+  };
+
+}).call(this);
+</script>
   </head>
-  <body>Hello World
+  <body>
+    <div>
+      <div>
+        <div>
+          <input type="text">
+          <input type="checkbox">
+        </div>
+      </div>
+    </div>
   </body>
 </html>
