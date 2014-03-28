@@ -27,6 +27,9 @@ module.exports = (grunt) ->
             'src/index.litcoffee'
             'src/hash.litcoffee'
           ]
+          'lib/widgets.utils.js': [
+            'src/utilities/*.litcoffee'
+          ]
 
     uglify:
       prod:
@@ -34,6 +37,7 @@ module.exports = (grunt) ->
           sourceMap: 'lib/widgets.min.js.map'
         files:
           'lib/widgets.min.js': ['lib/widgets.js']
+          'lib/widgets.utils.min.js': ['lib/widgets.utils.js']
 
     watch:
       scripts:
