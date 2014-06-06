@@ -19,22 +19,20 @@ module.exports = (grunt) ->
         options:
           join: true
           sourceMap: true
-          joinExt: '.litcoffee'
-          literate: true
 
         files:
           'lib/widgets.js': [
-            'src/index.litcoffee'
-            'src/hash.litcoffee'
+            'src/index.coffee'
+            'src/hash.coffee'
           ]
-          'lib/widgets.utils.js': [
-            'src/utilities/*.litcoffee'
-          ]
+          # 'lib/widgets.utils.js': [
+          #   'src/utilities/*.coffee'
+          # ]
           'lib/widgets.common.js': [
-            'src/widgets/*.litcoffee'
+            'src/widgets/*.coffee'
           ]
           'lib/widgets.mixins.js': [
-            'src/mixins/*.litcoffee'
+            'src/mixins/*.coffee'
           ]
 
     uglify:
@@ -43,14 +41,14 @@ module.exports = (grunt) ->
           sourceMap: true
         files:
           'lib/widgets.min.js': ['lib/widgets.js']
-          'lib/widgets.utils.min.js': ['lib/widgets.utils.js']
+          # 'lib/widgets.utils.min.js': ['lib/widgets.utils.js']
           'lib/widgets.common.min.js': ['lib/widgets.common.js']
           'lib/widgets.mixins.min.js': ['lib/widgets.mixins.js']
 
     watch:
       scripts:
         files: [
-          'src/**/*.litcoffee'
+          'src/**/*.coffee'
           'specs/**/*.coffee'
           'css/**/*.styl'
           'templates/**/*.jade'
@@ -74,7 +72,7 @@ module.exports = (grunt) ->
 
     docco:
       dev:
-        src: ['lib/*.litcoffee']
+        src: ['lib/*.coffee']
         options:
           output: 'docs/'
 

@@ -1,2 +1,16 @@
 
 /* line 1 : /Users/cedric/Development/coffeescript/widgets/node_modules/stylus/lib/functions/index.styl */
+
+/* line 1 : /Users/cedric/Development/coffeescript/widgets/css/widgets.styl */
+body {
+  background: #333;
+  color: #454545;
+}
+
+/* line 5 : /Users/cedric/Development/coffeescript/widgets/css/widgets.styl */
+input {
+  background: #252525;
+  color: #454545;
+  border: none;
+  -webkit-appearance: none;
+}

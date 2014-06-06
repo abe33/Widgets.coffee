@@ -5,13 +5,20 @@
     </title>
     <meta charset="utf-8">
     <link href="../css/widgets.css" media="screen" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-git2.min.js"></script>
+    <script src="../bower_components/mixins-js/lib/mixins.js"></script>
     <script src="../lib/widgets.js"></script>
-    <script src="../lib/widgets.utils.js"></script>
+    <script src="../lib/widgets.mixins.js"></script>
     <script src="../lib/widgets.common.js"></script><script type="text/javascript">
 (function() {
   window.onload = function() {
     widget('bubbling_focus', 'input');
-    return widget('checked_input', 'input[type="checkbox"]');
+    widget('checked_input', 'input[type="checkbox"]');
+    return widget('test_proto', 'input', {
+      media: {
+        min: 1000
+      }
+    });
   };
 
 }).call(this);
